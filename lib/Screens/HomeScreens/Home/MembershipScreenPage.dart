@@ -41,8 +41,8 @@ class _MembershipScreenPageState extends State<MembershipScreenPage> {
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(40),
                         border: Border.all(color: yellowColor, width: 1)),
-                    child: Padding(
-                      padding: const EdgeInsets.all(4.0),
+                    child: const Padding(
+                      padding: EdgeInsets.all(4.0),
                       child: CircleAvatar(
                         backgroundImage: AssetImage("tom_cruise.jpeg"),
                       ),
@@ -50,7 +50,7 @@ class _MembershipScreenPageState extends State<MembershipScreenPage> {
                   ),
                 ),
                 Container(
-                  margin: EdgeInsets.only(top: 10),
+                  margin: const EdgeInsets.only(top: 10),
                   width: phoneWidth(context) * 1.5,
                   decoration: BoxDecoration(
                       color: black, borderRadius: BorderRadius.circular(10)),
@@ -66,10 +66,10 @@ class _MembershipScreenPageState extends State<MembershipScreenPage> {
                         customHeightBox(30),
                         Container(
                           alignment: Alignment.center,
-                          margin: EdgeInsets.only(left: 20, right: 20),
+                          margin: const EdgeInsets.only(left: 20, right: 20),
                           height: 70,
                           decoration: BoxDecoration(
-                              color: Color(0xFF18182C),
+                              color: const Color(0xFF18182C),
                               borderRadius: BorderRadius.circular(10)),
                           child: Padding(
                             padding: const EdgeInsets.only(top: 12.0),
@@ -112,7 +112,7 @@ class _MembershipScreenPageState extends State<MembershipScreenPage> {
                                   ),
                                   customHeightBox(10),
                                   LinearPercentIndicator(
-                                    width: 250,
+                                    width: 230,
                                     animation: true,
                                     lineHeight: 12.0,
                                     animationDuration: 2500,

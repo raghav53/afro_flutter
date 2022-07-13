@@ -1,12 +1,8 @@
-import 'dart:convert';
-
 import 'package:afro/Model/Group/GroupDetails/GroupContacts/JoinedContacts/JoinedContactsModel.dart';
-import 'package:afro/Model/UserProfileModel.dart';
 import 'package:afro/Network/Apis.dart';
 import 'package:afro/Screens/HomeScreens/Home/OtherUserProfilePage.dart';
 import 'package:afro/Util/Colors.dart';
-import 'package:afro/Util/CommonMethods.dart';
-import 'package:afro/Util/CommonUI.dart';
+
 import 'package:afro/Util/Constants.dart';
 import 'package:afro/Util/CustomWidget.dart';
 import 'package:afro/Util/CustomWidgetAttributes.dart';
@@ -14,7 +10,6 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:http/http.dart' as http;
 import '../../../../../Model/Group/GroupDetails/GroupContacts/RequestsContacts/RequestsContactsModel.dart';
 
 class GroupDisscussionContactsPage extends StatefulWidget {
@@ -173,6 +168,9 @@ class _GroupDisscussionContactsPageState
                   padding: EdgeInsets.only(top: 20, bottom: 20),
                   crossAxisCount: 3,
                   children: List.generate(snapshot.data!.data!.length, (index) {
+                    var id = snapshot.data!.data![index].member!.sId.toString();
+                    print("User Id :- $id");
+                    print("Login id :- $loginUserID");
                     return InkWell(
                       onTap: () {
                         Navigator.of(context).push(MaterialPageRoute(
@@ -211,28 +209,38 @@ class _GroupDisscussionContactsPageState
                                         10,
                                         yellowColor),
                                     customHeightBox(7),
-                                    InkWell(
-                                      onTap: () {},
-                                      child: Container(
-                                        padding: const EdgeInsets.only(
-                                            top: 5,
-                                            bottom: 5,
-                                            left: 8,
-                                            right: 8),
-                                        decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(20),
-                                          gradient: commonButtonLinearGridient,
-                                        ),
-                                        child: customText(
-                                            snapshot.data!.data![index].member!
-                                                        .isReqSent ==
-                                                    1
-                                                ? "Cancel Friend"
-                                                : "Add Friend",
-                                            9,
-                                            white),
-                                      ),
+                                    Container(
+                                      child: loginUserID !=
+                                              snapshot.data!.data![index]
+                                                  .member!.sId
+                                          ? InkWell(
+                                              onTap: () {},
+                                              child: Container(
+                                                padding: const EdgeInsets.only(
+                                                    top: 5,
+                                                    bottom: 5,
+                                                    left: 8,
+                                                    right: 8),
+                                                decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.circular(20),
+                                                  gradient:
+                                                      commonButtonLinearGridient,
+                                                ),
+                                                child: customText(
+                                                    snapshot
+                                                                .data!
+                                                                .data![index]
+                                                                .member!
+                                                                .isReqSent ==
+                                                            1
+                                                        ? "Cancel Friend"
+                                                        : "Add Friend",
+                                                    9,
+                                                    white),
+                                              ),
+                                            )
+                                          : null,
                                     )
                                   ],
                                 ),
@@ -453,7 +461,7 @@ class _GroupDisscussionContactsPageState
                                   color: Color(0xFF191831),
                                   borderRadius: BorderRadius.circular(10)),
                               child: Container(
-                                margin: EdgeInsets.only(top: 30),
+                                margin: EdgeInsets.only(top: 25),
                                 child: Column(
                                   children: [
                                     customText(
@@ -463,21 +471,41 @@ class _GroupDisscussionContactsPageState
                                         10,
                                         yellowColor),
                                     customHeightBox(7),
-                                    // InkWell(
-                                    //   onTap: () {},
-                                    //   child: Container(
-                                    //     padding: const EdgeInsets.only(
-                                    //         top: 5,
-                                    //         bottom: 5,
-                                    //         left: 8,
-                                    //         right: 8),
-                                    //     decoration: BoxDecoration(
-                                    //       borderRadius:
-                                    //           BorderRadius.circular(20),
-                                    //       gradient: commonButtonLinearGridient,
-                                    //     ),
-                                    //   ),
-                                    // )
+                                    InkWell(
+                                      onTap: () {},
+                                      child: Container(
+                                        padding: const EdgeInsets.only(
+                                            top: 2,
+                                            bottom: 2,
+                                            left: 8,
+                                            right: 8),
+                                        decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(20),
+                                          gradient: commonButtonLinearGridient,
+                                        ),
+                                        child: customText("Accept ", 9, white),
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      height: 5,
+                                    ),
+                                    InkWell(
+                                      onTap: () {},
+                                      child: Container(
+                                        padding: const EdgeInsets.only(
+                                            top: 2,
+                                            bottom: 2,
+                                            left: 8,
+                                            right: 8),
+                                        decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(20),
+                                          gradient: commonButtonLinearGridient,
+                                        ),
+                                        child: customText("Cancel", 9, white),
+                                      ),
+                                    ),
                                   ],
                                 ),
                               ),
@@ -509,14 +537,6 @@ class _GroupDisscussionContactsPageState
                                       }),
                                 ),
                               ),
-                              Container(
-                                height: 9,
-                                width: 9,
-                                margin: EdgeInsets.only(right: 3, bottom: 3),
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(10),
-                                    gradient: commonButtonLinearGridient),
-                              )
                             ],
                           ),
                         ],

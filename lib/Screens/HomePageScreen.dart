@@ -27,7 +27,7 @@ class _HomePagescreenState extends State<HomePagescreen> {
             bottomNavigationBar: Container(
               height: 70,
               color: Colors.black,
-              padding: EdgeInsets.only(top: 7, bottom: 7),
+              padding: const EdgeInsets.only(top: 7, bottom: 7),
               child: Row(
                 mainAxisAlignment: mAround,
                 children: [

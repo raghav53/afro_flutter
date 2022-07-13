@@ -1,12 +1,12 @@
 import 'dart:convert';
-import 'dart:io';
+
 import 'dart:math';
 
 import 'package:afro/Model/LoginModel.dart';
 import 'package:afro/Network/Apis.dart';
 import 'package:afro/Screens/Authentication/ChooseLanguage.dart';
 import 'package:afro/Screens/Authentication/ForgetPasswordPage.dart';
-import 'package:afro/Screens/DashboardScreenPage.dart';
+
 import 'package:afro/Screens/HomePageScreen.dart';
 
 import 'package:afro/Screens/SignUpProcess/SignUpPage.dart';
@@ -15,12 +15,11 @@ import 'package:afro/Util/Constants.dart';
 import 'package:afro/Util/CustomWidget.dart';
 import 'package:afro/Util/CustomWidgetAttributes.dart';
 import 'package:afro/Util/SharedPreferencfes.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
+
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
-import 'package:loading_indicator/loading_indicator.dart';
+
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../Util/CommonUI.dart';
@@ -48,8 +47,8 @@ class _LoginScreenState extends State<LoginScreen> {
     return SafeArea(
       child: Scaffold(
         body: Container(
-          height: double.infinity,
-          width: double.infinity,
+          height: phoneHeight(context),
+          width: phoneWidth(context),
           // height: height,
           decoration: commonBoxDecoration(),
           child: SingleChildScrollView(
@@ -198,17 +197,15 @@ class _LoginScreenState extends State<LoginScreen> {
                             ),
                           ),
 
-                          const SizedBox(width: 50), // give it width
+                          const SizedBox(width: 20), // give it width
                           TextButton(
-                            onPressed: () {
-                              Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (context) => ForgetPasswordPage()));
-                            },
-                            child: const Text(
-                              'Forgot your Password?',
-                              style: TextStyle(color: Color(0xffDFB48C)),
-                            ),
-                          ),
+                              onPressed: () {
+                                Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (context) =>
+                                        ForgetPasswordPage()));
+                              },
+                              child: customText(
+                                  "Forget your password?", 13, yellowColor)),
                         ],
                         mainAxisAlignment: MainAxisAlignment.center,
                       ),
@@ -280,9 +277,9 @@ class _LoginScreenState extends State<LoginScreen> {
                               width: 150,
                               child: customDivider(10, white),
                             ),
-                            customWidthBox(15),
+                            customWidthBox(10),
                             customText("or", 13, white),
-                            customWidthBox(15),
+                            customWidthBox(10),
                             SizedBox(
                               width: 150,
                               child: customDivider(10, white),
@@ -351,6 +348,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     ],
                   ),
                 ),
+                customHeightBox(50)
               ],
             ),
           ),

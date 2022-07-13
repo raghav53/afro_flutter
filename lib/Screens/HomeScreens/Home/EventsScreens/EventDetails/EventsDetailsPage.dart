@@ -665,14 +665,17 @@ class _EventDetailsScreenPageState extends State<EventDetailsScreenPage> {
     if (index == 0) {
       return EventDiscussionList(
         eventId: widget.eventId.toString(),
+        //userId:userId
       );
     } else if (index == 1) {
       return EventPhotos(
         eventId: widget.eventId.toString(),
+        //userId:userId
       );
     } else if (index == 2) {
       return EventVideos(
         eventId: widget.eventId.toString(),
+        //userId:userId
       );
     } else if (index == 3) {
       return EventContacts(

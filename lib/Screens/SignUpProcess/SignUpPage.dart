@@ -1,20 +1,12 @@
 import 'dart:convert';
-
-
 import 'package:afro/Network/Apis.dart';
-import 'package:afro/Screens/Authentication/SignInPage.dart';
 import 'package:afro/Screens/Authentication/SignInPage2.dart';
-import 'package:afro/Screens/HomeScreens/Home/Contacts/AllContactsScreen.dart';
 import 'package:afro/Util/Colors.dart';
-import 'package:afro/Util/CommonMethods.dart';
 import 'package:afro/Util/CommonUI.dart';
-import 'package:afro/Util/Constants.dart';
 import 'package:afro/Util/CustomWidget.dart';
 import 'package:afro/Screens/SignUpProcess/EmailVerification.dart';
 import 'package:afro/Util/CustomWidgetAttributes.dart';
-import 'package:afro/Util/SharedPreferencfes.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -40,18 +32,16 @@ Widget buildCustomEdittext(
     children: <Widget>[
       Text(
         text,
-        style: TextStyle(
+        style: const TextStyle(
             color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
       ),
-      SizedBox(
-        height: 10,
-      ),
+      customHeightBox(10),
       Container(
         alignment: Alignment.centerLeft,
         decoration: BoxDecoration(
             color: Colors.black,
             borderRadius: BorderRadius.circular(10),
-            boxShadow: [
+            boxShadow: const [
               BoxShadow(
                   color: Colors.black26, blurRadius: 6, offset: Offset(0, 2))
             ]),
@@ -59,12 +49,12 @@ Widget buildCustomEdittext(
         child: TextField(
           controller: controller,
           keyboardType: input,
-          style: TextStyle(color: Colors.white),
+          style: const TextStyle(color: Colors.white),
           decoration: InputDecoration(
               border: InputBorder.none,
-              contentPadding: EdgeInsets.only(left: 14),
+              contentPadding: const EdgeInsets.only(left: 14),
               hintText: text,
-              hintStyle: TextStyle(color: Colors.white24)),
+              hintStyle: const TextStyle(color: Colors.white24)),
         ),
       )
     ],
@@ -117,12 +107,14 @@ class _SignUpPage extends State<SignUpPageScreen> {
         child: Scaffold(
       extendBodyBehindAppBar: true,
       appBar: commonAppbar("Sign Up"),
-      body: SingleChildScrollView(
-        child: Container(
-          padding: EdgeInsets.only(top: 50),
-          decoration: const BoxDecoration(
-              image: DecorationImage(
-                  image: AssetImage("background.png"), fit: BoxFit.cover)),
+      body: Container(
+        height: phoneHeight(context),
+        width: phoneWidth(context),
+        padding: EdgeInsets.only(top: 50),
+        decoration: const BoxDecoration(
+            image: DecorationImage(
+                image: AssetImage("background.png"), fit: BoxFit.cover)),
+        child: SingleChildScrollView(
           child: Column(
             children: [
               Container(
@@ -231,7 +223,7 @@ class _SignUpPage extends State<SignUpPageScreen> {
     ));
   }
 
-void openBottomSheet(BuildContext context) {
+  void openBottomSheet(BuildContext context) {
     showModalBottomSheet(
         isDismissible: false,
         backgroundColor: Colors.transparent,

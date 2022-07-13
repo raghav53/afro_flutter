@@ -1,4 +1,6 @@
 import 'package:afro/Model/Events/Discover/DiscoverModel.dart';
+import 'package:afro/Model/Fourms/AllFourmDataModel.dart';
+import 'package:afro/Model/Fourms/AllFourmModel.dart';
 import 'package:afro/Model/Friends/AllUsers/GetAllUsers.dart';
 import 'package:afro/Model/Group/AllGroupDataModel.dart';
 import 'package:afro/Model/Group/AllGroupModel.dart';
@@ -10,6 +12,7 @@ import 'package:afro/Screens/HomeScreens/Home/Groups/GroupDetails/GroupDetailsPa
 import 'package:afro/Screens/HomeScreens/Home/Groups/RecommendedGroupsScreen.dart';
 import 'package:afro/Screens/HomeScreens/Home/OtherUserProfilePage.dart';
 import 'package:afro/Util/Colors.dart';
+import 'package:afro/Util/CommonUI.dart';
 import 'package:afro/Util/Constants.dart';
 import 'package:afro/Util/CustomWidget.dart';
 import 'package:afro/Screens/HomeScreens/Home/EventsScreens/UpcomingEvents.dart';
@@ -20,7 +23,6 @@ import 'package:afro/Screens/HomeScreens/SearchLocationScreen.dart';
 import 'package:afro/Util/CustomWidgetAttributes.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dotted_border/dotted_border.dart';
-import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -36,6 +38,7 @@ Future<UserProfile>? _getUserProfile;
 Future<DiscoverModel>? _upComingEvent;
 Future<AllGroupsModel>? _allGroups;
 Future<GetAllFriendsModel>? _exploreUsers;
+Future<AllFourmModel>? _exploreForums;
 
 class _HomeScreen extends State<DashboardPageScreen> {
   final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
@@ -48,9 +51,7 @@ class _HomeScreen extends State<DashboardPageScreen> {
       _getUserProfile = getUserProfileinfo(context, userID.toString());
       getUserData();
       setState(() {});
-      _getUserProfile!.whenComplete(() => () {
-            setState(() {});
-          });
+      _getUserProfile!.whenComplete(() => () {});
     });
     Future.delayed(Duration.zero, () {
       _upComingEvent = getAllEventsUsers(context, showProgress: false);
@@ -69,6 +70,12 @@ class _HomeScreen extends State<DashboardPageScreen> {
       _exploreUsers = getAllUsers(context);
       setState(() {});
       _exploreUsers!.whenComplete(() => () {});
+    });
+
+    Future.delayed(Duration.zero, () {
+      _exploreForums = getAllFourmsList(context);
+      setState(() {});
+      _exploreForums!.whenComplete(() => () {});
     });
   }
 
@@ -90,6 +97,12 @@ class _HomeScreen extends State<DashboardPageScreen> {
       _exploreUsers = getAllUsers(context, showProgress: false);
       setState(() {});
       _exploreUsers!.whenComplete(() => () {});
+    });
+
+    Future.delayed(Duration.zero, () {
+      _exploreForums = getAllFourmsList(context);
+      setState(() {});
+      _exploreForums!.whenComplete(() => () {});
     });
   }
 
@@ -191,18 +204,18 @@ class _HomeScreen extends State<DashboardPageScreen> {
               customHeightBox(30),
 
               //UpComing Events
-              Row(
-                children: [
-                  customText("Upcoming Evenets", 14, Colors.white),
-                  Spacer(),
-                  customText("See all", 12, Colors.white),
-                  customWidthBox(10),
-                  InkWell(
-                    onTap: () {
-                      Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => UpcomingEventsScreen()));
-                    },
-                    child: Container(
+              InkWell(
+                onTap: () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => UpcomingEventsScreen()));
+                },
+                child: Row(
+                  children: [
+                    customText("Upcoming Events", 14, Colors.white),
+                    Spacer(),
+                    customText("See all", 12, Colors.white),
+                    customWidthBox(10),
+                    Container(
                       height: 20,
                       width: 20,
                       decoration: BoxDecoration(
@@ -213,9 +226,9 @@ class _HomeScreen extends State<DashboardPageScreen> {
                         color: Colors.white,
                         size: 20,
                       ),
-                    ),
-                  )
-                ],
+                    )
+                  ],
+                ),
               ),
               customHeightBox(15),
 
@@ -228,7 +241,9 @@ class _HomeScreen extends State<DashboardPageScreen> {
                           height: 150,
                           child: ListView.builder(
                               scrollDirection: Axis.horizontal,
-                              itemCount: snapshot.data!.data!.length,
+                              itemCount: snapshot.data!.data!.length <= 5
+                                  ? snapshot.data!.data!.length
+                                  : 5,
                               itemBuilder: (context, index) {
                                 DateTime datetime = DateTime.parse(snapshot
                                     .data!.data![index].startDate
@@ -379,19 +394,19 @@ class _HomeScreen extends State<DashboardPageScreen> {
                 },
               ),
               customHeightBox(20),
-              //Recommended Groups
-              Row(
-                children: [
-                  customText("Recommended Groups", 14, white),
-                  Spacer(),
-                  customText("See all", 12, white),
-                  customWidthBox(10),
-                  InkWell(
-                    onTap: () {
-                      Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => const RecommendedGroups()));
-                    },
-                    child: Container(
+              //Recommended Fourmss
+              InkWell(
+                onTap: () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => const RecommendedGroups()));
+                },
+                child: Row(
+                  children: [
+                    customText("Recommended Fourms", 14, white),
+                    Spacer(),
+                    customText("See all", 12, white),
+                    customWidthBox(10),
+                    Container(
                       height: 20,
                       width: 20,
                       decoration: BoxDecoration(
@@ -402,9 +417,62 @@ class _HomeScreen extends State<DashboardPageScreen> {
                         color: white,
                         size: 20,
                       ),
-                    ),
-                  )
-                ],
+                    )
+                  ],
+                ),
+              ),
+              customHeightBox(10),
+              FutureBuilder<AllFourmModel>(
+                  future: _exploreForums,
+                  builder: (context, snapshot) {
+                    return snapshot.hasData && snapshot.data!.data!.isNotEmpty
+                        ? Container(
+                            height: 320,
+                            child: ListView.builder(
+                                padding: EdgeInsets.zero,
+                                shrinkWrap: true,
+                                itemCount: snapshot.data!.data!.length <= 2
+                                    ? snapshot.data!.data!.length
+                                    : 2,
+                                itemBuilder: (context, index) {
+                                  return Container(
+                                      margin: EdgeInsets.only(bottom: 10),
+                                      child: InkWell(
+                                        onTap: () {},
+                                        child: fourmItem(
+                                            snapshot.data!.data![index]),
+                                      ));
+                                }))
+                        : Container();
+                  }),
+
+              customHeightBox(20),
+              //Recommended Groups
+              InkWell(
+                onTap: () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => const RecommendedGroups()));
+                },
+                child: Row(
+                  children: [
+                    customText("Recommended Groups", 14, white),
+                    Spacer(),
+                    customText("See all", 12, white),
+                    customWidthBox(10),
+                    Container(
+                      height: 20,
+                      width: 20,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(20),
+                          gradient: commonButtonLinearGridient),
+                      child: Icon(
+                        Icons.add,
+                        color: white,
+                        size: 20,
+                      ),
+                    )
+                  ],
+                ),
               ),
               customHeightBox(10),
               FutureBuilder<AllGroupsModel>(
@@ -417,7 +485,9 @@ class _HomeScreen extends State<DashboardPageScreen> {
                               padding: EdgeInsets.zero,
                               shrinkWrap: true,
                               scrollDirection: Axis.horizontal,
-                              itemCount: snapshot.data!.data!.length,
+                              itemCount: snapshot.data!.data!.length <= 5
+                                  ? snapshot.data!.data!.length
+                                  : 5,
                               itemBuilder: (context, index) {
                                 return groupListItem(
                                     snapshot.data!.data![index]);
@@ -465,7 +535,9 @@ class _HomeScreen extends State<DashboardPageScreen> {
                           height: 300,
                           child: ListView.builder(
                               padding: EdgeInsets.only(top: 10),
-                              itemCount: 5,
+                              itemCount: snapshot.data!.data!.length <= 5
+                                  ? snapshot.data!.data!.length
+                                  : 5,
                               itemBuilder: (context, index) {
                                 return InkWell(
                                   onTap: () {
@@ -647,5 +719,117 @@ class _HomeScreen extends State<DashboardPageScreen> {
         ),
       ),
     );
+  }
+
+  //Fourm Item
+  Widget fourmItem(AllFourmDataModel model) {
+    return Container(
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10),
+          border: Border.all(color: gray1, width: 1)),
+      padding: EdgeInsets.only(top: 5, bottom: 5),
+      child: Column(
+          mainAxisAlignment: mStart,
+          crossAxisAlignment: cStart,
+          children: [
+            Container(
+              padding: EdgeInsets.only(left: 5, right: 5),
+              child: Row(
+                crossAxisAlignment: cStart,
+                mainAxisAlignment: mStart,
+                children: [
+                  CachedNetworkImage(
+                      imageUrl:
+                          IMAGE_URL + model.userId!.profileImage.toString(),
+                      errorWidget: (error, context, url) => Icon(Icons.person),
+                      placeholder: (context, url) => Icon(Icons.person),
+                      imageBuilder: (context, url) {
+                        return CircleAvatar(
+                          backgroundImage: url,
+                        );
+                      }),
+                  customWidthBox(10),
+                  Column(
+                    crossAxisAlignment: cStart,
+                    mainAxisAlignment: mStart,
+                    children: [
+                      customText(
+                          model.userId!.fullName.toString(), 15, yellowColor),
+                      customHeightBox(10),
+                      customText(
+                          "Last Post: 04 Jul at 07:30 pm", 15, yellowColor),
+                    ],
+                  )
+                ],
+              ),
+            ),
+            customHeightBox(10),
+            Padding(
+              padding: const EdgeInsets.only(left: 5.0),
+              child: customText(model.title.toString(), 15, white),
+            ),
+            customHeightBox(10),
+            Padding(
+              padding: const EdgeInsets.only(left: 5.0),
+              child: customText(model.question.toString(), 15, white),
+            ),
+            customHeightBox(10),
+            customDivider(1, white),
+            customHeightBox(2),
+            customDivider(1, white),
+            customHeightBox(5),
+            Row(
+              mainAxisAlignment: mEvenly,
+              children: [
+                //Upvote
+                Row(
+                  children: [
+                    Icon(
+                      Icons.thumb_up_outlined,
+                      color: white,
+                      size: 19,
+                    ),
+                    customWidthBox(3),
+                    customText(
+                        model.totalLikes.toString() + " Upvote", 15, white)
+                  ],
+                ),
+
+                //Downvote
+                Row(
+                  children: [
+                    Icon(
+                      Icons.thumb_down_outlined,
+                      color: white,
+                      size: 19,
+                    ),
+                    customWidthBox(3),
+                    customText(
+                        model.totalDislikes.toString() + " Downvote", 15, white)
+                  ],
+                ),
+
+                //Reply
+                Row(
+                  children: [
+                    Image.asset(
+                      "assets/icons/comment.png",
+                      height: 17,
+                      width: 17,
+                    ),
+                    customWidthBox(3),
+                    customText(
+                        model.totalReplies.toString() + " Reply", 15, white)
+                  ],
+                )
+              ],
+            )
+          ]),
+    );
+  }
+
+  //Like/Unlike the fourm thread
+  Future<void> likeUnlike(String id, int type) async {
+    showProgressDialogBox(context);
   }
 }

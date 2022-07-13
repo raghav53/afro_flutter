@@ -1,5 +1,6 @@
 import 'package:afro/Model/Group/GroupMember/GroupMemberModel.dart';
 import 'package:afro/Network/Apis.dart';
+import 'package:afro/Screens/HomeScreens/Home/EventsScreens/CreateNewEvent.dart';
 import 'package:afro/Screens/HomeScreens/Home/OtherUserProfilePage.dart';
 import 'package:afro/Screens/HomeScreens/ProfileNavigationScreens/EducationPage.dart';
 import 'package:afro/Util/Colors.dart';
@@ -10,11 +11,10 @@ import 'package:flutter/material.dart';
 
 class GroupMemberListScreen extends StatefulWidget {
   String? group_id = "";
+  String? userId = "";
 
-  GroupMemberListScreen({
-    Key? key,
-    this.group_id,
-  }) : super(key: key);
+  GroupMemberListScreen({Key? key, this.group_id, this.userId})
+      : super(key: key);
 
   @override
   State<GroupMemberListScreen> createState() => _GroupMemberListScreenState();
@@ -110,6 +110,7 @@ class _GroupMemberListScreenState extends State<GroupMemberListScreen> {
                                             userID: snapshot
                                                 .data!.data![index].memberId
                                                 .toString(),
+                                                loginUserId:widget.userId
                                           )));
                                 },
                                 child: Container(
@@ -179,28 +180,37 @@ class _GroupMemberListScreenState extends State<GroupMemberListScreen> {
                                     ),
                                     const Spacer(),
                                     Container(
-                                      width: 110,
-                                      margin: const EdgeInsets.only(right: 20),
-                                      padding: const EdgeInsets.only(
-                                          top: 10,
-                                          bottom: 10,
-                                          left: 10,
-                                          right: 10),
-                                      decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(50),
-                                          gradient: commonButtonLinearGridient),
-                                      child: Center(
-                                          child: customText(
-                                              isFriend == 1
-                                                  ? "Friends"
-                                                  : isRequestSend == 1
-                                                      ? "Cancel Request"
-                                                      : isRequestReceived == 1
-                                                          ? "Accept Request"
-                                                          : "Add Friend",
-                                              11,
-                                              white)),
+                                      child: widget.userId ==
+                                              snapshot
+                                                  .data!.data![index].memberId
+                                          ? null
+                                          : Container(
+                                              width: 110,
+                                              margin: const EdgeInsets.only(
+                                                  right: 20),
+                                              padding: const EdgeInsets.only(
+                                                  top: 10,
+                                                  bottom: 10,
+                                                  left: 10,
+                                                  right: 10),
+                                              decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.circular(50),
+                                                  gradient:
+                                                      commonButtonLinearGridient),
+                                              child: Center(
+                                                  child: customText(
+                                                      isFriend == 1
+                                                          ? "Friends"
+                                                          : isRequestSend == 1
+                                                              ? "Cancel Request"
+                                                              : isRequestReceived ==
+                                                                      1
+                                                                  ? "Accept Request"
+                                                                  : "Add Friend",
+                                                      11,
+                                                      white)),
+                                            ),
                                     )
                                   ]),
                                 ),

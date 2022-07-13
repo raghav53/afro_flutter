@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:afro/Model/Group/GroupDetails/Disscussion/GroupPostDataModel.dart';
 import 'package:afro/Model/Group/GroupDetails/Disscussion/GroupPostModel.dart';
 import 'package:afro/Network/Apis.dart';
@@ -12,7 +11,6 @@ import 'package:afro/Util/CustomWidget.dart';
 import 'package:afro/Util/CustomWidgetAttributes.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
@@ -75,9 +73,7 @@ class _GroupSidcussionState extends State<GroupDiscussionPage> {
                             type: "group",
                           )))
                   .then((value) => () {
-                        setState(() {
-                          refreshData();
-                        });
+                        refreshData();
                       });
             },
             child: Container(

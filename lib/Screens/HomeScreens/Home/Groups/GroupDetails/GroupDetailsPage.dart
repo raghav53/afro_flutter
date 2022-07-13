@@ -133,7 +133,7 @@ class GoupDetailsPageState extends State<GroupDetailsPage> {
                           ),
                           customHeightBox(10),
                           Container(
-                            margin: EdgeInsets.only(left: 20, right: 20),
+                            margin: const EdgeInsets.only(left: 20, right: 20),
                             child: Column(
                               children: [
                                 Row(
@@ -207,7 +207,7 @@ class GoupDetailsPageState extends State<GroupDetailsPage> {
                                             white)
                                       ],
                                     ),
-                                    customWidthBox(60),
+                                    customWidthBox(40),
                                     InkWell(
                                       onTap: () {
                                         Navigator.of(context).push(
@@ -217,6 +217,7 @@ class GoupDetailsPageState extends State<GroupDetailsPage> {
                                                       group_id: snapshot
                                                           .data!.data!.sId
                                                           .toString(),
+                                                      userId:userId
                                                     )));
                                       },
                                       child: Row(

@@ -123,7 +123,7 @@ class _CommentListState extends State<CommentList> {
                                               }),
                                           customWidthBox(10),
                                           Container(
-                                            width: 210,
+                                            width: 185,
                                             child: Column(
                                               crossAxisAlignment: cStart,
                                               children: [
@@ -182,7 +182,7 @@ class _CommentListState extends State<CommentList> {
                                                             "Reply",
                                                             12,
                                                             gray1)),
-                                                    customWidthBox(50),
+                                                    customWidthBox(30),
                                                     InkWell(
                                                       onTap: () {
                                                         if (snapshot
@@ -251,20 +251,21 @@ class _CommentListState extends State<CommentList> {
                                               ],
                                             ),
                                           ),
-                                          customText(
-                                              dataTimeTextFormater(snapshot
-                                                      .data!
-                                                      .data![index]
-                                                      .createdAt
-                                                      .toString())["date"] +
-                                                  " at " +
-                                                  dataTimeTextFormater(snapshot
-                                                      .data!
-                                                      .data![index]
-                                                      .createdAt
-                                                      .toString())["time"],
-                                              12,
-                                              gray1)
+                                          Text(
+                                            dataTimeTextFormater(snapshot.data!
+                                                    .data![index].createdAt
+                                                    .toString())["date"] +
+                                                " at " +
+                                                dataTimeTextFormater(snapshot
+                                                    .data!
+                                                    .data![index]
+                                                    .createdAt
+                                                    .toString())["time"],
+                                            style: TextStyle(
+                                              fontSize: 11,
+                                              color: gray1,
+                                            ),
+                                          )
                                         ],
                                       ),
                                     );

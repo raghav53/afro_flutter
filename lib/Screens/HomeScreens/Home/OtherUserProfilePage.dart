@@ -17,8 +17,10 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
 class OtherUserProfilePageScreen extends StatefulWidget {
-  String? userID = "", name = "";
-  OtherUserProfilePageScreen({Key? key, this.name, this.userID})
+  String? userID = "", name = "", loginUserId = "";
+
+  OtherUserProfilePageScreen(
+      {Key? key, this.name, this.userID, this.loginUserId})
       : super(key: key);
   @override
   State<OtherUserProfilePageScreen> createState() =>
@@ -199,117 +201,141 @@ class _OtherUserProfilePageScreenState extends State<OtherUserProfilePageScreen>
 
                               //Message , Follow ,  Add button
                               customHeightBox(10),
-                              Row(
-                                mainAxisAlignment: mCenter,
-                                children: [
-                                  InkWell(
-                                      onTap: () {
-                                        Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    UserMessagePage(
-                                                      name: snapshot
-                                                          .data!.data!.fullName
-                                                          .toString(),
-                                                      userID: snapshot
-                                                          .data!.data!.sId,
-                                                    )));
-                                      },
-                                      child: Container(
-                                        padding: EdgeInsets.all(5),
-                                        height: 30,
-                                        width: 30,
-                                        decoration: BoxDecoration(
-                                            border: Border.all(
-                                                width: 1, color: circleColor),
-                                            borderRadius:
-                                                BorderRadius.circular(30)),
-                                        child: Image.asset(
-                                          "assets/icons/message.png",
-                                          color: circleColor,
-                                          height: 10,
-                                          width: 10,
-                                        ),
-                                      )),
-                                  customWidthBox(15),
-                                  InkWell(
-                                    onTap: () {
-                                      if (snapshot.data!.data!.isFollowing ==
-                                          1) {
-                                        showFollowUnFollowUser(
-                                            widget.userID.toString(), "0");
-                                      } else {
-                                        unfollow(widget.userID.toString(), "1");
-                                      }
-                                    },
-                                    child: Container(
-                                      height: 30,
-                                      width: 70,
-                                      decoration: BoxDecoration(
-                                          gradient: commonButtonLinearGridient,
-                                          borderRadius:
-                                              BorderRadius.circular(20)),
-                                      child: Center(
-                                        child: snapshot
-                                                    .data!.data!.isFollowing ==
-                                                1
-                                            ? customText("Following", 12, white)
-                                            : customText("Follow", 12, white),
+                              Container(
+                                child: widget.loginUserId ==
+                                        snapshot.data!.data!.id
+                                    ? null
+                                    : Row(
+                                        mainAxisAlignment: mCenter,
+                                        children: [
+                                          InkWell(
+                                              onTap: () {
+                                                Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            UserMessagePage(
+                                                              name: snapshot
+                                                                  .data!
+                                                                  .data!
+                                                                  .fullName
+                                                                  .toString(),
+                                                              userID: snapshot
+                                                                  .data!
+                                                                  .data!
+                                                                  .sId,
+                                                            )));
+                                              },
+                                              child: Container(
+                                                padding: EdgeInsets.all(5),
+                                                height: 30,
+                                                width: 30,
+                                                decoration: BoxDecoration(
+                                                    border: Border.all(
+                                                        width: 1,
+                                                        color: circleColor),
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            30)),
+                                                child: Image.asset(
+                                                  "assets/icons/message.png",
+                                                  color: circleColor,
+                                                  height: 10,
+                                                  width: 10,
+                                                ),
+                                              )),
+                                          customWidthBox(15),
+                                          InkWell(
+                                            onTap: () {
+                                              if (snapshot.data!.data!
+                                                      .isFollowing ==
+                                                  1) {
+                                                showFollowUnFollowUser(
+                                                    widget.userID.toString(),
+                                                    "0");
+                                              } else {
+                                                unfollow(
+                                                    widget.userID.toString(),
+                                                    "1");
+                                              }
+                                            },
+                                            child: Container(
+                                              height: 30,
+                                              width: 70,
+                                              decoration: BoxDecoration(
+                                                  gradient:
+                                                      commonButtonLinearGridient,
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          20)),
+                                              child: Center(
+                                                child: snapshot.data!.data!
+                                                            .isFollowing ==
+                                                        1
+                                                    ? customText(
+                                                        "Following", 12, white)
+                                                    : customText(
+                                                        "Follow", 12, white),
+                                              ),
+                                            ),
+                                          ),
+                                          customWidthBox(15),
+                                          InkWell(
+                                              onTap: () {
+                                                int? recRequest = snapshot
+                                                    .data!.data!.isReqReceived;
+                                                int? sentRequest = snapshot
+                                                    .data!.data!.isReqSent;
+                                                int? isFriend = snapshot
+                                                    .data!.data!.isFriend;
+                                                if (recRequest == 1) {
+                                                  showlogoutdialog(
+                                                      context,
+                                                      recRequest!,
+                                                      snapshot.data!.data!.sId!
+                                                          .toString());
+                                                } else if (recRequest != 1) {
+                                                  if (sentRequest == 0) {
+                                                    sendAndCancelFriendRequest(
+                                                        0,
+                                                        snapshot
+                                                            .data!.data!.sId!
+                                                            .toString());
+                                                  } else {
+                                                    sendAndCancelFriendRequest(
+                                                        1,
+                                                        snapshot
+                                                            .data!.data!.sId!
+                                                            .toString());
+                                                  }
+                                                }
+                                              },
+                                              child: (snapshot.data!.data!
+                                                              .isReqReceived ==
+                                                          1 ||
+                                                      snapshot.data!.data!
+                                                              .isReqSent ==
+                                                          1)
+                                                  ? Image.asset(
+                                                      "assets/icons/delete_friend.png",
+                                                      height: 20,
+                                                      width: 20,
+                                                    )
+                                                  : snapshot.data!.data!
+                                                              .isFriend ==
+                                                          1
+                                                      ? Image.asset(
+                                                          "assets/icons/friends.png",
+                                                          height: 20,
+                                                          width: 20,
+                                                        )
+                                                      : Image.asset(
+                                                          "assets/icons/add_user.png",
+                                                          height: 20,
+                                                          width: 20,
+                                                        ))
+                                        ],
                                       ),
-                                    ),
-                                  ),
-                                  customWidthBox(15),
-                                  InkWell(
-                                      onTap: () {
-                                        int? recRequest =
-                                            snapshot.data!.data!.isReqReceived;
-                                        int? sentRequest =
-                                            snapshot.data!.data!.isReqSent;
-                                        int? isFriend =
-                                            snapshot.data!.data!.isFriend;
-                                        if (recRequest == 1) {
-                                          showlogoutdialog(
-                                              context,
-                                              recRequest!,
-                                              snapshot.data!.data!.sId!
-                                                  .toString());
-                                        } else if (recRequest != 1) {
-                                          if (sentRequest == 0) {
-                                            sendAndCancelFriendRequest(
-                                                0,
-                                                snapshot.data!.data!.sId!
-                                                    .toString());
-                                          } else {
-                                            sendAndCancelFriendRequest(
-                                                1,
-                                                snapshot.data!.data!.sId!
-                                                    .toString());
-                                          }
-                                        }
-                                      },
-                                      child: (snapshot.data!.data!
-                                                      .isReqReceived ==
-                                                  1 ||
-                                              snapshot.data!.data!.isReqSent ==
-                                                  1)
-                                          ? Image.asset(
-                                              "assets/icons/delete_friend.png",
-                                              height: 20,
-                                              width: 20,
-                                            )
-                                          : snapshot.data!.data!.isFriend == 1
-                                              ? Image.asset(
-                                                  "assets/icons/friends.png",
-                                                  height: 20,
-                                                  width: 20,
-                                                )
-                                              : Image.asset(
-                                                  "assets/icons/add_user.png",
-                                                  height: 20,
-                                                  width: 20,
-                                                ))
-                                ],
                               ),
                               customHeightBox(35),
                               //Languages

@@ -65,6 +65,7 @@ class _ShareThoughtsState extends State<ShareThoughts> {
                   onChanged: (value) => {caption = value.toString()},
                   maxLength: null,
                   maxLines: null,
+                  textInputAction: TextInputAction.done,
                   style: const TextStyle(color: Colors.white),
                   decoration: const InputDecoration(
                       border: InputBorder.none,
