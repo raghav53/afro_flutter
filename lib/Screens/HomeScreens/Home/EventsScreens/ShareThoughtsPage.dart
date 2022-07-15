@@ -254,7 +254,7 @@ class _ShareThoughtsState extends State<ShareThoughts> {
     print(response.statusCode);
 
     if (response.statusCode == 200) {
-      Navigator.pop(context);
+      Navigator.pop(context, true);
       print("success");
       caption = "";
       imagesList.clear();
@@ -307,7 +307,6 @@ class _ShareThoughtsState extends State<ShareThoughts> {
       Navigator.pop(context);
       caption = "";
       imagesList.clear();
-      setState(() {});
       print("success");
       Navigator.pop(context);
     } else if (response.statusCode == 401) {

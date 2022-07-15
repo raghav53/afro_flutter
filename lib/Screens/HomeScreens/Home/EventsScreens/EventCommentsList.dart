@@ -9,7 +9,6 @@ import 'package:afro/Util/Constants.dart';
 import 'package:afro/Util/CustomWidget.dart';
 import 'package:afro/Util/CustomWidgetAttributes.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'package:http/http.dart' as http;
@@ -76,7 +75,9 @@ class _CommentListState extends State<CommentList> {
             extendBodyBehindAppBar: true,
             extendBody: true,
             appBar: commonAppbar("Comments"),
-            body: Container(
+            body:
+            
+             Container(
                 padding: EdgeInsets.only(top: 55),
                 decoration: commonBoxDecoration(),
                 height: phoneHeight(context),

@@ -452,8 +452,6 @@ class _CreateNewEventState extends State<CreateNewEvent> {
       final imageTemp = File(image.path);
       setState(() {
         imageFile = imageTemp;
-        // imagesList.add(File(image.path));
-        // print(lookupMimeType(image.name));
       });
     } on PlatformException catch (e) {
       print('Failed to pick image: $e');

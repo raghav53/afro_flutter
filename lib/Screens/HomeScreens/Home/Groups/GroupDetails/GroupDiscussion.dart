@@ -3,6 +3,7 @@ import 'package:afro/Model/Group/GroupDetails/Disscussion/GroupPostDataModel.dar
 import 'package:afro/Model/Group/GroupDetails/Disscussion/GroupPostModel.dart';
 import 'package:afro/Network/Apis.dart';
 import 'package:afro/Screens/HomeScreens/Home/EventsScreens/ShareThoughtsPage.dart';
+import 'package:afro/Screens/HomeScreens/Home/Groups/GroupDetails/GroupPostCommentList.dart';
 import 'package:afro/Util/Colors.dart';
 import 'package:afro/Util/CommonMethods.dart';
 import 'package:afro/Util/CommonUI.dart';
@@ -73,6 +74,8 @@ class _GroupSidcussionState extends State<GroupDiscussionPage> {
                             type: "group",
                           )))
                   .then((value) => () {
+                        print("lkdjsudgsftluledgfhelrd1111");
+
                         refreshData();
                       });
             },
@@ -208,11 +211,31 @@ class _GroupSidcussionState extends State<GroupDiscussionPage> {
                                             //Comment
 
                                             InkWell(
-                                              onTap: () {
-                                                print("Post Id:-" +
-                                                    snapshot
-                                                        .data!.data![index].sId
-                                                        .toString());
+                                              onTap: () async {
+                                                await Navigator.of(context)
+                                                    .push(MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            GroupPostCommentListPage(
+                                                                groupId: widget
+                                                                    .groupId
+                                                                    .toString(),
+                                                                postID: snapshot
+                                                                    .data!
+                                                                    .data![
+                                                                        index]
+                                                                    .sId
+                                                                    .toString())))
+                                                    .then((value) => () {
+                                                          setState(() {
+                                                            print(
+                                                                "lkdjsudgsftluledgfhelrd");
+                                                            refreshData();
+                                                          });
+                                                        });
+                                                debugPrint("From Post");
+                                                setState(() {
+                                                  refreshData();
+                                                });
                                               },
                                               child: Row(
                                                 crossAxisAlignment: cCenter,

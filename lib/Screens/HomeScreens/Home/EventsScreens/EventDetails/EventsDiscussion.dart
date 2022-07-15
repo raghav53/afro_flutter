@@ -4,7 +4,7 @@ import 'package:afro/Model/Events/EventDetails/EventPosts/EventPostDataModel.dar
 import 'package:afro/Model/Events/EventDetails/EventPosts/EventPostModel.dart';
 import 'package:afro/Network/Apis.dart';
 
-import 'package:afro/Screens/HomeScreens/Home/EventsScreens/CommentsList.dart';
+import 'package:afro/Screens/HomeScreens/Home/EventsScreens/EventCommentsList.dart';
 import 'package:afro/Screens/HomeScreens/Home/EventsScreens/ShareThoughtsPage.dart';
 import 'package:afro/Util/Colors.dart';
 import 'package:afro/Util/CommonMethods.dart';
@@ -73,8 +73,8 @@ class _EventDiscussionListState extends State<EventDiscussionList> {
           customHeightBox(10),
           //Comment Section
           InkWell(
-            onTap: () {
-              Navigator.of(context)
+            onTap: () async {
+              await Navigator.of(context)
                   .push(MaterialPageRoute(
                       builder: (context) => ShareThoughts(
                             evenGroupId: widget.eventId,
@@ -85,6 +85,10 @@ class _EventDiscussionListState extends State<EventDiscussionList> {
                           refreshData();
                         });
                       });
+              debugPrint("From Post");
+              setState(() {
+                refreshData();
+              });
             },
             child: Container(
                 margin: EdgeInsets.only(left: 15, right: 15),
@@ -96,7 +100,7 @@ class _EventDiscussionListState extends State<EventDiscussionList> {
                       "What's in your mind? #Hashtag #Tags", 14, gray1),
                 )),
           ),
-        
+
           //Comments
           Container(
             height: phoneHeight(context) / 2,

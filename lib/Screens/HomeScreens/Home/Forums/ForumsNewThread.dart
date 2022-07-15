@@ -1,17 +1,44 @@
+import 'dart:io';
+import 'package:afro/Model/CountryModel.dart';
+import 'package:afro/Model/Fourms/ForumCategoryModel.dart';
+import 'package:afro/Network/Apis.dart';
+import 'package:afro/Util/Colors.dart';
 import 'package:afro/Util/CustomWidget.dart';
 import 'package:afro/Util/CustomWidgetAttributes.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:mime/mime.dart';
 
 class ForumsNewThreadPage extends StatefulWidget {
   @override
   _ForumsNewThreadPage createState() => _ForumsNewThreadPage();
 }
 
+String? visible;
+String? selectedItem = "Item 1";
+var userType = 0;
+String? categoryTypeID = "";
+String? categoryTypeName = "", countryId = "", countryName = "";
+int _groupValue = -1;
+int _usergroupValue = -1;
+List<File> imagesList = [];
+//Country
+Future<CountryModel>? _getCountriesList;
+Future<ForumCategoryModel>? _getForumsCategories;
+String? caption = "";
+
 class _ForumsNewThreadPage extends State<ForumsNewThreadPage> {
-  String? visible;
-  String? selectedItem = "Item 1";
-  int _groupValue = -1;
+  @override
+  void initState() {
+    super.initState();
+    Future.delayed(Duration.zero, () {
+      _getCountriesList = getCountriesList(context);
+      setState(() {});
+      _getCountriesList!.whenComplete(() => () {});
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -36,21 +63,31 @@ class _ForumsNewThreadPage extends State<ForumsNewThreadPage> {
                     children: [
                       customText("SELECT CATEGORY", 14, Colors.white),
                       customHeightBox(10),
-                      Container(
-                        height: 40,
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            color: Colors.black),
-                        child: Row(
-                          children: [
-                            customWidthBox(10),
-                            customText("Select Category", 14, Colors.white),
-                            Spacer(),
-                            Icon(
-                              Icons.arrow_drop_down,
-                              color: Colors.white,
-                            )
-                          ],
+                      InkWell(
+                        onTap: () {
+                          showForumsCategoris();
+                        },
+                        child: Container(
+                          height: 50,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              color: Colors.black),
+                          child: Row(
+                            children: [
+                              customWidthBox(10),
+                              customText(
+                                  categoryTypeName.toString().isEmpty
+                                      ? "Select Category"
+                                      : categoryTypeName.toString(),
+                                  14,
+                                  Colors.white),
+                              const Spacer(),
+                              const Icon(
+                                Icons.arrow_drop_down,
+                                color: Colors.white,
+                              )
+                            ],
+                          ),
                         ),
                       ),
                       customHeightBox(20),
@@ -69,35 +106,127 @@ class _ForumsNewThreadPage extends State<ForumsNewThreadPage> {
                       customText("Content", 14, Colors.white),
                       customHeightBox(10),
                       Container(
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
+                        height: 150,
+                        decoration: const BoxDecoration(
+                            borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(10),
+                                topRight: Radius.circular(10)),
+                            color: Colors.black,
+                            boxShadow: [
+                              BoxShadow(
+                                  color: Colors.black, offset: Offset(0, 2))
+                            ]),
+                        child: TextFormField(
+                          onChanged: (value) => {caption = value.toString()},
+                          maxLength: null,
+                          maxLines: null,
+                          textInputAction: TextInputAction.done,
+                          style: const TextStyle(color: Colors.white),
+                          decoration: const InputDecoration(
+                              border: InputBorder.none,
+                              contentPadding: EdgeInsets.only(left: 15),
+                              hintStyle: TextStyle(color: Colors.white24)),
+                        ),
+                      ),
+                      Container(
+                        decoration: const BoxDecoration(
+                            borderRadius: BorderRadius.only(
+                                bottomLeft: Radius.circular(10),
+                                bottomRight: Radius.circular(10)),
                             color: Colors.black),
-                        height: 200,
-                        child: Align(
-                          alignment: Alignment.bottomLeft,
-                          child: Row(
-                            crossAxisAlignment: cEnd,
-                            mainAxisAlignment: mEnd,
-                            children: [
-                              IconButton(
-                                  onPressed: () {},
-                                  icon: Icon(
-                                    Icons.video_call,
-                                    color: Colors.white,
-                                  )),
-                              IconButton(
-                                  onPressed: () {},
-                                  icon: Icon(
-                                    Icons.photo,
-                                    color: Colors.white,
-                                  ))
-                            ],
-                          ),
+                        child: Column(
+                          children: [
+                            Align(
+                              alignment: Alignment.bottomLeft,
+                              child: Row(
+                                crossAxisAlignment: cEnd,
+                                mainAxisAlignment: mEnd,
+                                children: [
+                                  IconButton(
+                                      onPressed: () {
+                                        //pickVideo();
+                                        openBottomSheet("video");
+                                      },
+                                      icon: const Icon(
+                                        Icons.video_call,
+                                        color: Colors.white,
+                                      )),
+                                  IconButton(
+                                      onPressed: () {
+                                        //pickImage(ImageSource.camera);
+                                        openBottomSheet("photo");
+                                      },
+                                      icon: const Icon(
+                                        Icons.photo,
+                                        color: Colors.white,
+                                      ))
+                                ],
+                              ),
+                            ),
+                            Visibility(
+                                visible: imagesList.isNotEmpty ? true : false,
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10),
+                                    color: white24,
+                                  ),
+                                  height: 100,
+                                  width: phoneWidth(context),
+                                  child: ListView.builder(
+                                      shrinkWrap: true,
+                                      scrollDirection: Axis.horizontal,
+                                      itemCount: imagesList.length,
+                                      itemBuilder: (context, index) {
+                                        return Container(
+                                          margin: EdgeInsets.all(5),
+                                          height: 80,
+                                          width: 70,
+                                          child: Stack(children: [
+                                            lookupMimeType(
+                                                        imagesList[index].path)!
+                                                    .contains("image")
+                                                ? Image.file(
+                                                    imagesList[index],
+                                                  )
+                                                : Image.asset(
+                                                    "assets/tom_cruise.jpeg",
+                                                    fit: BoxFit.fill,
+                                                  ),
+                                            InkWell(
+                                              onTap: () {
+                                                setState(() {
+                                                  imagesList.remove(
+                                                      imagesList[index]);
+                                                });
+                                              },
+                                              child: Align(
+                                                alignment: Alignment.topRight,
+                                                child: Container(
+                                                    decoration: BoxDecoration(
+                                                        color: red,
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(30)),
+                                                    padding: EdgeInsets.all(3),
+                                                    child: Icon(
+                                                      Icons.delete,
+                                                      color: white,
+                                                      size: 15,
+                                                    )),
+                                              ),
+                                            ),
+                                          ]),
+                                        );
+                                      }),
+                                ))
+                          ],
                         ),
                       ),
                       customHeightBox(50),
                       InkWell(
-                        onTap: () {},
+                        onTap: () {
+                          selectUserType(context);
+                        },
                         child: Container(
                           margin: const EdgeInsets.only(left: 80, right: 80),
                           padding: const EdgeInsets.only(top: 10, bottom: 10),
@@ -120,49 +249,499 @@ class _ForumsNewThreadPage extends State<ForumsNewThreadPage> {
     );
   }
 
+  //Radio buttons (title and link)
   Widget customRadiosButton() {
     return Container(
       child: Row(
         children: [
           Expanded(
-            child: Row(
-              children: [
-                Radio(value: 1, groupValue: 'null', onChanged: (index) {}),
-                Expanded(
-                  child: customText("Global", 14, Colors.white),
-                )
-              ],
+            child: InkWell(
+              onTap: () {
+                setState(() {
+                  _groupValue = 0;
+                  countryId = "";
+                  countryName = "";
+                });
+              },
+              child: Row(
+                children: [
+                  Radio(
+                      value: 0, groupValue: _groupValue, onChanged: (index) {}),
+                  Expanded(
+                    child: customText("Global", 14, Colors.white),
+                  )
+                ],
+              ),
             ),
           ),
           Expanded(
-            child: Row(
-              children: [
-                Radio(value: 1, groupValue: 'null', onChanged: (index) {}),
-                Expanded(child: customText("Select Country", 14, Colors.white))
-              ],
+            child: InkWell(
+              onTap: () {
+                setState(() {
+                  _groupValue = 1;
+                  showCountryDialog(context);
+                });
+              },
+              child: Row(
+                children: [
+                  Radio(
+                      value: 1, groupValue: _groupValue, onChanged: (index) {}),
+                  Expanded(
+                      child: customText(
+                          countryName!.isEmpty
+                              ? "Select Country"
+                              : "Select Country\n ($countryName)",
+                          14,
+                          Colors.white))
+                ],
+              ),
             ),
           ),
         ],
       ),
     );
   }
-}
 
-Widget forumsEditext(String title) {
-  return Container(
-    decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(10),
-        color: Colors.black,
-        boxShadow: const [
-          BoxShadow(color: Colors.black, offset: Offset(0, 2))
-        ]),
-    child: TextFormField(
-      style: TextStyle(color: Colors.white),
-      decoration: InputDecoration(
-          border: InputBorder.none,
-          hintText: title,
-          contentPadding: const EdgeInsets.only(left: 15),
-          hintStyle: const TextStyle(color: Colors.white24)),
-    ),
-  );
+  //custom edittext
+  Widget forumsEditext(String title) {
+    return Container(
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10),
+          color: Colors.black,
+          boxShadow: const [
+            BoxShadow(color: Colors.black, offset: Offset(0, 2))
+          ]),
+      child: TextFormField(
+        style: TextStyle(color: Colors.white),
+        decoration: InputDecoration(
+            border: InputBorder.none,
+            hintText: title,
+            contentPadding: const EdgeInsets.only(left: 15),
+            hintStyle: const TextStyle(color: Colors.white24)),
+      ),
+    );
+  }
+
+  //get Forums categories
+  showForumsCategoris() {
+    getDataOfForumCategories();
+    showDialog(
+        barrierDismissible: false,
+        context: context,
+        builder: (BuildContext context) {
+          return Dialog(
+              backgroundColor: Colors.transparent,
+              elevation: 0.0,
+              child: Container(
+                  alignment: Alignment.center,
+                  padding:
+                      const EdgeInsets.only(left: 20, right: 10, bottom: 10),
+                  height: phoneHeight(context) / 2,
+                  decoration: BoxDecoration(
+                      color: black, borderRadius: BorderRadius.circular(10)),
+                  child: StatefulBuilder(builder: (context, state) {
+                    return Column(
+                      children: [
+                        customHeightBox(10),
+                        customText("Select the category", 15, white),
+                        customHeightBox(10),
+                        Container(
+                          height: 360,
+                          child: FutureBuilder<ForumCategoryModel>(
+                            future: _getForumsCategories,
+                            builder: (context, snapshot) {
+                              return snapshot.hasData &&
+                                      snapshot.data!.data!.isNotEmpty
+                                  ? ListView.builder(
+                                      itemCount: snapshot.data!.data!.length,
+                                      shrinkWrap: true,
+                                      itemBuilder: (context, index) {
+                                        return InkWell(
+                                          onTap: () {
+                                            setState(() {
+                                              Navigator.pop(context);
+                                              categoryTypeID = snapshot
+                                                  .data!.data![index].sId
+                                                  .toString();
+                                              categoryTypeName = snapshot
+                                                  .data!.data![index].title
+                                                  .toString();
+                                            });
+                                          },
+                                          child: Container(
+                                              margin: const EdgeInsets.only(
+                                                  left: 10, right: 10, top: 5),
+                                              decoration: BoxDecoration(
+                                                  color: white24,
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          10)),
+                                              padding: const EdgeInsets.only(
+                                                  top: 10,
+                                                  bottom: 10,
+                                                  left: 15),
+                                              child: customText(
+                                                  snapshot
+                                                      .data!.data![index].title
+                                                      .toString(),
+                                                  15,
+                                                  white)),
+                                        );
+                                      },
+                                    )
+                                  : Center(
+                                      child: customText(
+                                          "No data found!", 15, white),
+                                    );
+                            },
+                          ),
+                        ),
+                      ],
+                    );
+                  })));
+        });
+  }
+
+  getDataOfForumCategories() {
+    Future.delayed(Duration.zero, () {
+      _getForumsCategories = getForumCategorisList(context);
+      setState(() {});
+      _getForumsCategories!.whenComplete(() => () {});
+    });
+  }
+
+  //Get all countries
+  void showCountryDialog(BuildContext context) {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return StatefulBuilder(builder: (context, state) {
+            return Dialog(
+                backgroundColor: Colors.transparent,
+                elevation: 0.0,
+                child: Container(
+                  padding: EdgeInsets.all(10),
+                  height: phoneHeight(context),
+                  decoration: BoxDecoration(
+                      color: gray1, borderRadius: BorderRadius.circular(10)),
+                  child: Column(
+                    crossAxisAlignment: cCenter,
+                    children: [
+                      Row(
+                        crossAxisAlignment: cCenter,
+                        mainAxisAlignment: mCenter,
+                        children: [
+                          Spacer(),
+                          Spacer(),
+                          customText("Search Country", 15, white),
+                          Spacer(),
+                          IconButton(
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                              icon: Icon(Icons.close))
+                        ],
+                      ),
+                      // Container(
+                      //   decoration: BoxDecoration(
+                      //       color: black,
+                      //       borderRadius: BorderRadius.circular(10)),
+                      //   margin: EdgeInsets.only(top: 10, left: 5, right: 5),
+                      //   child: TextField(
+                      //     onChanged: ((value) {
+                      //       state(() {
+                      //         // searchCountry = value;
+                      //       });
+                      //     }),
+                      //     keyboardType: TextInputType.multiline,
+                      //     maxLines: 1,
+                      //     style: const TextStyle(
+                      //         fontSize: 14, color: Colors.white),
+                      //     decoration: const InputDecoration(
+                      //         border: InputBorder.none,
+                      //         hintText: "Enter country name!",
+                      //         contentPadding: EdgeInsets.only(left: 10),
+                      //         hintStyle: TextStyle(color: Colors.white24)),
+                      //   ),
+                      // ),
+                      customHeightBox(10),
+                      Expanded(
+                          child: FutureBuilder<CountryModel>(
+                        future: _getCountriesList,
+                        builder: (context, snapshot) {
+                          return snapshot.hasData
+                              ? ListView.builder(
+                                  shrinkWrap: true,
+                                  itemCount: snapshot.data!.data!.length,
+                                  itemBuilder: (context, index) {
+                                    String flageCode = snapshot
+                                        .data!.data![index].iso2!
+                                        .toString()
+                                        .toLowerCase();
+                                    String fullImageUrl =
+                                        flagImageUrl! + flageCode + ".png";
+                                    return InkWell(
+                                      onTap: () {
+                                        setState(() {
+                                          countryName = snapshot
+                                              .data!.data![index].name
+                                              .toString();
+
+                                          countryId = snapshot
+                                              .data!.data![index].id
+                                              .toString();
+
+                                          Navigator.pop(context);
+                                        });
+                                      },
+                                      child: Container(
+                                        padding: EdgeInsets.only(left: 10),
+                                        margin: EdgeInsets.only(bottom: 10),
+                                        decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                            border: Border.all(color: gray4D)),
+                                        height: 40,
+                                        child: Row(children: [
+                                          CachedNetworkImage(
+                                            height: 35,
+                                            width: 35,
+                                            imageUrl: fullImageUrl,
+                                            placeholder: (context, url) =>
+                                                Icon(Icons.flag),
+                                            errorWidget:
+                                                (context, url, error) =>
+                                                    const Icon(Icons.error),
+                                          ),
+                                          customWidthBox(10),
+                                          customText(
+                                              snapshot.data!.data![index].name
+                                                  .toString(),
+                                              15,
+                                              white),
+                                        ]),
+                                      ),
+                                    );
+                                  })
+                              : customText("No data available", 15, white);
+                        },
+                      ))
+                    ],
+                  ),
+                ));
+          });
+        });
+  }
+
+  //Get Image and video from camera / Gallery
+  Future pickImage(ImageSource source) async {
+    try {
+      final image = await ImagePicker().pickImage(source: source);
+      if (image == null) return;
+      final imageTemp = File(image.path);
+      setState(() {
+        imagesList.add(File(image.path));
+        print(lookupMimeType(image.name));
+      });
+    } on PlatformException catch (e) {
+      print('Failed to pick image: $e');
+    }
+  }
+
+  Future pickVideo(ImageSource source) async {
+    try {
+      final image = await ImagePicker().pickVideo(source: source);
+      if (image == null) return;
+      final videoTemp = File(image.path);
+
+      print(videoTemp);
+      setState(() {
+        imagesList.add(File(image.path));
+      });
+    } on PlatformException catch (e) {
+      print('Failed to pick image: $e');
+    }
+  }
+
+  //Open the bottom sheet for image and video
+  openBottomSheet(String whichType) {
+    showModalBottomSheet(
+        context: context,
+        backgroundColor: black,
+        clipBehavior: Clip.antiAlias,
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(10.0),
+            topRight: Radius.circular(10.0),
+          ),
+        ),
+        builder: (context) {
+          return StatefulBuilder(builder: (context, state) {
+            return Container(
+              height: 100,
+              child: Row(
+                mainAxisAlignment: mCenter,
+                crossAxisAlignment: cCenter,
+                children: [
+                  InkWell(
+                    onTap: () {
+                      Navigator.pop(context);
+                      open(whichType, "camera");
+                    },
+                    child: Container(
+                        decoration: BoxDecoration(
+                            border: Border.all(color: white, width: 1),
+                            borderRadius: BorderRadius.circular(50)),
+                        padding: EdgeInsets.all(5),
+                        child: Icon(
+                          Icons.camera,
+                          color: white,
+                          size: 35,
+                        )),
+                  ),
+                  customWidthBox(50),
+                  InkWell(
+                    onTap: () {
+                      Navigator.pop(context);
+                      open(whichType, "gallery");
+                    },
+                    child: Container(
+                        decoration: BoxDecoration(
+                            border: Border.all(color: white, width: 1),
+                            borderRadius: BorderRadius.circular(50)),
+                        padding: EdgeInsets.all(5),
+                        child: Icon(
+                          Icons.photo_library,
+                          color: white,
+                          size: 35,
+                        )),
+                  )
+                ],
+              ),
+            );
+          });
+        });
+  }
+
+  open(String type, String subType) {
+    if (type.contains("photo")) {
+      if (subType.contains("camera")) {
+        pickImage(ImageSource.camera);
+      } else if (subType.contains("gallery")) {
+        pickImage(ImageSource.gallery);
+      }
+    } else if (type.contains("video")) {
+      if (subType.contains("camera")) {
+        pickVideo(ImageSource.camera);
+      } else if (subType.contains("gallery")) {
+        pickVideo(ImageSource.camera);
+      }
+    }
+  }
+
+  //User type alertbox
+  void selectUserType(BuildContext context) {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return StatefulBuilder(builder: (context, state) {
+            return Dialog(
+                backgroundColor: Colors.transparent,
+                elevation: 0.0,
+                child: Container(
+                    padding: EdgeInsets.all(10),
+                    height: phoneHeight(context) / 4.5,
+                    decoration: BoxDecoration(
+                        color: gray1, borderRadius: BorderRadius.circular(10)),
+                    child: Column(crossAxisAlignment: cCenter, children: [
+                      Row(
+                        crossAxisAlignment: cCenter,
+                        mainAxisAlignment: mCenter,
+                        children: [
+                          Spacer(),
+                          Spacer(),
+                          customText("Afro-united", 15, white),
+                          Spacer(),
+                          IconButton(
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                              icon: Icon(
+                                Icons.close,
+                                color: white,
+                              ))
+                        ],
+                      ),
+                      customText(
+                          "Do you want to post this thread as:", 15, white),
+                      customHeightBox(15),
+                      Container(
+                        margin: EdgeInsets.only(left: 10, right: 10),
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child: InkWell(
+                                onTap: () {
+                                  state(() {
+                                    _usergroupValue = 0;
+                                    userType = 0;
+                                  });
+                                },
+                                child: Row(
+                                  children: [
+                                    Radio(
+                                        focusColor: Colors.blueAccent,
+                                        value: 0,
+                                        groupValue: _usergroupValue,
+                                        onChanged: (index) {}),
+                                    Expanded(
+                                      child: customText(
+                                          "Real Identity", 13, Colors.white),
+                                    )
+                                  ],
+                                ),
+                              ),
+                            ),
+                            Expanded(
+                              child: InkWell(
+                                onTap: () {
+                                  state(() {
+                                    _usergroupValue = 1;
+                                    userType = 1;
+                                  });
+                                },
+                                child: Row(
+                                  children: [
+                                    Radio(
+                                        focusColor: Colors.blueAccent,
+                                        value: 1,
+                                        groupValue: _usergroupValue,
+                                        onChanged: (index) {}),
+                                    Expanded(
+                                        child: customText(
+                                            "Anonymous", 13, Colors.white))
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      InkWell(
+                        onTap: () {
+                          Navigator.pop(context);
+                        },
+                        child: Container(
+                          width: 100,
+                          decoration: BoxDecoration(
+                              gradient: commonButtonLinearGridient,
+                              borderRadius: BorderRadius.circular(30)),
+                          padding: EdgeInsets.only(top: 10, bottom: 10),
+                          child: Center(child: customText("Done", 15, white)),
+                        ),
+                      )
+                    ])));
+          });
+        });
+  }
 }

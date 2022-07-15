@@ -1,11 +1,12 @@
-class AllFourmDataModel {
+
+class FourmDetailsDataModel {
   String? sId;
   UserId? userId;
   String? title;
   String? question;
   List<Media>? media;
   int? type;
-  String? category;
+  Category? category;
   String? link;
   String? country;
   String? status;
@@ -14,12 +15,10 @@ class AllFourmDataModel {
   int? iV;
   int? totalReplies;
   int? totalViews;
-  int? totalLikes;
-  int? totalDislikes;
   int? isLike;
   int? isDislike;
 
-  AllFourmDataModel(
+  FourmDetailsDataModel(
       {this.sId,
       this.userId,
       this.title,
@@ -35,12 +34,10 @@ class AllFourmDataModel {
       this.iV,
       this.totalReplies,
       this.totalViews,
-      this.totalLikes,
-      this.totalDislikes,
       this.isLike,
       this.isDislike});
 
-  AllFourmDataModel.fromJson(Map<String, dynamic> json) {
+  FourmDetailsDataModel.fromJson(Map<String, dynamic> json) {
     sId = json['_id'];
     userId =
         json['user_id'] != null ? new UserId.fromJson(json['user_id']) : null;
@@ -53,7 +50,9 @@ class AllFourmDataModel {
       });
     }
     type = json['type'];
-    category = json['category'];
+    category = json['category'] != null
+        ? new Category.fromJson(json['category'])
+        : null;
     link = json['link'];
     country = json['country'];
     status = json['status'];
@@ -62,8 +61,6 @@ class AllFourmDataModel {
     iV = json['__v'];
     totalReplies = json['total_replies'];
     totalViews = json['total_views'];
-    totalLikes = json['total_likes'];
-    totalDislikes = json['total_dislikes'];
     isLike = json['is_like'];
     isDislike = json['is_dislike'];
   }
@@ -80,7 +77,9 @@ class AllFourmDataModel {
       data['media'] = this.media!.map((v) => v.toJson()).toList();
     }
     data['type'] = this.type;
-    data['category'] = this.category;
+    if (this.category != null) {
+      data['category'] = this.category!.toJson();
+    }
     data['link'] = this.link;
     data['country'] = this.country;
     data['status'] = this.status;
@@ -89,8 +88,6 @@ class AllFourmDataModel {
     data['__v'] = this.iV;
     data['total_replies'] = this.totalReplies;
     data['total_views'] = this.totalViews;
-    data['total_likes'] = this.totalLikes;
-    data['total_dislikes'] = this.totalDislikes;
     data['is_like'] = this.isLike;
     data['is_dislike'] = this.isDislike;
     return data;
@@ -125,27 +122,32 @@ class UserId {
   }
 }
 
-class Metadata {
-  int? limit;
-  int? currentPage;
-  int? totalDocs;
-  var totalPages;
+class Category {
+  String? sId;
+  String? title;
 
-  Metadata({this.limit, this.currentPage, this.totalDocs, this.totalPages});
+  Category({this.sId, this.title});
 
-  Metadata.fromJson(Map<String, dynamic> json) {
-    limit = json['limit'];
-    currentPage = json['currentPage'];
-    totalDocs = json['totalDocs'];
-    totalPages = json['totalPages'];
+  Category.fromJson(Map<String, dynamic> json) {
+    sId = json['_id'];
+    title = json['title'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['limit'] = this.limit;
-    data['currentPage'] = this.currentPage;
-    data['totalDocs'] = this.totalDocs;
-    data['totalPages'] = this.totalPages;
+    data['_id'] = this.sId;
+    data['title'] = this.title;
+    return data;
+  }
+}
+
+class Metadata {
+  Metadata();
+
+  Metadata.fromJson(Map<String, dynamic> json) {}
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
     return data;
   }
 }

@@ -1,6 +1,6 @@
-class AllFourmDataModel {
+class MyAllThreadsDataModel {
   String? sId;
-  UserId? userId;
+  String? userId;
   String? title;
   String? question;
   List<Media>? media;
@@ -14,12 +14,10 @@ class AllFourmDataModel {
   int? iV;
   int? totalReplies;
   int? totalViews;
-  int? totalLikes;
-  int? totalDislikes;
   int? isLike;
   int? isDislike;
 
-  AllFourmDataModel(
+  MyAllThreadsDataModel(
       {this.sId,
       this.userId,
       this.title,
@@ -35,15 +33,12 @@ class AllFourmDataModel {
       this.iV,
       this.totalReplies,
       this.totalViews,
-      this.totalLikes,
-      this.totalDislikes,
       this.isLike,
       this.isDislike});
 
-  AllFourmDataModel.fromJson(Map<String, dynamic> json) {
+  MyAllThreadsDataModel.fromJson(Map<String, dynamic> json) {
     sId = json['_id'];
-    userId =
-        json['user_id'] != null ? new UserId.fromJson(json['user_id']) : null;
+    userId = json['user_id'];
     title = json['title'];
     question = json['question'];
     if (json['media'] != null) {
@@ -62,8 +57,6 @@ class AllFourmDataModel {
     iV = json['__v'];
     totalReplies = json['total_replies'];
     totalViews = json['total_views'];
-    totalLikes = json['total_likes'];
-    totalDislikes = json['total_dislikes'];
     isLike = json['is_like'];
     isDislike = json['is_dislike'];
   }
@@ -71,9 +64,7 @@ class AllFourmDataModel {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['_id'] = this.sId;
-    if (this.userId != null) {
-      data['user_id'] = this.userId!.toJson();
-    }
+    data['user_id'] = this.userId;
     data['title'] = this.title;
     data['question'] = this.question;
     if (this.media != null) {
@@ -89,38 +80,8 @@ class AllFourmDataModel {
     data['__v'] = this.iV;
     data['total_replies'] = this.totalReplies;
     data['total_views'] = this.totalViews;
-    data['total_likes'] = this.totalLikes;
-    data['total_dislikes'] = this.totalDislikes;
     data['is_like'] = this.isLike;
     data['is_dislike'] = this.isDislike;
-    return data;
-  }
-}
-
-class UserId {
-  String? sId;
-  String? profileImage;
-  String? status;
-  String? fullName;
-  String? id;
-
-  UserId({this.sId, this.profileImage, this.status, this.fullName, this.id});
-
-  UserId.fromJson(Map<String, dynamic> json) {
-    sId = json['_id'];
-    profileImage = json['profile_image'];
-    status = json['status'];
-    fullName = json['full_name'];
-    id = json['id'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['_id'] = this.sId;
-    data['profile_image'] = this.profileImage;
-    data['status'] = this.status;
-    data['full_name'] = this.fullName;
-    data['id'] = this.id;
     return data;
   }
 }

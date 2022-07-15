@@ -1,77 +1,62 @@
 import 'dart:convert';
-import 'package:afro/Model/Fourms/AllFourmDataModel.dart';
+
+import 'package:afro/Network/Apis.dart';
+import 'package:afro/Util/CommonMethods.dart';
 import 'package:afro/Util/CommonUI.dart';
 import 'package:afro/Util/Constants.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:afro/Network/Apis.dart';
-import 'package:afro/Util/CommonMethods.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 
 var user = UserDataConstants();
 final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
-
-Future<AllFourmModel> getAllFourmsList(BuildContext context,
-    {String page = "1",
-    String limit = "1000",
-    String search = "",
-    String category_id = "",
-    bool isShow = true,
-    String country = ""}) async {
-  if (isShow) {
-    showProgressDialogBox(context);
-  }
+Future<ForumCategoryModel> getForumCategorisList(BuildContext context) async {
+  showProgressDialogBox(context);
   SharedPreferences sharedPreferences = await _prefs;
   String token = sharedPreferences.getString(user.token).toString();
-  String userId = sharedPreferences.getString(user.id).toString();
+
   print(token);
   var jsonResponse = null;
-
   var response = await http.get(
-      Uri.parse(BASE_URL +
-          "forms?page=$page&limit=$limit&search=$search&category_id=$category_id&country=$country"),
-      headers: {
-        'api-key': API_KEY,
-        'x-access-token': token,
-      });
+    Uri.parse(BASE_URL + "forms_categories"),
+    headers: {'api-key': API_KEY, 'x-access-token': token},
+  );
   print(response.body);
-  if (isShow) {
-    Navigator.pop(context);
-  }
   jsonResponse = json.decode(response.body);
   var message = jsonResponse["message"];
   if (response.statusCode == 200) {
-    print("Get all fourms api success");
-    return AllFourmModel.fromJson(jsonDecode(response.body));
+    Navigator.pop(context);
+    print("Get forum category api success!");
+    return ForumCategoryModel.fromJson(jsonDecode(response.body));
   } else if (response.statusCode == 401) {
     customToastMsg("Unauthorized User!");
     clearAllDatabase(context);
     throw Exception("Unauthorized User!");
   } else {
+    Navigator.pop(context);
     customToastMsg(message);
     throw Exception("Failed to load the work experience!");
   }
 }
 
-class AllFourmModel {
+class ForumCategoryModel {
   bool? success;
   int? code;
   String? message;
-  List<AllFourmDataModel>? data;
+  List<Data>? data;
   Metadata? metadata;
 
-  AllFourmModel(
+  ForumCategoryModel(
       {this.success, this.code, this.message, this.data, this.metadata});
 
-  AllFourmModel.fromJson(Map<String, dynamic> json) {
+  ForumCategoryModel.fromJson(Map<String, dynamic> json) {
     success = json['success'];
     code = json['code'];
     message = json['message'];
     if (json['data'] != null) {
-      data = <AllFourmDataModel>[];
+      data = <Data>[];
       json['data'].forEach((v) {
-        data!.add(new AllFourmDataModel.fromJson(v));
+        data!.add(new Data.fromJson(v));
       });
     }
     metadata = json['metadata'] != null
@@ -90,6 +75,54 @@ class AllFourmModel {
     if (this.metadata != null) {
       data['metadata'] = this.metadata!.toJson();
     }
+    return data;
+  }
+}
+
+class Data {
+  String? sId;
+  String? title;
+  String? status;
+  String? createdAt;
+  String? updatedAt;
+  int? iV;
+
+  Data(
+      {this.sId,
+      this.title,
+      this.status,
+      this.createdAt,
+      this.updatedAt,
+      this.iV});
+
+  Data.fromJson(Map<String, dynamic> json) {
+    sId = json['_id'];
+    title = json['title'];
+    status = json['status'];
+    createdAt = json['createdAt'];
+    updatedAt = json['updatedAt'];
+    iV = json['__v'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['_id'] = this.sId;
+    data['title'] = this.title;
+    data['status'] = this.status;
+    data['createdAt'] = this.createdAt;
+    data['updatedAt'] = this.updatedAt;
+    data['__v'] = this.iV;
+    return data;
+  }
+}
+
+class Metadata {
+  Metadata();
+
+  Metadata.fromJson(Map<String, dynamic> json) {}
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
     return data;
   }
 }

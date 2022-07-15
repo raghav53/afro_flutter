@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'package:afro/Model/Events/Discover/DiscoverModel.dart';
 import 'package:afro/Model/Fourms/AllFourmDataModel.dart';
 import 'package:afro/Model/Fourms/AllFourmModel.dart';
@@ -8,11 +9,14 @@ import 'package:afro/Model/UserProfileModel.dart';
 import 'package:afro/Network/Apis.dart';
 import 'package:afro/Screens/HomeScreens/Home/Contacts/AllContactsScreen.dart';
 import 'package:afro/Screens/HomeScreens/Home/EventsScreens/EventDetails/EventsDetailsPage.dart';
+import 'package:afro/Screens/HomeScreens/Home/Forums/FourmDetailsPage.dart';
 import 'package:afro/Screens/HomeScreens/Home/Groups/GroupDetails/GroupDetailsPage.dart';
 import 'package:afro/Screens/HomeScreens/Home/Groups/RecommendedGroupsScreen.dart';
 import 'package:afro/Screens/HomeScreens/Home/OtherUserProfilePage.dart';
 import 'package:afro/Util/Colors.dart';
+import 'package:afro/Util/CommonMethods.dart';
 import 'package:afro/Util/CommonUI.dart';
+import 'package:http/http.dart' as http;
 import 'package:afro/Util/Constants.dart';
 import 'package:afro/Util/CustomWidget.dart';
 import 'package:afro/Screens/HomeScreens/Home/EventsScreens/UpcomingEvents.dart';
@@ -438,7 +442,17 @@ class _HomeScreen extends State<DashboardPageScreen> {
                                   return Container(
                                       margin: EdgeInsets.only(bottom: 10),
                                       child: InkWell(
-                                        onTap: () {},
+                                        
+                                        onTap: () async {
+                                          await Navigator.of(context).push(
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      FourmDetailsPage(
+                                                        fourmId: snapshot.data!
+                                                            .data![index].sId
+                                                            .toString(),
+                                                      )));
+                                        },
                                         child: fourmItem(
                                             snapshot.data!.data![index]),
                                       ));
@@ -782,31 +796,41 @@ class _HomeScreen extends State<DashboardPageScreen> {
               mainAxisAlignment: mEvenly,
               children: [
                 //Upvote
-                Row(
-                  children: [
-                    Icon(
-                      Icons.thumb_up_outlined,
-                      color: white,
-                      size: 19,
-                    ),
-                    customWidthBox(3),
-                    customText(
-                        model.totalLikes.toString() + " Upvote", 15, white)
-                  ],
+                InkWell(
+                  onTap: () {
+                    likeUnlike(model.sId.toString(), 1);
+                  },
+                  child: Row(
+                    children: [
+                      Icon(
+                        Icons.thumb_up_outlined,
+                        color: model.isLike == 1 ? Colors.blueAccent : white,
+                        size: 19,
+                      ),
+                      customWidthBox(3),
+                      customText(
+                          model.totalLikes.toString() + " Upvote", 15, white)
+                    ],
+                  ),
                 ),
 
                 //Downvote
-                Row(
-                  children: [
-                    Icon(
-                      Icons.thumb_down_outlined,
-                      color: white,
-                      size: 19,
-                    ),
-                    customWidthBox(3),
-                    customText(
-                        model.totalDislikes.toString() + " Downvote", 15, white)
-                  ],
+                InkWell(
+                  onTap: () {
+                    likeUnlike(model.sId.toString(), 2);
+                  },
+                  child: Row(
+                    children: [
+                      Icon(
+                        Icons.thumb_down_outlined,
+                        color: model.isDislike == 1 ? Colors.blueAccent : white,
+                        size: 19,
+                      ),
+                      customWidthBox(3),
+                      customText(model.totalDislikes.toString() + " Downvote",
+                          15, white)
+                    ],
+                  ),
                 ),
 
                 //Reply
@@ -831,5 +855,48 @@ class _HomeScreen extends State<DashboardPageScreen> {
   //Like/Unlike the fourm thread
   Future<void> likeUnlike(String id, int type) async {
     showProgressDialogBox(context);
+    SharedPreferences sharedPreferences = await _prefs;
+    String token = sharedPreferences.getString(user.token).toString();
+    print(token);
+    var jsonResponse = null;
+    Map data = {
+      "type": type == 1
+          ? "Like"
+          : type == 2
+              ? "Dislike"
+              : "",
+      "form_id": id
+    };
+    var response = await http.post(Uri.parse(BASE_URL + "form_like"),
+        headers: {
+          'api-key': API_KEY,
+          'x-access-token': token,
+        },
+        body: data);
+    Navigator.pop(context);
+    print(response.body);
+    jsonResponse = json.decode(response.body);
+    var message = jsonResponse["message"];
+    if (response.statusCode == 200) {
+      print(message);
+      print("fourm like/dislike api success");
+      refershFourmData();
+      setState(() {});
+    } else if (response.statusCode == 401) {
+      customToastMsg("Unauthorized User!");
+      clearAllDatabase(context);
+      throw Exception("Unauthorized User!");
+    } else {
+      customToastMsg(message);
+      throw Exception("Failed to load the work experience!");
+    }
+  }
+
+  refershFourmData() {
+    Future.delayed(Duration.zero, () {
+      _exploreForums = getAllFourmsList(context, isShow: false);
+      setState(() {});
+      _exploreForums!.whenComplete(() => () {});
+    });
   }
 }

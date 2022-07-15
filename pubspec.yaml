@@ -135,6 +135,9 @@ flutter:
     - assets/icons/mail_star.png
     - assets/icons/request_send.png
     - assets/icons/friends.png
+    - assets/icons/all_thread_icn.png
+    - assets/icons/my_reply_icon.png
+    - assets/icons/my_threads.png
 
     ##Facebook , instagram , google
     - assets/social/facebook.png

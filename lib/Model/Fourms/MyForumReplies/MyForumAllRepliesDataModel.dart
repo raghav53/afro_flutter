@@ -1,25 +1,77 @@
-class AllFourmDataModel {
+class MyAllForumRepliesDataModel {
   String? sId;
-  UserId? userId;
+  String? userId;
+  String? formId;
+  String? reply;
+  String? parentReplyId;
+  int? type;
+  String? status;
+  String? createdAt;
+  String? updatedAt;
+  int? iV;
+  Form? form;
+
+  MyAllForumRepliesDataModel(
+      {this.sId,
+      this.userId,
+      this.formId,
+      this.reply,
+      this.parentReplyId,
+      this.type,
+      this.status,
+      this.createdAt,
+      this.updatedAt,
+      this.iV,
+      this.form});
+
+  MyAllForumRepliesDataModel.fromJson(Map<String, dynamic> json) {
+    sId = json['_id'];
+    userId = json['user_id'];
+    formId = json['form_id'];
+    reply = json['reply'];
+    parentReplyId = json['parent_reply_id'];
+    type = json['type'];
+    status = json['status'];
+    createdAt = json['createdAt'];
+    updatedAt = json['updatedAt'];
+    iV = json['__v'];
+    form = json['form'] != null ? new Form.fromJson(json['form']) : null;
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['_id'] = this.sId;
+    data['user_id'] = this.userId;
+    data['form_id'] = this.formId;
+    data['reply'] = this.reply;
+    data['parent_reply_id'] = this.parentReplyId;
+    data['type'] = this.type;
+    data['status'] = this.status;
+    data['createdAt'] = this.createdAt;
+    data['updatedAt'] = this.updatedAt;
+    data['__v'] = this.iV;
+    if (this.form != null) {
+      data['form'] = this.form!.toJson();
+    }
+    return data;
+  }
+}
+
+class Form {
+  String? sId;
+  String? userId;
   String? title;
   String? question;
   List<Media>? media;
   int? type;
   String? category;
-  String? link;
-  String? country;
   String? status;
   String? createdAt;
-  String? updatedAt;
   int? iV;
-  int? totalReplies;
-  int? totalViews;
-  int? totalLikes;
-  int? totalDislikes;
-  int? isLike;
-  int? isDislike;
+  String? link;
+  String? country;
 
-  AllFourmDataModel(
+  Form(
       {this.sId,
       this.userId,
       this.title,
@@ -27,23 +79,15 @@ class AllFourmDataModel {
       this.media,
       this.type,
       this.category,
-      this.link,
-      this.country,
       this.status,
       this.createdAt,
-      this.updatedAt,
       this.iV,
-      this.totalReplies,
-      this.totalViews,
-      this.totalLikes,
-      this.totalDislikes,
-      this.isLike,
-      this.isDislike});
+      this.link,
+      this.country});
 
-  AllFourmDataModel.fromJson(Map<String, dynamic> json) {
+  Form.fromJson(Map<String, dynamic> json) {
     sId = json['_id'];
-    userId =
-        json['user_id'] != null ? new UserId.fromJson(json['user_id']) : null;
+    userId = json['user_id'];
     title = json['title'];
     question = json['question'];
     if (json['media'] != null) {
@@ -54,26 +98,17 @@ class AllFourmDataModel {
     }
     type = json['type'];
     category = json['category'];
-    link = json['link'];
-    country = json['country'];
     status = json['status'];
     createdAt = json['createdAt'];
-    updatedAt = json['updatedAt'];
     iV = json['__v'];
-    totalReplies = json['total_replies'];
-    totalViews = json['total_views'];
-    totalLikes = json['total_likes'];
-    totalDislikes = json['total_dislikes'];
-    isLike = json['is_like'];
-    isDislike = json['is_dislike'];
+    link = json['link'];
+    country = json['country'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['_id'] = this.sId;
-    if (this.userId != null) {
-      data['user_id'] = this.userId!.toJson();
-    }
+    data['user_id'] = this.userId;
     data['title'] = this.title;
     data['question'] = this.question;
     if (this.media != null) {
@@ -81,46 +116,11 @@ class AllFourmDataModel {
     }
     data['type'] = this.type;
     data['category'] = this.category;
-    data['link'] = this.link;
-    data['country'] = this.country;
     data['status'] = this.status;
     data['createdAt'] = this.createdAt;
-    data['updatedAt'] = this.updatedAt;
     data['__v'] = this.iV;
-    data['total_replies'] = this.totalReplies;
-    data['total_views'] = this.totalViews;
-    data['total_likes'] = this.totalLikes;
-    data['total_dislikes'] = this.totalDislikes;
-    data['is_like'] = this.isLike;
-    data['is_dislike'] = this.isDislike;
-    return data;
-  }
-}
-
-class UserId {
-  String? sId;
-  String? profileImage;
-  String? status;
-  String? fullName;
-  String? id;
-
-  UserId({this.sId, this.profileImage, this.status, this.fullName, this.id});
-
-  UserId.fromJson(Map<String, dynamic> json) {
-    sId = json['_id'];
-    profileImage = json['profile_image'];
-    status = json['status'];
-    fullName = json['full_name'];
-    id = json['id'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['_id'] = this.sId;
-    data['profile_image'] = this.profileImage;
-    data['status'] = this.status;
-    data['full_name'] = this.fullName;
-    data['id'] = this.id;
+    data['link'] = this.link;
+    data['country'] = this.country;
     return data;
   }
 }
@@ -129,7 +129,7 @@ class Metadata {
   int? limit;
   int? currentPage;
   int? totalDocs;
-  var totalPages;
+  double? totalPages;
 
   Metadata({this.limit, this.currentPage, this.totalDocs, this.totalPages});
 

@@ -1,24 +1,28 @@
-import 'package:afro/Model/Events/EventDetails/EventComments/EventCommentDataModel.dart';
+import 'package:afro/Model/Fourms/MyForumReplies/MyForumAllRepliesDataModel.dart';
 import 'dart:convert';
+
 import 'package:afro/Util/CommonUI.dart';
 import 'package:afro/Util/Constants.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:afro/Network/Apis.dart';
-
 import 'package:afro/Util/CommonMethods.dart';
-
 import 'package:flutter/cupertino.dart';
-
 import 'package:http/http.dart' as http;
 
 var user = UserDataConstants();
 final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
 
-Future<EventCommentModel> getEventCommentsList(
-    BuildContext context, String eventPostId,
-    {String progress = ""}) async {
-  progress == "yes" ? showProgressDialogBox(context) : null;
+Future<MyForumAllRepliesModel> getUserAllForumsRepliesList(
+  BuildContext context, {
+  String page = "1",
+  String limit = "1000",
+  String search = "",
+  bool isShow = true,
+}) async {
+  if (isShow) {
+    showProgressDialogBox(context);
+  }
   SharedPreferences sharedPreferences = await _prefs;
   String token = sharedPreferences.getString(user.token).toString();
   String userId = sharedPreferences.getString(user.id).toString();
@@ -26,82 +30,49 @@ Future<EventCommentModel> getEventCommentsList(
   var jsonResponse = null;
 
   var response = await http.get(
-      Uri.parse(BASE_URL + "event_post_comments?event_post_id=$eventPostId"),
+      Uri.parse(BASE_URL +
+          "user_form_replies?page=$page&limit=$limit&search=$search"),
       headers: {
         'api-key': API_KEY,
         'x-access-token': token,
       });
   print(response.body);
+  if (isShow) {
+    Navigator.pop(context);
+  }
   jsonResponse = json.decode(response.body);
   var message = jsonResponse["message"];
   if (response.statusCode == 200) {
-    progress == "yes" ? Navigator.pop(context) : null;
-    print("Get event comments api success");
-    return EventCommentModel.fromJson(jsonDecode(response.body));
+    print("Get user all fourms replies api success");
+    return MyForumAllRepliesModel.fromJson(jsonDecode(response.body));
   } else if (response.statusCode == 401) {
     customToastMsg("Unauthorized User!");
     clearAllDatabase(context);
     throw Exception("Unauthorized User!");
   } else {
-    progress == "yes" ? Navigator.pop(context) : null;
     customToastMsg(message);
     throw Exception("Failed to load the work experience!");
   }
 }
 
-Future<EventCommentModel> getEventCommentsoCommentList(
-    BuildContext context, String eventPostId,
-    String eventParenCommentId
-    ) async {
- 
-  SharedPreferences sharedPreferences = await _prefs;
-  String token = sharedPreferences.getString(user.token).toString();
-  String userId = sharedPreferences.getString(user.id).toString();
-  print(token);
-  var jsonResponse = null;
-
-  var response = await http.get(
-      Uri.parse(BASE_URL + "event_post_comments?event_post_id=$eventPostId&parent_comment_id=$eventParenCommentId"),
-      headers: {
-        'api-key': API_KEY,
-        'x-access-token': token,
-      });
-  print(response.body);
-  jsonResponse = json.decode(response.body);
-  var message = jsonResponse["message"];
-  if (response.statusCode == 200) {
-    
-    print("Get event comments of comments api success");
-    return EventCommentModel.fromJson(jsonDecode(response.body));
-  } else if (response.statusCode == 401) {
-    customToastMsg("Unauthorized User!");
-    clearAllDatabase(context);
-    throw Exception("Unauthorized User!");
-  } else {
-    
-    customToastMsg(message);
-    throw Exception("Failed to load the work experience!");
-  }
-}
-
-class EventCommentModel {
+class MyForumAllRepliesModel {
   bool? success;
   int? code;
   String? message;
-  List<EventCommentDataModel>? data;
+  List<MyAllForumRepliesDataModel>? data;
   Metadata? metadata;
 
-  EventCommentModel(
+  MyForumAllRepliesModel(
       {this.success, this.code, this.message, this.data, this.metadata});
 
-  EventCommentModel.fromJson(Map<String, dynamic> json) {
+  MyForumAllRepliesModel.fromJson(Map<String, dynamic> json) {
     success = json['success'];
     code = json['code'];
     message = json['message'];
     if (json['data'] != null) {
-      data = <EventCommentDataModel>[];
+      data = <MyAllForumRepliesDataModel>[];
       json['data'].forEach((v) {
-        data!.add(new EventCommentDataModel.fromJson(v));
+        data!.add(new MyAllForumRepliesDataModel.fromJson(v));
       });
     }
     metadata = json['metadata'] != null
