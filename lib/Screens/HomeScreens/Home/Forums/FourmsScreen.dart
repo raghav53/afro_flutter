@@ -30,28 +30,20 @@ class _ForumsPage extends State<ForumsScreenPage> {
       resizeToAvoidBottomInset: true,
       extendBodyBehindAppBar: true,
       appBar: onlyTitleCommonAppbar("Forums"),
-      floatingActionButton: AnimatedSlide(
-        duration: Duration(seconds: 1),
-        offset: _showFab ? Offset.zero : Offset(0, 2),
-        child: AnimatedOpacity(
-          duration: Duration(seconds: 1),
-          opacity: _showFab ? 1 : 0,
-          child: GestureDetector(
-            onTap: () {
-              Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => ForumsNewThreadPage()));
-            },
-            child: Container(
-              height: 50,
-              width: 50,
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(50),
-                  gradient: commonButtonLinearGridient),
-              child: Icon(
-                Icons.add,
-                color: white,
-              ),
-            ),
+      floatingActionButton: GestureDetector(
+        onTap: () {
+          Navigator.of(context).push(
+              MaterialPageRoute(builder: (context) => ForumsNewThreadPage()));
+        },
+        child: Container(
+          height: 50,
+          width: 50,
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(50),
+              gradient: commonButtonLinearGridient),
+          child: Icon(
+            Icons.add,
+            color: white,
           ),
         ),
       ),

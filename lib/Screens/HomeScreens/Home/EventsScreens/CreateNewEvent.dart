@@ -654,7 +654,7 @@ class _CreateNewEventState extends State<CreateNewEvent> {
       return;
     }
     if (imageFile == null) {
-      customToastMsg("Please Enter the short description of event");
+      customToastMsg("Please select the image of event");
       return;
     }
     showProgressDialogBox(context);

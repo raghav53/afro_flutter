@@ -1,10 +1,12 @@
 import 'package:afro/Model/Fourms/AllFourmModel.dart';
 import 'package:afro/Network/Apis.dart';
 import 'package:afro/Util/Colors.dart';
+import 'package:afro/Util/CommonMethods.dart';
 import 'package:afro/Util/CustomWidget.dart';
 import 'package:afro/Util/CustomWidgetAttributes.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class AllThreadsPageScreen extends StatefulWidget {
   AllThreadsPageScreen({Key? key}) : super(key: key);
@@ -81,10 +83,33 @@ class _AllThreadsPageScreenState extends State<AllThreadsPageScreen> {
                                             15,
                                             yellowColor),
                                         customHeightBox(10),
-                                        customText(
-                                            "Last Post: 04 Jul at 07:30 pm",
-                                            15,
-                                            yellowColor),
+                                        RichText(
+                                            text: TextSpan(
+                                                text: "Last post: ",
+                                                style: TextStyle(
+                                                    color: white24,
+                                                    fontSize: 15),
+                                                children: [
+                                              TextSpan(
+                                                  text: dataTimeTextFormater(
+                                                              snapshot
+                                                                  .data!
+                                                                  .data![index]
+                                                                  .createdAt
+                                                                  .toString())[
+                                                          "date"] +
+                                                      " at " +
+                                                      dataTimeTextFormater(
+                                                              snapshot
+                                                                  .data!
+                                                                  .data![index]
+                                                                  .createdAt
+                                                                  .toString())[
+                                                          "time"],
+                                                  style: TextStyle(
+                                                      color: yellowColor,
+                                                      fontSize: 15))
+                                            ]))
                                       ],
                                     )
                                   ],
@@ -98,6 +123,24 @@ class _AllThreadsPageScreenState extends State<AllThreadsPageScreen> {
                                         .toString(),
                                     15,
                                     white),
+                              ),
+                              customHeightBox(10),
+                              Padding(
+                                padding: const EdgeInsets.only(left: 5.0),
+                                child: GestureDetector(
+                                  child: Text(
+                                      snapshot.data!.data![index].link
+                                          .toString(),
+                                      style: const TextStyle(
+                                          decoration: TextDecoration.underline,
+                                          color: Colors.blue)),
+                                  onTap: () async {
+                                    String url = snapshot
+                                        .data!.data![index].title
+                                        .toString();
+                                    if (await canLaunch(url)) launch(url);
+                                  },
+                                ),
                               ),
                               customHeightBox(10),
                               Padding(

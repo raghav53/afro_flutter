@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
 import 'package:afro/Network/Apis.dart';
-import 'package:afro/Screens/HomeScreens/Home/Groups/GroupDetails/GroupDiscussion.dart';
 import 'package:afro/Util/Colors.dart';
 import 'package:afro/Util/CommonMethods.dart';
 import 'package:afro/Util/CommonUI.dart';
@@ -14,9 +13,8 @@ import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
 import 'package:mime/mime.dart';
-
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:video_thumbnail/video_thumbnail.dart';
+
 
 class ShareThoughts extends StatefulWidget {
   String evenGroupId = "";

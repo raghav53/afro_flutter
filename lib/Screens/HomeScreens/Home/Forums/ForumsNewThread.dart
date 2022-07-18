@@ -1,15 +1,21 @@
+import 'dart:convert';
 import 'dart:io';
 import 'package:afro/Model/CountryModel.dart';
 import 'package:afro/Model/Fourms/ForumCategoryModel.dart';
 import 'package:afro/Network/Apis.dart';
 import 'package:afro/Util/Colors.dart';
+import 'package:afro/Util/CommonMethods.dart';
+import 'package:afro/Util/CommonUI.dart';
 import 'package:afro/Util/CustomWidget.dart';
+import 'package:http_parser/http_parser.dart';
 import 'package:afro/Util/CustomWidgetAttributes.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mime/mime.dart';
+import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ForumsNewThreadPage extends StatefulWidget {
   @override
@@ -28,6 +34,10 @@ List<File> imagesList = [];
 Future<CountryModel>? _getCountriesList;
 Future<ForumCategoryModel>? _getForumsCategories;
 String? caption = "";
+Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+TextEditingController titleController = TextEditingController();
+TextEditingController linkController = TextEditingController();
+TextEditingController contentController = TextEditingController();
 
 class _ForumsNewThreadPage extends State<ForumsNewThreadPage> {
   @override
@@ -38,6 +48,7 @@ class _ForumsNewThreadPage extends State<ForumsNewThreadPage> {
       setState(() {});
       _getCountriesList!.whenComplete(() => () {});
     });
+    getDataOfForumCategories();
   }
 
   @override
@@ -45,7 +56,8 @@ class _ForumsNewThreadPage extends State<ForumsNewThreadPage> {
     return SafeArea(
       child: Scaffold(
         body: Container(
-          height: double.infinity,
+          height: phoneHeight(context),
+          width: phoneWidth(context),
           decoration: commonBoxDecoration(),
           child: SingleChildScrollView(
             child: Column(
@@ -93,11 +105,11 @@ class _ForumsNewThreadPage extends State<ForumsNewThreadPage> {
                       customHeightBox(20),
                       customText("TITLE", 14, Colors.white),
                       customHeightBox(10),
-                      forumsEditext("Title"),
+                      forumsEditext("Title", titleController),
                       customHeightBox(20),
                       customText("LINK", 14, Colors.white),
                       customHeightBox(10),
-                      forumsEditext("Link"),
+                      forumsEditext("Link", linkController),
                       customHeightBox(20),
                       customText("Visible to:", 14, Colors.white),
                       customWidthBox(10),
@@ -259,7 +271,7 @@ class _ForumsNewThreadPage extends State<ForumsNewThreadPage> {
               onTap: () {
                 setState(() {
                   _groupValue = 0;
-                  countryId = "";
+                  countryId = "0";
                   countryName = "";
                 });
               },
@@ -303,7 +315,7 @@ class _ForumsNewThreadPage extends State<ForumsNewThreadPage> {
   }
 
   //custom edittext
-  Widget forumsEditext(String title) {
+  Widget forumsEditext(String title, TextEditingController _controller) {
     return Container(
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
@@ -312,6 +324,7 @@ class _ForumsNewThreadPage extends State<ForumsNewThreadPage> {
             BoxShadow(color: Colors.black, offset: Offset(0, 2))
           ]),
       child: TextFormField(
+        controller: _controller,
         style: TextStyle(color: Colors.white),
         decoration: InputDecoration(
             border: InputBorder.none,
@@ -324,7 +337,6 @@ class _ForumsNewThreadPage extends State<ForumsNewThreadPage> {
 
   //get Forums categories
   showForumsCategoris() {
-    getDataOfForumCategories();
     showDialog(
         barrierDismissible: false,
         context: context,
@@ -685,6 +697,7 @@ class _ForumsNewThreadPage extends State<ForumsNewThreadPage> {
                                   state(() {
                                     _usergroupValue = 0;
                                     userType = 0;
+                                    print(userType);
                                   });
                                 },
                                 child: Row(
@@ -708,6 +721,7 @@ class _ForumsNewThreadPage extends State<ForumsNewThreadPage> {
                                   state(() {
                                     _usergroupValue = 1;
                                     userType = 1;
+                                    print(userType);
                                   });
                                 },
                                 child: Row(
@@ -729,7 +743,7 @@ class _ForumsNewThreadPage extends State<ForumsNewThreadPage> {
                       ),
                       InkWell(
                         onTap: () {
-                          Navigator.pop(context);
+                          postTheForumThread();
                         },
                         child: Container(
                           width: 100,
@@ -743,5 +757,74 @@ class _ForumsNewThreadPage extends State<ForumsNewThreadPage> {
                     ])));
           });
         });
+  }
+
+  Future<void> postTheForumThread() async {
+    if (categoryTypeID.toString().isEmpty) {
+      customToastMsg("Please the category of the forum thread!");
+      return;
+    }
+    if (titleController.text.toString().isEmpty) {
+      customToastMsg("Please type the title of forum thread!");
+      return;
+    }
+    if (linkController.text.toString().isEmpty) {
+      customToastMsg("Please enter the link of forum thread!");
+      return;
+    }
+    if (caption.toString().isEmpty) {
+      customToastMsg("Please type the showrt description of forum thread!");
+      return;
+    }
+    if (countryId.toString().isEmpty) {
+      customToastMsg("Please select the option of visibility!");
+      return;
+    }
+    showProgressDialogBox(context);
+    SharedPreferences sharedPreferences = await _prefs;
+    String? token = sharedPreferences.getString("token");
+    var jsonResponse;
+    var uri = Uri.parse(BASE_URL + 'create_form');
+    var request = http.MultipartRequest('POST', uri);
+
+    if (imagesList.isNotEmpty) {
+      for (int i = 0; i < imagesList.length; i++) {
+        String mimes = lookupMimeType(imagesList[i].path).toString();
+
+        var mm = mimes.split("/");
+        print(imagesList[i]);
+
+        request.files.add(await http.MultipartFile.fromPath(
+            "media", imagesList[i].path,
+            contentType: MediaType(mm[0], mm[1])));
+        print(request);
+      }
+    }
+    request.headers.addAll({'api-key': API_KEY, 'x-access-token': token!});
+    request.fields["title"] = titleController.text.toString();
+    request.fields["question"] = caption.toString();
+    request.fields["category"] = categoryTypeID.toString();
+    request.fields["country"] = countryId.toString();
+    request.fields["link"] = linkController.text.toString();
+    request.fields["type"] = userType.toString();
+    var response = await request.send();
+    print(response.statusCode);
+
+    if (response.statusCode == 200) {
+      Navigator.pop(context);
+      print("success");
+      Navigator.pop(context);
+      Navigator.pop(context);
+    } else if (response.statusCode == 401) {
+      customToastMsg("Unauthorized User!");
+      clearAllDatabase(context);
+      throw Exception("Unauthorized User!");
+    } else {
+      response.stream.transform(utf8.decoder).listen((value) {
+        print(value);
+      });
+      Navigator.pop(context);
+      throw Exception("Failed to load the work experience!");
+    }
   }
 }
