@@ -1,6 +1,8 @@
 import 'package:afro/Model/Fourms/MyForumReplies/MyForumAllRepliesDataModel.dart';
 import 'package:afro/Model/Fourms/MyForumReplies/MyForumAllRepliesModel.dart';
 import 'package:afro/Network/Apis.dart';
+import 'package:afro/Screens/HomeScreens/Home/Forums/FourmDetailsPage.dart';
+import 'package:afro/Screens/SignUpProcess/EmailVerification.dart';
 import 'package:afro/Util/Colors.dart';
 import 'package:afro/Util/CommonMethods.dart';
 import 'package:afro/Util/Constants.dart';
@@ -53,12 +55,21 @@ class _MyRepliesPageState extends State<MyRepliesPage> {
                       padding: EdgeInsets.zero,
                       itemCount: snapshot.data!.data!.length,
                       itemBuilder: (context, index) {
-                        return Column(
-                          children: [
-                            replyItem(snapshot.data!.data![index]),
-                            customHeightBox(4),
-                            customDivider(1, Colors.grey[300]!)
-                          ],
+                        return InkWell(
+                          onTap: () {
+                            Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) => FourmDetailsPage(
+                                    fourmId: snapshot
+                                        .data!.data![index].form!.sId
+                                        .toString())));
+                          },
+                          child: Column(
+                            children: [
+                              replyItem(snapshot.data!.data![index]),
+                              customHeightBox(4),
+                              customDivider(1, Colors.grey[300]!)
+                            ],
+                          ),
                         );
                       }),
                 )

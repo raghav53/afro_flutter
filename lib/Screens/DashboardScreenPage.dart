@@ -442,7 +442,6 @@ class _HomeScreen extends State<DashboardPageScreen> {
                                   return Container(
                                       margin: EdgeInsets.only(bottom: 10),
                                       child: InkWell(
-                                        
                                         onTap: () async {
                                           await Navigator.of(context).push(
                                               MaterialPageRoute(

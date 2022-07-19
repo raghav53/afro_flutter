@@ -1,12 +1,17 @@
+import 'dart:convert';
+
 import 'package:afro/Model/Fourms/MyForumThread/MyForumThreadDataModel.dart';
 import 'package:afro/Model/Fourms/MyForumThread/MyForumThreadModel.dart';
 import 'package:afro/Network/Apis.dart';
+import 'package:afro/Screens/HomeScreens/Home/Forums/FourmDetailsPage.dart';
 import 'package:afro/Util/Colors.dart';
 import 'package:afro/Util/CommonMethods.dart';
+import 'package:afro/Util/CommonUI.dart';
 import 'package:afro/Util/Constants.dart';
 import 'package:afro/Util/CustomWidget.dart';
 import 'package:afro/Util/CustomWidgetAttributes.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -42,6 +47,14 @@ class _MyThreadsPageState extends State<MyThreadsPage> {
     profileImage = sharedData.getString(userInfo.profileImage).toString();
   }
 
+  refreshData() {
+    Future.delayed(Duration.zero, () {
+      _getUSerForums = getUserAllFourmsList(context);
+      setState(() {});
+      _getUSerForums!.whenComplete(() => () {});
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<MyAllThreadsModel>(
@@ -55,7 +68,15 @@ class _MyThreadsPageState extends State<MyThreadsPage> {
                       padding: EdgeInsets.zero,
                       itemCount: snapshot.data!.data!.length,
                       itemBuilder: (context, index) {
-                        return fourmItem(snapshot.data!.data![index]);
+                        return InkWell(
+                            onTap: () {
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (context) => FourmDetailsPage(
+                                        fourmId: snapshot.data!.data![index].sId
+                                            .toString(),
+                                      )));
+                            },
+                            child: fourmItem(snapshot.data!.data![index]));
                       }),
                 )
               : Center(
@@ -113,7 +134,11 @@ class _MyThreadsPageState extends State<MyThreadsPage> {
                     ],
                   ),
                   Spacer(),
-                  InkWell(
+                  GestureDetector(
+                    onTapDown: (tapDownDetails) {
+                      customToastMsg("Hello");
+                      showPopupMenu(tapDownDetails, model.sId.toString());
+                    },
                     child: Image.asset(
                       "assets/icons/more_option.png",
                       color: white,
@@ -165,7 +190,7 @@ class _MyThreadsPageState extends State<MyThreadsPage> {
                 //Upvote
                 InkWell(
                   onTap: () {
-                    //likeUnlike(model.sId.toString(), 1);
+                    likeUnlike(model.sId.toString(), 1);
                   },
                   child: Row(
                     children: [
@@ -183,7 +208,7 @@ class _MyThreadsPageState extends State<MyThreadsPage> {
                 //Downvote
                 InkWell(
                   onTap: () {
-                    //likeUnlike(model.sId.toString(), 2);
+                    likeUnlike(model.sId.toString(), 2);
                   },
                   child: Row(
                     children: [
@@ -215,5 +240,112 @@ class _MyThreadsPageState extends State<MyThreadsPage> {
             )
           ]),
     );
+  }
+
+  showPopupMenu(TapDownDetails details, String formId) async {
+    var tapPosition = details.globalPosition;
+    final RenderBox overlay =
+        Overlay.of(context)?.context.findRenderObject() as RenderBox;
+    await showMenu(
+      color: Colors.transparent,
+      context: context,
+      position: RelativeRect.fromRect(
+          tapPosition & const Size(40, 5), // smaller rect, the touch area
+          Offset.zero & overlay.size // Bigger rect, the entire screen
+          ),
+      items: [
+        PopupMenuItem(
+            padding: EdgeInsets.zero,
+            child: InkWell(
+              onTap: (() {
+                Navigator.pop(context);
+                deleteForm(formId);
+              }),
+              child: Container(
+                padding: EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10), color: black),
+                child: Row(mainAxisAlignment: mAround, children: [
+                  Image.asset(
+                    "assets/icons/white_flag.png",
+                    height: 15,
+                    width: 15,
+                  ),
+                  customText("Detele", 11, white)
+                ]),
+              ),
+            )),
+      ],
+      elevation: 0.0,
+    );
+  }
+
+  //Delete the form thread
+  Future<void> deleteForm(String id) async {
+    SharedPreferences sharedPreferences = await _prefs;
+    String token = sharedPreferences.getString(user.token).toString();
+    print(token);
+    var jsonResponse = null;
+    var response =
+        await http.delete(Uri.parse(BASE_URL + "form/${id}"), headers: {
+      'api-key': API_KEY,
+      'x-access-token': token,
+    });
+    print(response.body);
+    jsonResponse = json.decode(response.body);
+    var message = jsonResponse["message"];
+    if (response.statusCode == 200) {
+      print(message);
+      print("fourm delete api success");
+      refreshData();
+      setState(() {});
+    } else if (response.statusCode == 401) {
+      customToastMsg("Unauthorized User!");
+      clearAllDatabase(context);
+      throw Exception("Unauthorized User!");
+    } else {
+      customToastMsg(message);
+      throw Exception("Failed to load the work experience!");
+    }
+  }
+
+  //Like/Unlike the fourm thread
+  Future<void> likeUnlike(String id, int type) async {
+    showProgressDialogBox(context);
+    SharedPreferences sharedPreferences = await _prefs;
+    String token = sharedPreferences.getString(user.token).toString();
+    print(token);
+    var jsonResponse = null;
+    Map data = {
+      "type": type == 1
+          ? "Like"
+          : type == 2
+              ? "Dislike"
+              : "",
+      "form_id": id
+    };
+    var response = await http.post(Uri.parse(BASE_URL + "form_like"),
+        headers: {
+          'api-key': API_KEY,
+          'x-access-token': token,
+        },
+        body: data);
+    Navigator.pop(context);
+    print(response.body);
+    jsonResponse = json.decode(response.body);
+    var message = jsonResponse["message"];
+    if (response.statusCode == 200) {
+      print(message);
+      print("fourm like/dislike api success");
+      refreshData();
+      setState(() {});
+    } else if (response.statusCode == 401) {
+      customToastMsg("Unauthorized User!");
+      clearAllDatabase(context);
+      throw Exception("Unauthorized User!");
+    } else {
+      customToastMsg(message);
+      throw Exception("Failed to load the work experience!");
+    }
   }
 }
