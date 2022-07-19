@@ -2,7 +2,7 @@ import 'package:afro/Model/Fourms/MyForumReplies/MyForumAllRepliesDataModel.dart
 import 'package:afro/Model/Fourms/MyForumReplies/MyForumAllRepliesModel.dart';
 import 'package:afro/Network/Apis.dart';
 import 'package:afro/Screens/HomeScreens/Home/Forums/FourmDetailsPage.dart';
-import 'package:afro/Screens/SignUpProcess/EmailVerification.dart';
+
 import 'package:afro/Util/Colors.dart';
 import 'package:afro/Util/CommonMethods.dart';
 import 'package:afro/Util/Constants.dart';
