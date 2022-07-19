@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:afro/Helper/ReportOperation.dart';
 import 'package:afro/Model/Fourms/AllFourmDataModel.dart';
 import 'package:afro/Model/Fourms/AllFourmModel.dart';
 import 'package:afro/Network/Apis.dart';
@@ -355,9 +356,11 @@ class _AllThreadsPageScreenState extends State<AllThreadsPageScreen> {
             padding: EdgeInsets.zero,
             child: InkWell(
               onTap: (() {
-                // model.userId!.id.toString() == loginuserId
-                //     ? deleteForm()
-                //     : reportForm();
+                Navigator.pop(context);
+                model.userId!.id.toString() == loginuserId
+                    ? deleteForm(model.sId.toString())
+                    : showReportDialogBox(
+                        "form", model.sId.toString(), context);
               }),
               child: Container(
                 padding: EdgeInsets.all(10),
@@ -381,5 +384,34 @@ class _AllThreadsPageScreenState extends State<AllThreadsPageScreen> {
       ],
       elevation: 0.0,
     );
+  }
+
+  //Delete the form thread
+  Future<void> deleteForm(String id) async {
+    SharedPreferences sharedPreferences = await _prefs;
+    String token = sharedPreferences.getString(user.token).toString();
+    print(token);
+    var jsonResponse = null;
+    var response =
+        await http.delete(Uri.parse(BASE_URL + "form/${id}"), headers: {
+      'api-key': API_KEY,
+      'x-access-token': token,
+    });
+    print(response.body);
+    jsonResponse = json.decode(response.body);
+    var message = jsonResponse["message"];
+    if (response.statusCode == 200) {
+      print(message);
+      print("fourm delete api success");
+      refreshData();
+      setState(() {});
+    } else if (response.statusCode == 401) {
+      customToastMsg("Unauthorized User!");
+      clearAllDatabase(context);
+      throw Exception("Unauthorized User!");
+    } else {
+      customToastMsg(message);
+      throw Exception("Failed to load the work experience!");
+    }
   }
 }

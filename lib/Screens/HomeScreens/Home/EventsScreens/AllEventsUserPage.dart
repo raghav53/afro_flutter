@@ -1,6 +1,6 @@
 import 'package:afro/Model/Events/EventsUsers/EventsUsersModel.dart';
 import 'package:afro/Network/Apis.dart';
-import 'package:afro/Screens/HomeScreens/Home/Groups/GroupsListScreen.dart';
+import 'package:afro/Screens/HomeScreens/Home/Groups/GroupsScreen/GroupsAllListScreen.dart';
 import 'package:afro/Screens/HomeScreens/ProfileNavigationScreens/WorkPage.dart';
 import 'package:afro/Util/Colors.dart';
 import 'package:afro/Util/CustomWidget.dart';

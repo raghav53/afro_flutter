@@ -77,27 +77,6 @@ class GoupDetailsPageState extends State<GroupDetailsPage> {
         child: Scaffold(
       resizeToAvoidBottomInset: false,
       extendBodyBehindAppBar: true,
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0.0,
-        leading: BackButton(),
-        actions: [
-          //Show popmenu
-          Container(
-            child: widget.groupAdmin == userId.toString()
-                ? GestureDetector(
-                    onTapDown: (tapDownDetails) {
-                      showUserPopupMenu(tapDownDetails);
-                    },
-                    child: const Padding(
-                      padding: EdgeInsets.only(right: 10),
-                      child: Icon(Icons.more_vert_outlined),
-                    ),
-                  )
-                : null,
-          )
-        ],
-      ),
       body: Container(
           height: phoneHeight(context),
           width: phoneWidth(context),
@@ -109,27 +88,63 @@ class GoupDetailsPageState extends State<GroupDetailsPage> {
                 return snapshot.hasData
                     ? Column(
                         children: [
-                          Container(
-                            width: phoneHeight(context),
-                            height: 250,
-                            child: CachedNetworkImage(
-                              imageUrl: IMAGE_URL +
-                                  snapshot.data!.data!.coverImage.toString(),
-                              imageBuilder: (context, imageProvider) =>
-                                  Container(
-                                width: phoneWidth(context),
-                                height: 150.0,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10),
-                                  image: DecorationImage(
-                                      image: imageProvider, fit: BoxFit.fill),
+                          Stack(
+                            children: [
+                              Container(
+                                width: phoneHeight(context),
+                                height: 250,
+                                child: CachedNetworkImage(
+                                  imageUrl: IMAGE_URL +
+                                      snapshot.data!.data!.coverImage
+                                          .toString(),
+                                  imageBuilder: (context, imageProvider) =>
+                                      Container(
+                                    width: phoneWidth(context),
+                                    height: 150.0,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(10),
+                                      image: DecorationImage(
+                                          image: imageProvider,
+                                          fit: BoxFit.fill),
+                                    ),
+                                  ),
+                                  placeholder: (context, url) =>
+                                      CircularProgressIndicator(),
+                                  errorWidget: (context, url, error) =>
+                                      Icon(Icons.error),
                                 ),
                               ),
-                              placeholder: (context, url) =>
-                                  CircularProgressIndicator(),
-                              errorWidget: (context, url, error) =>
-                                  Icon(Icons.error),
-                            ),
+                              Align(
+                                alignment: Alignment.topRight,
+                                child: //Show popmenu
+                                    Container(
+                                        margin: EdgeInsets.only(top: 20),
+                                        child: snapshot.data!.data!.isMember ==
+                                                1
+                                            ? GestureDetector(
+                                                onTapDown: (tapDownDetails) {
+                                                  showUserPopupMenu(
+                                                      tapDownDetails);
+                                                },
+                                                child: Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          right: 10),
+                                                  child: Icon(
+                                                    Icons.more_vert_outlined,
+                                                    color: white,
+                                                  ),
+                                                ),
+                                              )
+                                            : null),
+                              ),
+                              Align(
+                                alignment: Alignment.topLeft,
+                                child: BackButton(
+                                  color: white,
+                                ),
+                              )
+                            ],
                           ),
                           customHeightBox(10),
                           Container(
@@ -214,11 +229,10 @@ class GoupDetailsPageState extends State<GroupDetailsPage> {
                                             MaterialPageRoute(
                                                 builder: (context) =>
                                                     GroupMemberListScreen(
-                                                      group_id: snapshot
-                                                          .data!.data!.sId
-                                                          .toString(),
-                                                      userId:userId
-                                                    )));
+                                                        group_id: snapshot
+                                                            .data!.data!.sId
+                                                            .toString(),
+                                                        userId: userId)));
                                       },
                                       child: Row(
                                         children: [
@@ -330,13 +344,17 @@ class GoupDetailsPageState extends State<GroupDetailsPage> {
           Offset.zero & overlay.size // Bigger rect, the entire screen
           ),
       items: [
-        //Delete Button
+        //Delete/Leave Button
         PopupMenuItem(
             padding: EdgeInsets.zero,
             child: InkWell(
               onTap: (() {
                 Navigator.pop(context);
-                showGroupDeleteDialogBox(widget.groupId.toString(), context);
+                widget.groupAdmin == userId
+                    ? showGroupDeleteDialogBox(
+                        widget.groupId.toString(), context)
+                    : showLeaveGroupDialogBox(
+                        widget.groupId.toString(), context);
               }),
               child: Container(
                 padding: EdgeInsets.only(top: 10, bottom: 10),
@@ -344,12 +362,19 @@ class GoupDetailsPageState extends State<GroupDetailsPage> {
                     borderRadius: BorderRadius.circular(10), color: black),
                 child: Row(mainAxisAlignment: mCenter, children: [
                   Icon(
-                    Icons.delete,
+                    widget.groupAdmin == userId.toString()
+                        ? Icons.delete
+                        : Icons.exit_to_app,
                     size: 15,
                     color: white,
                   ),
                   customWidthBox(10),
-                  customText("Delete", 11, white)
+                  customText(
+                      widget.groupAdmin == userId.toString()
+                          ? "Delete"
+                          : "Leave",
+                      11,
+                      white)
                 ]),
               ),
             )),
@@ -422,6 +447,72 @@ class GoupDetailsPageState extends State<GroupDetailsPage> {
                                     borderRadius: BorderRadius.circular(20)),
                                 child: Center(
                                   child: customText("Delete", 15, white),
+                                ),
+                              ),
+                            ),
+                            customWidthBox(30),
+                            InkWell(
+                              onTap: () {
+                                Navigator.pop(context);
+                              },
+                              child: Container(
+                                width: 100,
+                                height: 30,
+                                decoration: BoxDecoration(
+                                    gradient: commonButtonLinearGridient,
+                                    borderRadius: BorderRadius.circular(20)),
+                                child: Center(
+                                  child: customText("Cancel", 15, white),
+                                ),
+                              ),
+                            )
+                          ],
+                        ),
+                        customHeightBox(10)
+                      ])));
+        });
+  }
+
+  // leave the group
+  void showLeaveGroupDialogBox(String gId, BuildContext context) {
+    showDialog(
+        barrierDismissible: true,
+        context: context,
+        builder: (BuildContext context) {
+          return Dialog(
+              backgroundColor: Colors.transparent,
+              elevation: 0.0,
+              child: Container(
+                  height: 120,
+                  width: 200,
+                  decoration: BoxDecoration(
+                      color: gray1, borderRadius: BorderRadius.circular(10)),
+                  child: Column(
+                      crossAxisAlignment: cCenter,
+                      mainAxisAlignment: mCenter,
+                      children: [
+                        customHeightBox(10),
+                        customText("Afro-United", 16, white),
+                        customHeightBox(5),
+                        customText("Are you sure want to leave this group?", 15,
+                            white),
+                        customHeightBox(20),
+                        Row(
+                          mainAxisAlignment: mCenter,
+                          children: [
+                            InkWell(
+                              onTap: () {
+                                Navigator.pop(context);
+                                leaveTheGroup(widget.groupId.toString());
+                              },
+                              child: Container(
+                                width: 100,
+                                height: 30,
+                                decoration: BoxDecoration(
+                                    gradient: commonButtonLinearGridient,
+                                    borderRadius: BorderRadius.circular(20)),
+                                child: Center(
+                                  child: customText("Leave", 15, white),
                                 ),
                               ),
                             ),
@@ -611,11 +702,17 @@ class GoupDetailsPageState extends State<GroupDetailsPage> {
                                                       customWidthBox(2),
                                                       customText(
                                                           snapshot
-                                                              .data!
-                                                              .data![index]
-                                                              .city![0]
-                                                              .title
-                                                              .toString(),
+                                                                  .data!
+                                                                  .data![index]
+                                                                  .city!
+                                                                  .isEmpty
+                                                              ? "Not available!"
+                                                              : snapshot
+                                                                  .data!
+                                                                  .data![index]
+                                                                  .city![0]
+                                                                  .title
+                                                                  .toString(),
                                                           12,
                                                           yellowColor)
                                                     ],
@@ -715,6 +812,38 @@ class GoupDetailsPageState extends State<GroupDetailsPage> {
       getUsersForEventGroups();
       state(() {});
       print("Send group invitation api success");
+    } else if (response.statusCode == 401) {
+      customToastMsg("Unauthorized User!");
+      clearAllDatabase(context);
+      throw Exception("Unauthorized User!");
+    } else {
+      Navigator.pop(context);
+      customToastMsg(message);
+      throw Exception("Failed to load the work experience!");
+    }
+  }
+
+  //Leave/Join the group api
+  Future<void> leaveTheGroup(String groupId) async {
+    showProgressDialogBox(context);
+    SharedPreferences sharedPreferences = await _prefs;
+    var user = UserDataConstants();
+    String token = sharedPreferences.getString(user.token).toString();
+    var jsonResponse = null;
+    var response =
+        await http.post(Uri.parse(BASE_URL + "leave_group"), headers: {
+      'api-key': API_KEY,
+      'x-access-token': token,
+    }, body: {
+      "group_id": groupId
+    });
+    print(response.body);
+    jsonResponse = json.decode(response.body);
+    var message = jsonResponse["message"];
+    if (response.statusCode == 200) {
+      Navigator.pop(context);
+      setState(() {});
+      print("leave group  api success");
     } else if (response.statusCode == 401) {
       customToastMsg("Unauthorized User!");
       clearAllDatabase(context);

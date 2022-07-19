@@ -64,13 +64,6 @@ class _HomeScreen extends State<DashboardPageScreen> {
     });
 
     Future.delayed(Duration.zero, () {
-      _allGroups = getAllGroups(context,
-          showProgress: false, country: countryId.toString());
-      setState(() {});
-      _allGroups!.whenComplete(() => () {});
-    });
-
-    Future.delayed(Duration.zero, () {
       _exploreUsers = getAllUsers(context);
       setState(() {});
       _exploreUsers!.whenComplete(() => () {});
@@ -80,6 +73,12 @@ class _HomeScreen extends State<DashboardPageScreen> {
       _exploreForums = getAllFourmsList(context);
       setState(() {});
       _exploreForums!.whenComplete(() => () {});
+    });
+    Future.delayed(Duration.zero, () {
+      _allGroups = getAllGroups(context,
+          showProgress: false);
+      setState(() {});
+      _allGroups!.whenComplete(() => () {});
     });
   }
 
@@ -92,7 +91,7 @@ class _HomeScreen extends State<DashboardPageScreen> {
 
     Future.delayed(Duration.zero, () {
       _allGroups = getAllGroups(context,
-          showProgress: false, country: countryId.toString());
+          showProgress: false);
       setState(() {});
       _allGroups!.whenComplete(() => () {});
     });

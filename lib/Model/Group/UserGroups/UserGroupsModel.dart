@@ -1,5 +1,5 @@
+import 'package:afro/Model/Group/UserGroups/UserGroupsDataModel.dart';
 import 'dart:convert';
-import 'package:afro/Model/Group/AllGroupDataModel.dart';
 import 'package:afro/Util/CommonUI.dart';
 import 'package:afro/Util/Constants.dart';
 import 'package:flutter/material.dart';
@@ -12,17 +12,13 @@ import 'package:http/http.dart' as http;
 var user = UserDataConstants();
 final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
 
-Future<AllGroupsModel> getAllGroups(BuildContext context,
-  
-    {String search = "",
-    String type = "",
-    bool showProgress = true,
-    String page = "1",
-    String limit = "500",
-    String members_max = "500",
-    String members_min = "0",
-   
-    String category = ""}) async {
+Future<UserGroupsModel> getAllUsersGroups(
+  BuildContext context, {
+  String search = "",
+  bool showProgress = true,
+  String page = "1",
+  String limit = "500",
+}) async {
   if (showProgress) {
     showProgressDialogBox(context);
   }
@@ -34,8 +30,8 @@ Future<AllGroupsModel> getAllGroups(BuildContext context,
   var jsonResponse = null;
 
   var response = await http.get(
-      Uri.parse(BASE_URL +
-          "groups?page=$page&limit=$limit&category=$category&search=$search&members_max=$members_max&members_min=$members_min"),
+      Uri.parse(
+          BASE_URL + "user_groups?page=$page&limit=$limit&search=$search"),
       headers: {
         'api-key': API_KEY,
         'x-access-token': token,
@@ -47,9 +43,9 @@ Future<AllGroupsModel> getAllGroups(BuildContext context,
   jsonResponse = json.decode(response.body);
   var message = jsonResponse["message"];
   if (response.statusCode == 200) {
-    print("Get All groups api success");
+    print("Get All Users groups api success");
     print(jsonResponse["metadata"]["totalDocs"]);
-    return AllGroupsModel.fromJson(jsonDecode(response.body));
+    return UserGroupsModel.fromJson(jsonDecode(response.body));
   } else if (response.statusCode == 401) {
     customToastMsg("Unauthorized User!");
     clearAllDatabase(context);
@@ -60,24 +56,24 @@ Future<AllGroupsModel> getAllGroups(BuildContext context,
   }
 }
 
-class AllGroupsModel {
+class UserGroupsModel {
   bool? success;
   int? code;
   String? message;
-  List<AllGroupsDataModel>? data;
+  List<UsersGroupsDataModel>? data;
   Metadata? metadata;
 
-  AllGroupsModel(
+  UserGroupsModel(
       {this.success, this.code, this.message, this.data, this.metadata});
 
-  AllGroupsModel.fromJson(Map<String, dynamic> json) {
+  UserGroupsModel.fromJson(Map<String, dynamic> json) {
     success = json['success'];
     code = json['code'];
     message = json['message'];
     if (json['data'] != null) {
-      data = <AllGroupsDataModel>[];
+      data = <UsersGroupsDataModel>[];
       json['data'].forEach((v) {
-        data!.add(new AllGroupsDataModel.fromJson(v));
+        data!.add(new UsersGroupsDataModel.fromJson(v));
       });
     }
     metadata = json['metadata'] != null

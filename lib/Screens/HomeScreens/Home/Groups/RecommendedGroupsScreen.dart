@@ -34,7 +34,7 @@ class _RecommendedGroupsState extends State<RecommendedGroups> {
   void initState() {
     super.initState();
     Future.delayed(Duration.zero, () {
-      _getAllGroups = getAllGroups(context, country: countryId.toString());
+      _getAllGroups = getAllGroups(context);
       setState(() {});
       _getAllGroups!.whenComplete(() => () {});
     });
@@ -44,7 +44,7 @@ class _RecommendedGroupsState extends State<RecommendedGroups> {
   refreshData(String value) {
     Future.delayed(Duration.zero, () {
       _getAllGroups = getAllGroups(context,
-          country: countryId.toString(), search: value, showProgress: false);
+          search: value, showProgress: false);
       setState(() {});
       _getAllGroups!.whenComplete(() => () {});
     });
@@ -654,4 +654,6 @@ class _RecommendedGroupsState extends State<RecommendedGroups> {
       throw Exception("Failed to load the work experience!");
     }
   }
+
+
 }

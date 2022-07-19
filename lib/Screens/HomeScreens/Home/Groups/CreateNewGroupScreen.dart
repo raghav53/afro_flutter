@@ -7,7 +7,7 @@ import 'package:afro/Util/Colors.dart';
 import 'package:afro/Util/CommonMethods.dart';
 import 'package:afro/Util/CommonUI.dart';
 import 'package:afro/Util/CustomWidget.dart';
-import 'package:afro/Screens/HomeScreens/Home/Groups/GroupsListScreen.dart';
+import 'package:afro/Screens/HomeScreens/Home/Groups/GroupsScreen/GroupsAllListScreen.dart';
 import 'package:afro/Util/CustomWidgetAttributes.dart';
 
 import 'package:http/http.dart' as http;
@@ -618,7 +618,7 @@ class _CreateNewGroupState extends State<CreateNewGroup> {
       Navigator.pop(context);
       print("success");
       Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (context) => GroupsListScreen()));
+          MaterialPageRoute(builder: (context) => GroupsAllListScreen()));
     } else if (response.statusCode == 401) {
       customToastMsg("Unauthorized User!");
       clearAllDatabase(context);
@@ -657,8 +657,8 @@ class _CreateNewGroupState extends State<CreateNewGroup> {
           customWidthBox(50),
           GestureDetector(
             onTap: () {
-              Navigator.of(context).pushReplacement(
-                  MaterialPageRoute(builder: (context) => GroupsListScreen()));
+              Navigator.of(context).pushReplacement(MaterialPageRoute(
+                  builder: (context) => GroupsAllListScreen()));
             },
             child: Container(
               decoration: BoxDecoration(

@@ -14,9 +14,9 @@ List<String> reportTypeList = [
   "Spam",
   "Inappropriate",
   "Sexual",
-  "Commercial Content",
+  "Commercial_Content",
   "Fake",
-  "Compromised ",
+  "Compromised",
   "Others"
 ];
 List<int> indexList = [0, 1, 2, 3, 4, 5, 6];
@@ -139,6 +139,9 @@ void showReportDialogBox(String reportType, String id, BuildContext context) {
                               String whichTypeReport = "user_id";
                               if (reportType == "User") {
                                 whichTypeReport = "userId";
+                              }
+                              if (reportType == "form") {
+                                whichTypeReport = "form_id";
                               }
                               Map data = {
                                 whichTypeReport: id,

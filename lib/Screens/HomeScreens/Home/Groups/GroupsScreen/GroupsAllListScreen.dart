@@ -1,24 +1,20 @@
+import 'package:afro/Screens/HomeScreens/Home/Groups/GroupsScreen/DiscoverGroupScreen.dart';
+import 'package:afro/Screens/HomeScreens/Home/Groups/GroupsScreen/JoinedGroupsScreen.dart';
+import 'package:afro/Screens/HomeScreens/Home/Groups/GroupsScreen/MyGroupsScreen.dart';
 import 'package:afro/Util/Colors.dart';
 import 'package:afro/Util/CustomWidget.dart';
 import 'package:afro/Screens/HomeScreens/Home/Groups/CreateNewGroupScreen.dart';
 import 'package:afro/Util/CustomWidgetAttributes.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 
-class GroupsListScreen extends StatefulWidget {
-  const GroupsListScreen({Key? key}) : super(key: key);
+class GroupsAllListScreen extends StatefulWidget {
+  const GroupsAllListScreen({Key? key}) : super(key: key);
 
   @override
-  State<GroupsListScreen> createState() => _GroupsListScreenState();
+  State<GroupsAllListScreen> createState() => _GroupsAllListScreenState();
 }
 
-List<bool> isJoinedList1 = [false, false, false, false, false];
-List<bool> isJoinedList2 = [true, true, true, true, true];
-
-List<bool> selectedList = isJoinedList1;
-
-class _GroupsListScreenState extends State<GroupsListScreen> {
+class _GroupsAllListScreenState extends State<GroupsAllListScreen> {
   int clickPosition = 0;
   bool _showFab = true;
   LinearGradient selectedColor = commonButtonLinearGridient;
@@ -27,6 +23,8 @@ class _GroupsListScreenState extends State<GroupsListScreen> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        appBar: onlyTitleCommonAppbar("Groups"),
+        extendBodyBehindAppBar: true,
         resizeToAvoidBottomInset: false,
         floatingActionButton: GestureDetector(
           onTap: () {
@@ -38,11 +36,10 @@ class _GroupsListScreenState extends State<GroupsListScreen> {
             width: 50,
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(50),
-                gradient: LinearGradient(
-                    colors: [Color(0xff7822A0), Color(0xff3E55AF)])),
+                gradient: commonButtonLinearGridient),
             child: Icon(
               Icons.add,
-              color: Colors.white,
+              color: white,
             ),
           ),
         ),
@@ -51,28 +48,14 @@ class _GroupsListScreenState extends State<GroupsListScreen> {
           width: phoneWidth(context),
           decoration: commonBoxDecoration(),
           child: SingleChildScrollView(
-            child: Column(
-              children: [
-                customHeightBox(20),
-                customText("Groups", 20, Colors.white),
-                customHeightBox(30),
-                custom(),
-                customHeightBox(25),
-                selectCategory(),
-                customHeightBox(10),
-                Container(
-                  margin: EdgeInsets.only(bottom: 10, left: 20, right: 20),
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10), color: black),
-                  child: ListView.builder(
-                      shrinkWrap: true,
-                      itemCount: selectedList.length,
-                      itemBuilder: ((context, index) {
-                        return groupListItem(selectedList[index]);
-                      })),
-                )
-              ],
-            ),
+            child: Column(children: [
+              customHeightBox(80),
+              custom(),
+              customHeightBox(25),
+              selectCategory(),
+              customHeightBox(10),
+              setFillterLayout(clickPosition)
+            ]),
           ),
         ),
       ),
@@ -132,7 +115,6 @@ class _GroupsListScreenState extends State<GroupsListScreen> {
   Widget selectCategory() {
     return Container(
         height: 50,
-        margin: EdgeInsets.only(left: 10, right: 10),
         child: Row(
           mainAxisAlignment: mEvenly,
           crossAxisAlignment: cStart,
@@ -143,8 +125,6 @@ class _GroupsListScreenState extends State<GroupsListScreen> {
                   setState(() {
                     _showFab = false;
                     clickPosition = 0;
-                    selectedList = isJoinedList1;
-                    //setCustomListTile = Tile();
                   });
                 },
                 child: Container(
@@ -168,9 +148,8 @@ class _GroupsListScreenState extends State<GroupsListScreen> {
                 onTap: () {
                   setState(() {
                     _showFab = false;
-                    //setCustomListTile = MyThreadTile();
+
                     clickPosition = 1;
-                    selectedList = isJoinedList2;
                   });
                 },
                 child: Container(
@@ -196,7 +175,6 @@ class _GroupsListScreenState extends State<GroupsListScreen> {
                     _showFab = true;
                     clickPosition = 2;
                     //setCustomListTile = MyRepliesTile();
-                    selectedList = isJoinedList2;
                   });
                 },
                 child: Container(
@@ -219,6 +197,7 @@ class _GroupsListScreenState extends State<GroupsListScreen> {
         ));
   }
 
+  //Search bar
   Widget custom() {
     return Row(
       mainAxisAlignment: mCenter,
@@ -261,5 +240,16 @@ class _GroupsListScreenState extends State<GroupsListScreen> {
             )),
       ],
     );
+  }
+
+  //set the custom fillter view
+  setFillterLayout(int postion) {
+    if (postion == 0) {
+      return DiscoverGroupsScreen();
+    } else if (postion == 1) {
+      return JoinedGroupsScreen();
+    } else if (postion == 2) {
+      return MyGroupsScreen();
+    }
   }
 }

@@ -2,7 +2,7 @@ import 'package:afro/Util/CustomWidget.dart';
 import 'package:afro/Screens/DashboardScreenPage.dart';
 import 'package:afro/Screens/HomeScreens/Home/EventsScreens/AllEventsScreen.dart';
 import 'package:afro/Screens/HomeScreens/Home/Forums/FourmsScreen.dart';
-import 'package:afro/Screens/HomeScreens/Home/Groups/GroupsListScreen.dart';
+import 'package:afro/Screens/HomeScreens/Home/Groups/GroupsScreen/GroupsAllListScreen.dart';
 import 'package:afro/Screens/HomeScreens/Home/Messages/MessageListScreen.dart';
 import 'package:afro/Screens/HomeScreens/ProfileNavigationScreens/ProfileSettingScreenPage.dart';
 import 'package:afro/Util/CustomWidgetAttributes.dart';
@@ -61,7 +61,7 @@ class _Useable extends State<UseableWidgets> {
               selectedScreenPage = ForumsScreenPage();
               break;
             case 3:
-              selectedScreenPage = GroupsListScreen();
+              selectedScreenPage = GroupsAllListScreen();
               break;
             case 4:
               selectedScreenPage = MessageListScreen();
