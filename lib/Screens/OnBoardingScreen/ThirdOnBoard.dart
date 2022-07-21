@@ -1,7 +1,9 @@
-import 'package:afro/Screens/Authentication/SignInPage.dart';
 import 'package:afro/Screens/Authentication/SignInPage2.dart';
+import 'package:afro/Util/Colors.dart';
+import 'package:afro/Util/CustomWidget.dart';
+
 import 'package:afro/Util/SharedPreferencfes.dart';
-import 'package:flutter/cupertino.dart';
+
 import 'package:flutter/material.dart';
 
 class ThirdOnBoardScreen extends StatefulWidget {
@@ -21,27 +23,33 @@ class _ThirdScreen extends State<ThirdOnBoardScreen> {
     return SafeArea(
       child: Scaffold(
           body: Container(
-        decoration: new BoxDecoration(
-          image: new DecorationImage(
-            image: new AssetImage("on_board_3.png"),
-            fit: BoxFit.cover,
+        height: phoneHeight(context),
+        width: phoneWidth(context),
+        decoration: commonBoxDecoration(),
+        child: Column(children: [
+          Padding(
+            padding: const EdgeInsets.only(left: 25, right: 25, top: 25),
+            child: Image.asset("assets/start_group_img.png"),
           ),
-        ),
-        child: Container(
-            margin: EdgeInsets.only(bottom: 50),
-            alignment: Alignment.bottomCenter,
-            child: ElevatedButton(
-              onPressed: () {
-                navigateToSignIn(context);
-              },
-              child: Padding(
-                  padding: EdgeInsets.only(right: 30, left: 30),
-                  child: Text('Sign In')),
-              style: ElevatedButton.styleFrom(
-                primary: Colors.amber,
-                shape: StadiumBorder(),
-              ),
-            )),
+          customHeightBox(25),
+          customText("CONNECTED", 20, white),
+          customHeightBox(20),
+          customText("Search and connect with other communites", 15, white),
+          customHeightBox(40),
+          InkWell(
+            onTap: () {
+              navigateToSignIn(context);
+            },
+            child: Container(
+              padding:
+                  EdgeInsets.only(top: 10, bottom: 10, left: 50, right: 50),
+              decoration: BoxDecoration(
+                  gradient: commonButtonLinearGridient,
+                  borderRadius: BorderRadius.circular(50)),
+              child: customText("Sign In", 15, white),
+            ),
+          )
+        ]),
       )),
     );
   }

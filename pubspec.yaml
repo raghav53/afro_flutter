@@ -95,6 +95,8 @@ flutter:
     - upload_photo.png
     - screen_logo.png
     - group.jpg
+    - start_members.png
+    - start_group_img.png
 
     ##Icons
     - assets/icons/ic_next.png

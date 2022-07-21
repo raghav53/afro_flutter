@@ -11,7 +11,9 @@ import 'package:afro/Util/CommonUI.dart';
 import 'package:afro/Util/Constants.dart';
 import 'package:afro/Util/CustomWidget.dart';
 import 'package:afro/Util/CustomWidgetAttributes.dart';
+import 'package:afro/Util/SearchInterface.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -29,7 +31,8 @@ var userInfo = UserDataConstants();
 final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
 String? loginuserId = "";
 
-class _AllThreadsPageScreenState extends State<AllThreadsPageScreen> {
+class _AllThreadsPageScreenState extends State<AllThreadsPageScreen>
+    implements SerachListItem {
   @override
   void initState() {
     super.initState();
@@ -42,9 +45,9 @@ class _AllThreadsPageScreenState extends State<AllThreadsPageScreen> {
     });
   }
 
-  refreshData() {
+  refreshData({String key = ""}) {
     Future.delayed(Duration.zero, () {
-      _exploreForums = getAllFourmsList(context);
+      _exploreForums = getAllFourmsList(context, search: key);
       setState(() {});
       _exploreForums!.whenComplete(() => () {});
     });
@@ -413,5 +416,11 @@ class _AllThreadsPageScreenState extends State<AllThreadsPageScreen> {
       customToastMsg(message);
       throw Exception("Failed to load the work experience!");
     }
+  }
+
+  @override
+  void search(String key) {
+    setState(() {});
+    print(key.toString());
   }
 }

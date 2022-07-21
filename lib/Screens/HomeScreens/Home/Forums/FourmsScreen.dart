@@ -5,6 +5,7 @@ import 'package:afro/Util/Colors.dart';
 import 'package:afro/Util/CustomWidget.dart';
 import 'package:afro/Screens/HomeScreens/Home/Forums/ForumsNewThread.dart';
 import 'package:afro/Util/CustomWidgetAttributes.dart';
+import 'package:afro/Util/SearchInterface.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
@@ -13,6 +14,7 @@ class ForumsScreenPage extends StatefulWidget {
 }
 
 TextEditingController _search = TextEditingController();
+SerachInterface search = SerachInterface();
 
 class _ForumsPage extends State<ForumsScreenPage> {
   bool _showFab = true;
@@ -89,6 +91,9 @@ class _ForumsPage extends State<ForumsScreenPage> {
                             ]),
                         child: TextField(
                           controller: _search,
+                          onChanged: (value) {
+                            search.search(value);
+                          },
                           keyboardType: TextInputType.text,
                           style: TextStyle(fontSize: 14, color: white),
                           decoration: InputDecoration(
