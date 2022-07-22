@@ -99,40 +99,10 @@ Map dayTimeTextFormater(String text) {
   return dateTime;
 }
 
-
-
-
-  /***
- * //Country
-  Future<CountryModel> _getSearchCountriesList(String search) async {
-    CountryModel mm = await _getCountriesList!;
-    var ss = mm.toJson();
-    CountryModel model = CountryModel.fromJson(ss);
-
-    if (search.isEmpty) {
-      return model;
-    }
-
-    int i = 0;
-    while (i < model.data!.length) {
-      if (!model.data![i].name
-          .toString()
-          .toLowerCase()
-          .contains(search.toLowerCase())) {
-        model.data!.removeAt(i);
-      } else {
-        i++;
-      }
-    }
-    return model;
-  }
- */
-
-
-class DateAgo{
- static String convertToAgo(String dateTime) {
-    DateTime input =
-    DateFormat('yyyy-MM-DD HH:mm:ss').parse(dateTime, true);//2022-06-06 10:17:53
+class DateAgo {
+  static String convertToAgo(String dateTime) {
+    DateTime input = DateFormat('yyyy-MM-DD HH:mm:ss')
+        .parse(dateTime, true); //2022-06-06 10:17:53
     Duration diff = DateTime.now().difference(input);
 
     if (diff.inDays >= 1) {
@@ -147,7 +117,11 @@ class DateAgo{
       return 'just now';
     }
   }
-
-
-
 }
+
+String getDateFormat(String date) {
+  DateTime dt = DateTime.parse(date);
+  return DateFormat("dd/MM/yyyy hh:mm aa").format(dt);
+}
+
+String country_code_url = "https://ipdata.co/flags/";

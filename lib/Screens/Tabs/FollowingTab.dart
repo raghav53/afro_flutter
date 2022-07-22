@@ -10,7 +10,6 @@ import 'package:afro/Util/Constants.dart';
 import 'package:afro/Util/CustomWidget.dart';
 import 'package:afro/Util/CustomWidgetAttributes.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
@@ -112,7 +111,10 @@ class _FollowingTabState extends State<FollowingTab> {
                                       CircleAvatar(
                                     backgroundImage: image,
                                   ),
-                                  imageUrl: userImage,
+                                  imageUrl: IMAGE_URL +
+                                      snaapshot
+                                          .data!.data![index].user!.profileImage
+                                          .toString(),
                                 ),
                                 customWidthBox(10),
                                 Column(

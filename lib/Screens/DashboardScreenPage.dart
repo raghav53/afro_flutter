@@ -51,12 +51,18 @@ class _HomeScreen extends State<DashboardPageScreen> {
   @override
   void initState() {
     super.initState();
+
     Future.delayed(Duration.zero, () {
       _getUserProfile = getUserProfileinfo(context, userID.toString());
-      getUserData();
       setState(() {});
       _getUserProfile!.whenComplete(() => () {});
     });
+
+    Future.delayed(Duration(seconds: 2), () {
+      getUserData();
+      setState(() {});
+    });
+
     Future.delayed(Duration.zero, () {
       _upComingEvent = getAllEventsUsers(context, showProgress: false);
       setState(() {});
@@ -75,8 +81,7 @@ class _HomeScreen extends State<DashboardPageScreen> {
       _exploreForums!.whenComplete(() => () {});
     });
     Future.delayed(Duration.zero, () {
-      _allGroups = getAllGroups(context,
-          showProgress: false);
+      _allGroups = getAllGroups(context, showProgress: false);
       setState(() {});
       _allGroups!.whenComplete(() => () {});
     });
@@ -90,8 +95,7 @@ class _HomeScreen extends State<DashboardPageScreen> {
     });
 
     Future.delayed(Duration.zero, () {
-      _allGroups = getAllGroups(context,
-          showProgress: false);
+      _allGroups = getAllGroups(context, showProgress: false);
       setState(() {});
       _allGroups!.whenComplete(() => () {});
     });
@@ -154,12 +158,14 @@ class _HomeScreen extends State<DashboardPageScreen> {
                 Navigator.of(context).push(
                     MaterialPageRoute(builder: (context) => MyProfilePage()));
               },
-              child: CachedNetworkImage(
-                imageUrl: IMAGE_URL + profileImage!,
-                placeholder: (context, url) => const CircleAvatar(
-                    backgroundImage: AssetImage("tom_cruise.jpeg")),
-                imageBuilder: (context, image) => CircleAvatar(
-                  backgroundImage: image,
+              child: Container(
+                child: CachedNetworkImage(
+                  imageUrl: IMAGE_URL + profileImage.toString(),
+                  placeholder: (context, url) => const CircleAvatar(
+                      backgroundImage: AssetImage("tom_cruise.jpeg")),
+                  imageBuilder: (context, image) => CircleAvatar(
+                    backgroundImage: image,
+                  ),
                 ),
               )),
           customWidthBox(10),
@@ -177,7 +183,7 @@ class _HomeScreen extends State<DashboardPageScreen> {
             children: [
               customHeightBox(30),
               Text(
-                "Hello " + fullName!,
+                "Hello " + fullName.toString(),
                 style: const TextStyle(
                     color: Colors.white,
                     fontSize: 30,
@@ -200,7 +206,7 @@ class _HomeScreen extends State<DashboardPageScreen> {
                       size: 20,
                     ),
                     customWidthBox(10),
-                    customText(countryName!, 12, Colors.white)
+                    customText(countryName.toString(), 12, Colors.white)
                   ],
                 ),
               ),

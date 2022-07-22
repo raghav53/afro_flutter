@@ -11,9 +11,7 @@ import 'package:afro/Util/CustomWidgetAttributes.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
 import 'package:http/http.dart' as http;
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ReceivedFriendRequest extends StatefulWidget {
@@ -70,176 +68,133 @@ class _ReceivedFriendRequestState extends State<ReceivedFriendRequest> {
         future: _getSearchCountriesList(searchUser),
         builder: (context, snapshot) {
           return snapshot.hasData && snapshot.data!.data!.isNotEmpty
-              ? Column(
-                  children: [
-                    customHeightBox(20),
-                    //Search box of the friends
-                    Row(
-                      mainAxisAlignment: mCenter,
-                      children: [
-                        Flexible(
-                            flex: 12,
-                            child: Container(
-                              alignment: Alignment.centerLeft,
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10),
-                                  boxShadow: const [
-                                    BoxShadow(
-                                        color: Colors.black,
-                                        offset: Offset(0, 2))
-                                  ]),
-                              child: TextField(
-                                onChanged: (value) => {
-                                  setState(() {
-                                    searchUser = value.toString();
-                                  })
-                                },
-                                keyboardType: TextInputType.text,
-                                style: const TextStyle(
-                                    fontSize: 14, color: Colors.white),
-                                decoration: const InputDecoration(
-                                    border: InputBorder.none,
-                                    prefixIcon: Icon(
-                                      Icons.search,
-                                      color: Color(0xFFDFB48C),
-                                    ),
-                                    hintText: "Search",
-                                    contentPadding:
-                                        EdgeInsets.only(left: 15, top: 15),
-                                    hintStyle:
-                                        TextStyle(color: Colors.white24)),
-                              ),
-                            )),
-                      ],
-                    ),
-                    customHeightBox(20),
-
-                    RefreshIndicator(
-                      onRefresh: _refreshList,
-                      child: ListView.builder(
-                          padding: EdgeInsets.zero,
-                          itemCount: snapshot.data!.data!.length,
-                          shrinkWrap: true,
-                          itemBuilder: (context, index) {
-                            return Column(children: [
-                              Container(
-                                  padding: const EdgeInsets.only(
-                                      top: 10, bottom: 10),
-                                  child: Row(children: [
-                                    Stack(
-                                      alignment: Alignment.bottomRight,
-                                      children: [
-                                        DottedBorder(
-                                          radius: const Radius.circular(2),
-                                          padding: const EdgeInsets.all(5),
-                                          borderType: BorderType.Circle,
-                                          color: const Color(0xFF3E55AF),
-                                          child: Container(
-                                            padding: const EdgeInsets.all(1),
-                                            child: CachedNetworkImage(
-                                                imageUrl: IMAGE_URL +
-                                                    snapshot.data!.data![index]
-                                                        .friend!.profileImage
-                                                        .toString(),
-                                                errorWidget:
-                                                    (error, context, url) =>
-                                                        Icon(Icons.person),
-                                                placeholder: (context, url) =>
-                                                    Icon(Icons.person),
-                                                imageBuilder: (context, url) {
-                                                  return CircleAvatar(
-                                                    backgroundImage: url,
-                                                  );
-                                                }),
-                                          ),
+              ? Container(
+                  padding: EdgeInsets.only(left: 15, right: 15),
+                  child: RefreshIndicator(
+                    onRefresh: _refreshList,
+                    child: ListView.builder(
+                        padding: EdgeInsets.zero,
+                        itemCount: snapshot.data!.data!.length,
+                        shrinkWrap: true,
+                        itemBuilder: (context, index) {
+                          return Column(children: [
+                            Container(
+                                padding:
+                                    const EdgeInsets.only(top: 10, bottom: 10),
+                                child: Row(children: [
+                                  Stack(
+                                    alignment: Alignment.bottomRight,
+                                    children: [
+                                      DottedBorder(
+                                        radius: const Radius.circular(2),
+                                        padding: const EdgeInsets.all(5),
+                                        borderType: BorderType.Circle,
+                                        color: const Color(0xFF3E55AF),
+                                        child: Container(
+                                          padding: const EdgeInsets.all(1),
+                                          child: CachedNetworkImage(
+                                              imageUrl: IMAGE_URL +
+                                                  snapshot.data!.data![index]
+                                                      .friend!.profileImage
+                                                      .toString(),
+                                              errorWidget:
+                                                  (error, context, url) =>
+                                                      Icon(Icons.person),
+                                              placeholder: (context, url) =>
+                                                  Icon(Icons.person),
+                                              imageBuilder: (context, url) {
+                                                return CircleAvatar(
+                                                  backgroundImage: url,
+                                                );
+                                              }),
                                         ),
-                                        Container(
-                                          height: 9,
-                                          width: 9,
-                                          margin: const EdgeInsets.only(
-                                              right: 3, bottom: 3),
-                                          decoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(10),
-                                              gradient:
-                                                  commonButtonLinearGridient),
-                                        )
-                                      ],
-                                    ),
-                                    customWidthBox(10),
-                                    Column(
-                                      crossAxisAlignment: cStart,
-                                      children: [
-                                        customText(
-                                            snapshot.data!.data![index].friend!
-                                                .fullName
-                                                .toString(),
-                                            15,
-                                            white),
-                                        customHeightBox(5),
-                                        Row(
-                                          children: [
-                                            Icon(
-                                              Icons.location_pin,
-                                              color: yellowColor,
-                                              size: 15,
-                                            ),
-                                            customText(
-                                                snapshot.data!.data![index]
-                                                    .friend!.city![0].name
-                                                    .toString(),
-                                                9.5,
-                                                white)
-                                          ],
-                                        )
-                                      ],
-                                    ),
-                                    const Spacer(),
-                                    Row(
-                                      children: [
-                                        InkWell(
-                                          onTap: () {
-                                            acceptAndRejectRequest(
-                                                snapshot.data!.data![index]
-                                                    .friend!.sId
-                                                    .toString(),
-                                                snapshot.data!.data![index]
-                                                    .friend!.fullName
-                                                    .toString(),
-                                                "0");
-                                          },
-                                          child: Image.asset(
-                                            "assets/icons/check_right_icon.png",
-                                            height: 18,
-                                            width: 18,
-                                            color: white,
+                                      ),
+                                      Container(
+                                        height: 9,
+                                        width: 9,
+                                        margin: const EdgeInsets.only(
+                                            right: 3, bottom: 3),
+                                        decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                            gradient:
+                                                commonButtonLinearGridient),
+                                      )
+                                    ],
+                                  ),
+                                  customWidthBox(10),
+                                  Column(
+                                    crossAxisAlignment: cStart,
+                                    children: [
+                                      customText(
+                                          snapshot.data!.data![index].friend!
+                                              .fullName
+                                              .toString(),
+                                          15,
+                                          white),
+                                      customHeightBox(5),
+                                      Row(
+                                        children: [
+                                          Icon(
+                                            Icons.location_pin,
+                                            color: yellowColor,
+                                            size: 15,
                                           ),
+                                          customText(
+                                              snapshot.data!.data![index]
+                                                  .friend!.city![0].name
+                                                  .toString(),
+                                              9.5,
+                                              white)
+                                        ],
+                                      )
+                                    ],
+                                  ),
+                                  const Spacer(),
+                                  Row(
+                                    children: [
+                                      InkWell(
+                                        onTap: () {
+                                          acceptAndRejectRequest(
+                                              snapshot.data!.data![index]
+                                                  .friend!.sId
+                                                  .toString(),
+                                              snapshot.data!.data![index]
+                                                  .friend!.fullName
+                                                  .toString(),
+                                              "0");
+                                        },
+                                        child: Image.asset(
+                                          "assets/icons/check_right_icon.png",
+                                          height: 18,
+                                          width: 18,
+                                          color: white,
                                         ),
-                                        customWidthBox(20),
-                                        InkWell(
-                                          onTap: () {
-                                            acceptAndRejectRequest(
-                                                snapshot.data!.data![index]
-                                                    .friend!.sId
-                                                    .toString(),
-                                                snapshot.data!.data![index]
-                                                    .friend!.fullName
-                                                    .toString(),
-                                                "1");
-                                          },
-                                          child: const Icon(
-                                            Icons.close,
-                                            size: 25,
-                                            color: Colors.red,
-                                          ),
-                                        )
-                                      ],
-                                    )
-                                  ]))
-                            ]);
-                          }),
-                    ),
-                  ],
+                                      ),
+                                      customWidthBox(20),
+                                      InkWell(
+                                        onTap: () {
+                                          acceptAndRejectRequest(
+                                              snapshot.data!.data![index]
+                                                  .friend!.sId
+                                                  .toString(),
+                                              snapshot.data!.data![index]
+                                                  .friend!.fullName
+                                                  .toString(),
+                                              "1");
+                                        },
+                                        child: const Icon(
+                                          Icons.close,
+                                          size: 25,
+                                          color: Colors.red,
+                                        ),
+                                      )
+                                    ],
+                                  )
+                                ]))
+                          ]);
+                        }),
+                  ),
                 )
               : Center(
                   child: customText("Not Data found", 15, white),

@@ -1,25 +1,17 @@
 import 'dart:async';
 import 'dart:convert';
-
-import 'package:afro/Screens/Authentication/SignInPage.dart';
 import 'package:afro/Screens/Authentication/SignInPage2.dart';
 import 'package:afro/Screens/HomeScreens/Home/Contacts/AllContactsScreen.dart';
 import 'package:afro/Screens/HomeScreens/Home/MembershipScreenPage.dart';
 import 'package:afro/Util/CustomWidget.dart';
-
 import 'package:afro/Screens/HomeScreens/Home/MyProfile.dart';
-
 import 'package:afro/Screens/HomeScreens/ProfileNavigationScreens/SendFeedbackPage.dart';
 import 'package:afro/Screens/HomeScreens/ProfileNavigationScreens/SettingsScreenPage.dart';
-
 import 'package:afro/Util/CustomWidgetAttributes.dart';
-import 'package:afro/Util/SharedPreferencfes.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
-
 import '../../../Network/Apis.dart';
 import '../../../Util/Colors.dart';
 import '../../../Util/CommonUI.dart';

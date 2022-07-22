@@ -84,7 +84,7 @@ class _NotificationScreenPageState extends State<NotificationScreenPage> {
                             ),
                             Spacer(),
                             customText(
-                                getFullDateWithTime(snapshot
+                                getDateFormat(snapshot
                                     .data!.data![index].createdAt
                                     .toString()),
                                 11,

@@ -283,7 +283,7 @@ class _MyThreadsPageState extends State<MyThreadsPage> {
   //Delete the form thread
   Future<void> deleteForm(String id) async {
     SharedPreferences sharedPreferences = await _prefs;
-    String token = sharedPreferences.getString(user.token).toString();
+    String token = sharedPreferences.getString(userInfo.token).toString();
     print(token);
     var jsonResponse = null;
     var response =
@@ -313,7 +313,7 @@ class _MyThreadsPageState extends State<MyThreadsPage> {
   Future<void> likeUnlike(String id, int type) async {
     showProgressDialogBox(context);
     SharedPreferences sharedPreferences = await _prefs;
-    String token = sharedPreferences.getString(user.token).toString();
+    String token = sharedPreferences.getString(userInfo.token).toString();
     print(token);
     var jsonResponse = null;
     Map data = {

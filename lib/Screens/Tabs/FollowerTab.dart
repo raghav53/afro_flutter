@@ -73,7 +73,7 @@ class _FollowerTabState extends State<FollowerTab> {
                           .toString();
 
                       String? cName = snaapshot
-                          .data!.data![index].follower!.country?[index].title
+                          .data!.data![index].follower!.country?[0].title
                           .toString();
                       bool _isVisible =
                           snaapshot.data!.data![index].isFollowing == 1
@@ -111,7 +111,7 @@ class _FollowerTabState extends State<FollowerTab> {
                                       CircleAvatar(
                                     backgroundImage: image,
                                   ),
-                                  imageUrl: IMAGE_URL + userImage!,
+                                  imageUrl: IMAGE_URL + userImage.toString(),
                                 ),
                                 customWidthBox(10),
                                 Column(

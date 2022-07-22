@@ -56,7 +56,7 @@ class _AllThreadsPageScreenState extends State<AllThreadsPageScreen>
   //Get user details
   getUserDetails() async {
     SharedPreferences sharedPreferences = await _prefs;
-    loginuserId = sharedPreferences.getString(user.id).toString();
+    loginuserId = sharedPreferences.getString(userInfo.id).toString();
   }
 
   @override
@@ -308,7 +308,7 @@ class _AllThreadsPageScreenState extends State<AllThreadsPageScreen>
   Future<void> likeUnlike(String id, int type) async {
     showProgressDialogBox(context);
     SharedPreferences sharedPreferences = await _prefs;
-    String token = sharedPreferences.getString(user.token).toString();
+    String token = sharedPreferences.getString(userInfo.token).toString();
     print(token);
     var jsonResponse = null;
     Map data = {
@@ -392,7 +392,7 @@ class _AllThreadsPageScreenState extends State<AllThreadsPageScreen>
   //Delete the form thread
   Future<void> deleteForm(String id) async {
     SharedPreferences sharedPreferences = await _prefs;
-    String token = sharedPreferences.getString(user.token).toString();
+    String token = sharedPreferences.getString(userInfo.token).toString();
     print(token);
     var jsonResponse = null;
     var response =

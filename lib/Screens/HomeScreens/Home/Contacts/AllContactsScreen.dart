@@ -39,39 +39,95 @@ class _AllContactsListScreenState extends State<AllContactsListScreen> {
       child: Scaffold(
         appBar: commonAppbar("Explore Contacts"),
         extendBodyBehindAppBar: true,
-        resizeToAvoidBottomInset: false,
         body: Container(
-          padding: const EdgeInsets.only(top: 70, left: 20, right: 20),
+          padding: const EdgeInsets.only(top: 70),
           decoration: commonBoxDecoration(),
           height: phoneHeight(context),
           width: phoneWidth(context),
-          child: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: cStart,
-              children: [
-                customHeightBox(15),
-                //Fillters List
-                customText("Choose Fillters", 13, yellowColor),
-                customHeightBox(10),
-                Container(
-                  height: 25,
-                  child: ListView.builder(
-                      shrinkWrap: true,
-                      scrollDirection: Axis.horizontal,
-                      itemCount: filterList.length,
-                      itemBuilder: (context, index) {
-                        return filterItem(
-                            filterList[index], index, titleList[index]);
-                      }),
+          child: Column(
+            crossAxisAlignment: cStart,
+            children: [
+              customHeightBox(15),
+              Padding(
+                padding: EdgeInsets.only(left: 15, right: 15),
+                child: Row(
+                  mainAxisAlignment: mCenter,
+                  children: [
+                    Flexible(
+                        flex: 20,
+                        child: Container(
+                          alignment: Alignment.centerLeft,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              boxShadow: const [
+                                BoxShadow(
+                                    color: Colors.black, offset: Offset(0, 2))
+                              ]),
+                          child: TextField(
+                            onChanged: (value) => {
+                              setState(() {
+                                // searchUser = value.toString();
+                              })
+                            },
+                            keyboardType: TextInputType.text,
+                            style: const TextStyle(
+                                fontSize: 14, color: Colors.white),
+                            decoration: const InputDecoration(
+                                border: InputBorder.none,
+                                prefixIcon: Icon(
+                                  Icons.search,
+                                  color: Color(0xFFDFB48C),
+                                ),
+                                hintText: "Search",
+                                contentPadding:
+                                    EdgeInsets.only(left: 15, top: 15),
+                                hintStyle: TextStyle(color: Colors.white24)),
+                          ),
+                        )),
+                    customWidthBox(20),
+                    Flexible(
+                        flex: 1,
+                        child: InkWell(
+                          onTap: () {
+                            //openBottomSheet();
+                          },
+                          child: Image.asset(
+                            "assets/icons/fillter.png",
+                            height: 20,
+                            width: 20,
+                          ),
+                        )),
+                  ],
                 ),
-                customHeightBox(30),
-                customText(selectedText, 12, yellowColor),
-                customDivider(20, white),
+              ),
+              customHeightBox(15),
+              //Fillters List
+              Padding(
+                padding: EdgeInsets.only(left: 15, right: 15),
+                child: customText("Choose Fillters", 13, yellowColor),
+              ),
+              customHeightBox(10),
+              Container(
+                padding: EdgeInsets.only(left: 15, right: 15),
+                height: 25,
+                child: ListView.builder(
+                    shrinkWrap: true,
+                    scrollDirection: Axis.horizontal,
+                    itemCount: filterList.length,
+                    itemBuilder: (context, index) {
+                      return filterItem(
+                          filterList[index], index, titleList[index]);
+                    }),
+              ),
+              customHeightBox(30),
+              Padding(
+                padding: EdgeInsets.only(left: 15, right: 15),
+                child: customText(selectedText, 12, yellowColor),
+              ),
 
-                //Selected Listview(Discover by default)
-                setTheListview(selectedIndex)
-              ],
-            ),
+              //Selected Listview(Discover by default)
+              setTheListview(selectedIndex)
+            ],
           ),
         ),
       ),

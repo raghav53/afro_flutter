@@ -102,7 +102,8 @@ class _OtherUserProfilePageScreenState extends State<OtherUserProfilePageScreen>
                                 decoration: BoxDecoration(
                                     color: gray1,
                                     borderRadius: BorderRadius.circular(10)),
-                                child: Row(
+                                child:
+                                 Row(
                                   crossAxisAlignment: cStart,
                                   children: [
                                     //Profile Image

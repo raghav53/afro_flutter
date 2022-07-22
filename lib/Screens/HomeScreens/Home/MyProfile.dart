@@ -2,6 +2,7 @@ import 'package:afro/Model/UserProfileModel.dart';
 import 'package:afro/Network/Apis.dart';
 import 'package:afro/Screens/SignUpProcess/SelectInterest.dart';
 import 'package:afro/Util/Colors.dart';
+import 'package:afro/Util/CommonMethods.dart';
 import 'package:afro/Util/Constants.dart';
 import 'package:afro/Util/CustomWidget.dart';
 import 'package:afro/Screens/HomeScreens/ProfileNavigationScreens/AllMembers.dart';
@@ -13,6 +14,7 @@ import 'package:afro/Screens/HomeScreens/ProfileNavigationScreens/SelectLanguage
 import 'package:afro/Screens/HomeScreens/ProfileNavigationScreens/WorkPage.dart';
 import 'package:afro/Util/CustomWidgetAttributes.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:country_codes/country_codes.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -23,16 +25,22 @@ class MyProfilePage extends StatefulWidget {
   _MyProffile createState() => _MyProffile();
 }
 
+Future<UserProfile>? _getUserProfile;
 String? fullName,
     imageURl,
     since,
     totalFollowers,
     totalFollowings,
-    totalContacts;
+    totalContacts,
+    twitter,
+    instagram,
+    bio,
+    website,
+    facebook,
+    linkdin;
 
-//Social links
-String? twitter, instagram, website, facebook, linkdin;
 UserProfile userProfile = UserProfile();
+String? userID;
 
 class _MyProffile extends State<MyProfilePage> {
   final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
@@ -46,6 +54,7 @@ class _MyProffile extends State<MyProfilePage> {
     totalContacts = sharedPreferences.getString(user.totalContacts);
     facebook = sharedPreferences.getString(user.facebook);
     twitter = sharedPreferences.getString(user.twitter);
+    bio = sharedPreferences.getString(user.bio);
     instagram = sharedPreferences.getString(user.instagram);
     website = sharedPreferences.getString(user.website);
     linkdin = sharedPreferences.getString(user.linkdin);
@@ -55,7 +64,20 @@ class _MyProffile extends State<MyProfilePage> {
   @override
   void initState() {
     super.initState();
+    Future.delayed(Duration.zero, () {
+      _getUserProfile = getUserProfileinfo(context, userID.toString());
+      setState(() {});
+      _getUserProfile!.whenComplete(() => () {});
+    });
     getUserData();
+    getCode();
+  }
+
+  getCode() async {
+    await CountryCodes.init();
+    Locale? deviceLocale = CountryCodes.getDeviceLocale();
+    print(deviceLocale!.languageCode);
+    print(deviceLocale.countryCode);
   }
 
   @override
@@ -77,52 +99,139 @@ class _MyProffile extends State<MyProfilePage> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Container(
-                      child: Stack(alignment: Alignment.bottomRight, children: [
-                        Container(
+                      decoration: BoxDecoration(
+                          color: blue, borderRadius: BorderRadius.circular(10)),
+                      margin: EdgeInsets.only(left: 20, right: 20),
+                      padding: EdgeInsets.all(10),
+                      child: Row(
+                        crossAxisAlignment: cStart,
+                        children: [
+                          //Profile Image
+                          Container(
+                            height: 60,
+                            width: 60,
                             decoration: BoxDecoration(
-                              border: Border.all(
-                                color: red,
-                                width: 1.0,
-                              ),
-                              shape: BoxShape.circle,
-                            ),
-                            width: 100,
-                            height: 100,
-                            padding: const EdgeInsets.all(5),
-                            child: CachedNetworkImage(
-                              imageUrl: IMAGE_URL + imageURl.toString(),
-                              placeholder: (context, url) => const CircleAvatar(
-                                  backgroundImage:
-                                      AssetImage("tom_cruise.jpeg")),
-                              imageBuilder: (context, image) => CircleAvatar(
-                                backgroundImage: image,
-                              ),
-                            )),
-                        GestureDetector(
-                          onTap: () {},
-                          child: Container(
-                            padding: const EdgeInsets.all(4),
-                            height: 25,
-                            width: 25,
-                            decoration: BoxDecoration(
-                                gradient: commonButtonLinearGridient,
-                                borderRadius: BorderRadius.circular(30.0)),
-                            child: Image.asset(
-                              "assets/icons/camera.png",
+                                border:
+                                    Border.all(width: 1, color: yellowColor),
+                                borderRadius: BorderRadius.circular(50)),
+                            child: Padding(
+                              padding: const EdgeInsets.all(3.0),
+                              child: CachedNetworkImage(
+                                  imageUrl: IMAGE_URL + imageURl.toString(),
+                                  errorWidget: (error, context, url) =>
+                                      Icon(Icons.person),
+                                  placeholder: (context, url) =>
+                                      Icon(Icons.person),
+                                  imageBuilder: (context, url) {
+                                    return CircleAvatar(
+                                      backgroundImage: url,
+                                    );
+                                  }),
                             ),
                           ),
-                        )
-                      ]),
+                          customWidthBox(7),
+                          //Basic Info,
+                          Column(
+                            crossAxisAlignment: cStart,
+                            children: [
+                              Row(
+                                children: [
+                                  customText(fullName.toString(), 15, white),
+                                  customWidthBox(5),
+                                  FutureBuilder<UserProfile>(
+                                      future: _getUserProfile,
+                                      builder: (context, snapshot) {
+                                        return snapshot.hasData
+                                            ? Row(
+                                                children: [
+                                                  CachedNetworkImage(
+                                                    height: 15,
+                                                    width: 15,
+                                                    imageUrl: country_code_url +
+                                                        snapshot.data!.data!
+                                                            .country!.iso2
+                                                            .toString()
+                                                            .toLowerCase() +
+                                                        ".png",
+                                                    imageBuilder:
+                                                        (context, url) {
+                                                      return CircleAvatar(
+                                                        backgroundImage: url,
+                                                      );
+                                                    },
+                                                  ),
+                                                ],
+                                              )
+                                            : Container();
+                                      })
+                                ],
+                              ),
+                              customHeightBox(2),
+                              customText("Newcorner Buddy", 11, white),
+                              customHeightBox(2),
+                              customText("Member since April 2022", 11, white),
+                              customHeightBox(13),
+                              customText('Bio', 15, white),
+                              customHeightBox(3),
+                              Container(
+                                width: phoneWidth(context) / 1.5,
+                                child: Text(
+                                  bio.toString(),
+                                  style: TextStyle(fontSize: 11, color: white),
+                                ),
+                              ),
+                              customHeightBox(15),
+                              customHeightBox(15),
+                              //Following , Follower , Friends/Contacts
+                              Row(
+                                children: [
+                                  InkWell(
+                                    onTap: () {
+                                      Navigator.of(context).push(
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  FollowerFollowingPage()));
+                                    },
+                                    child: customText(
+                                        "Following: " +
+                                            totalFollowings.toString(),
+                                        12,
+                                        white),
+                                  ),
+                                  customWidthBox(30),
+                                  InkWell(
+                                    onTap: () {
+                                      Navigator.of(context).push(
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  FollowerFollowingPage()));
+                                    },
+                                    child: customText(
+                                        "Follower: " +
+                                            totalFollowers.toString(),
+                                        12,
+                                        white),
+                                  ),
+                                  customWidthBox(30),
+                                  InkWell(
+                                    onTap: () {
+                                      Navigator.of(context).push(
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  AllMembers()));
+                                    },
+                                    child: customText(
+                                        "Contacts: " + totalContacts.toString(),
+                                        12,
+                                        white),
+                                  )
+                                ],
+                              )
+                            ],
+                          ),
+                        ],
+                      ),
                     ),
-                    customHeightBox(10),
-                    customText(fullName.toString(), 15, Colors.white),
-                    customHeightBox(10),
-                    customText(
-                        "Member since 2020", 15, const Color(0x3dFFFFFF)),
-                    customHeightBox(10),
-                    socialIconsLink(),
-                    //Follwers/Following/Members
-                    customSocialMembers(context),
                     customHeightBox(20),
                     Container(
                       child: Column(
@@ -201,10 +310,7 @@ Widget customSocialMembers(BuildContext context) {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         GestureDetector(
-          onTap: () {
-            Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) => FollowerFollowingPage()));
-          },
+          onTap: () {},
           child: Column(
             children: [
               customText(totalFollowings.toString(), 15, white),
@@ -231,10 +337,7 @@ Widget customSocialMembers(BuildContext context) {
           height: 40,
         ),
         GestureDetector(
-          onTap: () {
-            Navigator.of(context)
-                .push(MaterialPageRoute(builder: (context) => AllMembers()));
-          },
+          onTap: () {},
           child: Column(
             children: [
               customText(totalContacts.toString(), 15, white),

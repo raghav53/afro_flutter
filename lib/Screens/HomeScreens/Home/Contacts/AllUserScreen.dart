@@ -68,163 +68,112 @@ class _AllUsersPageState extends State<AllUsersPage> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<GetAllFriendsModel>(
-        future: _getSearchCountriesList(searchUser),
+        future: _getAllUsersList,
         builder: (context, snapshot) {
           return snapshot.hasData && snapshot.data!.data!.isNotEmpty
-              ? Column(
-                  children: [
-                    customHeightBox(20),
-                    //Search box of the friends
-                    Row(
-                      mainAxisAlignment: mCenter,
-                      children: [
-                        Flexible(
-                            flex: 12,
-                            child: Container(
-                              alignment: Alignment.centerLeft,
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10),
-                                  boxShadow: const [
-                                    BoxShadow(
-                                        color: Colors.black,
-                                        offset: Offset(0, 2))
-                                  ]),
-                              child: TextField(
-                                onChanged: (value) => {
-                                  setState(() {
-                                    searchUser = value.toString();
-                                  })
-                                },
-                                keyboardType: TextInputType.text,
-                                style: const TextStyle(
-                                    fontSize: 14, color: Colors.white),
-                                decoration: const InputDecoration(
-                                    border: InputBorder.none,
-                                    prefixIcon: Icon(
-                                      Icons.search,
-                                      color: Color(0xFFDFB48C),
-                                    ),
-                                    hintText: "Search",
-                                    contentPadding:
-                                        EdgeInsets.only(left: 15, top: 15),
-                                    hintStyle:
-                                        TextStyle(color: Colors.white24)),
-                              ),
-                            )),
-                        customWidthBox(20),
-                        Flexible(
-                            flex: 1,
-                            child: InkWell(
-                              onTap: () {
-                                //openBottomSheet();
-                              },
-                              child: Image.asset(
-                                "assets/icons/fillter.png",
-                                height: 20,
-                                width: 20,
-                              ),
-                            )),
-                      ],
-                    ),
-                    customHeightBox(20),
-
-                    RefreshIndicator(
-                      onRefresh: _refreshUsersList,
-                      child: ListView.builder(
-                          padding: EdgeInsets.zero,
-                          itemCount: snapshot.data!.data!.length,
-                          shrinkWrap: true,
-                          itemBuilder: (context, index) {
-                            return Column(
-                              children: [
-                                Container(
-                                  padding: const EdgeInsets.only(
-                                      top: 10, bottom: 10),
-                                  child: Row(
+              ? Container(
+                  padding: EdgeInsets.only(left: 10, right: 10),
+                  height: phoneHeight(context) * 0.68,
+                  child: ListView.builder(
+                      padding: EdgeInsets.zero,
+                      itemCount: snapshot.data!.data!.length,
+                      physics: ClampingScrollPhysics(),
+                      shrinkWrap: true,
+                      itemBuilder: (context, index) {
+                        return Column(
+                          children: [
+                            Container(
+                              padding:
+                                  const EdgeInsets.only(top: 10, bottom: 10),
+                              child: Row(
+                                children: [
+                                  Stack(
+                                    alignment: Alignment.bottomRight,
                                     children: [
-                                      Stack(
-                                        alignment: Alignment.bottomRight,
-                                        children: [
-                                          DottedBorder(
-                                            radius: const Radius.circular(2),
-                                            padding: const EdgeInsets.all(5),
-                                            borderType: BorderType.Circle,
-                                            color: const Color(0xFF3E55AF),
-                                            child: Container(
-                                              padding: const EdgeInsets.all(1),
-                                              child: CachedNetworkImage(
+                                      DottedBorder(
+                                        radius: const Radius.circular(2),
+                                        padding: const EdgeInsets.all(5),
+                                        borderType: BorderType.Circle,
+                                        color: const Color(0xFF3E55AF),
+                                        child: Container(
+                                          padding: const EdgeInsets.all(1),
+                                          child: snapshot.data!.data![index]
+                                                  .profileImage!.isNotEmpty
+                                              ? CachedNetworkImage(
                                                   imageUrl: IMAGE_URL +
                                                       snapshot
                                                           .data!
                                                           .data![index]
                                                           .profileImage
                                                           .toString(),
-                                                  errorWidget:
-                                                      (error, context, url) =>
-                                                          Icon(Icons.person),
+                                                  errorWidget: (error, context,
+                                                          url) =>
+                                                      const Icon(Icons.person),
                                                   placeholder: (context, url) =>
-                                                      Icon(Icons.person),
+                                                      const Icon(Icons.person),
                                                   imageBuilder: (context, url) {
                                                     return CircleAvatar(
                                                       backgroundImage: url,
                                                     );
-                                                  }),
-                                            ),
-                                          ),
-                                          Container(
-                                            height: 9,
-                                            width: 9,
-                                            margin: const EdgeInsets.only(
-                                                right: 3, bottom: 3),
-                                            decoration: BoxDecoration(
-                                                borderRadius:
-                                                    BorderRadius.circular(10),
-                                                gradient:
-                                                    commonButtonLinearGridient),
-                                          )
-                                        ],
+                                                  })
+                                              : const CircleAvatar(
+                                                  child: Icon(Icons.person)),
+                                        ),
                                       ),
-                                      customWidthBox(10),
-                                      Column(
-                                        crossAxisAlignment: cStart,
-                                        children: [
-                                          customText(
-                                              snapshot
-                                                  .data!.data![index].fullName
-                                                  .toString(),
-                                              15,
-                                              white),
-                                          customHeightBox(5),
-                                          Row(
-                                            children: [
-                                              Icon(
-                                                Icons.location_pin,
-                                                color: yellowColor,
-                                                size: 15,
-                                              ),
-                                              customText(
-                                                  snapshot.data!.data![index]
-                                                      .city![0].title
-                                                      .toString(),
-                                                  9.5,
-                                                  white)
-                                            ],
-                                          )
-                                        ],
-                                      ),
-                                      const Spacer(),
-                                      //Check user
-                                      checkStatus(
-                                          context, snapshot.data!.data![index])!
+                                      Container(
+                                        height: 9,
+                                        width: 9,
+                                        margin: const EdgeInsets.only(
+                                            right: 3, bottom: 3),
+                                        decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                            gradient:
+                                                commonButtonLinearGridient),
+                                      )
                                     ],
                                   ),
-                                ),
-                                customDivider(10, white)
-                              ],
-                            );
-                          }),
-                    ),
-                  ],
+                                  customWidthBox(10),
+                                  Column(
+                                    crossAxisAlignment: cStart,
+                                    children: [
+                                      customText(
+                                          snapshot.data!.data![index].fullName
+                                              .toString(),
+                                          15,
+                                          white),
+                                      customHeightBox(5),
+                                      Row(
+                                        children: [
+                                          Icon(
+                                            Icons.location_pin,
+                                            color: yellowColor,
+                                            size: 15,
+                                          ),
+                                          customText(
+                                              snapshot.data!.data![index].city!
+                                                      .isEmpty
+                                                  ? "Not available!"
+                                                  : snapshot.data!.data![index]
+                                                      .city![0].title
+                                                      .toString(),
+                                              9.5,
+                                              white)
+                                        ],
+                                      )
+                                    ],
+                                  ),
+                                  const Spacer(),
+                                  //Check user
+                                  checkStatus(
+                                      context, snapshot.data!.data![index])!
+                                ],
+                              ),
+                            ),
+                            customDivider(10, white)
+                          ],
+                        );
+                      }),
                 )
               : Center(
                   child: customText("Not data found....", 15, white),
