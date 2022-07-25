@@ -399,7 +399,6 @@ class _LoginScreenState extends State<LoginScreen> {
         sharedPreferences.remove("password");
       }
       await SaveStringToSF("login", "yes");
-
       SaveTheUserInfo();
       Navigator.pop(context);
       Navigator.of(context).pushReplacement(MaterialPageRoute(

@@ -13,8 +13,12 @@ import 'package:http/http.dart' as http;
 final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
 UserDataConstants user = UserDataConstants();
 
-Future<UserProfile> getUserProfileinfo(BuildContext context, String id) async {
-  showProgressDialogBox(context);
+Future<UserProfile> getUserProfileinfo(BuildContext context, String id,
+    {bool isShow = false}) async {
+  if (!isShow) {
+    showProgressDialogBox(context);
+  }
+
   SharedPreferences sharedPreferences = await _prefs;
   String token = sharedPreferences.getString(user.token).toString();
   String userId = sharedPreferences.getString(user.id).toString();
@@ -28,8 +32,10 @@ Future<UserProfile> getUserProfileinfo(BuildContext context, String id) async {
   print(response.body);
   jsonResponse = json.decode(response.body);
   var message = jsonResponse["message"];
-  if (response.statusCode == 200) {
+  if (!isShow) {
     Navigator.pop(context);
+  }
+  if (response.statusCode == 200) {
     UserProfile? userProfile = UserProfile.fromJson(jsonDecode(response.body));
     saveTheUser(userProfile);
     return UserProfile.fromJson(jsonDecode(response.body));

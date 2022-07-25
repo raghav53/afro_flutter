@@ -1,9 +1,12 @@
 import 'dart:async';
 
-
 import 'package:afro/Screens/Authentication/SignInPage2.dart';
 import 'package:afro/Screens/HomePageScreen.dart';
+import 'package:afro/Screens/HomeScreens/ProfileNavigationScreens/SelectLanguage.dart';
 import 'package:afro/Screens/OnBoardingScreen/FirstOnBoard.dart';
+import 'package:afro/Screens/SignUpProcess/FillInformation.dart';
+import 'package:afro/Screens/SignUpProcess/SelectInterest.dart';
+import 'package:afro/Screens/SignUpProcess/UploadPhotoPage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -43,7 +46,48 @@ class _SplashScreen extends State<SplashScreenPage> {
     SharedPreferences sharedPreferences = await _prefs;
     String? checkLogin = sharedPreferences.getString("login");
     String? onBorading = sharedPreferences.getString("onBoarding");
+    String? process = sharedPreferences.getString("newuser");
     String? token = sharedPreferences.getString("token");
+
+    if (process.toString().isNotEmpty && process != null) {
+      print(process.toString());
+      switch (process.toString()) {
+        case "verified":
+          Timer(
+              const Duration(seconds: 3),
+              () => Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => FillInformation(
+                            token: token,
+                          ))));
+          break;
+        case "infofilled":
+          Timer(
+              const Duration(seconds: 3),
+              () => Navigator.pushReplacement(context,
+                  MaterialPageRoute(builder: (context) => UploadPhotoPage())));
+          break;
+        case "profileuploaded":
+          Timer(
+              const Duration(seconds: 3),
+              () => Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const SelectIntrest())));
+          break;
+        case "interestupdated":
+          Timer(
+              const Duration(seconds: 3),
+              () => Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => SelectLanguageScreenPage())));
+          break;
+
+        default:
+      }
+    }
     if (checkLogin == "yes") {
       Timer(
           const Duration(seconds: 3),

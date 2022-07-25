@@ -273,19 +273,9 @@ class _Email extends State<EmailVerification> {
   }
 
   Future<void> signUptheUser() async {
-    // Map data = {
-    //    'first_name':widget.receivedMap["first_name"],
-    //    'last_name':widget.receivedMap["last_name"],
-    //    'email':widget.receivedMap["email"],
-    //     'password':widget.receivedMap["password"],
-    //     'dob':widget.receivedMap["dob"],
-    //   'device_token': "hjgadswfhjg",
-    //   'device_type': "Android",
-    //   'social_type': "APP"
-    // };
-
+    var _userData = UserDataConstants();
     widget.receivedMap.addAll({
-         'device_token': "hjgadswfhjg",
+      'device_token': "hjgadswfhjg",
       'device_type': "Android",
       'social_type': "APP"
     });
@@ -299,7 +289,12 @@ class _Email extends State<EmailVerification> {
       Navigator.pop(context);
       signUpModel = SignUpModel.fromJson(jsonResponse);
       SaveStringToSF("token", signUpModel!.data!.token!);
-      Navigator.push(
+      SaveStringToSF(_userData.id, signUpModel!.data!.id!);
+      SaveStringToSF("newuser", "verified");
+
+      print(
+          "User Token:-${signUpModel!.data!.token!} , User Id :- ${signUpModel!.data!.id!}");
+      Navigator.pushReplacement(
           context,
           MaterialPageRoute(
               builder: (context) =>

@@ -159,15 +159,18 @@ class _HomeScreen extends State<DashboardPageScreen> {
                     MaterialPageRoute(builder: (context) => MyProfilePage()));
               },
               child: Container(
-                child: CachedNetworkImage(
-                  imageUrl: IMAGE_URL + profileImage.toString(),
-                  placeholder: (context, url) => const CircleAvatar(
-                      backgroundImage: AssetImage("tom_cruise.jpeg")),
-                  imageBuilder: (context, image) => CircleAvatar(
-                    backgroundImage: image,
-                  ),
-                ),
-              )),
+                  child: profileImage.toString().isNotEmpty
+                      ? CachedNetworkImage(
+                          imageUrl: IMAGE_URL + profileImage.toString(),
+                          placeholder: (context, url) => const CircleAvatar(
+                              backgroundImage: AssetImage("tom_cruise.jpeg")),
+                          imageBuilder: (context, image) => CircleAvatar(
+                            backgroundImage: image,
+                          ),
+                        )
+                      : CircleAvatar(
+                          child: Image.asset("tom_cruise.jpeg"),
+                        ))),
           customWidthBox(10),
         ],
       ),

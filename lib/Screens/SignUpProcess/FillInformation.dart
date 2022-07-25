@@ -6,6 +6,7 @@ import 'package:afro/Model/CountryModel.dart';
 import 'package:afro/Model/StatesModel.dart';
 import 'package:afro/Network/Apis.dart';
 import 'package:afro/Screens/HomeScreens/SearchLocationScreen.dart';
+import 'package:afro/Util/SharedPreferencfes.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:http/http.dart' as http;
 import 'package:afro/Util/Colors.dart';
@@ -743,7 +744,8 @@ class _Information extends State<FillInformation> {
     var message = jsonResponse["message"];
     if (response.statusCode == 200) {
       Navigator.pop(context);
-      Navigator.push(
+      SaveStringToSF("newuser", "infofilled");
+      Navigator.pushReplacement(
           context, MaterialPageRoute(builder: (context) => UploadPhotoPage()));
     } else {
       Navigator.pop(context);

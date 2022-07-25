@@ -1,5 +1,3 @@
-
-
 class AllUserDataModel {
   String? sId;
   String? firstName;
@@ -267,9 +265,10 @@ class AllUserMetadata {
   int? limit;
   int? currentPage;
   int? totalDocs;
-  double? totalPages;
+  var totalPages;
 
-  AllUserMetadata({this.limit, this.currentPage, this.totalDocs, this.totalPages});
+  AllUserMetadata(
+      {this.limit, this.currentPage, this.totalDocs, this.totalPages});
 
   AllUserMetadata.fromJson(Map<String, dynamic> json) {
     limit = json['limit'];

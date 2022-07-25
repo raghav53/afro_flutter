@@ -7,6 +7,7 @@ import 'package:afro/Util/Colors.dart';
 import 'package:afro/Util/CommonUI.dart';
 import 'package:afro/Util/CustomWidget.dart';
 import 'package:afro/Util/CustomWidgetAttributes.dart';
+import 'package:afro/Util/SharedPreferencfes.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
@@ -42,111 +43,110 @@ class _Intrests extends State<SelectIntrest> {
   Widget build(BuildContext context) {
     return SafeArea(
         child: Scaffold(
-      appBar: commonAppbar("Interest"),
+      appBar: onlyTitleCommonAppbar("Interest"),
       extendBodyBehindAppBar: true,
-      resizeToAvoidBottomInset: false,
+      resizeToAvoidBottomInset: true,
       body: Container(
         decoration: commonBoxDecoration(),
         child: Container(
           height: phoneHeight(context),
           width: phoneWidth(context),
           margin: EdgeInsets.only(top: 50),
-          child: Column(
-            children: [
-              customHeightBox(30),
-              Text(
-                "Select your Interests",
-                style: TextStyle(
-                    fontSize: 20, color: white, fontWeight: FontWeight.bold),
-              ),
-              customHeightBox(20),
-              FutureBuilder<AllInterestModel>(
-                  future: _getInterestsList,
-                  builder: (context, snapshot) {
-                    return snapshot.hasData && snapshot.data!.data!.isNotEmpty
-                        ? Container(
-                            height: phoneHeight(context) * 0.69,
-                            child: ListView.builder(
-                              padding: EdgeInsets.zero,
-                              scrollDirection: Axis.vertical,
-                              shrinkWrap: true,
-                              itemCount: snapshot.data!.data!.length,
-                              itemBuilder: (context, int index) {
-                                String title = snapshot.data!.data![index].title
-                                    .toString();
-                                return ListTile(
-                                    title: Column(
-                                  children: [
-                                    Row(
-                                      children: [
-                                        Expanded(
-                                            child: customText(
-                                                title, 15, Colors.white)),
-                                        Checkbox(
-                                          checkColor: Colors.white,
-                                          activeColor: Color(0xFF7822A0),
-                                          value: snapshot
-                                              .data!.data![index].isSelected,
-                                          onChanged: (value) {
-                                            setState(() {
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                customHeightBox(30),
+                Text(
+                  "Select your Interests",
+                  style: TextStyle(
+                      fontSize: 20, color: white, fontWeight: FontWeight.bold),
+                ),
+                customHeightBox(20),
+                Container(
+                  height: phoneHeight(context) / 1.6,
+                  child: FutureBuilder<AllInterestModel>(
+                      future: _getInterestsList,
+                      builder: (context, snapshot) {
+                        return snapshot.hasData &&
+                                snapshot.data!.data!.isNotEmpty
+                            ? ListView.builder(
+                                padding: EdgeInsets.zero,
+                                scrollDirection: Axis.vertical,
+                                shrinkWrap: true,
+                                itemCount: snapshot.data!.data!.length,
+                                itemBuilder: (context, int index) {
+                                  String title = snapshot
+                                      .data!.data![index].title
+                                      .toString();
+                                  return InkWell(
+                                      onTap: () {
+                                        setState(() {
+                                          snapshot.data!.data![index]
+                                                  .isSelected =
+                                              !snapshot.data!.data![index]
+                                                  .isSelected!;
+                                          print(snapshot
+                                              .data!.data![index].isSelected);
+                                          addInterestInArray(
                                               snapshot.data!.data![index]
-                                                      .isSelected =
-                                                  !snapshot.data!.data![index]
-                                                      .isSelected!;
-                                              addInterestInArray(
-                                                  snapshot.data!.data![index]
-                                                      .isSelected,
-                                                  index);
-                                            });
-                                          },
+                                                  .isSelected,
+                                              snapshot.data!.data![index].sId
+                                                  .toString());
+                                        });
+                                      },
+                                      child: ListTile(
+                                        leading:
+                                            customText(title, 15, Colors.white),
+                                        trailing: InkWell(
+                                          child: Checkbox(
+                                            checkColor: Colors.white,
+                                            activeColor: Color(0xFF7822A0),
+                                            value: snapshot
+                                                .data!.data![index].isSelected,
+                                            onChanged: (value) {},
+                                          ),
                                         ),
-                                      ],
-                                    ),
-                                    const Divider(
-                                      height: 10,
-                                      color: Colors.white,
-                                    )
-                                  ],
-                                ));
-                              },
-                            ),
-                          )
-                        : Container(
-                            height: phoneHeight(context) * 0.69,
-                            child: Center(
-                              child: customText("Not data found!", 15, white),
-                            ),
-                          );
-                  }),
-              customHeightBox(30),
-              InkWell(
-                onTap: () {
-                  addInterestOfUser();
-                },
-                child: Container(
-                  margin: const EdgeInsets.only(left: 60, right: 60),
-                  padding: const EdgeInsets.only(top: 10, bottom: 10),
-                  decoration: fixedButtonDesign(),
-                  child: Row(
-                    mainAxisAlignment: mCenter,
-                    children: [customText("Next", 17, Colors.white)],
+                                      ));
+                                },
+                              )
+                            : Container(
+                                height: phoneHeight(context) * 0.69,
+                                child: Center(
+                                  child:
+                                      customText("Not data found!", 15, white),
+                                ),
+                              );
+                      }),
+                ),
+                customHeightBox(30),
+                InkWell(
+                  onTap: () {
+                    addInterestOfUser();
+                  },
+                  child: Container(
+                    margin: const EdgeInsets.only(left: 60, right: 60),
+                    padding: const EdgeInsets.only(top: 10, bottom: 10),
+                    decoration: fixedButtonDesign(),
+                    child: Row(
+                      mainAxisAlignment: mCenter,
+                      children: [customText("Next", 17, Colors.white)],
+                    ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
     ));
   }
 
-  addInterestInArray(bool? isSelected, int index) {
+  addInterestInArray(bool? isSelected, String id) {
     if (isSelected == true) {
-      selectedInterestedList
-          .add(interestModel!.data![index].sId.toString().toString());
+      selectedInterestedList.add(id);
       print(selectedInterestedList);
     } else {
-      selectedInterestedList.remove(interestModel!.data![index].sId.toString());
+      selectedInterestedList.remove(id);
       print(selectedInterestedList);
     }
   }
@@ -177,7 +177,7 @@ class _Intrests extends State<SelectIntrest> {
     print("Response : ${response.statusCode}");
     if (response.statusCode == 200) {
       Navigator.pop(context);
-
+      SaveStringToSF("newuser", "interestupdated");
       Navigator.push(context,
           MaterialPageRoute(builder: (context) => SelectLanguageScreenPage()));
     } else {

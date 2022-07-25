@@ -7,6 +7,7 @@ import 'package:afro/Util/CustomWidget.dart';
 
 import 'package:afro/Screens/SignUpProcess/SelectInterest.dart';
 import 'package:afro/Util/CustomWidgetAttributes.dart';
+import 'package:afro/Util/SharedPreferencfes.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -22,7 +23,6 @@ class UploadPhotoPage extends StatefulWidget {
 var imageFile = null;
 
 class _UploadPhoto extends State<UploadPhotoPage> {
-  String path = "";
   @override
   void initState() {
     super.initState();
@@ -122,12 +122,14 @@ class _UploadPhoto extends State<UploadPhotoPage> {
     String? token = sharedPreferences.getString("token");
     var request = http.MultipartRequest(
         'POST', Uri.parse(BASE_URL + "user_profile_image"));
-    request.files.add(await http.MultipartFile.fromPath('profile_image', path));
+    request.files.add(await http.MultipartFile.fromPath(
+        'profile_image', File(path.toString()).path));
     request.headers.addAll({'api-key': API_KEY, 'x-access-token': token!});
     var res = await request.send();
     debugPrint("res.statusCode ${res.statusCode}");
     if (res.statusCode == 200) {
       Navigator.pop(context);
+      SaveStringToSF("newuser", "profileuploaded");
       Navigator.push(
           context, MaterialPageRoute(builder: (context) => SelectIntrest()));
     } else {
@@ -142,75 +144,17 @@ class _UploadPhoto extends State<UploadPhotoPage> {
       final image = await ImagePicker().pickImage(source: source);
       if (image == null) return;
       final imageTemp = File(image.path);
-      setState(() {
-        imageFile = imageTemp;
-        // imagesList.add(File(image.path));
-        // print(lookupMimeType(image.name));
-      });
+      if (!mounted) return;
+      print(imageTemp.toString());
+      uploadProfileImage(imageTemp.path);
+      // setState(() {
+      //   imageFile = imageTemp;
+      // });
+
     } on PlatformException catch (e) {
       print('Failed to pick image: $e');
     }
   }
-
-  // //Open bottomsheet for image
-  // openBottomSheet() {
-  //   showModalBottomSheet(
-  //       context: context,
-  //       backgroundColor: black,
-  //       clipBehavior: Clip.antiAlias,
-  //       shape: const RoundedRectangleBorder(
-  //         borderRadius: BorderRadius.only(
-  //           topLeft: Radius.circular(10.0),
-  //           topRight: Radius.circular(10.0),
-  //         ),
-  //       ),
-  //       builder: (context) {
-  //         return StatefulBuilder(builder: (context, state) {
-  //           return Container(
-  //             height: 100,
-  //             child: Row(
-  //               mainAxisAlignment: mCenter,
-  //               crossAxisAlignment: cCenter,
-  //               children: [
-  //                 InkWell(
-  //                   onTap: () {
-  //                     Navigator.pop(context);
-  //                     open("camera");
-  //                   },
-  //                   child: Container(
-  //                       decoration: BoxDecoration(
-  //                           border: Border.all(color: white, width: 1),
-  //                           borderRadius: BorderRadius.circular(50)),
-  //                       padding: EdgeInsets.all(5),
-  //                       child: Icon(
-  //                         Icons.camera,
-  //                         color: white,
-  //                         size: 35,
-  //                       )),
-  //                 ),
-  //                 customWidthBox(50),
-  //                 InkWell(
-  //                   onTap: () {
-  //                     Navigator.pop(context);
-  //                     open("gallery");
-  //                   },
-  //                   child: Container(
-  //                       decoration: BoxDecoration(
-  //                           border: Border.all(color: white, width: 1),
-  //                           borderRadius: BorderRadius.circular(50)),
-  //                       padding: EdgeInsets.all(5),
-  //                       child: Icon(
-  //                         Icons.photo_library,
-  //                         color: white,
-  //                         size: 35,
-  //                       )),
-  //                 )
-  //               ],
-  //             ),
-  //           );
-  //         });
-  //       });
-  // }
 
   open(String subType) {
     if (subType.contains("camera")) {

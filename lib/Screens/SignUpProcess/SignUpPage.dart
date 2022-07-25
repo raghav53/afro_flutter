@@ -23,82 +23,7 @@ TextEditingController createPasswordController = new TextEditingController();
 TextEditingController confirmPasswordController = new TextEditingController();
 
 String dateOfBirth = "";
-int timeStamp = 0;
-//Custom/Common Editext for only text
-Widget buildCustomEdittext(
-    String text, TextEditingController controller, TextInputType input) {
-  return Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: <Widget>[
-      Text(
-        text,
-        style: const TextStyle(
-            color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
-      ),
-      customHeightBox(10),
-      Container(
-        alignment: Alignment.centerLeft,
-        decoration: BoxDecoration(
-            color: Colors.black,
-            borderRadius: BorderRadius.circular(10),
-            boxShadow: const [
-              BoxShadow(
-                  color: Colors.black26, blurRadius: 6, offset: Offset(0, 2))
-            ]),
-        height: 50,
-        child: TextField(
-          controller: controller,
-          keyboardType: input,
-          style: const TextStyle(color: Colors.white),
-          decoration: InputDecoration(
-              border: InputBorder.none,
-              contentPadding: const EdgeInsets.only(left: 14),
-              hintText: text,
-              hintStyle: const TextStyle(color: Colors.white24)),
-        ),
-      )
-    ],
-  );
-}
-
-//common / custom Edittext for password edittext
-Widget buildCustomPasswordWidget(
-    String text, TextEditingController controller, TextInputType type) {
-  return Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: [
-      Text(
-        text,
-        style: const TextStyle(
-            color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
-      ),
-      const SizedBox(
-        height: 10,
-      ),
-      Container(
-        alignment: Alignment.centerLeft,
-        decoration: BoxDecoration(
-            color: Colors.black,
-            borderRadius: BorderRadius.circular(10),
-            boxShadow: const [
-              BoxShadow(
-                  color: Colors.black26, blurRadius: 6, offset: Offset(0, 2))
-            ]),
-        height: 50,
-        child: TextField(
-          controller: controller,
-          keyboardType: type,
-          style: const TextStyle(color: Colors.white),
-          decoration: InputDecoration(
-              border: InputBorder.none,
-              contentPadding: const EdgeInsets.only(left: 14),
-              hintText: text,
-              hintStyle: const TextStyle(color: Colors.white24)),
-        ),
-      )
-    ],
-  );
-}
+String? timeStamp = "";
 
 class _SignUpPage extends State<SignUpPageScreen> {
   @override
@@ -135,30 +60,11 @@ class _SignUpPage extends State<SignUpPageScreen> {
                     const SizedBox(
                       height: 30,
                     ),
-                    buildCustomEdittext(
-                        "First Name", firstNamecontroller, TextInputType.text),
-                    const SizedBox(height: 20),
-                    buildCustomEdittext(
-                        "Last Name", lastNamecontroller, TextInputType.text),
+                    basicInformation(),
                     const SizedBox(
                       height: 20,
                     ),
-                    buildCustomEdittext(
-                        "Email", Emailcontroller, TextInputType.emailAddress),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    buildCustomPasswordWidget(
-                        "Create Password",
-                        createPasswordController,
-                        TextInputType.visiblePassword),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    buildCustomPasswordWidget(
-                        "Confirm Password",
-                        confirmPasswordController,
-                        TextInputType.visiblePassword),
+
                     customHeightBox(20),
                     customText("Date Of Birth", 16, white),
                     customHeightBox(10),
@@ -195,14 +101,15 @@ class _SignUpPage extends State<SignUpPageScreen> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text(
+                        const Text(
                           "Already have an account?",
                           style: TextStyle(color: Colors.white),
                         ),
                         TextButton(
                             onPressed: () => {
                                   Navigator.of(context).pop(MaterialPageRoute(
-                                      builder: (context) => LoginScreen()))
+                                      builder: (context) =>
+                                          const LoginScreen()))
                                 },
                             child: Text(
                               "SIGN IN",
@@ -221,6 +128,203 @@ class _SignUpPage extends State<SignUpPageScreen> {
         ),
       ),
     ));
+  }
+
+  //Basic Informations
+  basicInformation() {
+    return Column(
+      children: [
+        //First Name edittext
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            const Text(
+              "First Name",
+              style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold),
+            ),
+            customHeightBox(10),
+            Container(
+              alignment: Alignment.centerLeft,
+              decoration: BoxDecoration(
+                  color: Colors.black,
+                  borderRadius: BorderRadius.circular(10),
+                  boxShadow: const [
+                    BoxShadow(
+                        color: Colors.black26,
+                        blurRadius: 6,
+                        offset: Offset(0, 2))
+                  ]),
+              height: 50,
+              child: TextField(
+                controller: firstNamecontroller,
+                keyboardType: TextInputType.text,
+                style: const TextStyle(color: Colors.white),
+                decoration: InputDecoration(
+                    border: InputBorder.none,
+                    contentPadding: const EdgeInsets.only(left: 14),
+                    hintText: "First Name",
+                    hintStyle: const TextStyle(color: Colors.white24)),
+              ),
+            )
+          ],
+        ),
+        const SizedBox(height: 20),
+        //Last Name Edittext
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            const Text(
+              "Last Name",
+              style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold),
+            ),
+            customHeightBox(10),
+            Container(
+              alignment: Alignment.centerLeft,
+              decoration: BoxDecoration(
+                  color: Colors.black,
+                  borderRadius: BorderRadius.circular(10),
+                  boxShadow: const [
+                    BoxShadow(
+                        color: Colors.black26,
+                        blurRadius: 6,
+                        offset: Offset(0, 2))
+                  ]),
+              height: 50,
+              child: TextField(
+                controller: lastNamecontroller,
+                keyboardType: TextInputType.text,
+                style: const TextStyle(color: Colors.white),
+                decoration: const InputDecoration(
+                    border: InputBorder.none,
+                    contentPadding: EdgeInsets.only(left: 14),
+                    hintText: "First Name",
+                    hintStyle: TextStyle(color: Colors.white24)),
+              ),
+            )
+          ],
+        ),
+        const SizedBox(
+          height: 20,
+        ),
+        //Email edittext
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            const Text(
+              "Email",
+              style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold),
+            ),
+            customHeightBox(10),
+            Container(
+              alignment: Alignment.centerLeft,
+              decoration: BoxDecoration(
+                  color: Colors.black,
+                  borderRadius: BorderRadius.circular(10),
+                  boxShadow: const [
+                    BoxShadow(
+                        color: Colors.black26,
+                        blurRadius: 6,
+                        offset: Offset(0, 2))
+                  ]),
+              height: 50,
+              child: TextField(
+                controller: Emailcontroller,
+                keyboardType: TextInputType.text,
+                style: const TextStyle(color: Colors.white),
+                decoration: const InputDecoration(
+                    border: InputBorder.none,
+                    contentPadding: EdgeInsets.only(left: 14),
+                    hintText: "Email",
+                    hintStyle: TextStyle(color: Colors.white24)),
+              ),
+            )
+          ],
+        ),
+        const SizedBox(
+          height: 20,
+        ),
+        //Create new password
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            customText("Create Password", 16, white, bold: "yes"),
+            const SizedBox(
+              height: 10,
+            ),
+            Container(
+              alignment: Alignment.centerLeft,
+              decoration: BoxDecoration(
+                  color: Colors.black,
+                  borderRadius: BorderRadius.circular(10),
+                  boxShadow: const [
+                    BoxShadow(
+                        color: Colors.black26,
+                        blurRadius: 6,
+                        offset: Offset(0, 2))
+                  ]),
+              height: 50,
+              child: TextField(
+                controller: createPasswordController,
+                keyboardType: TextInputType.text,
+                obscureText: true,
+                style: const TextStyle(color: Colors.white),
+                decoration: const InputDecoration(
+                    border: InputBorder.none,
+                    contentPadding: EdgeInsets.only(left: 14),
+                    hintText: "Create Password",
+                    hintStyle: TextStyle(color: Colors.white24)),
+              ),
+            )
+          ],
+        ),
+        const SizedBox(
+          height: 20,
+        ),
+        //Confirm new password
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            customText("Confirm Password", 16, white, bold: "yes"),
+            const SizedBox(
+              height: 10,
+            ),
+            Container(
+              alignment: Alignment.centerLeft,
+              decoration: BoxDecoration(
+                  color: Colors.black,
+                  borderRadius: BorderRadius.circular(10),
+                  boxShadow: const [
+                    BoxShadow(
+                        color: Colors.black26,
+                        blurRadius: 6,
+                        offset: Offset(0, 2))
+                  ]),
+              height: 50,
+              child: TextField(
+                controller: confirmPasswordController,
+                keyboardType: TextInputType.text,
+                obscureText: true,
+                style: const TextStyle(color: Colors.white),
+                decoration: const InputDecoration(
+                    border: InputBorder.none,
+                    contentPadding: EdgeInsets.only(left: 14),
+                    hintText: "Confirm Password",
+                    hintStyle: TextStyle(color: Colors.white24)),
+              ),
+            )
+          ],
+        ),
+      ],
+    );
   }
 
   void openBottomSheet(BuildContext context) {
@@ -255,6 +359,10 @@ class _SignUpPage extends State<SignUpPageScreen> {
                         customWidthBox(25),
                         TextButton(
                             onPressed: () {
+                              if (timeStamp.toString().isEmpty) {
+                                customToastMsg("Please select your dob!");
+                                return;
+                              }
                               Navigator.pop(context);
                             },
                             child: customText("Done", 14, circleColor))
@@ -276,10 +384,15 @@ class _SignUpPage extends State<SignUpPageScreen> {
                         child: CupertinoDatePicker(
                           dateOrder: DatePickerDateOrder.dmy,
                           mode: CupertinoDatePickerMode.date,
-                          initialDateTime: DateTime(1980, 1, 1),
+                          initialDateTime: DateTime(DateTime.now().year,
+                              DateTime.now().month, DateTime.now().day),
                           onDateTimeChanged: (DateTime newDateTime) {
                             setState(() {
                               //hh:mm:ss
+                              final timestamp1 =
+                                  newDateTime.millisecondsSinceEpoch;
+                              timeStamp = timestamp1.toString();
+                              print("DOb TimeStamp :- " + timeStamp.toString());
                               String formattedDate =
                                   DateFormat('dd-MM-yyyy').format(newDateTime);
                               dateOfBirth = formattedDate;
@@ -334,7 +447,7 @@ class _SignUpPage extends State<SignUpPageScreen> {
       customToastMsg("Enter the confirm password");
     else if (createPassword != conFirmPassword) {
       customToastMsg("Password dosen't matched!");
-    } else if (dateOfBirth.isEmpty) {
+    } else if (timeStamp.toString().isEmpty) {
       customToastMsg("Please selec the date of birth");
     } else {
       Map<String, dynamic> map = {
@@ -342,7 +455,7 @@ class _SignUpPage extends State<SignUpPageScreen> {
         'last_name': lastName,
         'email': email1,
         'password': conFirmPassword,
-        'dob': "554774709"
+        'dob': timeStamp
       };
       return map;
     }

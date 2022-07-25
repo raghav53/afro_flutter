@@ -243,9 +243,8 @@ class _ProfilePage extends State<ProfileSettingScreenPage> {
     jsonResponse = json.decode(response.body);
     var message = jsonResponse["message"];
     if (response.statusCode == 200) {
-      sharedPreferences.remove("token");
-      sharedPreferences.remove("login");
-      sharedPreferences.remove("onBoarding");
+      SharedPreferences preferences = await SharedPreferences.getInstance();
+      await preferences.clear();
       Navigator.pop(context);
       Navigator.of(context).pushReplacement(MaterialPageRoute(
         builder: (context) => LoginScreen(),
