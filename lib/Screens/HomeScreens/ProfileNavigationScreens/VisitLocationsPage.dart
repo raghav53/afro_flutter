@@ -6,6 +6,7 @@ import 'package:afro/Screens/HomeScreens/ProfileNavigationScreens/AddEducation.d
 import 'package:afro/Screens/HomeScreens/ProfileNavigationScreens/AddVisitLocationPage.dart';
 import 'package:afro/Screens/HomeScreens/ProfileNavigationScreens/AddWork.dart';
 import 'package:afro/Util/CustomWidgetAttributes.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -114,7 +115,7 @@ class _Location extends State<LocationPageScreen> {
               FutureBuilder<VisitModel>(
                   future: _getAllLocationPlace,
                   builder: (context, snapshot) {
-                    return snapshot.hasData
+                    return snapshot.hasData && snapshot.data!.data!.isNotEmpty
                         ? ListView.builder(
                             padding: EdgeInsets.zero,
                             shrinkWrap: true,
@@ -135,10 +136,19 @@ class _Location extends State<LocationPageScreen> {
                                     top: 5, bottom: 5, left: 10, right: 10),
                                 child: Row(
                                   children: [
-                                    Icon(
-                                      Icons.flag,
-                                      color: white24,
-                                      size: 60,
+                                    CachedNetworkImage(
+                                      height: 30,
+                                      width: 30,
+                                      imageUrl: country_code_url +
+                                          snapshot.data!.data![index].iso2
+                                              .toString()
+                                              .toLowerCase() +
+                                          ".png",
+                                      imageBuilder: (context, url) {
+                                        return CircleAvatar(
+                                          backgroundImage: url,
+                                        );
+                                      },
                                     ),
                                     customWidthBox(15),
                                     Column(

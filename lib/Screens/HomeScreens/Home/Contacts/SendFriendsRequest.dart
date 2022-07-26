@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:afro/Model/Friends/SendRequest/GetAllSendRequests.dart';
 import 'package:afro/Network/Apis.dart';
+import 'package:afro/Screens/HomeScreens/Home/OtherUserProfilePage.dart';
 import 'package:afro/Util/Colors.dart';
 import 'package:afro/Util/CommonMethods.dart';
 import 'package:afro/Util/CommonUI.dart';
@@ -76,108 +77,126 @@ class _SendFriendsRequestState extends State<SendFriendsRequest> {
                         shrinkWrap: true,
                         itemCount: snapshot.data!.data!.length,
                         itemBuilder: (context, index) {
-                          return Column(
-                            children: [
-                              Container(
-                                padding:
-                                    const EdgeInsets.only(top: 10, bottom: 10),
-                                child: Row(
-                                  children: [
-                                    Stack(
-                                      alignment: Alignment.bottomRight,
-                                      children: [
-                                        DottedBorder(
-                                          radius: const Radius.circular(2),
-                                          padding: const EdgeInsets.all(5),
-                                          borderType: BorderType.Circle,
-                                          color: const Color(0xFF3E55AF),
-                                          child: Container(
-                                            padding: const EdgeInsets.all(1),
-                                            child: CachedNetworkImage(
-                                                imageUrl: IMAGE_URL +
-                                                    snapshot.data!.data![index]
-                                                        .friend!.profileImage
-                                                        .toString(),
-                                                errorWidget:
-                                                    (error, context, url) =>
-                                                        Icon(Icons.person),
-                                                placeholder: (context, url) =>
-                                                    Icon(Icons.person),
-                                                imageBuilder: (context, url) {
-                                                  return CircleAvatar(
-                                                    backgroundImage: url,
-                                                  );
-                                                }),
-                                          ),
-                                        ),
-                                        Container(
-                                          height: 9,
-                                          width: 9,
-                                          margin: const EdgeInsets.only(
-                                              right: 3, bottom: 3),
-                                          decoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(10),
-                                              gradient:
-                                                  commonButtonLinearGridient),
-                                        )
-                                      ],
-                                    ),
-                                    customWidthBox(10),
-                                    Column(
-                                      crossAxisAlignment: cStart,
-                                      children: [
-                                        customText(
-                                            snapshot.data!.data![index].friend!
-                                                .fullName
-                                                .toString(),
-                                            15,
-                                            white),
-                                        customHeightBox(5),
-                                        Row(
-                                          children: [
-                                            Icon(
-                                              Icons.location_pin,
-                                              color: yellowColor,
-                                              size: 15,
+                          return InkWell(
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          OtherUserProfilePageScreen(
+                                            name: snapshot.data!.data![index]
+                                                .friend!.fullName,
+                                            userID: snapshot
+                                                .data!.data![index].friend!.sId,
+                                          ))).then((value) =>
+                                  updateGetListOfSendFriendsRequest());
+                            },
+                            child: Column(
+                              children: [
+                                Container(
+                                  padding: const EdgeInsets.only(
+                                      top: 10, bottom: 10),
+                                  child: Row(
+                                    children: [
+                                      Stack(
+                                        alignment: Alignment.bottomRight,
+                                        children: [
+                                          DottedBorder(
+                                            radius: const Radius.circular(2),
+                                            padding: const EdgeInsets.all(5),
+                                            borderType: BorderType.Circle,
+                                            color: const Color(0xFF3E55AF),
+                                            child: Container(
+                                              padding: const EdgeInsets.all(1),
+                                              child: CachedNetworkImage(
+                                                  imageUrl: IMAGE_URL +
+                                                      snapshot
+                                                          .data!
+                                                          .data![index]
+                                                          .friend!
+                                                          .profileImage
+                                                          .toString(),
+                                                  errorWidget:
+                                                      (error, context, url) =>
+                                                          Icon(Icons.person),
+                                                  placeholder: (context, url) =>
+                                                      Icon(Icons.person),
+                                                  imageBuilder: (context, url) {
+                                                    return CircleAvatar(
+                                                      backgroundImage: url,
+                                                    );
+                                                  }),
                                             ),
-                                            customText(
-                                                snapshot.data!.data![index]
-                                                    .friend!.city![0].name
-                                                    .toString(),
-                                                9.5,
-                                                white)
-                                          ],
-                                        )
-                                      ],
-                                    ),
-                                    const Spacer(),
-                                    InkWell(
-                                      onTap: () {
-                                        showTheAlertBox(
-                                            context,
-                                            snapshot.data!.data![index].friend!
-                                                .fullName
-                                                .toString(),
-                                            snapshot
-                                                .data!.data![index].friend!.sId
-                                                .toString());
-                                      },
-                                      child: Padding(
-                                          padding:
-                                              const EdgeInsets.only(right: 8.0),
-                                          child: Image.asset(
-                                            "assets/icons/request_send.png",
-                                            height: 25,
-                                            width: 25,
-                                            color: circleColor,
-                                          )),
-                                    )
-                                  ],
+                                          ),
+                                          Container(
+                                            height: 9,
+                                            width: 9,
+                                            margin: const EdgeInsets.only(
+                                                right: 3, bottom: 3),
+                                            decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(10),
+                                                gradient:
+                                                    commonButtonLinearGridient),
+                                          )
+                                        ],
+                                      ),
+                                      customWidthBox(10),
+                                      Column(
+                                        crossAxisAlignment: cStart,
+                                        children: [
+                                          customText(
+                                              snapshot.data!.data![index]
+                                                  .friend!.fullName
+                                                  .toString(),
+                                              15,
+                                              white),
+                                          customHeightBox(5),
+                                          Row(
+                                            children: [
+                                              Icon(
+                                                Icons.location_pin,
+                                                color: yellowColor,
+                                                size: 15,
+                                              ),
+                                              customText(
+                                                  snapshot.data!.data![index]
+                                                      .friend!.city![0].name
+                                                      .toString(),
+                                                  9.5,
+                                                  white)
+                                            ],
+                                          )
+                                        ],
+                                      ),
+                                      const Spacer(),
+                                      InkWell(
+                                        onTap: () {
+                                          showTheAlertBox(
+                                              context,
+                                              snapshot.data!.data![index]
+                                                  .friend!.fullName
+                                                  .toString(),
+                                              snapshot.data!.data![index]
+                                                  .friend!.sId
+                                                  .toString());
+                                        },
+                                        child: Padding(
+                                            padding: const EdgeInsets.only(
+                                                right: 8.0),
+                                            child: Image.asset(
+                                              "assets/icons/request_send.png",
+                                              height: 25,
+                                              width: 25,
+                                              color: circleColor,
+                                            )),
+                                      )
+                                    ],
+                                  ),
                                 ),
-                              ),
-                              customDivider(10, white)
-                            ],
+                                customDivider(10, white)
+                              ],
+                            ),
                           );
                         }),
                   ),

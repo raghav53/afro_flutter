@@ -115,7 +115,7 @@ class Data {
   String? createdAt;
   String? updatedAt;
   int? iV;
-
+  String? iso2;
   Data(
       {this.sId,
       this.userId,
@@ -141,6 +141,7 @@ class Data {
     createdAt = json['createdAt'];
     updatedAt = json['updatedAt'];
     iV = json['__v'];
+    iso2 = json['iso2'];
   }
 
   Map<String, dynamic> toJson() {
@@ -156,6 +157,7 @@ class Data {
     data['createdAt'] = this.createdAt;
     data['updatedAt'] = this.updatedAt;
     data['__v'] = this.iV;
+    data['iso2'] = this.iso2;
     return data;
   }
 }

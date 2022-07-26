@@ -189,6 +189,51 @@ class _MyProffile extends State<MyProfilePage> {
                                                       );
                                                     },
                                                   ),
+                                                  Container(
+                                                    height: 15,
+                                                    width: 150,
+                                                    child: ListView.builder(
+                                                        shrinkWrap: true,
+                                                        itemCount: snapshot
+                                                            .data!
+                                                            .data!
+                                                            .visits!
+                                                            .length,
+                                                        scrollDirection:
+                                                            Axis.horizontal,
+                                                        itemBuilder:
+                                                            (context, index) {
+                                                          return Padding(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                        .only(
+                                                                    left: 3),
+                                                            child:
+                                                                CachedNetworkImage(
+                                                              height: 15,
+                                                              width: 15,
+                                                              imageUrl: country_code_url +
+                                                                  snapshot
+                                                                      .data!
+                                                                      .data!
+                                                                      .visits![
+                                                                          index]
+                                                                      .iso2
+                                                                      .toString()
+                                                                      .toLowerCase() +
+                                                                  ".png",
+                                                              imageBuilder:
+                                                                  (context,
+                                                                      url) {
+                                                                return CircleAvatar(
+                                                                  backgroundImage:
+                                                                      url,
+                                                                );
+                                                              },
+                                                            ),
+                                                          );
+                                                        }),
+                                                  )
                                                 ],
                                               )
                                             : Container();
@@ -275,7 +320,7 @@ class _MyProffile extends State<MyProfilePage> {
                           customDivider(10, Colors.white),
                           customHeightBox(20),
                           Padding(
-                            padding: const EdgeInsets.only(left: 20),
+                            padding: const EdgeInsets.only(left: 15),
                             child: customText("International Experience", 18,
                                 Color(0xFFDFB48C)),
                           ),
@@ -294,7 +339,7 @@ class _MyProffile extends State<MyProfilePage> {
                           customDivider(10, Colors.white),
                           customHeightBox(20),
                           Padding(
-                            padding: const EdgeInsets.only(left: 20),
+                            padding: const EdgeInsets.only(left: 15),
                             child: customText(
                                 "Choose your interests", 18, Color(0xFFDFB48C)),
                           ),
@@ -304,7 +349,7 @@ class _MyProffile extends State<MyProfilePage> {
                           customDivider(10, Colors.white),
                           customHeightBox(20),
                           Padding(
-                            padding: const EdgeInsets.only(left: 20),
+                            padding: const EdgeInsets.only(left: 15),
                             child: customText("Career", 18, Color(0xFFDFB48C)),
                           ),
                           customListItemButton("Work",
@@ -429,8 +474,6 @@ class _MyProffile extends State<MyProfilePage> {
       customToastMsg("Something gone wrong...");
     }
   }
-
-  
 }
 
 //(done)
@@ -553,27 +596,14 @@ Widget customListItemButton(
       clickListeners(onClick, context);
     },
     child: Container(
-      margin: EdgeInsets.only(top: 10, left: 20, bottom: 10),
-      child: Row(
-        children: [
-          Column(
-            crossAxisAlignment: cStart,
-            children: [
-              customText(title, 15, Colors.white),
-              customHeightBox(5),
-              customText(subTitle, 12, Color(0x3dFFFFFF)),
-            ],
-          ),
-          Spacer(),
-          IconButton(
-              onPressed: () => {},
-              icon: const Icon(
-                Icons.arrow_forward_ios_outlined,
-                color: Color(0xFFDFB48C),
-              )),
-        ],
+        child: ListTile(
+      title: customText(title, 15, Colors.white),
+      subtitle: customText(subTitle, 12, Color(0x3dFFFFFF)),
+      trailing: Icon(
+        Icons.arrow_forward_ios_outlined,
+        color: Color(0xFFDFB48C),
       ),
-    ),
+    )),
   );
 }
 
@@ -598,3 +628,25 @@ void clickListeners(String title, BuildContext context) {
         .push(MaterialPageRoute(builder: (context) => SelectIntrest()));
   }
 }
+
+/**
+ * Row(
+        children: [
+          Column(
+            crossAxisAlignment: cStart,
+            children: [
+              customText(title, 15, Colors.white),
+              customHeightBox(5),
+              customText(subTitle, 12, Color(0x3dFFFFFF)),
+            ],
+          ),
+          Spacer(),
+          IconButton(
+              onPressed: () => {},
+              icon: const Icon(
+                Icons.arrow_forward_ios_outlined,
+                color: Color(0xFFDFB48C),
+              )),
+        ],
+      ),
+ */

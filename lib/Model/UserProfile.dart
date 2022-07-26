@@ -48,6 +48,7 @@ class UserProfileData {
   List<Events>? events;
   List<Interests>? interests;
   List<Educations>? educations;
+  List<Visits>? visits;
   List<Experiences>? experiences;
   UserProfileData(
       {this.socialId,
@@ -98,8 +99,7 @@ class UserProfileData {
       this.blockBy,
       this.interests,
       this.educations,
-      this.experiences
-      });
+      this.experiences});
 
   UserProfileData.fromJson(Map<String, dynamic> json) {
     socialId = json['social_id'];
@@ -151,9 +151,11 @@ class UserProfileData {
     blockBy = json['blockBy'];
 
     if (json['experiences'] != null) {
-			experiences = <Experiences>[];
-			json['experiences'].forEach((v) { experiences!.add(new Experiences.fromJson(v)); });
-		}
+      experiences = <Experiences>[];
+      json['experiences'].forEach((v) {
+        experiences!.add(new Experiences.fromJson(v));
+      });
+    }
 
     if (json['events'] != null) {
       events = <Events>[];
@@ -170,9 +172,17 @@ class UserProfileData {
     }
 
     if (json['educations'] != null) {
-			educations = <Educations>[];
-			json['educations'].forEach((v) { educations!.add(new Educations.fromJson(v)); });
-		}
+      educations = <Educations>[];
+      json['educations'].forEach((v) {
+        educations!.add(new Educations.fromJson(v));
+      });
+    }
+    if (json['visits'] != null) {
+      visits = <Visits>[];
+      json['visits'].forEach((v) {
+        visits!.add(new Visits.fromJson(v));
+      });
+    }
   }
 
   Map<String, dynamic> toJson() {
@@ -237,7 +247,9 @@ class UserProfileData {
     if (this.interests != null) {
       data['interests'] = this.interests!.map((v) => v.toJson()).toList();
     }
-
+    if (this.visits != null) {
+      data['visits'] = this.visits!.map((v) => v.toJson()).toList();
+    }
     if (this.educations != null) {
       data['educations'] = this.educations!.map((v) => v.toJson()).toList();
     }
@@ -246,7 +258,67 @@ class UserProfileData {
       data['experiences'] = this.experiences!.map((v) => v.toJson()).toList();
     }
 
-    
+    return data;
+  }
+}
+
+class Visits {
+  String? sId;
+  String? userId;
+  String? country;
+  String? state;
+  String? city;
+  int? from;
+  int? to;
+  int? current;
+  String? createdAt;
+  String? updatedAt;
+  int? iV;
+  String? iso2;
+
+  Visits(
+      {this.sId,
+      this.userId,
+      this.country,
+      this.state,
+      this.city,
+      this.from,
+      this.to,
+      this.current,
+      this.createdAt,
+      this.updatedAt,
+      this.iV,
+      this.iso2});
+
+  Visits.fromJson(Map<String, dynamic> json) {
+    sId = json['_id'];
+    userId = json['user_id'];
+    country = json['country'];
+    state = json['state'];
+    city = json['city'];
+    from = json['from'];
+    to = json['to'];
+    current = json['current'];
+    createdAt = json['createdAt'];
+    updatedAt = json['updatedAt'];
+    iV = json['__v'];
+    iso2 = json['iso2'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['_id'] = this.sId;
+    data['user_id'] = this.userId;
+    data['country'] = this.country;
+    data['state'] = this.state;
+    data['city'] = this.city;
+    data['from'] = this.from;
+    data['to'] = this.to;
+    data['current'] = this.current;
+    data['createdAt'] = this.createdAt;
+    data['updatedAt'] = this.updatedAt;
+    data['__v'] = this.iV;
+    data['iso2'] = this.iso2;
     return data;
   }
 }
@@ -847,47 +919,58 @@ class Educations {
 }
 
 class Experiences {
-	String? sId;
-	String? userId;
-	String? company;
-	String? location;
-	String? position;
-	int? from;
-	int? to;
-	int? current;
-	String? createdAt;
-	String? updatedAt;
-	int? iV;
+  String? sId;
+  String? userId;
+  String? company;
+  String? location;
+  String? position;
+  int? from;
+  int? to;
+  int? current;
+  String? createdAt;
+  String? updatedAt;
+  int? iV;
 
-	Experiences({this.sId, this.userId, this.company, this.location, this.position, this.from, this.to, this.current, this.createdAt, this.updatedAt, this.iV});
+  Experiences(
+      {this.sId,
+      this.userId,
+      this.company,
+      this.location,
+      this.position,
+      this.from,
+      this.to,
+      this.current,
+      this.createdAt,
+      this.updatedAt,
+      this.iV});
 
-	Experiences.fromJson(Map<String, dynamic> json) {
-		sId = json['_id'];
-		userId = json['user_id'];
-		company = json['company'];
-		location = json['location'];
-		position = json['position'];
-		from = json['from'];
-		to = json['to'];
-		current = json['current'];
-		createdAt = json['createdAt'];
-		updatedAt = json['updatedAt'];
-		iV = json['__v'];
-	}
+  Experiences.fromJson(Map<String, dynamic> json) {
+    sId = json['_id'];
+    userId = json['user_id'];
+    company = json['company'];
+    location = json['location'];
+    position = json['position'];
+    from = json['from'];
+    to = json['to'];
+    current = json['current'];
+    createdAt = json['createdAt'];
+    updatedAt = json['updatedAt'];
+    iV = json['__v'];
+  }
 
-	Map<String, dynamic> toJson() {
-		final Map<String, dynamic> data = new Map<String, dynamic>();
-		data['_id'] = this.sId;
-		data['user_id'] = this.userId;
-		data['company'] = this.company;
-		data['location'] = this.location;
-		data['position'] = this.position;
-		data['from'] = this.from;
-		data['to'] = this.to;
-		data['current'] = this.current;
-		data['createdAt'] = this.createdAt;
-		data['updatedAt'] = this.updatedAt;
-		data['__v'] = this.iV;
-		return data;
-	}
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['_id'] = this.sId;
+    data['user_id'] = this.userId;
+    data['company'] = this.company;
+    data['location'] = this.location;
+    data['position'] = this.position;
+    data['from'] = this.from;
+    data['to'] = this.to;
+    data['current'] = this.current;
+    data['createdAt'] = this.createdAt;
+    data['updatedAt'] = this.updatedAt;
+    data['__v'] = this.iV;
+    return data;
+  }
 }

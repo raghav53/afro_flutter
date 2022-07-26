@@ -1,5 +1,6 @@
 import 'package:afro/Screens/Authentication/SignInPage2.dart';
 import 'package:afro/Screens/OnBoardingScreen/FirstOnBoard.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -125,3 +126,17 @@ String getDateFormat(String date) {
 }
 
 String country_code_url = "https://ipdata.co/flags/";
+
+//Internet connection
+
+Future<bool> isConnected() async {
+  final Connectivity _connectivity = Connectivity();
+  ConnectivityResult connectivityResult =
+      await _connectivity.checkConnectivity();
+  if (connectivityResult == ConnectivityResult.mobile) {
+    return true;
+  } else if (connectivityResult == ConnectivityResult.wifi) {
+    return true;
+  }
+  return false;
+}

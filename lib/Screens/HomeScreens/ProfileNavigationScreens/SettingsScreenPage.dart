@@ -33,7 +33,6 @@ class _SettingsScreenPageState extends State<SettingsScreenPage> {
           child: Column(
             crossAxisAlignment: cStart,
             children: [
-              customDivider(10, Colors.white),
               listItemButton("Change Password", context),
               customDivider(10, Colors.white),
               listItemButton("Privacy Policy", context),
@@ -68,26 +67,19 @@ Widget listItemButton(String title, BuildContext context) {
   return InkWell(
     onTap: () => {goNavigate(title, context)},
     child: Container(
-      margin: EdgeInsets.only(left: 10, right: 10),
-      child: Row(
-        children: [
-          Image.asset(
+        margin: EdgeInsets.only(left: 10, right: 10),
+        child: ListTile(
+          leading: Image.asset(
             customImage,
             height: 40,
             width: 40,
           ),
-          customWidthBox(20),
-          customText(title, 15, Colors.white),
-          Spacer(),
-          IconButton(
-              onPressed: () => {goNavigate(title, context)},
-              icon: const Icon(
-                Icons.arrow_forward_ios_outlined,
-                color: Color(0xFFDFB48C),
-              )),
-        ],
-      ),
-    ),
+          title: customText(title, 15, Colors.white),
+          trailing: Icon(
+            Icons.arrow_forward_ios_outlined,
+            color: Color(0xFFDFB48C),
+          ),
+        )),
   );
 }
 

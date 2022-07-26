@@ -51,7 +51,6 @@ class _HomeScreen extends State<DashboardPageScreen> {
   @override
   void initState() {
     super.initState();
-
     Future.delayed(Duration.zero, () {
       _getUserProfile = getUserProfileinfo(context, userID.toString());
       setState(() {});
@@ -136,8 +135,10 @@ class _HomeScreen extends State<DashboardPageScreen> {
         actions: [
           IconButton(
               onPressed: () {
-                Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => SearchOptionScreen()));
+                Navigator.of(context)
+                    .push(MaterialPageRoute(
+                        builder: (context) => SearchOptionScreen()))
+                    .then((value) => onResumed());
               },
               icon: const Icon(
                 Icons.search,
@@ -145,8 +146,10 @@ class _HomeScreen extends State<DashboardPageScreen> {
               )),
           IconButton(
               onPressed: () {
-                Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => NotificationScreenPage()));
+                Navigator.of(context)
+                    .push(MaterialPageRoute(
+                        builder: (context) => NotificationScreenPage()))
+                    .then((value) => onResumed());
               },
               icon: const Icon(
                 Icons.notification_add,
@@ -155,8 +158,10 @@ class _HomeScreen extends State<DashboardPageScreen> {
           customWidthBox(10),
           InkWell(
               onTap: () {
-                Navigator.of(context).push(
-                    MaterialPageRoute(builder: (context) => MyProfilePage()));
+                Navigator.of(context)
+                    .push(MaterialPageRoute(
+                        builder: (context) => MyProfilePage()))
+                    .then((value) => onResumed());
               },
               child: Container(
                   child: profileImage.toString().isNotEmpty
@@ -270,8 +275,8 @@ class _HomeScreen extends State<DashboardPageScreen> {
                                     .toString();
                                 return GestureDetector(
                                   onTap: () {
-                                    Navigator.of(context).push(
-                                        MaterialPageRoute(
+                                    Navigator.of(context)
+                                        .push(MaterialPageRoute(
                                             builder: (context) =>
                                                 EventDetailsScreenPage(
                                                   eventId: snapshot
@@ -280,7 +285,8 @@ class _HomeScreen extends State<DashboardPageScreen> {
                                                   userId: snapshot
                                                       .data!.data![index].userId
                                                       .toString(),
-                                                )));
+                                                )))
+                                        .then((value) => onResumed());
                                   },
                                   child: Container(
                                     margin: const EdgeInsets.only(left: 10),
@@ -409,8 +415,10 @@ class _HomeScreen extends State<DashboardPageScreen> {
               //Recommended Fourmss
               InkWell(
                 onTap: () {
-                  Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => const RecommendedGroups()));
+                  Navigator.of(context)
+                      .push(MaterialPageRoute(
+                          builder: (context) => const RecommendedGroups()))
+                      .then((value) => onResumed());
                 },
                 child: Row(
                   children: [
@@ -451,14 +459,15 @@ class _HomeScreen extends State<DashboardPageScreen> {
                                       margin: EdgeInsets.only(bottom: 10),
                                       child: InkWell(
                                         onTap: () async {
-                                          await Navigator.of(context).push(
-                                              MaterialPageRoute(
+                                          await Navigator.of(context)
+                                              .push(MaterialPageRoute(
                                                   builder: (context) =>
                                                       FourmDetailsPage(
                                                         fourmId: snapshot.data!
                                                             .data![index].sId
                                                             .toString(),
-                                                      )));
+                                                      )))
+                                              .then((value) => onResumed());
                                         },
                                         child: fourmItem(
                                             snapshot.data!.data![index]),
@@ -471,8 +480,10 @@ class _HomeScreen extends State<DashboardPageScreen> {
               //Recommended Groups
               InkWell(
                 onTap: () {
-                  Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => const RecommendedGroups()));
+                  Navigator.of(context)
+                      .push(MaterialPageRoute(
+                          builder: (context) => const RecommendedGroups()))
+                      .then((value) => onResumed());
                 },
                 child: Row(
                   children: [
@@ -522,8 +533,10 @@ class _HomeScreen extends State<DashboardPageScreen> {
               customHeightBox(20),
               InkWell(
                 onTap: () {
-                  Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => const AllContactsListScreen()));
+                  Navigator.of(context)
+                      .push(MaterialPageRoute(
+                          builder: (context) => const AllContactsListScreen()))
+                      .then((value) => onResumed());
                 },
                 child: Row(
                   children: [
