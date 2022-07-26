@@ -2,7 +2,6 @@ import 'package:afro/Screens/HomeScreens/Home/Messages/UserMessageScreen.dart';
 import 'package:afro/Util/Colors.dart';
 import 'package:afro/Util/CustomWidget.dart';
 import 'package:afro/Util/CustomWidgetAttributes.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class MessageListScreen extends StatefulWidget {
@@ -112,7 +111,7 @@ class _MessageListScreenState extends State<MessageListScreen> {
               Icons.search,
               color: Color(0xFFDFB48C),
             ),
-            hintText: "Search Events , Group and Contacts",
+            hintText: "Search messages",
             contentPadding: const EdgeInsets.only(left: 15, top: 10),
             hintStyle: const TextStyle(color: Colors.white24)),
       ),

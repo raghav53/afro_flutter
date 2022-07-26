@@ -81,6 +81,8 @@ saveTheUser(UserProfile data) {
   SaveStringToSF(user.totalFollowings, data.data!.totalFollowings.toString());
   SaveStringToSF(user.totalContacts, data.data!.totalFirends.toString());
   SaveStringToSF(user.countryId, data.data!.country!.sId.toString());
+  SaveStringToSF(user.stateId, data.data!.state!.sId.toString());
+  SaveStringToSF(user.cityId, data.data!.city!.sId.toString());
   print("Data Saved Successfully");
 }
 

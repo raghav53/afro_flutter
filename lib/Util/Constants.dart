@@ -10,7 +10,6 @@ String dob = "DateOfBirth";
 String back = "back";
 
 //User Profile Data
-
 class UserDataConstants {
   String socialId = "socialId";
   String countryId = "";
@@ -43,6 +42,8 @@ class UserDataConstants {
   String country = "country";
   String state = "state";
   String community = "community";
+  String stateId = "stateId";
+  String cityId = "cityId";
   String socketId = "socketId";
   String id = "id";
   String totalFollowers = "totalFollowers";

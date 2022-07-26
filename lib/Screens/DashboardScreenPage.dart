@@ -107,7 +107,7 @@ class _HomeScreen extends State<DashboardPageScreen> {
     });
 
     Future.delayed(Duration.zero, () {
-      _exploreForums = getAllFourmsList(context);
+      _exploreForums = getAllFourmsList(context, isShow: false);
       setState(() {});
       _exploreForums!.whenComplete(() => () {});
     });

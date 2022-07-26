@@ -286,7 +286,6 @@ class _Timeline extends State<AddTimelinePageScreen> {
     ));
   }
 
-
   //BottomSheet
   void openBottomSheet(BuildContext context, String type) {
     showModalBottomSheet(
@@ -751,7 +750,8 @@ class _Timeline extends State<AddTimelinePageScreen> {
       "state": stateName,
       "city": cityName,
       "from": fromText,
-      'to': isChecked ? DateTime.now().millisecondsSinceEpoch : toText,
+      'to':
+          isChecked ? DateTime.now().millisecondsSinceEpoch.toString() : toText,
       'current': isChecked ? "1" : "0"
     };
 

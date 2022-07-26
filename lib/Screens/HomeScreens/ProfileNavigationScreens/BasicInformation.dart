@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:afro/Model/CitiesModel.dart';
 import 'package:afro/Model/CountryModel.dart';
 import 'package:afro/Model/StatesModel.dart';
@@ -5,6 +7,7 @@ import 'package:afro/Network/Apis.dart';
 import 'package:afro/Util/Colors.dart';
 import 'package:afro/Util/CommonMethods.dart';
 import 'package:afro/Util/CommonUI.dart';
+import 'package:http/http.dart' as http;
 import 'package:afro/Util/Constants.dart';
 import 'package:afro/Util/CustomWidget.dart';
 import 'package:afro/Screens/HomeScreens/ProfileNavigationScreens/ProfileSettingScreenPage.dart';
@@ -36,6 +39,7 @@ String dateOfBirth = "",
     sLinkedIn = "",
     stateName = "",
     bio = "",
+    dobStamp = "",
     city = "",
     country = "";
 String countryId = "", stateId = "", cityId = "";
@@ -86,6 +90,7 @@ class _Basic extends State<BasicInformation> {
     email = sharedPreferences.getString(user.useremail).toString();
     dateOfBirth =
         convetFullFormat(sharedPreferences.getString(user.userdob).toString());
+    dobStamp = sharedPreferences.getString(user.userdob).toString();
     dobTimeStamp = sharedPreferences.getString(user.userdob).toString();
     sInstagram = sharedPreferences.getString(user.instagram).toString();
     sLinkedIn = sharedPreferences.getString(user.linkdin).toString();
@@ -98,6 +103,12 @@ class _Basic extends State<BasicInformation> {
     homeTown = sharedPreferences.getString(user.hometown).toString();
     gender = sharedPreferences.getString(user.gender).toString();
     bio = sharedPreferences.getString(user.bio).toString();
+    countryId = sharedPreferences.getString(user.countryId).toString();
+    stateId = sharedPreferences.getString(user.stateId).toString();
+    cityId = sharedPreferences.getString(user.cityId).toString();
+
+    print(
+        "country Id :-${countryId}\nstate Id :- $stateId \ncity Id:- $cityId");
     selectedGender = gender;
     setState(() {
       setTheBasicDataInformation();
@@ -150,15 +161,11 @@ class _Basic extends State<BasicInformation> {
 
                         //First Name
                         customHeightBox(20),
-                        customEdittext(
-                          "First Name",
-                          fName,
-                          "",
-                        ),
+                        customEdittext("First Name", fName, "", firstName),
 
                         //Last Name
                         customHeightBox(20),
-                        customEdittext("Last Name", lName, ""),
+                        customEdittext("Last Name", lName, "", lastName),
 
                         /////////////////////////////////////////////////////////////////////////////
                         /***Location Information / Gender Selection  / Date Of Birth */
@@ -314,23 +321,24 @@ class _Basic extends State<BasicInformation> {
 
                         //Instagram
                         customHeightBox(20),
-                        customEdittext("Instagram", instagram, ""),
+                        customEdittext("Instagram", instagram, "", sInstagram),
 
                         //Twitter
                         customHeightBox(20),
-                        customEdittext("Twitter", twitter, ""),
+                        customEdittext("Twitter", twitter, "", sTwitter),
 
                         //Facebook
                         customHeightBox(20),
-                        customEdittext("Facebook", facebook, ""),
+                        customEdittext("Facebook", facebook, "", sFacebook),
 
                         //Linkdin
                         customHeightBox(20),
-                        customEdittext("Linked In", linkdin, ""),
+                        customEdittext("Linked In", linkdin, "", sLinkedIn),
 
                         //Website
                         customHeightBox(20),
-                        customEdittext("Business Website", website, ""),
+                        customEdittext(
+                            "Business Website", website, "", sWebsite),
 
                         customHeightBox(20),
                         customText("Bio", 12, white),
@@ -366,7 +374,7 @@ class _Basic extends State<BasicInformation> {
                       alignment: Alignment.bottomCenter,
                       child: InkWell(
                         onTap: () {
-                          print("Data Saved");
+                          updateProfileInfo();
                         },
                         child: Container(
                             padding: const EdgeInsets.only(
@@ -429,7 +437,7 @@ class _Basic extends State<BasicInformation> {
           ],
         )),
         customWidthBox(20),
-        Flexible(child: customEdittext("HomeTown", hometown, ""))
+        Flexible(child: customEdittext("HomeTown", hometown, "", homeTown))
       ],
     );
   }
@@ -855,34 +863,119 @@ class _Basic extends State<BasicInformation> {
           });
         });
   }
-}
 
-//Custom Edittext
-Widget customEdittext(String s, TextEditingController controller, String data) {
-  return Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: [
-      customText(s, 15, Colors.white),
-      customHeightBox(10),
-      Container(
-        alignment: Alignment.centerLeft,
-        decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(10),
-            boxShadow: const [
-              BoxShadow(color: Colors.black, offset: Offset(0, 2))
-            ]),
-        height: 50,
-        child: TextField(
-          textInputAction: TextInputAction.next,
-          controller: controller,
-          keyboardType: TextInputType.text,
-          style: const TextStyle(fontSize: 14, color: Colors.white),
-          decoration: const InputDecoration(
-              border: InputBorder.none,
-              contentPadding: EdgeInsets.only(left: 15),
-              hintStyle: TextStyle(color: Colors.white24)),
+  //Update the profile api
+  Future updateProfileInfo() async {
+    if (firstName.toString().isEmpty) {
+      customToastMsg("Please enter first name!");
+      return;
+    }
+    if (lastName.toString().isEmpty) {
+      customToastMsg("Please enter first name!");
+      return;
+    }
+    if (countryId.isEmpty) {
+      customToastMsg("Please select the country!");
+      return;
+    }
+    if (stateId.isEmpty) {
+      customToastMsg("Please select the state!");
+      return;
+    }
+    if (cityId.isEmpty) {
+      customToastMsg("Please select the city!");
+      return;
+    }
+    if (gender.isEmpty) {
+      customToastMsg("Please select your gender!");
+      return;
+    }
+    if (dateOfBirth.isEmpty) {
+      customToastMsg("Please pick you date of birth!");
+      return;
+    }
+    if (bio.isEmpty) {
+      customToastMsg("Please write your short bio!");
+      return;
+    }
+    if (homeTown.isEmpty) {
+      customToastMsg("Please write your short bio!");
+      return;
+    }
+
+    Map data = {
+      "first_name": firstName.toString(),
+      "last_name": lastName.toString(),
+      "gender": gender.toString(),
+      "country": countryId.toString(),
+      "state": stateId.toString(),
+      "city": cityId.toString(),
+      "hometown": homeTown.toString(),
+      "dob": dobStamp.toString(),
+      "bio": bio.toString(),
+      "facebook": sFacebook.toString(),
+      "instagram": sInstagram.toString(),
+      "twitter": sTwitter.toString(),
+      "linkdin": sLinkedIn.toString(),
+      "website": sWebsite.toString()
+    };
+    showProgressDialogBox(context);
+    SharedPreferences sharedPreferences = await _prefs;
+    String token = sharedPreferences.getString(user.token).toString();
+    print(token);
+
+    var response = await http.post(Uri.parse(BASE_URL + "update_user"),
+        headers: {'api-key': API_KEY, 'x-access-token': token}, body: data);
+
+    var jsonResponse = json.decode(response.body);
+    print(jsonResponse);
+    var message = jsonResponse["message"];
+    if (response.statusCode == 200) {
+      Navigator.pop(context);
+      customToastMsg("user profile updated successfully!");
+    } else if (response.statusCode == 401) {
+      customToastMsg("Unauthorized User!");
+      clearAllDatabase(context);
+      throw Exception("Unauthorized User!");
+    } else {
+      Navigator.pop(context);
+      customToastMsg(message);
+    }
+  }
+
+  //Custom Edittext
+  Widget customEdittext(String s, TextEditingController controller, String data,
+      String changeValue) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        customText(s, 15, Colors.white),
+        customHeightBox(10),
+        Container(
+          alignment: Alignment.centerLeft,
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10),
+              boxShadow: const [
+                BoxShadow(color: Colors.black, offset: Offset(0, 2))
+              ]),
+          height: 50,
+          child: TextField(
+            onChanged: (value) {
+              setState(() {
+                changeValue = value;
+              });
+            },
+            textInputAction: TextInputAction.next,
+            controller: controller,
+            keyboardType: TextInputType.text,
+            style: const TextStyle(fontSize: 14, color: Colors.white),
+            decoration: const InputDecoration(
+                border: InputBorder.none,
+                contentPadding: EdgeInsets.only(left: 15),
+                hintStyle: TextStyle(color: Colors.white24)),
+          ),
         ),
-      ),
-    ],
-  );
+      ],
+    );
+  }
 }

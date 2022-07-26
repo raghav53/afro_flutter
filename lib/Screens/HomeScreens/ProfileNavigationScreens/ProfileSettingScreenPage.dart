@@ -188,29 +188,21 @@ class _ProfilePage extends State<ProfileSettingScreenPage> {
       customImage = "assets/icons/logout.png";
     }
     return InkWell(
-      onTap: () => {goNavigate(title, context)},
-      child: Container(
-        margin: EdgeInsets.only(top: 10, left: 20, bottom: 10),
-        child: Row(
-          children: [
-            Image.asset(
+        onTap: () => {goNavigate(title, context)},
+        child: InkWell(
+          child: ListTile(
+            leading: Image.asset(
               customImage,
               height: 40,
               width: 40,
             ),
-            customWidthBox(20),
-            customText(title, 15, Colors.white),
-            Spacer(),
-            IconButton(
-                onPressed: () => {goNavigate(title, context)},
-                icon: const Icon(
-                  Icons.arrow_forward_ios_outlined,
-                  color: Color(0xFFDFB48C),
-                )),
-          ],
-        ),
-      ),
-    );
+            title: customText(title, 15, Colors.white),
+            trailing: const Icon(
+              Icons.arrow_forward_ios_outlined,
+              color: Color(0xFFDFB48C),
+            ),
+          ),
+        ));
   }
 
   void goNavigate(String title, BuildContext context) {

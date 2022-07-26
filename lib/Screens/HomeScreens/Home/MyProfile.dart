@@ -1,9 +1,13 @@
+import 'dart:io';
+
 import 'package:afro/Model/UserProfileModel.dart';
 import 'package:afro/Network/Apis.dart';
 import 'package:afro/Screens/SignUpProcess/SelectInterest.dart';
 import 'package:afro/Util/Colors.dart';
 import 'package:afro/Util/CommonMethods.dart';
+import 'package:afro/Util/CommonUI.dart';
 import 'package:afro/Util/Constants.dart';
+import 'package:http/http.dart' as http;
 import 'package:afro/Util/CustomWidget.dart';
 import 'package:afro/Screens/HomeScreens/ProfileNavigationScreens/AllMembers.dart';
 import 'package:afro/Screens/HomeScreens/ProfileNavigationScreens/BasicInformation.dart';
@@ -16,6 +20,9 @@ import 'package:afro/Util/CustomWidgetAttributes.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:country_codes/country_codes.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:mime/mime.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class MyProfilePage extends StatefulWidget {
@@ -41,6 +48,7 @@ String? fullName,
 
 UserProfile userProfile = UserProfile();
 String? userID;
+var profileImage = null;
 
 class _MyProffile extends State<MyProfilePage> {
   final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
@@ -107,26 +115,47 @@ class _MyProffile extends State<MyProfilePage> {
                         crossAxisAlignment: cStart,
                         children: [
                           //Profile Image
-                          Container(
-                            height: 60,
-                            width: 60,
-                            decoration: BoxDecoration(
-                                border:
-                                    Border.all(width: 1, color: yellowColor),
-                                borderRadius: BorderRadius.circular(50)),
-                            child: Padding(
-                              padding: const EdgeInsets.all(3.0),
-                              child: CachedNetworkImage(
-                                  imageUrl: IMAGE_URL + imageURl.toString(),
-                                  errorWidget: (error, context, url) =>
-                                      Icon(Icons.person),
-                                  placeholder: (context, url) =>
-                                      Icon(Icons.person),
-                                  imageBuilder: (context, url) {
-                                    return CircleAvatar(
-                                      backgroundImage: url,
-                                    );
-                                  }),
+                          InkWell(
+                            onTap: () {
+                              openBottomSheet();
+                            },
+                            child: Stack(
+                              alignment: Alignment.bottomRight,
+                              children: [
+                                Container(
+                                  height: 60,
+                                  width: 60,
+                                  decoration: BoxDecoration(
+                                      border: Border.all(
+                                          width: 1, color: yellowColor),
+                                      borderRadius: BorderRadius.circular(50)),
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(3.0),
+                                    child: CachedNetworkImage(
+                                        imageUrl:
+                                            IMAGE_URL + imageURl.toString(),
+                                        errorWidget: (error, context, url) =>
+                                            Icon(Icons.person),
+                                        placeholder: (context, url) =>
+                                            Icon(Icons.person),
+                                        imageBuilder: (context, url) {
+                                          return CircleAvatar(
+                                            backgroundImage: url,
+                                          );
+                                        }),
+                                  ),
+                                ),
+                                Align(
+                                    child: CircleAvatar(
+                                  radius: 10,
+                                  backgroundColor: yellowColor,
+                                  child: Icon(
+                                    Icons.edit,
+                                    color: black,
+                                    size: 15,
+                                  ),
+                                ))
+                              ],
                             ),
                           ),
                           customWidthBox(7),
@@ -300,6 +329,108 @@ class _MyProffile extends State<MyProfilePage> {
       ),
     );
   }
+
+  openBottomSheet() {
+    showModalBottomSheet(
+        context: context,
+        backgroundColor: black,
+        clipBehavior: Clip.antiAlias,
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(10.0),
+            topRight: Radius.circular(10.0),
+          ),
+        ),
+        builder: (context) {
+          return StatefulBuilder(builder: (context, state) {
+            return Container(
+              height: 100,
+              child: Row(
+                mainAxisAlignment: mCenter,
+                crossAxisAlignment: cCenter,
+                children: [
+                  InkWell(
+                    onTap: () {
+                      Navigator.pop(context);
+                      open("camera");
+                    },
+                    child: Container(
+                        decoration: BoxDecoration(
+                            border: Border.all(color: white, width: 1),
+                            borderRadius: BorderRadius.circular(50)),
+                        padding: EdgeInsets.all(5),
+                        child: Icon(
+                          Icons.camera,
+                          color: white,
+                          size: 35,
+                        )),
+                  ),
+                  customWidthBox(50),
+                  InkWell(
+                    onTap: () {
+                      Navigator.pop(context);
+                      open("gallery");
+                    },
+                    child: Container(
+                        decoration: BoxDecoration(
+                            border: Border.all(color: white, width: 1),
+                            borderRadius: BorderRadius.circular(50)),
+                        padding: EdgeInsets.all(5),
+                        child: Icon(
+                          Icons.photo_library,
+                          color: white,
+                          size: 35,
+                        )),
+                  )
+                ],
+              ),
+            );
+          });
+        });
+  }
+
+  open(String type) {
+    if (type.contains("camera")) {
+      pickImage(ImageSource.camera);
+    } else if (type.contains("gallery")) {
+      pickImage(ImageSource.gallery);
+    }
+  }
+
+  //Pick image
+  Future pickImage(ImageSource source) async {
+    try {
+      final image = await ImagePicker().pickImage(source: source);
+      if (image == null) return;
+      final imageTemp = File(image.path);
+      if (!mounted) return;
+      uploadProfileImage(imageTemp.path);
+      print(imageTemp.toString());
+    } on PlatformException catch (e) {
+      print('Failed to pick image: $e');
+    }
+  }
+
+  Future<void> uploadProfileImage(String path) async {
+    showProgressDialogBox(context);
+    SharedPreferences sharedPreferences = await _prefs;
+    String? token = sharedPreferences.getString("token");
+    var request = http.MultipartRequest(
+        'POST', Uri.parse(BASE_URL + "user_profile_image"));
+    request.files.add(await http.MultipartFile.fromPath(
+        'profile_image', File(path.toString()).path));
+    request.headers.addAll({'api-key': API_KEY, 'x-access-token': token!});
+    var res = await request.send();
+    debugPrint("res.statusCode ${res.statusCode}");
+    if (res.statusCode == 200) {
+      Navigator.pop(context);
+    } else {
+      Navigator.pop(context);
+      customToastMsg("Something gone wrong...");
+    }
+  }
+
+  
 }
 
 //(done)

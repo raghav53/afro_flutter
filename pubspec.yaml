@@ -45,7 +45,7 @@ dependencies:
   cached_network_image: ^3.2.1
   intl: ^0.17.0
   image_picker: ^0.8.5+3
-  focus_detector: ^2.0.1
+  
   share_plus: ^4.0.10
   flutter_share: ^2.0.0
   file_picker: ^4.6.1

@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:ffi';
 
 import 'package:afro/Network/Apis.dart';
 import 'package:afro/Screens/HomeScreens/ProfileNavigationScreens/WorkPage.dart';
@@ -409,12 +410,14 @@ class _AddWork extends State<AddWorkPage> {
       'company': companyName,
       'position': positionName,
       'from': fromText,
-      'to': isChecked ? DateTime.now().millisecondsSinceEpoch : toText,
+      'to':
+          isChecked ? DateTime.now().millisecondsSinceEpoch.toString() : toText,
       'current': isChecked ? "1" : "0"
     };
     if (dataMap.isNotEmpty) {
       data.addAll({"experience_id": dataMap["id"]});
     }
+    print(data);
     addEducation(data);
   }
 
