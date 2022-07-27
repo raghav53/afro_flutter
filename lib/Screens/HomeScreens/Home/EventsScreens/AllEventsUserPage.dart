@@ -1,12 +1,9 @@
 import 'package:afro/Model/Events/EventsUsers/EventsUsersModel.dart';
 import 'package:afro/Network/Apis.dart';
-import 'package:afro/Screens/HomeScreens/Home/Groups/GroupsScreen/GroupsAllListScreen.dart';
-import 'package:afro/Screens/HomeScreens/ProfileNavigationScreens/WorkPage.dart';
+import 'package:afro/Screens/HomeScreens/Home/OtherUserProfilePage.dart';
 import 'package:afro/Util/Colors.dart';
 import 'package:afro/Util/CustomWidget.dart';
-import 'package:afro/Util/CustomWidgetAttributes.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class AllEventUsersScreenPage extends StatefulWidget {
@@ -92,60 +89,63 @@ class _AllEventUsersScreenPageState extends State<AllEventUsersScreenPage> {
                             shrinkWrap: true,
                             itemBuilder: (context, index) {
                               return Container(
-                                margin: EdgeInsets.only(bottom: 10),
-                                height: 60,
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(10),
-                                    color: black),
-                                child: Padding(
-                                  padding: const EdgeInsets.all(10.0),
-                                  child: Row(
-                                    crossAxisAlignment: cStart,
-                                    mainAxisAlignment: mStart,
-                                    children: [
-                                      CachedNetworkImage(
-                                        imageUrl: IMAGE_URL +
-                                            snapshot.data!.data![index].user!
-                                                .profileImage
-                                                .toString(),
-                                        placeholder: (context, url) =>
-                                            const CircleAvatar(
-                                                backgroundImage: AssetImage(
-                                                    "tom_cruise.jpeg")),
-                                        imageBuilder: (context, image) =>
-                                            CircleAvatar(
-                                          backgroundImage: image,
-                                        ),
-                                      ),
-                                      customWidthBox(10),
-                                      Column(
-                                        crossAxisAlignment: cStart,
-                                        mainAxisAlignment: mCenter,
-                                        children: [
-                                          customText(
-                                              snapshot.data!.data![index].user!
-                                                  .fullName
-                                                  .toString(),
-                                              14,
-                                              white),
-                                          customHeightBox(3),
-                                          Row(
-                                            children: [
-                                              Icon(
-                                                Icons.location_pin,
-                                                color: white,
-                                                size: 20,
-                                              ),
-                                              customText(
-                                                  snapshot.data!.data![index]
-                                                      .user!.city![0].title
+                                margin: EdgeInsets.only(top: 5, bottom: 5),
+                                color: Colors.black38,
+                                child: ListTile(
+                                  onTap: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                OtherUserProfilePageScreen(
+                                                  userID: snapshot.data!
+                                                      .data![index].user!.sId
                                                       .toString(),
-                                                  12,
-                                                  white)
-                                            ],
-                                          )
-                                        ],
-                                      )
+                                                  name: snapshot
+                                                      .data!
+                                                      .data![index]
+                                                      .user!
+                                                      .fullName,
+                                                )));
+                                  },
+                                  leading: CachedNetworkImage(
+                                      imageUrl: IMAGE_URL +
+                                          snapshot.data!.data![index].user!
+                                              .profileImage
+                                              .toString(),
+                                      placeholder: (context, url) =>
+                                          const CircleAvatar(
+                                              backgroundImage: AssetImage(
+                                                  "tom_cruise.jpeg")),
+                                      imageBuilder: (context, image) =>
+                                          CircleAvatar(
+                                            backgroundImage: image,
+                                          ),
+                                      errorWidget: (context, url, error) {
+                                        return Icon(
+                                          Icons.person,
+                                          size: 40,
+                                          color: white,
+                                        );
+                                      }),
+                                  title: customText(
+                                      snapshot.data!.data![index].user!.fullName
+                                          .toString(),
+                                      14,
+                                      white),
+                                  subtitle: Row(
+                                    children: [
+                                      Icon(
+                                        Icons.location_pin,
+                                        color: white,
+                                        size: 20,
+                                      ),
+                                      customText(
+                                          snapshot.data!.data![index].user!
+                                              .city![0].title
+                                              .toString(),
+                                          12,
+                                          white)
                                     ],
                                   ),
                                 ),

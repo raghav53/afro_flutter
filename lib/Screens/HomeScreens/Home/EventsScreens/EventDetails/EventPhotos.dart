@@ -1,5 +1,6 @@
 import 'package:afro/Model/Events/EventMedia/EventMediaModel.dart';
 import 'package:afro/Network/Apis.dart';
+import 'package:afro/Screens/VideoImageViewPage.dart';
 import 'package:afro/Util/Colors.dart';
 import 'package:afro/Util/Constants.dart';
 import 'package:afro/Util/CustomWidget.dart';
@@ -47,34 +48,47 @@ class _EventPhotosState extends State<EventPhotos> {
                     crossAxisCount: 3,
                     children:
                         List.generate(snapshot.data!.data!.length, (index) {
-                      return Container(
-                        margin: EdgeInsets.all(10),
-                        height: 200,
-                        decoration: BoxDecoration(
-                            color: white,
-                            borderRadius: BorderRadius.circular(10)),
-                        width: 70,
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(10),
-                          child: Image.network(
-                              IMAGE_URL +
-                                  snapshot.data!.data![index].path.toString(),
-                              fit: BoxFit.cover, loadingBuilder:
-                                  (BuildContext context, Widget child,
-                                      ImageChunkEvent? loadingProgress) {
-                            if (loadingProgress == null) {
-                              return child;
-                            }
-                            return Center(
-                              child: CircularProgressIndicator(
-                                value: loadingProgress.expectedTotalBytes !=
-                                        null
-                                    ? loadingProgress.cumulativeBytesLoaded /
-                                        loadingProgress.expectedTotalBytes!
-                                    : null,
-                              ),
-                            );
-                          }),
+                      return InkWell(
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => VideoImageViewPage(
+                                        url: IMAGE_URL +
+                                            snapshot.data!.data![index].path
+                                                .toString(),
+                                        type: 1,
+                                      )));
+                        },
+                        child: Container(
+                          margin: EdgeInsets.all(10),
+                          height: 200,
+                          decoration: BoxDecoration(
+                              color: white,
+                              borderRadius: BorderRadius.circular(10)),
+                          width: 70,
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(10),
+                            child: Image.network(
+                                IMAGE_URL +
+                                    snapshot.data!.data![index].path.toString(),
+                                fit: BoxFit.cover, loadingBuilder:
+                                    (BuildContext context, Widget child,
+                                        ImageChunkEvent? loadingProgress) {
+                              if (loadingProgress == null) {
+                                return child;
+                              }
+                              return Center(
+                                child: CircularProgressIndicator(
+                                  value: loadingProgress.expectedTotalBytes !=
+                                          null
+                                      ? loadingProgress.cumulativeBytesLoaded /
+                                          loadingProgress.expectedTotalBytes!
+                                      : null,
+                                ),
+                              );
+                            }),
+                          ),
                         ),
                       );
                     }))

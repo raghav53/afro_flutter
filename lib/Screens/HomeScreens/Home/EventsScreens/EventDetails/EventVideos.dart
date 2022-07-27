@@ -1,12 +1,10 @@
+import 'dart:io';
 import 'package:afro/Model/Events/EventMedia/EventMediaModel.dart';
-import 'package:afro/Network/Apis.dart';
-import 'package:afro/Screens/VideoViewPage.dart';
+import 'package:afro/Screens/VideoImageViewPage.dart';
 import 'package:afro/Util/Colors.dart';
 import 'package:afro/Util/Constants.dart';
 import 'package:afro/Util/CustomWidget.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:loading_indicator/loading_indicator.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:video_thumbnail/video_thumbnail.dart';
@@ -60,18 +58,16 @@ class _EventVideosState extends State<EventVideos> {
                     crossAxisCount: 3,
                     children:
                         List.generate(snapshot.data!.data!.length, (index) {
-                      var thumbnailPath = generateThumbnail(
-                          snapshot.data!.data![index].path.toString());
-                      print("Thumbnail path:-$thumbnailPath");
+                      getThumbnail(snapshot.data!.data![index].path.toString());
                       return InkWell(
                         onTap: () {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => VideoViewPage(
-                                        videoUrl: snapshot
-                                            .data!.data![index].path
+                                  builder: (context) => VideoImageViewPage(
+                                        url: snapshot.data!.data![index].path
                                             .toString(),
+                                        type: 0,
                                       )));
                         },
                         child: Container(
@@ -82,27 +78,14 @@ class _EventVideosState extends State<EventVideos> {
                           margin: EdgeInsets.all(10),
                           height: 200,
                           child: ClipRRect(
-                            borderRadius: BorderRadius.circular(10),
-                            child: Image.network(
-                                IMAGE_URL +
-                                    snapshot.data!.data![index].path.toString(),
-                                fit: BoxFit.cover, loadingBuilder:
-                                    (BuildContext context, Widget child,
-                                        ImageChunkEvent? loadingProgress) {
-                              if (loadingProgress == null) {
-                                return child;
-                              }
-                              return Center(
-                                child: CircularProgressIndicator(
-                                  value: loadingProgress.expectedTotalBytes !=
-                                          null
-                                      ? loadingProgress.cumulativeBytesLoaded /
-                                          loadingProgress.expectedTotalBytes!
-                                      : null,
-                                ),
-                              );
-                            }),
-                          ),
+                              borderRadius: BorderRadius.circular(10),
+                              child: Image.file(
+                                File(getThumbnail(snapshot
+                                        .data!.data![index].path
+                                        .toString())
+                                    .toString()),
+                                fit: BoxFit.fill,
+                              )),
                         ),
                       );
                     }))
@@ -111,5 +94,19 @@ class _EventVideosState extends State<EventVideos> {
                   );
           }),
     );
+  }
+
+  Future<String> getThumbnail(String url) async {
+    final fileName = await VideoThumbnail.thumbnailFile(
+      video:
+          "https://flutter.github.io/assets-for-api-docs/assets/videos/butterfly.mp4",
+      thumbnailPath: (await getTemporaryDirectory()).path,
+      imageFormat: ImageFormat.PNG,
+      maxHeight:
+          64, // specify the height of the thumbnail, let the width auto-scaled to keep the source aspect ratio
+      quality: 75,
+    );
+    print(fileName.toString());
+    return fileName.toString();
   }
 }

@@ -52,10 +52,7 @@ class _MessageListScreenState extends State<MessageListScreen> {
   //Message List Item
   Widget messageListItem(String name) {
     return InkWell(
-      onTap: () {
-        Navigator.of(context)
-            .push(MaterialPageRoute(builder: (context) => UserMessagePage()));
-      },
+      onTap: () {},
       child: Container(
         margin: EdgeInsets.only(left: 20, right: 20, top: 10),
         padding: EdgeInsets.only(top: 10, bottom: 10, left: 15, right: 10),

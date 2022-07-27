@@ -1,5 +1,6 @@
 import 'package:afro/Model/Group/GroupDetails/GroupMedia/GroupMediaModel.dart';
 import 'package:afro/Network/Apis.dart';
+import 'package:afro/Screens/VideoImageViewPage.dart';
 import 'package:afro/Util/Colors.dart';
 import 'package:afro/Util/Constants.dart';
 import 'package:flutter/cupertino.dart';
@@ -53,34 +54,45 @@ class _GroupDisscussionVideosPageState
                     crossAxisCount: 3,
                     children:
                         List.generate(snapshot.data!.data!.length, (index) {
-                      return Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          color: white,
-                        ),
-                        margin: EdgeInsets.all(10),
-                        height: 200,
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(10),
-                          child: Image.network(
-                              IMAGE_URL +
-                                  snapshot.data!.data![index].path.toString(),
-                              fit: BoxFit.cover, loadingBuilder:
-                                  (BuildContext context, Widget child,
-                                      ImageChunkEvent? loadingProgress) {
-                            if (loadingProgress == null) {
-                              return child;
-                            }
-                            return Center(
-                              child: CircularProgressIndicator(
-                                value: loadingProgress.expectedTotalBytes !=
-                                        null
-                                    ? loadingProgress.cumulativeBytesLoaded /
-                                        loadingProgress.expectedTotalBytes!
-                                    : null,
-                              ),
-                            );
-                          }),
+                      return InkWell(
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => VideoImageViewPage(
+                                      url: snapshot.data!.data![index].path
+                                          .toString(),
+                                      type: 0)));
+                        },
+                        child: Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            color: white,
+                          ),
+                          margin: EdgeInsets.all(10),
+                          height: 200,
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(10),
+                            child: Image.network(
+                                IMAGE_URL +
+                                    snapshot.data!.data![index].path.toString(),
+                                fit: BoxFit.cover, loadingBuilder:
+                                    (BuildContext context, Widget child,
+                                        ImageChunkEvent? loadingProgress) {
+                              if (loadingProgress == null) {
+                                return child;
+                              }
+                              return Center(
+                                child: CircularProgressIndicator(
+                                  value: loadingProgress.expectedTotalBytes !=
+                                          null
+                                      ? loadingProgress.cumulativeBytesLoaded /
+                                          loadingProgress.expectedTotalBytes!
+                                      : null,
+                                ),
+                              );
+                            }),
+                          ),
                         ),
                       );
                     }))

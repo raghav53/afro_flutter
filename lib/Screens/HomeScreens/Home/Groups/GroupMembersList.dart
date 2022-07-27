@@ -1,8 +1,6 @@
 import 'package:afro/Model/Group/GroupMember/GroupMemberModel.dart';
 import 'package:afro/Network/Apis.dart';
-import 'package:afro/Screens/HomeScreens/Home/EventsScreens/CreateNewEvent.dart';
 import 'package:afro/Screens/HomeScreens/Home/OtherUserProfilePage.dart';
-import 'package:afro/Screens/HomeScreens/ProfileNavigationScreens/EducationPage.dart';
 import 'package:afro/Util/Colors.dart';
 import 'package:afro/Util/CustomWidget.dart';
 import 'package:afro/Util/CustomWidgetAttributes.dart';
@@ -12,7 +10,6 @@ import 'package:flutter/material.dart';
 class GroupMemberListScreen extends StatefulWidget {
   String? group_id = "";
   String? userId = "";
-
   GroupMemberListScreen({Key? key, this.group_id, this.userId})
       : super(key: key);
 
@@ -50,12 +47,12 @@ class _GroupMemberListScreenState extends State<GroupMemberListScreen> {
         child: Scaffold(
       resizeToAvoidBottomInset: false,
       extendBodyBehindAppBar: true,
-      appBar: commonAppbar("Members"),
+      appBar: onlyTitleCommonAppbar("Members"),
       body: Container(
         height: phoneHeight(context),
         width: phoneWidth(context),
         decoration: commonBoxDecoration(),
-        padding: const EdgeInsets.only(top: 70, right: 20, left: 20),
+        padding: const EdgeInsets.only(top: 50, right: 20, left: 20),
         child: SingleChildScrollView(
           child: Column(
             children: [
@@ -105,13 +102,12 @@ class _GroupMemberListScreenState extends State<GroupMemberListScreen> {
                                   Navigator.of(context).push(MaterialPageRoute(
                                       builder: (context) =>
                                           OtherUserProfilePageScreen(
-                                            name: snapshot.data!.data![index]
-                                                .member!.fullName,
-                                            userID: snapshot
-                                                .data!.data![index].memberId
-                                                .toString(),
-                                                loginUserId:widget.userId
-                                          )));
+                                              name: snapshot.data!.data![index]
+                                                  .member!.fullName,
+                                              userID: snapshot
+                                                  .data!.data![index].memberId
+                                                  .toString(),
+                                              loginUserId: widget.userId)));
                                 },
                                 child: Container(
                                   margin: const EdgeInsets.only(top: 10),

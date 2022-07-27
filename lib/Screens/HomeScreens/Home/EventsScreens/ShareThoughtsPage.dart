@@ -15,7 +15,6 @@ import 'package:image_picker/image_picker.dart';
 import 'package:mime/mime.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-
 class ShareThoughts extends StatefulWidget {
   String evenGroupId = "";
   String type = "";

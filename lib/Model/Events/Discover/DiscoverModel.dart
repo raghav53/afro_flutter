@@ -33,7 +33,8 @@ Future<DiscoverModel> getAllEventsUsers(BuildContext context,
   String userId = sharedPreferences.getString(user.id).toString();
   print(token);
   var jsonResponse = null;
-
+  print("=============================================================" +
+      countryIds);
   var response = await http.get(
       Uri.parse(BASE_URL +
           "events?page=$page&limit=$limit&search=$search&guests_max=$maxGoing&guests_min=$minGoing&interested_max=$maxInterested&interested_min=$minInterested&country=$countryIds&is_online=$isLink"),

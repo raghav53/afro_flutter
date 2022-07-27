@@ -1,7 +1,5 @@
 import 'dart:convert';
-
 import 'package:afro/Network/Apis.dart';
-import 'package:afro/Screens/OnBoardingScreen/FirstOnBoard.dart';
 import 'package:afro/Util/CommonMethods.dart';
 import 'package:afro/Util/CommonUI.dart';
 import 'package:afro/Util/Constants.dart';

@@ -6,6 +6,7 @@ import 'package:afro/Network/Apis.dart';
 
 import 'package:afro/Screens/HomeScreens/Home/EventsScreens/EventCommentsList.dart';
 import 'package:afro/Screens/HomeScreens/Home/EventsScreens/ShareThoughtsPage.dart';
+import 'package:afro/Screens/VideoImageViewPage.dart';
 import 'package:afro/Util/Colors.dart';
 import 'package:afro/Util/CommonMethods.dart';
 import 'package:afro/Util/CommonUI.dart';
@@ -291,31 +292,53 @@ class _EventDiscussionListState extends State<EventDiscussionList> {
                   itemBuilder: (BuildContext context, int itemIndex,
                           int pageViewIndex) =>
                       data.media![itemIndex].type == "image"
-                          ? Container(
-                              height: 150,
-                              child: CachedNetworkImage(
-                                imageUrl: IMAGE_URL +
-                                    data.media![itemIndex].path.toString(),
-                                placeholder: (context, url) => const Icon(
-                                  Icons.person,
-                                  size: 50,
+                          ? InkWell(
+                              onTap: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            VideoImageViewPage(
+                                                url: IMAGE_URL +
+                                                    data.media![itemIndex].path
+                                                        .toString(),
+                                                type: 1)));
+                              },
+                              child: Container(
+                                height: 150,
+                                child: CachedNetworkImage(
+                                  imageUrl: IMAGE_URL +
+                                      data.media![itemIndex].path.toString(),
+                                  placeholder: (context, url) => const Icon(
+                                    Icons.person,
+                                    size: 50,
+                                  ),
+                                  imageBuilder: (context, image) {
+                                    return Container(
+                                        decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(10),
+                                      image: DecorationImage(
+                                        image: image,
+                                        fit: BoxFit.fitWidth,
+                                      ),
+                                    ));
+                                  },
                                 ),
-                                imageBuilder: (context, image) {
-                                  return Container(
-                                      decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(10),
-                                    image: DecorationImage(
-                                      image: image,
-                                      fit: BoxFit.fitWidth,
-                                    ),
-                                  ));
-                                },
                               ),
                             )
                           : InkWell(
                               onTap: () {
-                                openDialogForVideo(IMAGE_URL +
-                                    data.media![itemIndex].path.toString());
+                                print(
+                                    "type :- ${data.media![itemIndex].type} , URl :- ${data.media![itemIndex].path.toString()}");
+
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            VideoImageViewPage(
+                                                url: data.media![itemIndex].path
+                                                    .toString(),
+                                                type: 0)));
                               },
                               child: Container(
                                 decoration: BoxDecoration(
@@ -376,24 +399,5 @@ class _EventDiscussionListState extends State<EventDiscussionList> {
       customToastMsg(message);
       throw Exception("Failed to load the work experience!");
     }
-  }
-
-  //Open the dialog orf video
-  openDialogForVideo(String path) {
-    showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return Dialog(
-              backgroundColor: Colors.black,
-              elevation: 0.0,
-              child: Container(
-                  color: white24,
-                  height: 300,
-                  width: 300,
-                  child: Center(
-                    child:
-                        customText("Video preview not available!", 15, white),
-                  )));
-        });
   }
 }
