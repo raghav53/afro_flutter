@@ -62,56 +62,6 @@ class _GroupsAllListScreenState extends State<GroupsAllListScreen> {
     );
   }
 
-  Widget groupListItem(bool isJoined) {
-    return Container(
-      margin: EdgeInsets.all(7),
-      padding: EdgeInsets.only(top: 5, bottom: 5, left: 10, right: 10),
-      decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10), color: Color(0xFF191831)),
-      child: Row(
-        children: [
-          CircleAvatar(
-            backgroundImage: AssetImage("tom_cruise.jpeg"),
-          ),
-          customWidthBox(10),
-          RichText(
-            text: TextSpan(
-              text: "Tom Cruise packs are available",
-              style: TextStyle(color: white, fontSize: 13),
-              children: <TextSpan>[
-                TextSpan(
-                    text: '\n4 Members', style: TextStyle(color: yellowColor)),
-              ],
-            ),
-          ),
-          Spacer(),
-          Container(
-            padding: EdgeInsets.only(left: 15, right: 15),
-            height: 30,
-            decoration: BoxDecoration(
-                gradient: commonButtonLinearGridient,
-                borderRadius: BorderRadius.circular(30)),
-            child: Center(
-                child: Row(
-              mainAxisAlignment: mBetween,
-              children: [
-                isJoined
-                    ? Image.asset(
-                        "assets/icons/check_right_icon.png",
-                        height: 10,
-                        width: 10,
-                      )
-                    : customWidthBox(1),
-                customWidthBox(5),
-                customText(isJoined ? "Joined" : "Join Group", 10, white),
-              ],
-            )),
-          )
-        ],
-      ),
-    );
-  }
-
   Widget selectCategory() {
     return Container(
         height: 50,

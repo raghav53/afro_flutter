@@ -1,4 +1,4 @@
-class DiscoverDataModel {
+class CommonEventsDataModel {
   String? sId;
   String? title;
   String? userId;
@@ -28,7 +28,7 @@ class DiscoverDataModel {
   int? isInviteRecieved;
   int? isLink;
 
-  DiscoverDataModel(
+  CommonEventsDataModel(
       {this.sId,
       this.title,
       this.userId,
@@ -58,7 +58,7 @@ class DiscoverDataModel {
       this.isInviteRecieved,
       this.isLink});
 
-  DiscoverDataModel.fromJson(Map<String, dynamic> json) {
+  CommonEventsDataModel.fromJson(Map<String, dynamic> json) {
     sId = json['_id'];
     title = json['title'];
     userId = json['user_id'];

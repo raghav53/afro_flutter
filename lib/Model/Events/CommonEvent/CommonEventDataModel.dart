@@ -1,7 +1,6 @@
-import 'package:afro/Model/Events/Going/GoingEventsDataModel.dart';
 import 'dart:convert';
 
-import 'package:afro/Model/Events/Discover/DiscoverDataModel.dart';
+import 'package:afro/Model/Events/CommonEvent/CommonEventModel.dart';
 import 'package:afro/Util/CommonUI.dart';
 import 'package:afro/Util/Constants.dart';
 import 'package:flutter/material.dart';
@@ -17,17 +16,28 @@ import 'package:http/http.dart' as http;
 var user = UserDataConstants();
 final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
 
-Future<GoingEventsModel> getAllGoingEventsUsers(
-    BuildContext context, String page, String limit) async {
-  showProgressDialogBox(context);
+Future<CommonEventsModel> getAllEventsUsers(BuildContext context,
+    {String search = "",
+    bool showProgress = true,
+    String page = "1",
+    String limit = "500",
+    String minGoing = "0",
+    String maxGoing = "500",
+    String minInterested = "0",
+    String maxInterested = "500",
+    String countryIds = "",
+    String isLink = ""}) async {
+  showProgress == true ? showProgressDialogBox(context) : null;
   SharedPreferences sharedPreferences = await _prefs;
   String token = sharedPreferences.getString(user.token).toString();
   String userId = sharedPreferences.getString(user.id).toString();
   print(token);
   var jsonResponse = null;
-
+  print("=============================================================" +
+      countryIds);
   var response = await http.get(
-      Uri.parse(BASE_URL + "going_events?page=$page&limit=$limit&type=0"),
+      Uri.parse(BASE_URL +
+          "events?page=$page&limit=$limit&search=$search&guests_max=$maxGoing&guests_min=$minGoing&interested_max=$maxInterested&interested_min=$minInterested&country=$countryIds&is_online=$isLink"),
       headers: {
         'api-key': API_KEY,
         'x-access-token': token,
@@ -36,43 +46,44 @@ Future<GoingEventsModel> getAllGoingEventsUsers(
   jsonResponse = json.decode(response.body);
   var message = jsonResponse["message"];
   if (response.statusCode == 200) {
-    Navigator.pop(context);
-    print("Get All Going events api success");
+    showProgress == true ? Navigator.pop(context) : null;
+
+    print("Get All events api success");
     print(jsonResponse["metadata"]["totalDocs"]);
-    return GoingEventsModel.fromJson(jsonDecode(response.body));
+    return CommonEventsModel.fromJson(jsonDecode(response.body));
   } else if (response.statusCode == 401) {
     customToastMsg("Unauthorized User!");
     clearAllDatabase(context);
     throw Exception("Unauthorized User!");
   } else {
-    Navigator.pop(context);
+    showProgress == true ? Navigator.pop(context) : null;
     customToastMsg(message);
     throw Exception("Failed to load the work experience!");
   }
 }
 
-class GoingEventsModel {
+class CommonEventsModel {
   bool? success;
   int? code;
   String? message;
-  List<GoingEventUserData>? data;
-  GoingEventMetadata? metadata;
+  List<CommonEventsDataModel>? data;
+  DisCoverMetadata? metadata;
 
-  GoingEventsModel(
+  CommonEventsModel(
       {this.success, this.code, this.message, this.data, this.metadata});
 
-  GoingEventsModel.fromJson(Map<String, dynamic> json) {
+  CommonEventsModel.fromJson(Map<String, dynamic> json) {
     success = json['success'];
     code = json['code'];
     message = json['message'];
     if (json['data'] != null) {
-      data = <GoingEventUserData>[];
+      data = <CommonEventsDataModel>[];
       json['data'].forEach((v) {
-        data!.add(new GoingEventUserData.fromJson(v));
+        data!.add(new CommonEventsDataModel.fromJson(v));
       });
     }
     metadata = json['metadata'] != null
-        ? new GoingEventMetadata.fromJson(json['metadata'])
+        ? new DisCoverMetadata.fromJson(json['metadata'])
         : null;
   }
 

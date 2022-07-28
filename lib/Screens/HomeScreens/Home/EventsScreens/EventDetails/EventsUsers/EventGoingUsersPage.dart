@@ -1,6 +1,5 @@
 import 'dart:convert';
-
-import 'package:afro/Model/Events/InterestedGoing/InterstedGoingModel.dart';
+import 'package:afro/Model/Events/InterestedGoingUser/GoingInterstedUserModel.dart';
 import 'package:afro/Network/Apis.dart';
 import 'package:afro/Screens/HomeScreens/Home/OtherUserProfilePage.dart';
 import 'package:afro/Util/Colors.dart';

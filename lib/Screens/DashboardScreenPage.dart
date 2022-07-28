@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'package:afro/Model/Events/Discover/DiscoverModel.dart';
+import 'package:afro/Model/Events/CommonEvent/CommonEventDataModel.dart';
 import 'package:afro/Model/Fourms/AllFourmDataModel.dart';
 import 'package:afro/Model/Fourms/AllFourmModel.dart';
 import 'package:afro/Model/Friends/AllUsers/GetAllUsers.dart';
@@ -39,7 +39,7 @@ class DashboardPageScreen extends StatefulWidget {
 
 var user = UserDataConstants();
 Future<UserProfile>? _getUserProfile;
-Future<DiscoverModel>? _upComingEvent;
+Future<CommonEventsModel>? _upComingEvent;
 Future<AllGroupsModel>? _allGroups;
 Future<GetAllFriendsModel>? _exploreUsers;
 Future<AllFourmModel>? _exploreForums;
@@ -250,7 +250,7 @@ class _HomeScreen extends State<DashboardPageScreen> {
               customHeightBox(15),
 
               //Upcoming Events on dashboard
-              FutureBuilder<DiscoverModel>(
+              FutureBuilder<CommonEventsModel>(
                 future: _upComingEvent,
                 builder: (context, snapshot) {
                   return snapshot.hasData && snapshot.data!.data!.isNotEmpty

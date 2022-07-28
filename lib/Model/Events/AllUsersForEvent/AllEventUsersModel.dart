@@ -2,7 +2,7 @@ import 'package:afro/Model/Events/AllUsersForEvent/AllEventUsersDataModel.dart';
 
 import 'dart:convert';
 
-import 'package:afro/Model/Events/Discover/DiscoverDataModel.dart';
+import 'package:afro/Model/Events/CommonEvent/CommonEventModel.dart';
 import 'package:afro/Util/CommonUI.dart';
 import 'package:afro/Util/Constants.dart';
 import 'package:flutter/material.dart';

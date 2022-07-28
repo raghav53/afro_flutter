@@ -1,10 +1,14 @@
+import 'package:afro/Model/Events/CommonEvent/CommonEventDataModel.dart';
+import 'package:afro/Model/Events/Going/GoingInterestedEventsModel.dart';
+import 'package:afro/Model/Events/InvitedEvents/InvitedEventsModel.dart';
+import 'package:afro/Model/Events/UserEvents/UserEventModel.dart';
 import 'package:afro/Screens/HomeScreens/Home/EventsScreens/AllEventsScreen/DiscoverEventsScreen.dart';
 import 'package:afro/Screens/HomeScreens/Home/EventsScreens/AllEventsScreen/GoingEventsScreen.dart';
 import 'package:afro/Screens/HomeScreens/Home/EventsScreens/AllEventsScreen/InterestedEventsScreen.dart';
 import 'package:afro/Screens/HomeScreens/Home/EventsScreens/AllEventsScreen/InvitedEventsScreen.dart';
 import 'package:afro/Screens/HomeScreens/Home/EventsScreens/AllEventsScreen/MyEventsScreen.dart';
-
 import 'package:afro/Util/Colors.dart';
+import 'package:afro/Util/Constants.dart';
 import 'package:afro/Util/CustomWidget.dart';
 import 'package:afro/Screens/HomeScreens/Home/EventsScreens/CreateNewEvent.dart';
 import 'package:afro/Util/CustomWidgetAttributes.dart';
@@ -17,16 +21,33 @@ class AllEventsScreen extends StatefulWidget {
   State<AllEventsScreen> createState() => _AllEventsScreenState();
 }
 
-class _AllEventsScreenState extends State<AllEventsScreen> {
-  List<String> filterItem = [
-    "Discover",
-    "Going",
-    "Interested",
-    "Invited",
-    "My Events"
-  ];
+UserDataConstants _user = UserDataConstants();
 
-  var selectedIndex = 0;
+List<String> filterItem = [
+  "Discover",
+  "Going",
+  "Interested",
+  "Invited",
+  "My Events"
+];
+
+var search = "";
+var selectedIndex = 0;
+
+Future<CommonEventsModel>? _getSelectedIndexEvents; //Discover Events
+Future<GoingInterestedEventsModel>? _getGoingEvents; //Going Events
+Future<GoingInterestedEventsModel>? _getInterestedEvents; //Interested Events
+Future<UsersEventsModel>? _getUsersEventList; //Users Events
+Future<InvitedEventsModel>? _getInvitedEventList; //Users Events
+
+TextEditingController searchEditText = TextEditingController();
+
+class _AllEventsScreenState extends State<AllEventsScreen> {
+  @override
+  void initState() {
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -61,7 +82,59 @@ class _AllEventsScreenState extends State<AllEventsScreen> {
             child: Column(
               crossAxisAlignment: cStart,
               children: [
-                customHeightBox(50),
+                customHeightBox(35),
+                //Searching
+                Row(
+                  mainAxisAlignment: mCenter,
+                  children: [
+                    Flexible(
+                        flex: 5,
+                        child: Container(
+                          alignment: Alignment.centerLeft,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              boxShadow: const [
+                                BoxShadow(
+                                    color: Colors.black, offset: Offset(0, 2))
+                              ]),
+                          child: TextField(
+                            onChanged: (value) {
+                              setState(() {
+                                search = value.toString();
+                              });
+                            },
+                            textInputAction: TextInputAction.go,
+                            keyboardType: TextInputType.text,
+                            style: const TextStyle(
+                                fontSize: 14, color: Colors.white),
+                            decoration: const InputDecoration(
+                                border: InputBorder.none,
+                                prefixIcon: Icon(
+                                  Icons.search,
+                                  color: Color(0xFFDFB48C),
+                                ),
+                                hintText: "Search",
+                                contentPadding:
+                                    EdgeInsets.only(left: 15, top: 15),
+                                hintStyle: TextStyle(color: Colors.white24)),
+                          ),
+                        )),
+                    customWidthBox(20),
+                    Flexible(
+                        flex: 1,
+                        child: InkWell(
+                          onTap: () {
+                            //openBottomSheet();
+                          },
+                          child: Image.asset(
+                            "assets/icons/fillter.png",
+                            height: 20,
+                            width: 20,
+                          ),
+                        )),
+                  ],
+                ),
+                customHeightBox(25),
                 Container(
                   padding: EdgeInsets.only(left: 20, right: 20),
                   height: 30,
@@ -292,15 +365,54 @@ class _AllEventsScreenState extends State<AllEventsScreen> {
 
   selectedListView(int index) {
     if (index == 0) {
-      return const DiscoverEventsScreen();
+      return FutureBuilder<CommonEventsModel>(
+          future:
+              getAllEventsUsers(context, search: search, showProgress: false),
+          builder: (context, snapshot) {
+            return snapshot.hasData && snapshot.data!.data!.isNotEmpty
+                ? DiscoverEventsScreen(context, snapshot.data!)
+                : const Center(
+                    child: CircularProgressIndicator(),
+                  );
+          });
     } else if (index == 1) {
-      return const GoingEventsScreen();
+      return FutureBuilder<GoingInterestedEventsModel>(
+          future: getAllGoingInterestedEventsUsers(context,
+              isShow: false, type: "0", search: search),
+          builder: (context, snapshot) {
+            return snapshot.hasData && snapshot.data!.data!.isNotEmpty
+                ? GoingEventsScreen(context, snapshot.data!)
+                : const Center(child: CircularProgressIndicator());
+          });
     } else if (index == 2) {
-      return const InterestedEventsScreen();
+      return FutureBuilder<GoingInterestedEventsModel>(
+          future: getAllGoingInterestedEventsUsers(context,
+              isShow: false, type: "1", search: search),
+          builder: (context, snapshot) {
+            return snapshot.hasData && snapshot.data!.data!.isNotEmpty
+                ? InterestedEventsScreen(context, snapshot.data!)
+                : const Center(child: CircularProgressIndicator());
+          });
     } else if (index == 3) {
-      return const InvitedEventsScreen();
+      return FutureBuilder<InvitedEventsModel>(
+          future:
+              getAllInvitedEventsUsers(context, isShow: false, search: search),
+          builder: (context, snapshot) {
+            return snapshot.hasData && snapshot.data!.data!.isNotEmpty
+                ? InvitedEventsScreen(context, snapshot.data!)
+                : const Center(child: CircularProgressIndicator());
+          });
     } else if (index == 4) {
-      return const MyEventsScreen();
+      return FutureBuilder<UsersEventsModel>(
+          future:
+              getAllUsersEventsUsers(context, isShow: false, search: search),
+          builder: (context, snapshot) {
+            return snapshot.hasData && snapshot.data!.data!.isNotEmpty
+                ? MyEventsScreenState(context, snapshot.data!)
+                : const Center(
+                    child: CircularProgressIndicator(),
+                  );
+          });
     }
   }
 }

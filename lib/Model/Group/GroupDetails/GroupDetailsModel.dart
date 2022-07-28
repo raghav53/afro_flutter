@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:afro/Model/Events/Discover/DiscoverDataModel.dart';
+import 'package:afro/Model/Events/CommonEvent/CommonEventModel.dart';
 import 'package:afro/Model/Events/EventDetails/EventDetailDataModel.dart';
 import 'package:afro/Model/Group/GroupDetails/GroupDetailsDataModel.dart';
 import 'package:afro/Util/CommonUI.dart';

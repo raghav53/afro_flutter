@@ -1,4 +1,4 @@
-import 'package:afro/Model/Events/Discover/DiscoverModel.dart';
+import 'package:afro/Model/Events/CommonEvent/CommonEventDataModel.dart';
 import 'package:afro/Network/Apis.dart';
 import 'package:afro/Screens/HomeScreens/Home/EventsScreens/EventDetails/EventsDetailsPage.dart';
 import 'package:afro/Util/Colors.dart';
@@ -15,7 +15,7 @@ class UpcomingEventsScreen extends StatefulWidget {
 
 UserDataConstants _user = UserDataConstants();
 String searchEvent = "";
-Future<DiscoverModel>? _upComingEvent;
+Future<CommonEventsModel>? _upComingEvent;
 
 class _UpcomingEvent extends State<UpcomingEventsScreen> {
   int clickPosition = 0;
@@ -95,7 +95,7 @@ class _UpcomingEvent extends State<UpcomingEventsScreen> {
             customHeightBox(25),
             Container(
               height: phoneHeight(context) / 1.3,
-              child: FutureBuilder<DiscoverModel>(
+              child: FutureBuilder<CommonEventsModel>(
                   future: _upComingEvent,
                   builder: (context, snapshot) {
                     return snapshot.hasData

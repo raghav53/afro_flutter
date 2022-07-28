@@ -1,12 +1,9 @@
-import 'package:afro/Model/Events/InterestedGoing/InterstedGoingModel.dart';
-
 import 'package:afro/Screens/HomeScreens/Home/EventsScreens/EventDetails/EventsUsers/EventGoingUsersPage.dart';
 import 'package:afro/Screens/HomeScreens/Home/EventsScreens/EventDetails/EventsUsers/EventInterestedUsers.dart';
-
 import 'package:afro/Screens/HomeScreens/Home/EventsScreens/EventDetails/EventsUsers/InvitedUsersPage.dart';
 import 'package:afro/Screens/HomeScreens/Home/EventsScreens/EventDetails/EventsUsers/InvitesUsers.dart';
-
 import 'package:afro/Util/Colors.dart';
+import 'package:afro/Util/Constants.dart';
 
 import 'package:afro/Util/CustomWidget.dart';
 
@@ -26,6 +23,7 @@ class EventContacts extends StatefulWidget {
 var selectedPeopleListItem = 0;
 String? loginUserID = "";
 Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+UserDataConstants user = UserDataConstants();
 
 //getGoingEventUsers
 class _EventContactsState extends State<EventContacts> {

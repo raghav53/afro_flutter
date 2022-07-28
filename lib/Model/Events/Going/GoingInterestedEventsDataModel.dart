@@ -1,5 +1,4 @@
-
-class GoingEventUserData {
+class GoingInterestedEventUserData {
   String? sId;
   String? eventId;
   String? userId;
@@ -9,7 +8,7 @@ class GoingEventUserData {
   int? iV;
   EventDataModel? event;
 
-  GoingEventUserData(
+  GoingInterestedEventUserData(
       {this.sId,
       this.eventId,
       this.userId,
@@ -19,7 +18,7 @@ class GoingEventUserData {
       this.iV,
       this.event});
 
-  GoingEventUserData.fromJson(Map<String, dynamic> json) {
+  GoingInterestedEventUserData.fromJson(Map<String, dynamic> json) {
     sId = json['_id'];
     eventId = json['event_id'];
     userId = json['user_id'];
@@ -181,7 +180,8 @@ class GoingEventMetadata {
   int? totalDocs;
   var totalPages;
 
-  GoingEventMetadata({this.limit, this.currentPage, this.totalDocs, this.totalPages});
+  GoingEventMetadata(
+      {this.limit, this.currentPage, this.totalDocs, this.totalPages});
 
   GoingEventMetadata.fromJson(Map<String, dynamic> json) {
     limit = json['limit'];
