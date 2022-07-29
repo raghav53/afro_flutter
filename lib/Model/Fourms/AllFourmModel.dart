@@ -19,9 +19,6 @@ Future<AllFourmModel> getAllFourmsList(BuildContext context,
     String category_id = "",
     bool isShow = true,
     String country = ""}) async {
-  if (isShow) {
-    showProgressDialogBox(context);
-  }
   SharedPreferences sharedPreferences = await _prefs;
   String token = sharedPreferences.getString(user.token).toString();
   String userId = sharedPreferences.getString(user.id).toString();
@@ -36,9 +33,7 @@ Future<AllFourmModel> getAllFourmsList(BuildContext context,
         'x-access-token': token,
       });
   print(response.body);
-  if (isShow) {
-    Navigator.pop(context);
-  }
+
   jsonResponse = json.decode(response.body);
   var message = jsonResponse["message"];
   if (response.statusCode == 200) {

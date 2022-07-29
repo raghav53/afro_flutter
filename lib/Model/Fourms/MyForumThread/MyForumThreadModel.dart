@@ -11,48 +11,43 @@ import 'package:http/http.dart' as http;
 
 var user = UserDataConstants();
 final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
-  //Get the all user forums
-  Future<MyAllThreadsModel> getUserAllFourmsList(
-    BuildContext context, {
-    String page = "1",
-    String limit = "1000",
-    String search = "",
-    bool isShow = true,
-  }) async {
-    if (isShow) {
-      showProgressDialogBox(context);
-    }
-    SharedPreferences sharedPreferences = await _prefs;
-    String token = sharedPreferences.getString(user.token).toString();
-    String userId = sharedPreferences.getString(user.id).toString();
-    print(token);
-    var jsonResponse = null;
+//Get the all user forums
+Future<MyAllThreadsModel> getUserAllFourmsList(
+  BuildContext context, {
+  String page = "1",
+  String limit = "1000",
+  String search = "",
+  bool isShow = true,
+}) async {
+  SharedPreferences sharedPreferences = await _prefs;
+  String token = sharedPreferences.getString(user.token).toString();
+  String userId = sharedPreferences.getString(user.id).toString();
+  print(token);
+  var jsonResponse = null;
 
-    var response = await http.get(
-        Uri.parse(
-            BASE_URL + "user_forms?page=$page&limit=$limit&search=$search"),
-        headers: {
-          'api-key': API_KEY,
-          'x-access-token': token,
-        });
-    print(response.body);
-    if (isShow) {
-      Navigator.pop(context);
-    }
-    jsonResponse = json.decode(response.body);
-    var message = jsonResponse["message"];
-    if (response.statusCode == 200) {
-      print("Get all user fourms api success");
-      return MyAllThreadsModel.fromJson(jsonDecode(response.body));
-    } else if (response.statusCode == 401) {
-      customToastMsg("Unauthorized User!");
-      clearAllDatabase(context);
-      throw Exception("Unauthorized User!");
-    } else {
-      customToastMsg(message);
-      throw Exception("Failed to load the work experience!");
-    }
+  var response = await http.get(
+      Uri.parse(BASE_URL + "user_forms?page=$page&limit=$limit&search=$search"),
+      headers: {
+        'api-key': API_KEY,
+        'x-access-token': token,
+      });
+  print(response.body);
+
+  jsonResponse = json.decode(response.body);
+  var message = jsonResponse["message"];
+  if (response.statusCode == 200) {
+    print("Get all user fourms api success");
+    return MyAllThreadsModel.fromJson(jsonDecode(response.body));
+  } else if (response.statusCode == 401) {
+    customToastMsg("Unauthorized User!");
+    clearAllDatabase(context);
+    throw Exception("Unauthorized User!");
+  } else {
+    customToastMsg(message);
+    throw Exception("Failed to load the work experience!");
   }
+}
+
 class MyAllThreadsModel {
   bool? success;
   int? code;
@@ -92,4 +87,3 @@ class MyAllThreadsModel {
     return data;
   }
 }
-

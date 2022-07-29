@@ -15,10 +15,6 @@ UserDataConstants user = UserDataConstants();
 
 Future<UserProfile> getUserProfileinfo(BuildContext context, String id,
     {bool isShow = false}) async {
-  if (!isShow) {
-    showProgressDialogBox(context);
-  }
-
   SharedPreferences sharedPreferences = await _prefs;
   String token = sharedPreferences.getString(user.token).toString();
   String userId = sharedPreferences.getString(user.id).toString();
@@ -32,9 +28,7 @@ Future<UserProfile> getUserProfileinfo(BuildContext context, String id,
   print(response.body);
   jsonResponse = json.decode(response.body);
   var message = jsonResponse["message"];
-  if (!isShow) {
-    Navigator.pop(context);
-  }
+
   if (response.statusCode == 200) {
     UserProfile? userProfile = UserProfile.fromJson(jsonDecode(response.body));
     saveTheUser(userProfile);
@@ -44,7 +38,6 @@ Future<UserProfile> getUserProfileinfo(BuildContext context, String id,
     clearAllDatabase(context);
     throw Exception("Unauthorized User!");
   } else {
-    Navigator.pop(context);
     customToastMsg(message);
     throw Exception("Failed to load the work experience!");
   }

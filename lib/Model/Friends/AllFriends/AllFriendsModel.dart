@@ -12,8 +12,7 @@ import 'package:http/http.dart' as http;
 var user = UserDataConstants();
 final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
 
-Future<FriendsModel> getAllFriends(BuildContext context) async {
-  showProgressDialogBox(context);
+Future<UsersFriendsModel> getAllFriends(BuildContext context) async {
   SharedPreferences sharedPreferences = await _prefs;
   String token = sharedPreferences.getString(user.token).toString();
   String userId = sharedPreferences.getString(user.id).toString();
@@ -29,31 +28,29 @@ Future<FriendsModel> getAllFriends(BuildContext context) async {
   jsonResponse = json.decode(response.body);
   var message = jsonResponse["message"];
   if (response.statusCode == 200) {
-    Navigator.pop(context);
     print("Get All Friends api success");
-    return FriendsModel.fromJson(jsonDecode(response.body));
+    return UsersFriendsModel.fromJson(jsonDecode(response.body));
   } else if (response.statusCode == 401) {
     customToastMsg("Unauthorized User!");
     clearAllDatabase(context);
     throw Exception("Unauthorized User!");
   } else {
-    Navigator.pop(context);
     customToastMsg(message);
     throw Exception("Failed to load the work experience!");
   }
 }
 
-class FriendsModel {
+class UsersFriendsModel {
   bool? success;
   int? code;
   String? message;
   List<FriendsDataModel>? data;
   FriendsMetadata? metadata;
 
-  FriendsModel(
+  UsersFriendsModel(
       {this.success, this.code, this.message, this.data, this.metadata});
 
-  FriendsModel.fromJson(Map<String, dynamic> json) {
+  UsersFriendsModel.fromJson(Map<String, dynamic> json) {
     success = json['success'];
     code = json['code'];
     message = json['message'];

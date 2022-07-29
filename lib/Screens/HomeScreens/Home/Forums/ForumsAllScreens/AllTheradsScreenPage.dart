@@ -67,7 +67,9 @@ class _AllThreadsPageScreenState extends State<AllThreadsPageScreen>
           future: _exploreForums,
           builder: (context, snapshot) {
             return snapshot.hasData && snapshot.data!.data!.isNotEmpty
-                ? ListView.builder(
+                ? 
+                
+                ListView.builder(
                     padding: EdgeInsets.zero,
                     itemCount: snapshot.data!.data!.length,
                     itemBuilder: (context, index) {

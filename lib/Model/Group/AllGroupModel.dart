@@ -17,10 +17,8 @@ Future<AllGroupsModel> getAllGroups(
     String limit = "500",
     String members_max = "500",
     String members_min = "0",
+    String country = "",
     String category = ""}) async {
-  // if (showProgress) {
-  //   showProgressDialogBox(context);
-  // }
   SharedPreferences sharedPreferences = await _prefs;
   String token = sharedPreferences.getString(user.token).toString();
   String userId = sharedPreferences.getString(user.id).toString();
@@ -30,15 +28,13 @@ Future<AllGroupsModel> getAllGroups(
 
   var response = await http.get(
       Uri.parse(BASE_URL +
-          "groups?page=$page&limit=$limit&category=$category&search=$search&members_max=$members_max&members_min=$members_min"),
+          "groups?page=$page&limit=$limit&category=$category&search=$search&members_max=$members_max&members_min=$members_min&country=$country"),
       headers: {
         'api-key': API_KEY,
         'x-access-token': token,
       });
   print(response.body);
-  // if (showProgress) {
-  //   Navigator.pop(context);
-  // }
+
   jsonResponse = json.decode(response.body);
   var message = jsonResponse["message"];
   if (response.statusCode == 200) {

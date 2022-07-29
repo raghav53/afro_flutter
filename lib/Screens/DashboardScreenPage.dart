@@ -57,13 +57,8 @@ class _HomeScreen extends State<DashboardPageScreen> {
       _getUserProfile!.whenComplete(() => () {});
     });
 
-    Future.delayed(Duration(seconds: 2), () {
-      getUserData();
-      setState(() {});
-    });
-
     Future.delayed(Duration.zero, () {
-      _upComingEvent = getAllEventsUsers(context, showProgress: false);
+      _upComingEvent = getAllEventsUsers(context);
       setState(() {});
       _upComingEvent!.whenComplete(() => () {});
     });
@@ -80,9 +75,14 @@ class _HomeScreen extends State<DashboardPageScreen> {
       _exploreForums!.whenComplete(() => () {});
     });
     Future.delayed(Duration.zero, () {
-      _allGroups = getAllGroups(showProgress: false);
+      _allGroups = getAllGroups();
       setState(() {});
       _allGroups!.whenComplete(() => () {});
+    });
+
+    Future.delayed(Duration(seconds: 2), () {
+      getUserData();
+      setState(() {});
     });
   }
 
@@ -164,7 +164,7 @@ class _HomeScreen extends State<DashboardPageScreen> {
                     .then((value) => onResumed());
               },
               child: Container(
-                  child: profileImage.toString().isNotEmpty
+                  child: profileImage != null
                       ? CachedNetworkImage(
                           imageUrl: IMAGE_URL + profileImage.toString(),
                           placeholder: (context, url) => const CircleAvatar(
@@ -174,7 +174,7 @@ class _HomeScreen extends State<DashboardPageScreen> {
                           ),
                         )
                       : CircleAvatar(
-                          child: Image.asset("tom_cruise.jpeg"),
+                          backgroundImage: AssetImage("tom_cruise.jpeg"),
                         ))),
           customWidthBox(10),
         ],
@@ -190,12 +190,22 @@ class _HomeScreen extends State<DashboardPageScreen> {
             crossAxisAlignment: cStart,
             children: [
               customHeightBox(30),
-              Text(
-                "Hello " + fullName.toString(),
-                style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 30,
-                    fontWeight: FontWeight.bold),
+              Container(
+                child: fullName != null
+                    ? Text(
+                        "Hello " + fullName.toString(),
+                        style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 30,
+                            fontWeight: FontWeight.bold),
+                      )
+                    : const Text(
+                        "Hello " + "User",
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 30,
+                            fontWeight: FontWeight.bold),
+                      ),
               ),
               customHeightBox(10),
               //Change the location according user requirement
@@ -209,12 +219,14 @@ class _HomeScreen extends State<DashboardPageScreen> {
                     customText("Let's explore what's happening nearby", 12,
                         Colors.white),
                     const Spacer(),
-                    const Icon(
-                      Icons.location_pin,
-                      size: 20,
-                    ),
+                    // const Icon(
+                    //   Icons.location_pin,
+                    //   size: 20,
+                    // ),
                     customWidthBox(10),
-                    customText(countryName.toString(), 12, Colors.white)
+                    // countryName != null
+                    //     ? customText(countryName.toString(), 12, Colors.white)
+                    //     : customText("Select Countries", 12, Colors.white)
                   ],
                 ),
               ),
@@ -248,8 +260,7 @@ class _HomeScreen extends State<DashboardPageScreen> {
                 ),
               ),
               customHeightBox(15),
-
-              //Upcoming Events on dashboard
+              //Upcoming Events List on dashboard
               FutureBuilder<CommonEventsModel>(
                 future: _upComingEvent,
                 builder: (context, snapshot) {
@@ -319,8 +330,9 @@ class _HomeScreen extends State<DashboardPageScreen> {
                                                       fit: BoxFit.cover),
                                                 ),
                                               ),
-                                              placeholder: (context, url) =>
-                                                  const CircularProgressIndicator(),
+                                              placeholder: (context, url) => Center(
+                                                  child:
+                                                      CircularProgressIndicator()),
                                               errorWidget:
                                                   (context, url, error) =>
                                                       const Icon(Icons.error),
@@ -411,6 +423,7 @@ class _HomeScreen extends State<DashboardPageScreen> {
                       : Container();
                 },
               ),
+
               customHeightBox(20),
               //Recommended Fourmss
               InkWell(
@@ -442,6 +455,7 @@ class _HomeScreen extends State<DashboardPageScreen> {
                 ),
               ),
               customHeightBox(10),
+              //Forums List
               FutureBuilder<AllFourmModel>(
                   future: _exploreForums,
                   builder: (context, snapshot) {
@@ -475,8 +489,8 @@ class _HomeScreen extends State<DashboardPageScreen> {
                                 }))
                         : Container();
                   }),
-
               customHeightBox(20),
+
               //Recommended Groups
               InkWell(
                 onTap: () {
@@ -743,7 +757,8 @@ class _HomeScreen extends State<DashboardPageScreen> {
                         DecorationImage(image: imageProvider, fit: BoxFit.fill),
                   ),
                 ),
-                placeholder: (context, url) => CircularProgressIndicator(),
+                placeholder: (context, url) =>
+                    Center(child: CircularProgressIndicator()),
                 errorWidget: (context, url, error) => Icon(Icons.error),
               ),
             ),

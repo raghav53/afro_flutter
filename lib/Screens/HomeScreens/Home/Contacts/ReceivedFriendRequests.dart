@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:afro/Model/Friends/ReceivedRequest/GetAllReceivedRequest.dart';
+import 'package:afro/Model/Friends/ReceivedRequest/GetAllReceivedRequestModel.dart';
 import 'package:afro/Network/Apis.dart';
 import 'package:afro/Util/Colors.dart';
 import 'package:afro/Util/CommonMethods.dart';
@@ -31,7 +31,7 @@ class _ReceivedFriendRequestState extends State<ReceivedFriendRequest> {
   void initState() {
     super.initState();
     Future.delayed(Duration.zero, () {
-      _getAllContactsRequests = getAllContactsRequests(context);
+      _getAllContactsRequests = getAllReceivedContactsRequests(context);
       setState(() {});
       _getAllContactsRequests!.whenComplete(() => () {});
     });
@@ -281,7 +281,7 @@ class _ReceivedFriendRequestState extends State<ReceivedFriendRequest> {
 
   getListOfReceivedFriendRequest() {
     Future.delayed(Duration.zero, () {
-      _getAllContactsRequests = getAllContactsRequests(context);
+      _getAllContactsRequests = getAllReceivedContactsRequests(context);
       setState(() {});
       _getAllContactsRequests!.whenComplete(() => () {});
     });

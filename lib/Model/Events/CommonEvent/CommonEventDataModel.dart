@@ -27,7 +27,6 @@ Future<CommonEventsModel> getAllEventsUsers(BuildContext context,
     String maxInterested = "500",
     String countryIds = "",
     String isLink = ""}) async {
-  showProgress == true ? showProgressDialogBox(context) : null;
   SharedPreferences sharedPreferences = await _prefs;
   String token = sharedPreferences.getString(user.token).toString();
   String userId = sharedPreferences.getString(user.id).toString();
@@ -46,8 +45,6 @@ Future<CommonEventsModel> getAllEventsUsers(BuildContext context,
   jsonResponse = json.decode(response.body);
   var message = jsonResponse["message"];
   if (response.statusCode == 200) {
-    showProgress == true ? Navigator.pop(context) : null;
-
     print("Get All events api success");
     print(jsonResponse["metadata"]["totalDocs"]);
     return CommonEventsModel.fromJson(jsonDecode(response.body));
@@ -56,7 +53,6 @@ Future<CommonEventsModel> getAllEventsUsers(BuildContext context,
     clearAllDatabase(context);
     throw Exception("Unauthorized User!");
   } else {
-    showProgress == true ? Navigator.pop(context) : null;
     customToastMsg(message);
     throw Exception("Failed to load the work experience!");
   }

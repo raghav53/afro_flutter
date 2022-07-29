@@ -20,24 +20,32 @@ import 'package:http/http.dart' as http;
 var user = UserDataConstants();
 final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
 
-Future<ReceivedRequestModel> getAllContactsRequests(BuildContext context) async {
-  showProgressDialogBox(context);
+Future<ReceivedRequestModel> getAllReceivedContactsRequests(
+    BuildContext context,
+    {String search = "",
+    String page = "1",
+    String limit = "500",
+    String gender = "",
+    String cities = "",
+    String min_age = "",
+    String max_age = ""}) async {
   SharedPreferences sharedPreferences = await _prefs;
   String token = sharedPreferences.getString(user.token).toString();
   String userId = sharedPreferences.getString(user.id).toString();
   print(token);
   var jsonResponse = null;
 
-  var response =
-      await http.get(Uri.parse(BASE_URL + "received_friend_requests"), headers: {
-    'api-key': API_KEY,
-    'x-access-token': token,
-  });
+  var response = await http.get(
+      Uri.parse(BASE_URL +
+          "received_friend_requests?page=$page&limit=$limit&search=$search&city=$cities&gender=$gender&min_age=$min_age&max_age=$max_age"),
+      headers: {
+        'api-key': API_KEY,
+        'x-access-token': token,
+      });
   print(response.body);
   jsonResponse = json.decode(response.body);
   var message = jsonResponse["message"];
   if (response.statusCode == 200) {
-    Navigator.pop(context);
     print("Get Received Requests api success");
     return ReceivedRequestModel.fromJson(jsonDecode(response.body));
   } else if (response.statusCode == 401) {
@@ -45,7 +53,6 @@ Future<ReceivedRequestModel> getAllContactsRequests(BuildContext context) async 
     clearAllDatabase(context);
     throw Exception("Unauthorized User!");
   } else {
-    Navigator.pop(context);
     customToastMsg(message);
     throw Exception("Failed to load the work experience!");
   }

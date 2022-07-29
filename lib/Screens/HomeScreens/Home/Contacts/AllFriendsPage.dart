@@ -25,7 +25,7 @@ class AllFriendsPage extends StatefulWidget {
 
 var user = UserDataConstants();
 final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
-Future<FriendsModel>? _getAllFriends;
+Future<UsersFriendsModel>? _getAllFriends;
 String searchUser = "";
 
 class _AllFriendsPageState extends State<AllFriendsPage> {
@@ -48,10 +48,10 @@ class _AllFriendsPageState extends State<AllFriendsPage> {
   }
 
   //Country
-  Future<FriendsModel> getSearchFriends(String search) async {
-    FriendsModel mm = await _getAllFriends!;
+  Future<UsersFriendsModel> getSearchFriends(String search) async {
+    UsersFriendsModel mm = await _getAllFriends!;
     var ss = mm.toJson();
-    FriendsModel model = FriendsModel.fromJson(ss);
+    UsersFriendsModel model = UsersFriendsModel.fromJson(ss);
 
     if (search.isEmpty) {
       return model;
@@ -73,7 +73,7 @@ class _AllFriendsPageState extends State<AllFriendsPage> {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<FriendsModel>(
+    return FutureBuilder<UsersFriendsModel>(
         future: getSearchFriends(searchUser),
         builder: (context, snapshot) {
           return snapshot.hasData && snapshot.data!.data!.isNotEmpty
