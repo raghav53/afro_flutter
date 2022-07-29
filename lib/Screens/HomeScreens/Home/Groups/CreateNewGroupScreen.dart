@@ -7,7 +7,7 @@ import 'package:afro/Util/Colors.dart';
 import 'package:afro/Util/CommonMethods.dart';
 import 'package:afro/Util/CommonUI.dart';
 import 'package:afro/Util/CustomWidget.dart';
-import 'package:afro/Screens/HomeScreens/Home/Groups/GroupsScreen/GroupsAllListScreen.dart';
+import 'package:afro/Screens/HomeScreens/Home/Groups/GroupsAllListScreen.dart';
 import 'package:afro/Util/CustomWidgetAttributes.dart';
 
 import 'package:http/http.dart' as http;

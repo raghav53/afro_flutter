@@ -34,7 +34,7 @@ class _RecommendedGroupsState extends State<RecommendedGroups> {
   void initState() {
     super.initState();
     Future.delayed(Duration.zero, () {
-      _getAllGroups = getAllGroups(context);
+      _getAllGroups = getAllGroups();
       setState(() {});
       _getAllGroups!.whenComplete(() => () {});
     });
@@ -43,7 +43,7 @@ class _RecommendedGroupsState extends State<RecommendedGroups> {
 
   refreshData(String value) {
     Future.delayed(Duration.zero, () {
-      _getAllGroups = getAllGroups(context,
+      _getAllGroups = getAllGroups(
           search: value, showProgress: false);
       setState(() {});
       _getAllGroups!.whenComplete(() => () {});

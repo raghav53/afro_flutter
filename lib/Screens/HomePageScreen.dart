@@ -2,7 +2,7 @@ import 'package:afro/Util/CustomWidget.dart';
 import 'package:afro/Screens/DashboardScreenPage.dart';
 import 'package:afro/Screens/HomeScreens/Home/EventsScreens/AllEventsScreen.dart';
 import 'package:afro/Screens/HomeScreens/Home/Forums/FourmsScreen.dart';
-import 'package:afro/Screens/HomeScreens/Home/Groups/GroupsScreen/GroupsAllListScreen.dart';
+import 'package:afro/Screens/HomeScreens/Home/Groups/GroupsAllListScreen.dart';
 import 'package:afro/Screens/HomeScreens/Home/Messages/MessageListScreen.dart';
 import 'package:afro/Screens/HomeScreens/ProfileNavigationScreens/ProfileSettingScreenPage.dart';
 import 'package:afro/Util/CustomWidgetAttributes.dart';

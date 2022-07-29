@@ -2,18 +2,14 @@ import 'dart:convert';
 import 'package:afro/Model/Group/AllGroupDataModel.dart';
 import 'package:afro/Util/CommonUI.dart';
 import 'package:afro/Util/Constants.dart';
-import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:afro/Network/Apis.dart';
-import 'package:afro/Util/CommonMethods.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 
 var user = UserDataConstants();
 final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
 
-Future<AllGroupsModel> getAllGroups(BuildContext context,
-  
+Future<AllGroupsModel> getAllGroups(
     {String search = "",
     String type = "",
     bool showProgress = true,
@@ -21,11 +17,10 @@ Future<AllGroupsModel> getAllGroups(BuildContext context,
     String limit = "500",
     String members_max = "500",
     String members_min = "0",
-   
     String category = ""}) async {
-  if (showProgress) {
-    showProgressDialogBox(context);
-  }
+  // if (showProgress) {
+  //   showProgressDialogBox(context);
+  // }
   SharedPreferences sharedPreferences = await _prefs;
   String token = sharedPreferences.getString(user.token).toString();
   String userId = sharedPreferences.getString(user.id).toString();
@@ -41,9 +36,9 @@ Future<AllGroupsModel> getAllGroups(BuildContext context,
         'x-access-token': token,
       });
   print(response.body);
-  if (showProgress) {
-    Navigator.pop(context);
-  }
+  // if (showProgress) {
+  //   Navigator.pop(context);
+  // }
   jsonResponse = json.decode(response.body);
   var message = jsonResponse["message"];
   if (response.statusCode == 200) {
@@ -52,7 +47,7 @@ Future<AllGroupsModel> getAllGroups(BuildContext context,
     return AllGroupsModel.fromJson(jsonDecode(response.body));
   } else if (response.statusCode == 401) {
     customToastMsg("Unauthorized User!");
-    clearAllDatabase(context);
+    // clearAllDatabase(context);
     throw Exception("Unauthorized User!");
   } else {
     customToastMsg(message);

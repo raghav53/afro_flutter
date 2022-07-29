@@ -80,7 +80,7 @@ class _HomeScreen extends State<DashboardPageScreen> {
       _exploreForums!.whenComplete(() => () {});
     });
     Future.delayed(Duration.zero, () {
-      _allGroups = getAllGroups(context, showProgress: false);
+      _allGroups = getAllGroups(showProgress: false);
       setState(() {});
       _allGroups!.whenComplete(() => () {});
     });
@@ -94,7 +94,7 @@ class _HomeScreen extends State<DashboardPageScreen> {
     });
 
     Future.delayed(Duration.zero, () {
-      _allGroups = getAllGroups(context, showProgress: false);
+      _allGroups = getAllGroups(showProgress: false);
       setState(() {});
       _allGroups!.whenComplete(() => () {});
     });

@@ -13,15 +13,16 @@ var user = UserDataConstants();
 final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
 
 Future<JoinedGroupModel> getAllJoinedGroups(
-  BuildContext context, {
+   {
+    
   String search = "",
   bool showProgress = true,
   String page = "1",
   String limit = "500",
 }) async {
-  if (showProgress) {
-    showProgressDialogBox(context);
-  }
+  // if (showProgress) {
+  //   showProgressDialogBox(context);
+  // }
   SharedPreferences sharedPreferences = await _prefs;
   String token = sharedPreferences.getString(user.token).toString();
   String userId = sharedPreferences.getString(user.id).toString();
@@ -37,9 +38,9 @@ Future<JoinedGroupModel> getAllJoinedGroups(
         'x-access-token': token,
       });
   print(response.body);
-  if (showProgress) {
-    Navigator.pop(context);
-  }
+  // if (showProgress) {
+  //   Navigator.pop(context);
+  // }
   jsonResponse = json.decode(response.body);
   var message = jsonResponse["message"];
   if (response.statusCode == 200) {
@@ -48,7 +49,7 @@ Future<JoinedGroupModel> getAllJoinedGroups(
     return JoinedGroupModel.fromJson(jsonDecode(response.body));
   } else if (response.statusCode == 401) {
     customToastMsg("Unauthorized User!");
-    clearAllDatabase(context);
+    //clearAllDatabase(context);
     throw Exception("Unauthorized User!");
   } else {
     customToastMsg(message);
