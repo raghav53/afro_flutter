@@ -124,7 +124,7 @@ class _AllEventsScreenState extends State<AllEventsScreen> {
                         flex: 1,
                         child: InkWell(
                           onTap: () {
-                            //openBottomSheet();
+                            openBottomSheet();
                           },
                           child: Image.asset(
                             "assets/icons/fillter.png",

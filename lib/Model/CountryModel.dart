@@ -11,8 +11,11 @@ import 'package:http/http.dart' as http;
 var user = UserDataConstants();
 final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
 
-Future<CountryModel> getCountriesList(BuildContext context) async {
-  showProgressDialogBox(context);
+Future<CountryModel> getCountriesList(BuildContext context,
+    {bool isShow = true}) async {
+  if (isShow) {
+    showProgressDialogBox(context);
+  }
   SharedPreferences sharedPreferences = await _prefs;
   String token = sharedPreferences.getString(user.token).toString();
   String userId = sharedPreferences.getString(user.id).toString();
@@ -27,8 +30,10 @@ Future<CountryModel> getCountriesList(BuildContext context) async {
   print(response.body);
   jsonResponse = json.decode(response.body);
   var message = jsonResponse["message"];
-  if (response.statusCode == 200) {
+  if (isShow) {
     Navigator.pop(context);
+  }
+  if (response.statusCode == 200) {
     print("success");
     return CountryModel.fromJson(jsonDecode(response.body));
   } else if (response.statusCode == 401) {
@@ -36,7 +41,6 @@ Future<CountryModel> getCountriesList(BuildContext context) async {
     clearAllDatabase(context);
     throw Exception("Unauthorized User!");
   } else {
-    Navigator.pop(context);
     customToastMsg(message);
     throw Exception("Failed to load the work experience!");
   }
@@ -94,6 +98,7 @@ class Data {
   String? capital;
   String? currency;
   String? currencyName;
+  bool isSelected = false;
   String? currencySymbol;
   String? tld;
   String? native;

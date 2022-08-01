@@ -32,11 +32,12 @@ class _HomePagescreenState extends State<HomePagescreen> {
                 mainAxisAlignment: mAround,
                 children: [
                   bottomNavigationBarItem("assets/icons/home.png", "Home", 0),
-                  bottomNavigationBarItem("assets/icons/home.png", "Events", 1),
                   bottomNavigationBarItem(
-                      "assets/icons/forums.png", "Forums", 2),
+                      "assets/icons/event_icn.png", "Events", 1),
                   bottomNavigationBarItem(
-                      "assets/icons/group.png", "Groups", 3),
+                      "assets/icons/ic_forum_white.PNG", "Forums", 2),
+                  bottomNavigationBarItem(
+                      "assets/icons/ic_group.PNG", "Groups", 3),
                   bottomNavigationBarItem(
                       "assets/icons/message.png", "Message", 4),
                   bottomNavigationBarItem(
@@ -87,9 +88,13 @@ class _HomePagescreenState extends State<HomePagescreen> {
                     ? commonButtonLinearGridient
                     : null,
                 borderRadius: BorderRadius.circular(200)),
-            child: Image.asset(
-              path,
-              scale: 1.5,
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Image.asset(
+                path,
+                scale: 1.5,
+                color: Colors.white,
+              ),
             ),
           ),
           Visibility(

@@ -103,49 +103,69 @@ class _FourmDetailsPageState extends State<FourmDetailsPage> {
                                     borderRadius: BorderRadius.circular(5),
                                     border:
                                         Border.all(color: white24, width: 1)),
-                                child: Column(
-                                  crossAxisAlignment: cStart,
+                                child: Stack(
                                   children: [
-                                    customHeightBox(10),
-                                    Row(
-                                      mainAxisAlignment: mStart,
+                                    Column(
                                       crossAxisAlignment: cStart,
                                       children: [
-                                        customWidthBox(10),
-                                        CachedNetworkImage(
-                                          imageUrl: IMAGE_URL +
-                                              snapshot.data!.data!.userId!
-                                                  .profileImage
-                                                  .toString(),
-                                          placeholder: (context, url) =>
-                                              const CircleAvatar(
-                                                  backgroundImage: AssetImage(
-                                                      "tom_cruise.jpeg")),
-                                          imageBuilder: (context, image) =>
-                                              CircleAvatar(
-                                            backgroundImage: image,
-                                          ),
-                                        ),
-                                        customWidthBox(10),
-                                        Column(
+                                        customHeightBox(10),
+                                        Row(
+                                          mainAxisAlignment: mStart,
                                           crossAxisAlignment: cStart,
                                           children: [
-                                            customText(
-                                                snapshot.data!.data!.userId!
-                                                    .fullName
-                                                    .toString(),
-                                                15,
-                                                yellowColor),
-                                            customHeightBox(7),
-                                            customText(
-                                                snapshot.data!.data!.title
-                                                    .toString(),
-                                                13,
-                                                white)
+                                            customWidthBox(10),
+                                            CachedNetworkImage(
+                                              imageUrl: IMAGE_URL +
+                                                  snapshot.data!.data!.userId!
+                                                      .profileImage
+                                                      .toString(),
+                                              placeholder: (context, url) =>
+                                                  const CircleAvatar(
+                                                      backgroundImage: AssetImage(
+                                                          "tom_cruise.jpeg")),
+                                              imageBuilder: (context, image) =>
+                                                  CircleAvatar(
+                                                backgroundImage: image,
+                                              ),
+                                            ),
+                                            customWidthBox(10),
+                                            Column(
+                                              crossAxisAlignment: cStart,
+                                              children: [
+                                                customText(
+                                                    snapshot.data!.data!.userId!
+                                                        .fullName
+                                                        .toString(),
+                                                    15,
+                                                    yellowColor),
+                                                customHeightBox(7),
+                                                customText(
+                                                    snapshot.data!.data!.title
+                                                        .toString(),
+                                                    13,
+                                                    white)
+                                              ],
+                                            ),
                                           ],
                                         ),
-                                        Spacer(),
-                                        customText(
+                                        customHeightBox(20),
+                                        Padding(
+                                          padding: EdgeInsets.only(left: 15),
+                                          child: customText(
+                                              snapshot.data!.data!.question
+                                                  .toString(),
+                                              15,
+                                              white),
+                                        ),
+                                        customHeightBox(10)
+                                      ],
+                                    ),
+                                    Align(
+                                      alignment: Alignment.topRight,
+                                      child: Padding(
+                                        padding: const EdgeInsets.only(
+                                            top: 10, right: 10),
+                                        child: customText(
                                             dataTimeTextFormater(snapshot
                                                     .data!.data!.createdAt
                                                     .toString())["date"] +
@@ -155,19 +175,8 @@ class _FourmDetailsPageState extends State<FourmDetailsPage> {
                                                     .toString())["time"],
                                             15,
                                             yellowColor),
-                                        customWidthBox(10),
-                                      ],
-                                    ),
-                                    customHeightBox(20),
-                                    Padding(
-                                      padding: EdgeInsets.only(left: 15),
-                                      child: customText(
-                                          snapshot.data!.data!.question
-                                              .toString(),
-                                          15,
-                                          white),
-                                    ),
-                                    customHeightBox(10)
+                                      ),
+                                    )
                                   ],
                                 )),
                             customHeightBox(20),
@@ -377,9 +386,11 @@ class _FourmDetailsPageState extends State<FourmDetailsPage> {
                           ),
                           Expanded(
                             child: TextField(
+                              controller: _controller,
                               onChanged: (value) {
                                 commentCaption = value.toString();
                               },
+                              style: TextStyle(color: Colors.white),
                               showCursor: true,
                               scribbleEnabled: false,
                               enableIMEPersonalizedLearning: false,
@@ -387,7 +398,7 @@ class _FourmDetailsPageState extends State<FourmDetailsPage> {
                               focusNode: focusNode,
                               decoration: const InputDecoration(
                                   hintText: "Write message...",
-                                  hintStyle: TextStyle(color: Colors.black54),
+                                  hintStyle: TextStyle(color: Colors.grey),
                                   border: InputBorder.none),
                             ),
                           ),

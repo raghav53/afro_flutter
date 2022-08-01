@@ -268,20 +268,21 @@ class _LoginScreenState extends State<LoginScreen> {
                         mainAxisAlignment: MainAxisAlignment.center,
                       ),
                       const SizedBox(height: 15),
-                      Center(
+                      Container(
+                        width: phoneWidth(context) / 0.2,
                         child: Row(
                           crossAxisAlignment: cCenter,
                           mainAxisAlignment: mCenter,
                           children: [
                             SizedBox(
-                              width: 150,
+                              width: phoneWidth(context) / 3,
                               child: customDivider(10, white),
                             ),
                             customWidthBox(10),
                             customText("or", 13, white),
                             customWidthBox(10),
                             SizedBox(
-                              width: 150,
+                              width: phoneWidth(context) / 3,
                               child: customDivider(10, white),
                             ),
                           ],

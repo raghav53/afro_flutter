@@ -10,8 +10,11 @@ import 'package:http/http.dart' as http;
 
 var user = UserDataConstants();
 final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
-Future<ForumCategoryModel> getForumCategorisList(BuildContext context) async {
-  showProgressDialogBox(context);
+Future<ForumCategoryModel> getForumCategorisList(BuildContext context,
+    {bool isShow = true}) async {
+  if (isShow) {
+    showProgressDialogBox(context);
+  }
   SharedPreferences sharedPreferences = await _prefs;
   String token = sharedPreferences.getString(user.token).toString();
 
@@ -24,8 +27,10 @@ Future<ForumCategoryModel> getForumCategorisList(BuildContext context) async {
   print(response.body);
   jsonResponse = json.decode(response.body);
   var message = jsonResponse["message"];
-  if (response.statusCode == 200) {
+  if (isShow) {
     Navigator.pop(context);
+  }
+  if (response.statusCode == 200) {
     print("Get forum category api success!");
     return ForumCategoryModel.fromJson(jsonDecode(response.body));
   } else if (response.statusCode == 401) {
@@ -33,7 +38,6 @@ Future<ForumCategoryModel> getForumCategorisList(BuildContext context) async {
     clearAllDatabase(context);
     throw Exception("Unauthorized User!");
   } else {
-    Navigator.pop(context);
     customToastMsg(message);
     throw Exception("Failed to load the work experience!");
   }
@@ -82,6 +86,7 @@ class ForumCategoryModel {
 class Data {
   String? sId;
   String? title;
+  bool isSelected = false;
   String? status;
   String? createdAt;
   String? updatedAt;

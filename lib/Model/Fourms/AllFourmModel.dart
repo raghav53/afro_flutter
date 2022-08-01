@@ -16,9 +16,9 @@ Future<AllFourmModel> getAllFourmsList(BuildContext context,
     {String page = "1",
     String limit = "1000",
     String search = "",
-    String category_id = "",
+    var category_id = "",
     bool isShow = true,
-    String country = ""}) async {
+    var country = ""}) async {
   SharedPreferences sharedPreferences = await _prefs;
   String token = sharedPreferences.getString(user.token).toString();
   String userId = sharedPreferences.getString(user.id).toString();

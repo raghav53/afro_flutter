@@ -1,7 +1,9 @@
 import 'dart:convert';
 import 'package:afro/Helper/ReportOperation.dart';
+import 'package:afro/Model/CountryModel.dart';
 import 'package:afro/Model/Fourms/AllFourmDataModel.dart';
 import 'package:afro/Model/Fourms/AllFourmModel.dart';
+import 'package:afro/Model/Fourms/ForumCategoryModel.dart';
 import 'package:afro/Model/Fourms/MyForumReplies/MyForumAllRepliesModel.dart';
 import 'package:afro/Model/Fourms/MyForumThread/MyForumThreadDataModel.dart';
 import 'package:afro/Model/Fourms/MyForumThread/MyForumThreadModel.dart';
@@ -18,7 +20,6 @@ import 'package:afro/Screens/HomeScreens/Home/Forums/ForumsNewThread.dart';
 import 'package:afro/Util/CustomWidgetAttributes.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -30,6 +31,14 @@ TextEditingController _search = TextEditingController();
 var userInfo = UserDataConstants();
 final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
 var searchThread = "";
+var bottomSheetIndex = 0;
+
+String countriesIds = "";
+
+List<String> tempCountriesIds = [];
+
+Future<CountryModel>? _getCountries;
+Future<ForumCategoryModel>? _getCategries;
 
 class _ForumsPage extends State<ForumsScreenPage> {
   String? fullName = "", loginuserId = "", profileImage = "";
@@ -141,9 +150,7 @@ class _ForumsPage extends State<ForumsScreenPage> {
                       flex: 1,
                       child: InkWell(
                         onTap: () {
-                          Fluttertoast.showToast(
-                              msg: "Hello World",
-                              toastLength: Toast.LENGTH_SHORT);
+                          openBottomSheet();
                         },
                         child: Image.asset(
                           "assets/icons/fillter.png",
@@ -165,8 +172,12 @@ class _ForumsPage extends State<ForumsScreenPage> {
                         child: InkWell(
                           onTap: () {
                             setState(() {
+                              _search.clear();
                               _showFab = false;
+                              searchThread = "";
                               clickPosition = 0;
+                              focusNode.unfocus();
+                              focusNode.canRequestFocus = false;
                             });
                           },
                           child: Container(
@@ -202,8 +213,11 @@ class _ForumsPage extends State<ForumsScreenPage> {
                           onTap: () {
                             setState(() {
                               _showFab = false;
-
+                              _search.clear();
+                              searchThread = "";
                               clickPosition = 1;
+                              focusNode.unfocus();
+                              focusNode.canRequestFocus = false;
                             });
                           },
                           child: Container(
@@ -239,6 +253,10 @@ class _ForumsPage extends State<ForumsScreenPage> {
                             setState(() {
                               _showFab = true;
                               clickPosition = 2;
+                              _search.clear();
+                              focusNode.unfocus();
+                              searchThread = "";
+                              focusNode.canRequestFocus = false;
                             });
                           },
                           child: Container(
@@ -271,7 +289,9 @@ class _ForumsPage extends State<ForumsScreenPage> {
                       ),
                     ],
                   )),
-              Container(height: 500, child: selectedViewFillter(clickPosition))
+              Container(
+                  height: phoneHeight(context) / 1.5,
+                  child: selectedViewFillter(clickPosition))
             ],
           ),
         ),
@@ -283,7 +303,8 @@ class _ForumsPage extends State<ForumsScreenPage> {
   selectedViewFillter(int index) {
     if (index == 0) {
       return FutureBuilder<AllFourmModel>(
-          future: getAllFourmsList(context, search: searchThread),
+          future: getAllFourmsList(context,
+              search: searchThread, country: countriesIds.toString()),
           builder: (context, snapshot) {
             return snapshot.hasData && snapshot.data!.data!.isNotEmpty
                 ? AllThreadListPage(snapshot.data!)
@@ -331,7 +352,7 @@ class _ForumsPage extends State<ForumsScreenPage> {
     );
   }
 
-  //Fourm Item
+  //MY Fourm Item
   Widget fourmItem(MyAllThreadsDataModel model) {
     return Container(
       decoration: BoxDecoration(
@@ -350,7 +371,9 @@ class _ForumsPage extends State<ForumsScreenPage> {
                 mainAxisAlignment: mStart,
                 children: [
                   CachedNetworkImage(
-                      imageUrl: IMAGE_URL + profileImage.toString(),
+                      imageUrl: model.type == 0
+                          ? IMAGE_URL + profileImage.toString()
+                          : "https://cutewallpaper.org/22/profile-picture-aesthetic-wallpapers/2596225445.jpg",
                       errorWidget: (error, context, url) =>
                           const Icon(Icons.person),
                       placeholder: (context, url) => const Icon(Icons.person),
@@ -371,7 +394,9 @@ class _ForumsPage extends State<ForumsScreenPage> {
                                   color: Colors.grey[600]!, fontSize: 15),
                               children: [
                             TextSpan(
-                                text: fullName.toString(),
+                                text: model.type == 0
+                                    ? fullName.toString()
+                                    : "Anonymous",
                                 style:
                                     TextStyle(color: yellowColor, fontSize: 14))
                           ])),
@@ -441,7 +466,9 @@ class _ForumsPage extends State<ForumsScreenPage> {
                   child: Row(
                     children: [
                       Icon(
-                        Icons.thumb_up_outlined,
+                        model.isLike == 1
+                            ? Icons.thumb_up_sharp
+                            : Icons.thumb_up_outlined,
                         color: model.isLike == 1 ? Colors.blueAccent : white,
                         size: 19,
                       ),
@@ -459,7 +486,9 @@ class _ForumsPage extends State<ForumsScreenPage> {
                   child: Row(
                     children: [
                       Icon(
-                        Icons.thumb_down_outlined,
+                        model.isDislike == 1
+                            ? Icons.thumb_down_sharp
+                            : Icons.thumb_down_outlined,
                         color: model.isDislike == 1 ? Colors.blueAccent : white,
                         size: 19,
                       ),
@@ -630,9 +659,12 @@ class _ForumsPage extends State<ForumsScreenPage> {
                           mainAxisAlignment: mStart,
                           children: [
                             CachedNetworkImage(
-                                imageUrl: IMAGE_URL +
-                                    snapshot.data![index].userId!.profileImage
-                                        .toString(),
+                                imageUrl: snapshot.data![index].type == 0
+                                    ? IMAGE_URL +
+                                        snapshot
+                                            .data![index].userId!.profileImage
+                                            .toString()
+                                    : "https://cutewallpaper.org/22/profile-picture-aesthetic-wallpapers/2596225445.jpg",
                                 errorWidget: (error, context, url) =>
                                     Icon(Icons.person),
                                 placeholder: (context, url) =>
@@ -648,8 +680,10 @@ class _ForumsPage extends State<ForumsScreenPage> {
                               mainAxisAlignment: mStart,
                               children: [
                                 customText(
-                                    snapshot.data![index].userId!.fullName
-                                        .toString(),
+                                    snapshot.data![index].type == 0
+                                        ? snapshot.data![index].userId!.fullName
+                                            .toString()
+                                        : "Anonymous",
                                     15,
                                     yellowColor),
                                 customHeightBox(10),
@@ -731,7 +765,9 @@ class _ForumsPage extends State<ForumsScreenPage> {
                             child: Row(
                               children: [
                                 Icon(
-                                  Icons.thumb_up_outlined,
+                                  snapshot.data![index].isLike == 1
+                                      ? Icons.thumb_up_sharp
+                                      : Icons.thumb_up_outlined,
                                   color: snapshot.data![index].isLike == 1
                                       ? Colors.blueAccent
                                       : white,
@@ -757,7 +793,9 @@ class _ForumsPage extends State<ForumsScreenPage> {
                             child: Row(
                               children: [
                                 Icon(
-                                  Icons.thumb_down_outlined,
+                                  snapshot.data![index].isDislike == 1
+                                      ? Icons.thumb_down_sharp
+                                      : Icons.thumb_down_outlined,
                                   color: snapshot.data![index].isDislike == 1
                                       ? Colors.blueAccent
                                       : white,
@@ -844,5 +882,352 @@ class _ForumsPage extends State<ForumsScreenPage> {
       ],
       elevation: 0.0,
     );
+  }
+
+  //Get the data according fillters
+  void openBottomSheet() {
+    var selectedTitle = "Country";
+
+    getCountries();
+    getForumsCategories();
+    showModalBottomSheet(
+        isDismissible: false,
+        backgroundColor: Colors.transparent,
+        context: context,
+        clipBehavior: Clip.antiAlias,
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(10.0),
+            topRight: Radius.circular(10.0),
+          ),
+        ),
+        builder: (context) {
+          return StatefulBuilder(builder: (context, state) {
+            return Container(
+              decoration: commonBoxDecoration(),
+              child: Column(
+                children: [
+                  customHeightBox(15),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 10, right: 10),
+                    child: Row(
+                      mainAxisAlignment: mBetween,
+                      children: [
+                        customText(
+                            "Filter & Sort", 12, const Color(0xFFDFB48C)),
+                        customText(selectedTitle, 12, const Color(0xFFDFB48C)),
+                        IconButton(
+                          icon: const Icon(
+                            Icons.close,
+                            color: Colors.white,
+                          ),
+                          onPressed: () {
+                            Navigator.pop(context);
+                            state(() {
+                              bottomSheetIndex = 0;
+                            });
+                          },
+                        )
+                      ],
+                    ),
+                  ),
+                  customDivider(5, Colors.white),
+                  Row(
+                    crossAxisAlignment: cStart,
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.only(top: 15, left: 10),
+                        child: Column(
+                          mainAxisAlignment: mStart,
+                          crossAxisAlignment: cStart,
+                          children: [
+                            InkWell(
+                              onTap: () {
+                                state(() {
+                                  selectedTitle = "Country";
+                                  bottomSheetIndex = 0;
+                                });
+                              },
+                              child: Container(
+                                width: 80,
+                                decoration: BoxDecoration(
+                                    border: bottomSheetIndex == 0
+                                        ? null
+                                        : Border.all(
+                                            color: Colors.white,
+                                            width: 1,
+                                            style: BorderStyle.solid),
+                                    gradient: bottomSheetIndex == 0
+                                        ? commonButtonLinearGridient
+                                        : null,
+                                    borderRadius: BorderRadius.circular(20)),
+                                child: Center(
+                                    child: Padding(
+                                  padding:
+                                      const EdgeInsets.only(top: 8, bottom: 8),
+                                  child:
+                                      customText("Country", 12, Colors.white),
+                                )),
+                              ),
+                            ),
+                            customHeightBox(15),
+                            InkWell(
+                              onTap: () {
+                                state(() {
+                                  selectedTitle = "Category";
+                                  bottomSheetIndex = 1;
+                                });
+                              },
+                              child: Container(
+                                width: 80,
+                                decoration: BoxDecoration(
+                                    border: bottomSheetIndex == 1
+                                        ? null
+                                        : Border.all(
+                                            color: Colors.white,
+                                            width: 1,
+                                            style: BorderStyle.solid),
+                                    gradient: bottomSheetIndex == 1
+                                        ? commonButtonLinearGridient
+                                        : null,
+                                    borderRadius: BorderRadius.circular(20)),
+                                child: Center(
+                                    child: Padding(
+                                  padding:
+                                      const EdgeInsets.only(top: 8, bottom: 8),
+                                  child:
+                                      customText("Category", 12, Colors.white),
+                                )),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Spacer(),
+                      Container(
+                        alignment: Alignment.center,
+                        height: phoneHeight(context) / 2.13,
+                        child: Stack(
+                          alignment: Alignment.bottomCenter,
+                          children: [
+                            Container(
+                                width: phoneWidth(context) / 1.5,
+                                child: bottomSheetIndex == 0
+                                    ? Column(
+                                        children: [
+                                          Container(
+                                            height: 40,
+                                            decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(10),
+                                                color: Colors.black),
+                                            margin: const EdgeInsets.only(
+                                                top: 15, left: 10, right: 10),
+                                            child: const TextField(
+                                                keyboardType:
+                                                    TextInputType.text,
+                                                style: TextStyle(
+                                                    fontSize: 14,
+                                                    color: Colors.white),
+                                                decoration: InputDecoration(
+                                                  border: InputBorder.none,
+                                                  contentPadding:
+                                                      EdgeInsets.only(
+                                                          top: 8, left: 15),
+                                                  prefixIcon: Icon(
+                                                    Icons.search,
+                                                    color: Color(0xFFDFB48C),
+                                                  ),
+                                                )),
+                                          ),
+                                          customHeightBox(10),
+                                          Container(
+                                              height:
+                                                  phoneHeight(context) / 2.7,
+                                              child:
+                                                  FutureBuilder<CountryModel>(
+                                                future: _getCountries,
+                                                builder: (context, snapshot) {
+                                                  return snapshot.hasData &&
+                                                          snapshot.data != null
+                                                      ? ListView.builder(
+                                                          itemCount: snapshot
+                                                              .data!
+                                                              .data!
+                                                              .length,
+                                                          itemBuilder:
+                                                              (context, index) {
+                                                            return ListTile(
+                                                              leading:
+                                                                  CachedNetworkImage(
+                                                                height: 35,
+                                                                width: 35,
+                                                                imageUrl: flagImageUrl
+                                                                        .toString() +
+                                                                    snapshot
+                                                                        .data!
+                                                                        .data![
+                                                                            index]
+                                                                        .iso2
+                                                                        .toString()
+                                                                        .toLowerCase() +
+                                                                    ".png",
+                                                                placeholder: (context,
+                                                                        url) =>
+                                                                    const Icon(
+                                                                        Icons
+                                                                            .flag),
+                                                                errorWidget: (context,
+                                                                        url,
+                                                                        error) =>
+                                                                    const Icon(Icons
+                                                                        .error),
+                                                              ),
+                                                              title: customText(
+                                                                  snapshot
+                                                                      .data!
+                                                                      .data![
+                                                                          index]
+                                                                      .title
+                                                                      .toString(),
+                                                                  15,
+                                                                  white),
+                                                              trailing:
+                                                                  Checkbox(
+                                                                      value: snapshot
+                                                                          .data!
+                                                                          .data![
+                                                                              index]
+                                                                          .isSelected,
+                                                                      onChanged:
+                                                                          (val) {
+                                                                        state(
+                                                                            () {
+                                                                          snapshot
+                                                                              .data!
+                                                                              .data![index]
+                                                                              .isSelected = !snapshot.data!.data![index].isSelected;
+                                                                          addRemoveCountriesIds(
+                                                                              snapshot.data!.data![index].sId.toString(),
+                                                                              snapshot.data!.data![index].isSelected);
+                                                                        });
+                                                                      }),
+                                                            );
+                                                          })
+                                                      : Center(
+                                                          child: customText(
+                                                              "No countries found!",
+                                                              15,
+                                                              white),
+                                                        );
+                                                },
+                                              ))
+                                        ],
+                                      )
+                                    : Container(
+                                        child:
+                                            FutureBuilder<ForumCategoryModel>(
+                                                future: _getCategries,
+                                                builder: (context, snapshot) {
+                                                  return snapshot.hasData &&
+                                                          snapshot.data != null
+                                                      ? ListView.builder(
+                                                          itemCount: snapshot
+                                                              .data!
+                                                              .data!
+                                                              .length,
+                                                          itemBuilder:
+                                                              (context, index) {
+                                                            return ListTile(
+                                                              title: customText(
+                                                                  snapshot
+                                                                      .data!
+                                                                      .data![
+                                                                          index]
+                                                                      .title
+                                                                      .toString(),
+                                                                  15,
+                                                                  white),
+                                                              trailing:
+                                                                  Checkbox(
+                                                                      value: snapshot
+                                                                          .data!
+                                                                          .data![
+                                                                              index]
+                                                                          .isSelected,
+                                                                      onChanged:
+                                                                          (val) {
+                                                                        state(
+                                                                            () {
+                                                                          snapshot
+                                                                              .data!
+                                                                              .data![index]
+                                                                              .isSelected = !snapshot.data!.data![index].isSelected;
+                                                                        });
+                                                                      }),
+                                                            );
+                                                          })
+                                                      : Center(
+                                                          child: customText(
+                                                              "No categories found!",
+                                                              15,
+                                                              white),
+                                                        );
+                                                }),
+                                      )),
+                            Align(
+                              alignment: Alignment.bottomCenter,
+                              child: InkWell(
+                                onTap: () {
+                                  setState(() {});
+                                  print(countriesIds.toString());
+                                  Navigator.pop(context);
+                                },
+                                child: Container(
+                                    padding: const EdgeInsets.only(
+                                        top: 7, bottom: 7, left: 20, right: 20),
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(50),
+                                      gradient: commonButtonLinearGridient,
+                                    ),
+                                    child:
+                                        customText("Apply", 16, Colors.white)),
+                              ),
+                            )
+                          ],
+                        ),
+                      )
+                    ],
+                  ),
+                ],
+              ),
+            );
+          });
+        });
+  }
+
+  addRemoveCountriesIds(String id, bool value) {
+    if (value) {
+      tempCountriesIds.add(id.toString());
+    } else {
+      tempCountriesIds.remove(id.toString());
+    }
+    countriesIds = tempCountriesIds.join(",");
+  }
+
+  getCountries() {
+    Future.delayed(Duration.zero, () {
+      _getCountries = getCountriesList(context, isShow: false);
+      setState(() {});
+      _getCountries!.whenComplete(() => {});
+    });
+  }
+
+  getForumsCategories() {
+    Future.delayed(Duration.zero, () {
+      _getCategries = getForumCategorisList(context, isShow: false);
+      setState(() {});
+      _getCategries!.whenComplete(() => {});
+    });
   }
 }

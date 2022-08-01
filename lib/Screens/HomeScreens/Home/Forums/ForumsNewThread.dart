@@ -24,7 +24,7 @@ class ForumsNewThreadPage extends StatefulWidget {
 
 String? visible;
 String? selectedItem = "Item 1";
-var userType = 0;
+var userType = "";
 String? categoryTypeID = "";
 String? categoryTypeName = "", countryId = "", countryName = "";
 int _groupValue = -1;
@@ -38,6 +38,8 @@ Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
 TextEditingController titleController = TextEditingController();
 TextEditingController linkController = TextEditingController();
 TextEditingController contentController = TextEditingController();
+
+bool showList = false;
 
 class _ForumsNewThreadPage extends State<ForumsNewThreadPage> {
   @override
@@ -75,31 +77,98 @@ class _ForumsNewThreadPage extends State<ForumsNewThreadPage> {
                     children: [
                       customText("SELECT CATEGORY", 14, Colors.white),
                       customHeightBox(10),
-                      InkWell(
-                        onTap: () {
-                          showForumsCategoris();
-                        },
-                        child: Container(
-                          height: 50,
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              color: Colors.black),
-                          child: Row(
-                            children: [
-                              customWidthBox(10),
-                              customText(
-                                  categoryTypeName.toString().isEmpty
-                                      ? "Select Category"
-                                      : categoryTypeName.toString(),
-                                  14,
-                                  Colors.white),
-                              const Spacer(),
-                              const Icon(
-                                Icons.arrow_drop_down,
-                                color: Colors.white,
-                              )
-                            ],
-                          ),
+                      Container(
+                        padding: EdgeInsets.only(top: 15, bottom: 15),
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            color: Colors.black),
+                        child: Column(
+                          children: [
+                            InkWell(
+                              onTap: () {
+                                setState(() {
+                                  showList = !showList;
+                                });
+                              },
+                              child: Row(
+                                children: [
+                                  customWidthBox(10),
+                                  customText(
+                                      categoryTypeName.toString().isEmpty
+                                          ? "Select Category"
+                                          : categoryTypeName.toString(),
+                                      14,
+                                      Colors.white),
+                                  const Spacer(),
+                                  const Icon(
+                                    Icons.arrow_drop_down,
+                                    color: Colors.white,
+                                  )
+                                ],
+                              ),
+                            ),
+                            Container(
+                              child: showList
+                                  ? FutureBuilder<ForumCategoryModel>(
+                                      future: _getForumsCategories,
+                                      builder: (context, snapshot) {
+                                        return snapshot.hasData &&
+                                                snapshot.data!.data!.isNotEmpty
+                                            ? ListView.builder(
+                                                itemCount:
+                                                    snapshot.data!.data!.length,
+                                                shrinkWrap: true,
+                                                itemBuilder: (context, index) {
+                                                  return InkWell(
+                                                      onTap: () {
+                                                        setState(() {
+                                                          showList = false;
+
+                                                          categoryTypeID =
+                                                              snapshot
+                                                                  .data!
+                                                                  .data![index]
+                                                                  .sId
+                                                                  .toString();
+                                                          categoryTypeName =
+                                                              snapshot
+                                                                  .data!
+                                                                  .data![index]
+                                                                  .title
+                                                                  .toString();
+                                                        });
+                                                      },
+                                                      child: ListTile(
+                                                        title: Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                      .only(
+                                                                  left: 8.0,
+                                                                  top: 5,
+                                                                  bottom: 5),
+                                                          child: customText(
+                                                              snapshot
+                                                                  .data!
+                                                                  .data![index]
+                                                                  .title
+                                                                  .toString(),
+                                                              15,
+                                                              white),
+                                                        ),
+                                                      ));
+                                                },
+                                              )
+                                            : Center(
+                                                child: customText(
+                                                    "No data found!",
+                                                    15,
+                                                    white),
+                                              );
+                                      },
+                                    )
+                                  : null,
+                            )
+                          ],
                         ),
                       ),
                       customHeightBox(20),
@@ -237,15 +306,17 @@ class _ForumsNewThreadPage extends State<ForumsNewThreadPage> {
                       customHeightBox(50),
                       InkWell(
                         onTap: () {
+                          print(
+                              "Category ID :- ${categoryTypeID}\n Forum Title :- ${titleController.text}\n Link :- ${linkController.text} \n contentController:-${caption} ");
                           selectUserType(context);
                         },
                         child: Container(
-                          margin: const EdgeInsets.only(left: 80, right: 80),
+                          margin: const EdgeInsets.only(left: 100, right: 100),
                           padding: const EdgeInsets.only(top: 10, bottom: 10),
                           decoration: fixedButtonDesign(),
                           child: Row(
                             mainAxisAlignment: mCenter,
-                            children: [customText("SAVE", 17, Colors.white)],
+                            children: [customText("Publish", 17, Colors.white)],
                           ),
                         ),
                       ),
@@ -500,7 +571,7 @@ class _ForumsNewThreadPage extends State<ForumsNewThreadPage> {
                                               .toString();
 
                                           countryId = snapshot
-                                              .data!.data![index].id
+                                              .data!.data![index].sId
                                               .toString();
 
                                           Navigator.pop(context);
@@ -696,7 +767,7 @@ class _ForumsNewThreadPage extends State<ForumsNewThreadPage> {
                                 onTap: () {
                                   state(() {
                                     _usergroupValue = 0;
-                                    userType = 0;
+                                    userType = "0";
                                     print(userType);
                                   });
                                 },
@@ -720,7 +791,7 @@ class _ForumsNewThreadPage extends State<ForumsNewThreadPage> {
                                 onTap: () {
                                   state(() {
                                     _usergroupValue = 1;
-                                    userType = 1;
+                                    userType = "1";
                                     print(userType);
                                   });
                                 },
@@ -761,22 +832,27 @@ class _ForumsNewThreadPage extends State<ForumsNewThreadPage> {
 
   Future<void> postTheForumThread() async {
     if (categoryTypeID.toString().isEmpty) {
+      Navigator.pop(context);
       customToastMsg("Please the category of the forum thread!");
       return;
     }
     if (titleController.text.toString().isEmpty) {
+      Navigator.pop(context);
       customToastMsg("Please type the title of forum thread!");
       return;
     }
     if (linkController.text.toString().isEmpty) {
+      Navigator.pop(context);
       customToastMsg("Please enter the link of forum thread!");
       return;
     }
     if (caption.toString().isEmpty) {
+      Navigator.pop(context);
       customToastMsg("Please type the showrt description of forum thread!");
       return;
     }
     if (countryId.toString().isEmpty) {
+      Navigator.pop(context);
       customToastMsg("Please select the option of visibility!");
       return;
     }
