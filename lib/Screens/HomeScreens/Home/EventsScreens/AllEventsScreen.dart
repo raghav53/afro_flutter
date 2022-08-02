@@ -1,7 +1,9 @@
+import 'package:afro/Model/CountryModel.dart';
 import 'package:afro/Model/Events/CommonEvent/CommonEventDataModel.dart';
 import 'package:afro/Model/Events/Going/GoingInterestedEventsModel.dart';
 import 'package:afro/Model/Events/InvitedEvents/InvitedEventsModel.dart';
 import 'package:afro/Model/Events/UserEvents/UserEventModel.dart';
+import 'package:afro/Network/Apis.dart';
 import 'package:afro/Screens/HomeScreens/Home/EventsScreens/AllEventsScreen/DiscoverEventsScreen.dart';
 import 'package:afro/Screens/HomeScreens/Home/EventsScreens/AllEventsScreen/GoingEventsScreen.dart';
 import 'package:afro/Screens/HomeScreens/Home/EventsScreens/AllEventsScreen/InterestedEventsScreen.dart';
@@ -12,6 +14,7 @@ import 'package:afro/Util/Constants.dart';
 import 'package:afro/Util/CustomWidget.dart';
 import 'package:afro/Screens/HomeScreens/Home/EventsScreens/CreateNewEvent.dart';
 import 'package:afro/Util/CustomWidgetAttributes.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 class AllEventsScreen extends StatefulWidget {
@@ -40,12 +43,39 @@ Future<GoingInterestedEventsModel>? _getInterestedEvents; //Interested Events
 Future<UsersEventsModel>? _getUsersEventList; //Users Events
 Future<InvitedEventsModel>? _getInvitedEventList; //Users Events
 
+//Bottomsheet searching
+String countriesIds = "";
+var selectedRange = const RangeValues(0, 500);
+var selectedInterestedRange = const RangeValues(0, 500);
+int _startInterestedRange = 0;
+int _endIntetestedRange = 500;
+int _startGoingRange = 0;
+int _endGoingRange = 500;
+List<String> tempCountriesIds = [];
+Future<CountryModel>? _getCountries;
+var _usergroupValue = 0;
+
 TextEditingController searchEditText = TextEditingController();
 
 class _AllEventsScreenState extends State<AllEventsScreen> {
   @override
   void initState() {
     super.initState();
+    getCountries();
+    defaultValue();
+  }
+
+  defaultValue() {
+    setState(() {
+      selectedRange = const RangeValues(0, 500);
+      selectedRange = const RangeValues(0, 500);
+      countriesIds = "";
+      _usergroupValue = 0;
+      _endGoingRange = 500;
+      _startGoingRange = 0;
+      _endIntetestedRange = 500;
+      _startInterestedRange = 0;
+    });
   }
 
   @override
@@ -159,6 +189,7 @@ class _AllEventsScreenState extends State<AllEventsScreen> {
   Widget filterItemView(int index, String filterItem) {
     return InkWell(
       onTap: () {
+        defaultValue();
         setState(() {
           selectedIndex = index;
         });
@@ -181,6 +212,11 @@ class _AllEventsScreenState extends State<AllEventsScreen> {
 
   //Get the data according fillters
   void openBottomSheet() {
+    var selectedBottomIndex = 0;
+
+    selectedIndex == 0 ? selectedBottomIndex = 0 : selectedBottomIndex = 3;
+    var indexTitle = "Country";
+
     showModalBottomSheet(
         isDismissible: false,
         backgroundColor: Colors.transparent,
@@ -206,7 +242,7 @@ class _AllEventsScreenState extends State<AllEventsScreen> {
                       children: [
                         customText(
                             "Filter & Sort", 12, const Color(0xFFDFB48C)),
-                        customText("Country", 12, const Color(0xFFDFB48C)),
+                        customText(indexTitle, 12, const Color(0xFFDFB48C)),
                         IconButton(
                           icon: const Icon(
                             Icons.close,
@@ -229,73 +265,145 @@ class _AllEventsScreenState extends State<AllEventsScreen> {
                           mainAxisAlignment: mStart,
                           crossAxisAlignment: cStart,
                           children: [
-                            InkWell(
-                              onTap: () {},
-                              child: Container(
-                                width: 80,
-                                decoration: BoxDecoration(
-                                    border: Border.all(
-                                        color: Colors.white,
-                                        width: 1,
-                                        style: BorderStyle.solid),
-                                    borderRadius: BorderRadius.circular(20)),
-                                child: Center(
-                                    child: Padding(
-                                  padding:
-                                      const EdgeInsets.only(top: 8, bottom: 8),
-                                  child:
-                                      customText("Country", 12, Colors.white),
-                                )),
+                            Visibility(
+                              visible: selectedIndex == 0 ? true : false,
+                              child: InkWell(
+                                onTap: () {
+                                  state(() {
+                                    selectedBottomIndex = 0;
+                                    indexTitle = "Country";
+                                  });
+                                },
+                                child: Container(
+                                  width: 80,
+                                  decoration: BoxDecoration(
+                                      gradient: (selectedBottomIndex == 0)
+                                          ? commonButtonLinearGridient
+                                          : null,
+                                      border: selectedBottomIndex != 0
+                                          ? Border.all(
+                                              color: Colors.white,
+                                              width: 1,
+                                              style: BorderStyle.solid)
+                                          : null,
+                                      borderRadius: BorderRadius.circular(20)),
+                                  child: Center(
+                                      child: Padding(
+                                    padding: const EdgeInsets.only(
+                                        top: 8, bottom: 8),
+                                    child:
+                                        customText("Country", 12, Colors.white),
+                                  )),
+                                ),
+                              ),
+                            ),
+                            customHeightBox(15),
+                            Visibility(
+                              visible: selectedIndex == 0 ? true : false,
+                              child: InkWell(
+                                onTap: () {
+                                  state(() {
+                                    selectedBottomIndex = 1;
+                                    indexTitle = "Going";
+                                  });
+                                },
+                                child: Container(
+                                  width: 80,
+                                  decoration: BoxDecoration(
+                                      gradient: (selectedBottomIndex == 1)
+                                          ? commonButtonLinearGridient
+                                          : null,
+                                      border: selectedBottomIndex != 1
+                                          ? Border.all(
+                                              color: Colors.white,
+                                              width: 1,
+                                              style: BorderStyle.solid)
+                                          : null,
+                                      borderRadius: BorderRadius.circular(20)),
+                                  child: Center(
+                                      child: Padding(
+                                    padding: const EdgeInsets.only(
+                                        top: 8, bottom: 8),
+                                    child:
+                                        customText("Going", 12, Colors.white),
+                                  )),
+                                ),
+                              ),
+                            ),
+                            customHeightBox(15),
+                            Visibility(
+                              visible: selectedIndex == 0 ? true : false,
+                              child: InkWell(
+                                onTap: () {
+                                  state(() {
+                                    selectedBottomIndex = 2;
+                                    indexTitle = "Interested";
+                                  });
+                                },
+                                child: Container(
+                                  width: 80,
+                                  decoration: BoxDecoration(
+                                      gradient: (selectedBottomIndex == 2)
+                                          ? commonButtonLinearGridient
+                                          : null,
+                                      border: selectedBottomIndex != 2
+                                          ? Border.all(
+                                              color: Colors.white,
+                                              width: 1,
+                                              style: BorderStyle.solid)
+                                          : null,
+                                      borderRadius: BorderRadius.circular(20)),
+                                  child: Center(
+                                      child: Padding(
+                                    padding: const EdgeInsets.only(
+                                        top: 8, bottom: 8),
+                                    child: customText(
+                                        "Interested", 12, Colors.white),
+                                  )),
+                                ),
                               ),
                             ),
                             customHeightBox(15),
                             InkWell(
-                              onTap: () {},
+                              onTap: () {
+                                state(() {
+                                  selectedBottomIndex = 3;
+                                  indexTitle = "Event Type";
+                                });
+                              },
                               child: Container(
                                 width: 80,
                                 decoration: BoxDecoration(
-                                    border: Border.all(
-                                        color: Colors.white,
-                                        width: 1,
-                                        style: BorderStyle.solid),
-                                    borderRadius: BorderRadius.circular(20)),
-                                child: Center(
-                                    child: Padding(
-                                  padding:
-                                      const EdgeInsets.only(top: 8, bottom: 8),
-                                  child: customText("Going", 12, Colors.white),
-                                )),
-                              ),
-                            ),
-                            customHeightBox(15),
-                            InkWell(
-                              onTap: () {},
-                              child: Container(
-                                width: 80,
-                                decoration: BoxDecoration(
-                                    border: Border.all(
-                                        color: Colors.white,
-                                        width: 1,
-                                        style: BorderStyle.solid),
+                                    gradient: (selectedBottomIndex == 3)
+                                        ? commonButtonLinearGridient
+                                        : null,
+                                    border: selectedBottomIndex != 3
+                                        ? Border.all(
+                                            color: Colors.white,
+                                            width: 1,
+                                            style: BorderStyle.solid)
+                                        : null,
                                     borderRadius: BorderRadius.circular(20)),
                                 child: Center(
                                     child: Padding(
                                   padding:
                                       const EdgeInsets.only(top: 8, bottom: 8),
                                   child: customText(
-                                      "Interested", 12, Colors.white),
+                                      "Event Type", 12, Colors.white),
                                 )),
                               ),
                             ),
                             customHeightBox(15),
                             InkWell(
-                              onTap: () {},
+                              onTap: () {
+                                state(() {
+                                  defaultValue();
+                                });
+                                Navigator.pop(context);
+                              },
                               child: Container(
                                 width: 80,
                                 decoration: BoxDecoration(
-                                    // gradient: (clickPosition == 3)
-                                    //     ? selectedColor
-                                    //     : null,
                                     border: Border.all(
                                         color: Colors.white,
                                         width: 1,
@@ -314,46 +422,347 @@ class _AllEventsScreenState extends State<AllEventsScreen> {
                         ),
                       ),
                       Spacer(),
-                      Column(
-                        children: [
-                          Container(
-                            height: 50,
-                            width: 240,
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10),
-                                color: Colors.black),
-                            margin: const EdgeInsets.only(
-                                top: 15, left: 10, right: 10),
-                            child: const TextField(
-                                keyboardType: TextInputType.text,
-                                style: TextStyle(
-                                    fontSize: 14, color: Colors.white),
-                                decoration: InputDecoration(
-                                  border: InputBorder.none,
-                                  contentPadding:
-                                      EdgeInsets.only(top: 15, left: 15),
-                                  prefixIcon: Icon(
-                                    Icons.search,
-                                    color: Color(0xFFDFB48C),
+                      Container(
+                          height: phoneHeight(context) / 2.07,
+                          decoration: const BoxDecoration(
+                              border: Border(
+                                  left: BorderSide(
+                                      color: Colors.grey, width: 1))),
+                          child: Stack(
+                              alignment: Alignment.bottomCenter,
+                              children: [
+                                Container(
+                                  width: phoneWidth(context) / 1.4,
+                                  child: selectedBottomIndex == 0
+                                      ? Column(
+                                          children: [
+                                            Container(
+                                              height: 40,
+                                              decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.circular(10),
+                                                  color: Colors.black),
+                                              margin: const EdgeInsets.only(
+                                                  top: 15, left: 10, right: 10),
+                                              child: const TextField(
+                                                  keyboardType:
+                                                      TextInputType.text,
+                                                  style: TextStyle(
+                                                      fontSize: 14,
+                                                      color: Colors.white),
+                                                  decoration: InputDecoration(
+                                                    border: InputBorder.none,
+                                                    contentPadding:
+                                                        EdgeInsets.only(
+                                                            top: 8, left: 15),
+                                                    prefixIcon: Icon(
+                                                      Icons.search,
+                                                      color: Color(0xFFDFB48C),
+                                                    ),
+                                                  )),
+                                            ),
+                                            customHeightBox(10),
+                                            Container(
+                                                height:
+                                                    phoneHeight(context) / 2.7,
+                                                child:
+                                                    FutureBuilder<CountryModel>(
+                                                  future: _getCountries,
+                                                  builder: (context, snapshot) {
+                                                    return snapshot.hasData &&
+                                                            snapshot.data !=
+                                                                null
+                                                        ? ListView.builder(
+                                                            itemCount: snapshot
+                                                                .data!
+                                                                .data!
+                                                                .length,
+                                                            itemBuilder:
+                                                                (context,
+                                                                    index) {
+                                                              return ListTile(
+                                                                leading:
+                                                                    CachedNetworkImage(
+                                                                  height: 35,
+                                                                  width: 35,
+                                                                  imageUrl: flagImageUrl
+                                                                          .toString() +
+                                                                      snapshot
+                                                                          .data!
+                                                                          .data![
+                                                                              index]
+                                                                          .iso2
+                                                                          .toString()
+                                                                          .toLowerCase() +
+                                                                      ".png",
+                                                                  placeholder: (context,
+                                                                          url) =>
+                                                                      const Icon(
+                                                                          Icons
+                                                                              .flag),
+                                                                  errorWidget: (context,
+                                                                          url,
+                                                                          error) =>
+                                                                      const Icon(
+                                                                          Icons
+                                                                              .error),
+                                                                ),
+                                                                title: customText(
+                                                                    snapshot
+                                                                        .data!
+                                                                        .data![
+                                                                            index]
+                                                                        .title
+                                                                        .toString(),
+                                                                    15,
+                                                                    white),
+                                                                trailing:
+                                                                    Checkbox(
+                                                                        value: snapshot
+                                                                            .data!
+                                                                            .data![
+                                                                                index]
+                                                                            .isSelected,
+                                                                        onChanged:
+                                                                            (val) {
+                                                                          state(
+                                                                              () {
+                                                                            snapshot.data!.data![index].isSelected =
+                                                                                !snapshot.data!.data![index].isSelected;
+                                                                            addRemoveCountriesIds(snapshot.data!.data![index].sId.toString(),
+                                                                                snapshot.data!.data![index].isSelected);
+                                                                          });
+                                                                        }),
+                                                              );
+                                                            })
+                                                        : Center(
+                                                            child: customText(
+                                                                "No countries found!",
+                                                                15,
+                                                                white),
+                                                          );
+                                                  },
+                                                ))
+                                          ],
+                                        )
+                                      : selectedBottomIndex == 1
+                                          ? Container(
+                                              margin: const EdgeInsets.only(
+                                                  top: 15, left: 10, right: 10),
+                                              width: 270,
+                                              child: Column(
+                                                  crossAxisAlignment: cCenter,
+                                                  children: [
+                                                    RangeSlider(
+                                                      activeColor: yellowColor,
+                                                      inactiveColor: white,
+                                                      min: 0,
+                                                      max: 500,
+                                                      values: selectedRange,
+                                                      onChanged: (RangeValues
+                                                          newValue) {
+                                                        state(() {
+                                                          selectedRange =
+                                                              newValue;
+                                                          _startGoingRange =
+                                                              newValue.start
+                                                                  .toInt();
+                                                          _endGoingRange =
+                                                              newValue.end
+                                                                  .toInt();
+                                                        });
+                                                      },
+                                                    ),
+                                                    Container(
+                                                      padding:
+                                                          const EdgeInsets.only(
+                                                              left: 20,
+                                                              right: 11),
+                                                      child: Row(
+                                                        children: [
+                                                          customText(
+                                                              "min " +
+                                                                  _startGoingRange
+                                                                      .toString(),
+                                                              15,
+                                                              white),
+                                                          Spacer(),
+                                                          customText(
+                                                              "max " +
+                                                                  _endGoingRange
+                                                                      .toString(),
+                                                              15,
+                                                              white)
+                                                        ],
+                                                      ),
+                                                    )
+                                                  ]))
+                                          : selectedBottomIndex == 2
+                                              ? Container(
+                                                  margin: const EdgeInsets.only(
+                                                      top: 15,
+                                                      left: 10,
+                                                      right: 10),
+                                                  width: 270,
+                                                  child: Column(
+                                                      crossAxisAlignment:
+                                                          cCenter,
+                                                      children: [
+                                                        RangeSlider(
+                                                          activeColor:
+                                                              yellowColor,
+                                                          inactiveColor: white,
+                                                          min: 0,
+                                                          max: 500,
+                                                          values:
+                                                              selectedInterestedRange,
+                                                          onChanged:
+                                                              (RangeValues
+                                                                  newValue) {
+                                                            state(() {
+                                                              selectedInterestedRange =
+                                                                  newValue;
+                                                              _startInterestedRange =
+                                                                  newValue.start
+                                                                      .toInt();
+                                                              _endIntetestedRange =
+                                                                  newValue.end
+                                                                      .toInt();
+                                                            });
+                                                          },
+                                                        ),
+                                                        Container(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                      .only(
+                                                                  left: 20,
+                                                                  right: 11),
+                                                          child: Row(
+                                                            children: [
+                                                              customText(
+                                                                  "min " +
+                                                                      _startInterestedRange
+                                                                          .toString(),
+                                                                  15,
+                                                                  white),
+                                                              Spacer(),
+                                                              customText(
+                                                                  "max " +
+                                                                      _endIntetestedRange
+                                                                          .toString(),
+                                                                  15,
+                                                                  white)
+                                                            ],
+                                                          ),
+                                                        )
+                                                      ]))
+                                              : selectedBottomIndex == 3
+                                                  ? Align(
+                                                      alignment:
+                                                          Alignment.topCenter,
+                                                      child: Row(
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .start,
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .start,
+                                                        children: [
+                                                          InkWell(
+                                                            onTap: () {
+                                                              state(() {
+                                                                _usergroupValue =
+                                                                    1;
+                                                                print(
+                                                                    _usergroupValue);
+                                                              });
+                                                            },
+                                                            child: Container(
+                                                              width: phoneWidth(
+                                                                      context) /
+                                                                  3,
+                                                              child: Row(
+                                                                children: [
+                                                                  Radio(
+                                                                      focusColor:
+                                                                          Colors
+                                                                              .blueAccent,
+                                                                      value: 1,
+                                                                      groupValue:
+                                                                          _usergroupValue,
+                                                                      onChanged:
+                                                                          (index) {}),
+                                                                  customText(
+                                                                      "In-person",
+                                                                      13,
+                                                                      Colors
+                                                                          .white)
+                                                                ],
+                                                              ),
+                                                            ),
+                                                          ),
+                                                          InkWell(
+                                                            onTap: () {
+                                                              state(() {
+                                                                _usergroupValue =
+                                                                    2;
+                                                                print(
+                                                                    _usergroupValue);
+                                                              });
+                                                            },
+                                                            child: Container(
+                                                              width: phoneWidth(
+                                                                      context) /
+                                                                  3,
+                                                              child: Row(
+                                                                children: [
+                                                                  Radio(
+                                                                      focusColor:
+                                                                          Colors
+                                                                              .blueAccent,
+                                                                      value: 2,
+                                                                      groupValue:
+                                                                          _usergroupValue,
+                                                                      onChanged:
+                                                                          (index) {}),
+                                                                  customText(
+                                                                      "Online",
+                                                                      13,
+                                                                      Colors
+                                                                          .white)
+                                                                ],
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    )
+                                                  : Container(),
+                                ),
+                                Align(
+                                  alignment: Alignment.bottomCenter,
+                                  child: InkWell(
+                                    onTap: () {
+                                      setState(() {});
+                                      Navigator.pop(context);
+                                    },
+                                    child: Container(
+                                        margin: EdgeInsets.only(bottom: 15),
+                                        padding: const EdgeInsets.only(
+                                            top: 7,
+                                            bottom: 7,
+                                            left: 20,
+                                            right: 20),
+                                        decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(50),
+                                          gradient: commonButtonLinearGridient,
+                                        ),
+                                        child: customText(
+                                            "Apply", 16, Colors.white)),
                                   ),
-                                )),
-                          ),
-                          customHeightBox(10),
-                          Container(
-                            alignment: Alignment.center,
-                            height: 40.0,
-                            child: RaisedButton(
-                                onPressed: () {
-                                  // Navigator.of(context).push(
-                                  //     MaterialPageRoute(builder: (context) => EmailVerification()));
-                                },
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(80.0)),
-                                padding: EdgeInsets.all(0.0),
-                                child: buttonBackground("Sign Up")),
-                          )
-                        ],
-                      )
+                                )
+                              ]))
                     ],
                   ),
                 ],
@@ -366,28 +775,50 @@ class _AllEventsScreenState extends State<AllEventsScreen> {
   selectedListView(int index) {
     if (index == 0) {
       return FutureBuilder<CommonEventsModel>(
-          future:
-              getAllEventsUsers(context, search: search, showProgress: false),
+          future: getAllEventsUsers(context,
+              search: search,
+              showProgress: false,
+              countryIds: countriesIds,
+              isLink: _usergroupValue == 0 ? "" : _usergroupValue.toString(),
+              minGoing: _startGoingRange.toString(),
+              maxGoing: _endGoingRange.toString(),
+              maxInterested: _endIntetestedRange.toString(),
+              minInterested: _startInterestedRange.toString()),
           builder: (context, snapshot) {
             return snapshot.hasData && snapshot.data!.data!.isNotEmpty
                 ? DiscoverEventsScreen(context, snapshot.data!)
-                : const Center(
-                    child: CircularProgressIndicator(),
-                  );
+                : snapshot.data == null
+                    ? const Center(
+                        child: CircularProgressIndicator(),
+                      )
+                    : Center(
+                        child: customText("Not data!", 15, white),
+                      );
           });
     } else if (index == 1) {
       return FutureBuilder<GoingInterestedEventsModel>(
-          future: getAllGoingInterestedEventsUsers(context,
-              isShow: false, type: "0", search: search),
+          future: getAllGoingInterestedEventsUsers(
+            context,
+            isShow: false,
+            type: "0",
+            search: search,
+            is_online: _usergroupValue == 0 ? "" : _usergroupValue.toString(),
+          ),
           builder: (context, snapshot) {
             return snapshot.hasData && snapshot.data!.data!.isNotEmpty
                 ? GoingEventsScreen(context, snapshot.data!)
-                : const Center(child: CircularProgressIndicator());
+                : Center(
+                    child: customText("Not data!", 15, white),
+                  );
           });
     } else if (index == 2) {
       return FutureBuilder<GoingInterestedEventsModel>(
           future: getAllGoingInterestedEventsUsers(context,
-              isShow: false, type: "1", search: search),
+              isShow: false,
+              type: "1",
+              search: search,
+              is_online:
+                  _usergroupValue == 0 ? "" : _usergroupValue.toString()),
           builder: (context, snapshot) {
             return snapshot.hasData && snapshot.data!.data!.isNotEmpty
                 ? InterestedEventsScreen(context, snapshot.data!)
@@ -400,19 +831,41 @@ class _AllEventsScreenState extends State<AllEventsScreen> {
           builder: (context, snapshot) {
             return snapshot.hasData && snapshot.data!.data!.isNotEmpty
                 ? InvitedEventsScreen(context, snapshot.data!)
-                : const Center(child: CircularProgressIndicator());
+                : Center(
+                    child: customText("Not data!", 15, white),
+                  );
           });
     } else if (index == 4) {
       return FutureBuilder<UsersEventsModel>(
-          future:
-              getAllUsersEventsUsers(context, isShow: false, search: search),
+          future: getAllUsersEventsUsers(context,
+              isShow: false,
+              search: search,
+              is_online:
+                  _usergroupValue == 0 ? "" : _usergroupValue.toString()),
           builder: (context, snapshot) {
             return snapshot.hasData && snapshot.data!.data!.isNotEmpty
                 ? MyEventsScreenState(context, snapshot.data!)
-                : const Center(
-                    child: CircularProgressIndicator(),
+                : Center(
+                    child: customText("Not data!", 15, white),
                   );
           });
     }
+  }
+
+  getCountries() {
+    Future.delayed(Duration.zero, () {
+      _getCountries = getCountriesList(context, isShow: false);
+      setState(() {});
+      _getCountries!.whenComplete(() => {});
+    });
+  }
+
+  addRemoveCountriesIds(String id, bool value) {
+    if (value) {
+      tempCountriesIds.add(id.toString());
+    } else {
+      tempCountriesIds.remove(id.toString());
+    }
+    countriesIds = tempCountriesIds.join(",");
   }
 }

@@ -32,10 +32,12 @@ var userInfo = UserDataConstants();
 final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
 var searchThread = "";
 var bottomSheetIndex = 0;
-
+var selectedCategoryIndex = -1;
+String? searchCategory = "";
 String countriesIds = "";
-
 List<String> tempCountriesIds = [];
+bool enableFillterButton = true;
+
 
 Future<CountryModel>? _getCountries;
 Future<ForumCategoryModel>? _getCategries;
@@ -150,7 +152,7 @@ class _ForumsPage extends State<ForumsScreenPage> {
                       flex: 1,
                       child: InkWell(
                         onTap: () {
-                          openBottomSheet();
+                          enableFillterButton ? openBottomSheet() : null;
                         },
                         child: Image.asset(
                           "assets/icons/fillter.png",
@@ -302,9 +304,28 @@ class _ForumsPage extends State<ForumsScreenPage> {
   //Selected listview
   selectedViewFillter(int index) {
     if (index == 0) {
+      setState(() {
+        enableFillterButton = true;
+      });
+    } else if (index == 1) {
+      setState(() {
+        enableFillterButton = false;
+      });
+    } else if (index == 2) {
+      setState(() {
+        enableFillterButton = false;
+      });
+    } else {
+      setState(() {
+        enableFillterButton = true;
+      });
+    }
+    if (index == 0) {
       return FutureBuilder<AllFourmModel>(
           future: getAllFourmsList(context,
-              search: searchThread, country: countriesIds.toString()),
+              search: searchThread,
+              country: countriesIds.toString(),
+              category_id: searchCategory.toString()),
           builder: (context, snapshot) {
             return snapshot.hasData && snapshot.data!.data!.isNotEmpty
                 ? AllThreadListPage(snapshot.data!)
@@ -887,7 +908,10 @@ class _ForumsPage extends State<ForumsScreenPage> {
   //Get the data according fillters
   void openBottomSheet() {
     var selectedTitle = "Country";
-
+    setState(() {
+      countriesIds = "";
+      searchCategory = "";
+    });
     getCountries();
     getForumsCategories();
     showModalBottomSheet(
@@ -1013,7 +1037,8 @@ class _ForumsPage extends State<ForumsScreenPage> {
                             Container(
                                 width: phoneWidth(context) / 1.5,
                                 child: bottomSheetIndex == 0
-                                    ? Column(
+                                    ? 
+                                    Column(
                                         children: [
                                           Container(
                                             height: 40,
@@ -1159,10 +1184,24 @@ class _ForumsPage extends State<ForumsScreenPage> {
                                                                           (val) {
                                                                         state(
                                                                             () {
-                                                                          snapshot
-                                                                              .data!
-                                                                              .data![index]
-                                                                              .isSelected = !snapshot.data!.data![index].isSelected;
+                                                                          if (selectedCategoryIndex !=
+                                                                              -1) {
+                                                                            snapshot.data!.data![selectedCategoryIndex].isSelected =
+                                                                                false;
+                                                                            snapshot.data!.data![index].isSelected =
+                                                                                true;
+                                                                            selectedCategoryIndex =
+                                                                                index;
+                                                                            searchCategory =
+                                                                                snapshot.data!.data![selectedCategoryIndex].sId;
+                                                                          } else {
+                                                                            snapshot.data!.data![index].isSelected =
+                                                                                true;
+                                                                            selectedCategoryIndex =
+                                                                                index;
+                                                                          }
+                                                                          print(
+                                                                              selectedCategoryIndex);
                                                                         });
                                                                       }),
                                                             );
@@ -1230,4 +1269,7 @@ class _ForumsPage extends State<ForumsScreenPage> {
       _getCategries!.whenComplete(() => {});
     });
   }
+
+
+
 }

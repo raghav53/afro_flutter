@@ -20,6 +20,7 @@ Future<GoingInterestedEventsModel> getAllGoingInterestedEventsUsers(
     {String search = "",
     String page = "1",
     String limit = "1000",
+    String is_online = "",
     bool isShow = true,
     String type = "0"}) async {
   if (isShow) {
@@ -33,11 +34,13 @@ Future<GoingInterestedEventsModel> getAllGoingInterestedEventsUsers(
 
   var response = await http.get(
       Uri.parse(BASE_URL +
-          "going_events?search=$search&page=$page&limit=$limit&type=$type"),
+          "going_events?search=$search&page=$page&limit=$limit&type=$type&is_online=$is_online"),
       headers: {
         'api-key': API_KEY,
         'x-access-token': token,
       });
+  print(
+      "going_events?search=$search&page=$page&limit=$limit&type=$type&is_online=$is_online");
   print(response.body);
   jsonResponse = json.decode(response.body);
   var message = jsonResponse["message"];

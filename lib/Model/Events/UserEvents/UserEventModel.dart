@@ -16,6 +16,7 @@ Future<UsersEventsModel> getAllUsersEventsUsers(BuildContext context,
     {String search = "",
     String page = "1",
     String limit = "1000",
+    String is_online = "",
     bool isShow = true}) async {
   if (isShow) {
     showProgressDialogBox(context);
@@ -25,14 +26,16 @@ Future<UsersEventsModel> getAllUsersEventsUsers(BuildContext context,
   String userId = sharedPreferences.getString(user.id).toString();
   print(token);
   var jsonResponse = null;
-  print("url :- user_events?page=$page&limit=$limit&search=$search");
+  print(
+      "url :- user_events?page=$page&limit=$limit&search=$search&is_online=$is_online");
   var response = await http.get(
-      Uri.parse(
-          BASE_URL + "user_events?page=$page&limit=$limit&search=$search"),
+      Uri.parse(BASE_URL +
+          "user_events?page=$page&limit=$limit&search=$search&is_online=$is_online"),
       headers: {
         'api-key': API_KEY,
         'x-access-token': token,
       });
+
   print(response.body);
   jsonResponse = json.decode(response.body);
   var message = jsonResponse["message"];

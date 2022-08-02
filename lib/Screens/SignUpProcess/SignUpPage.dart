@@ -448,7 +448,7 @@ class _SignUpPage extends State<SignUpPageScreen> {
     else if (createPassword != conFirmPassword) {
       customToastMsg("Password dosen't matched!");
     } else if (timeStamp.toString().isEmpty) {
-      customToastMsg("Please selec the date of birth");
+      customToastMsg("Please select the date of birth");
     } else {
       Map<String, dynamic> map = {
         'first_name': firstName,
