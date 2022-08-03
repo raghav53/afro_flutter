@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'package:afro/Network/Apis.dart';
-import 'package:afro/Screens/OnBoardingScreen/FirstOnBoard.dart';
+
 import 'package:afro/Util/CommonMethods.dart';
 import 'package:afro/Util/CommonUI.dart';
 import 'package:afro/Util/Constants.dart';
@@ -13,8 +13,11 @@ var user = UserDataConstants();
 final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
 
 //Get all language List
-Future<AllInterestModel> getInterestssList(BuildContext context) async {
-  showProgressDialogBox(context);
+Future<AllInterestModel> getInterestssList(BuildContext context,
+    {bool isShow = true}) async {
+  if (isShow) {
+    showProgressDialogBox(context);
+  }
   SharedPreferences sharedPreferences = await _prefs;
   String token = sharedPreferences.getString(user.token).toString();
 
@@ -27,8 +30,10 @@ Future<AllInterestModel> getInterestssList(BuildContext context) async {
   print(response.body);
   jsonResponse = json.decode(response.body);
   var message = jsonResponse["message"];
-  if (response.statusCode == 200) {
+  if (isShow) {
     Navigator.pop(context);
+  }
+  if (response.statusCode == 200) {
     print("success");
     return AllInterestModel.fromJson(jsonDecode(response.body));
   } else if (response.statusCode == 401) {
@@ -36,7 +41,6 @@ Future<AllInterestModel> getInterestssList(BuildContext context) async {
     clearAllDatabase(context);
     throw Exception("Unauthorized User!");
   } else {
-    Navigator.pop(context);
     customToastMsg(message);
     throw Exception("Failed to load the work experience!");
   }
@@ -88,7 +92,7 @@ class Data {
   int? popularity;
   String? status;
   String? createdAt;
-  bool? isSelected = false;
+  bool isSelected = false;
   String? updatedAt;
   int? iV;
 
@@ -99,7 +103,6 @@ class Data {
       this.status,
       this.createdAt,
       this.updatedAt,
-      this.isSelected,
       this.iV});
 
   Data.fromJson(Map<String, dynamic> json) {

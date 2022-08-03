@@ -1,4 +1,6 @@
 import 'dart:convert';
+import 'package:afro/Model/AllInterestsModel.dart';
+import 'package:afro/Model/CountryModel.dart';
 import 'package:afro/Model/Group/AllGroupModel.dart';
 import 'package:afro/Model/Group/JoinedGroup/JoinedGroupmodel.dart';
 import 'package:afro/Model/Group/UserGroups/UserGroupsModel.dart';
@@ -27,16 +29,45 @@ var user = UserDataConstants();
 final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
 String? userID, countryId;
 var searchGroup = "";
+String countriesIds = "";
+List<String> tempCountriesIds = [];
+Future<CountryModel>? _getCountries;
+int _startInterestedRange = 0;
+int _endIntetestedRange = 500;
+var selectedInterestedRange = const RangeValues(0, 500);
+Future<AllInterestModel>? _getAllInterests;
+var selectedCategoryIndex = -1;
+String? searchCategory = "";
+
+String interestsIds = "";
+
+List<String> tempInterestsIds = [];
 
 class _GroupsAllListScreenState extends State<GroupsAllListScreen> {
   int clickPosition = 0;
   bool _showFab = true;
-  LinearGradient selectedColor = commonButtonLinearGridient;
 
   @override
   void initState() {
     super.initState();
     getUserData();
+    getCountries();
+    getInterestsList();
+  }
+
+  defaultValues() {
+    setState(() {
+      countriesIds = "";
+      interestsIds = "";
+      tempCountriesIds.clear();
+      tempInterestsIds.clear();
+      _startInterestedRange = 0;
+      _endIntetestedRange = 500;
+      selectedInterestedRange = const RangeValues(0, 500);
+      searchCategory = "";
+      getInterestsList();
+      getCountries();
+    });
   }
 
   getUserData() async {
@@ -97,15 +128,19 @@ class _GroupsAllListScreenState extends State<GroupsAllListScreen> {
             Flexible(
               child: InkWell(
                 onTap: () {
+                  defaultValues();
                   setState(() {
                     _showFab = false;
+
                     clickPosition = 0;
                   });
                 },
                 child: Container(
                   padding: EdgeInsets.only(left: 10, right: 10),
                   decoration: BoxDecoration(
-                      gradient: (clickPosition == 0) ? selectedColor : null,
+                      gradient: (clickPosition == 0)
+                          ? commonButtonLinearGridient
+                          : null,
                       border: (clickPosition == 0)
                           ? null
                           : Border.all(color: Colors.white, width: 1),
@@ -121,6 +156,7 @@ class _GroupsAllListScreenState extends State<GroupsAllListScreen> {
             Flexible(
               child: InkWell(
                 onTap: () {
+                  defaultValues();
                   setState(() {
                     _showFab = false;
 
@@ -130,7 +166,9 @@ class _GroupsAllListScreenState extends State<GroupsAllListScreen> {
                 child: Container(
                   padding: EdgeInsets.only(left: 10, right: 10),
                   decoration: BoxDecoration(
-                      gradient: (clickPosition == 1) ? selectedColor : null,
+                      gradient: (clickPosition == 1)
+                          ? commonButtonLinearGridient
+                          : null,
                       border: (clickPosition == 1)
                           ? null
                           : Border.all(color: Colors.white, width: 1),
@@ -146,16 +184,18 @@ class _GroupsAllListScreenState extends State<GroupsAllListScreen> {
             Flexible(
               child: InkWell(
                 onTap: () {
+                  defaultValues();
                   setState(() {
                     _showFab = true;
                     clickPosition = 2;
-                    //setCustomListTile = MyRepliesTile();
                   });
                 },
                 child: Container(
                   padding: EdgeInsets.only(left: 10, right: 10),
                   decoration: BoxDecoration(
-                      gradient: (clickPosition == 2) ? selectedColor : null,
+                      gradient: (clickPosition == 2)
+                          ? commonButtonLinearGridient
+                          : null,
                       border: (clickPosition == 2)
                           ? null
                           : Border.all(color: Colors.white, width: 1),
@@ -210,7 +250,7 @@ class _GroupsAllListScreenState extends State<GroupsAllListScreen> {
             flex: 1,
             child: InkWell(
               onTap: () {
-                //openBottomSheet();
+                clickPosition == 0 ? openFillterbottomSheet() : null;
               },
               child: Image.asset(
                 "assets/icons/fillter.png",
@@ -226,7 +266,12 @@ class _GroupsAllListScreenState extends State<GroupsAllListScreen> {
   setFillterLayout(int postion) {
     if (postion == 0) {
       return FutureBuilder<AllGroupsModel>(
-          future: getAllGroups(search: searchGroup),
+          future: getAllGroups(
+              search: searchGroup,
+              members_min: _startInterestedRange.toString(),
+              members_max: _endIntetestedRange.toString(),
+              interests: interestsIds,
+              country: countriesIds),
           builder: (context, snapshot) {
             print("kjvgkvcyvctkucdkghfm: $snapshot");
             return snapshot.hasData && snapshot.data!.data!.isNotEmpty
@@ -702,5 +747,461 @@ class _GroupsAllListScreenState extends State<GroupsAllListScreen> {
       customToastMsg(message);
       throw Exception("Failed to load the work experience!");
     }
+  }
+
+  //BottomSheet
+  openFillterbottomSheet() {
+    var selectedBottomIndex = 1;
+
+    var indexTitle = "Country";
+    showModalBottomSheet(
+        isDismissible: false,
+        backgroundColor: Colors.transparent,
+        context: context,
+        clipBehavior: Clip.antiAlias,
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(10.0),
+            topRight: Radius.circular(10.0),
+          ),
+        ),
+        builder: (context) {
+          return StatefulBuilder(builder: (context, state) {
+            return Container(
+                decoration: commonBoxDecoration(),
+                child: Column(children: [
+                  customHeightBox(15),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 10, right: 10),
+                    child: Row(
+                      mainAxisAlignment: mBetween,
+                      children: [
+                        customText(
+                            "Filter & Sort", 12, const Color(0xFFDFB48C)),
+                        customText(indexTitle, 12, const Color(0xFFDFB48C)),
+                        IconButton(
+                          icon: const Icon(
+                            Icons.close,
+                            color: Colors.white,
+                          ),
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                        )
+                      ],
+                    ),
+                  ),
+                  customDivider(5, Colors.white),
+                  Row(crossAxisAlignment: cStart, children: [
+                    Container(
+                        padding: const EdgeInsets.only(top: 15, left: 10),
+                        child: Column(
+                            mainAxisAlignment: mStart,
+                            crossAxisAlignment: cStart,
+                            children: [
+                              // InkWell(
+                              //   onTap: () {
+                              //     state(() {
+                              //       selectedBottomIndex = 0;
+                              //       indexTitle = "Country";
+                              //     });
+                              //   },
+                              //   child: Container(
+                              //     width: 80,
+                              //     decoration: BoxDecoration(
+                              //         gradient: (selectedBottomIndex == 0)
+                              //             ? commonButtonLinearGridient
+                              //             : null,
+                              //         border: selectedBottomIndex != 0
+                              //             ? Border.all(
+                              //                 color: Colors.white,
+                              //                 width: 1,
+                              //                 style: BorderStyle.solid)
+                              //             : null,
+                              //         borderRadius: BorderRadius.circular(20)),
+                              //     child: Center(
+                              //         child: Padding(
+                              //       padding: const EdgeInsets.only(
+                              //           top: 8, bottom: 8),
+                              //       child:
+                              //           customText("Country", 12, Colors.white),
+                              //     )),
+                              //   ),
+                              // ),
+                              // customHeightBox(15),
+                              InkWell(
+                                onTap: () {
+                                  state(() {
+                                    selectedBottomIndex = 1;
+                                    indexTitle = "Members";
+                                  });
+                                },
+                                child: Container(
+                                  width: 80,
+                                  decoration: BoxDecoration(
+                                      gradient: (selectedBottomIndex == 1)
+                                          ? commonButtonLinearGridient
+                                          : null,
+                                      border: selectedBottomIndex != 1
+                                          ? Border.all(
+                                              color: Colors.white,
+                                              width: 1,
+                                              style: BorderStyle.solid)
+                                          : null,
+                                      borderRadius: BorderRadius.circular(20)),
+                                  child: Center(
+                                      child: Padding(
+                                    padding: const EdgeInsets.only(
+                                        top: 8, bottom: 8),
+                                    child:
+                                        customText("Members", 12, Colors.white),
+                                  )),
+                                ),
+                              ),
+                              customHeightBox(15),
+                              InkWell(
+                                onTap: () {
+                                  state(() {
+                                    selectedBottomIndex = 2;
+                                    indexTitle = "Interests";
+                                  });
+                                },
+                                child: Container(
+                                  width: 80,
+                                  decoration: BoxDecoration(
+                                      gradient: (selectedBottomIndex == 2)
+                                          ? commonButtonLinearGridient
+                                          : null,
+                                      border: selectedBottomIndex != 2
+                                          ? Border.all(
+                                              color: Colors.white,
+                                              width: 1,
+                                              style: BorderStyle.solid)
+                                          : null,
+                                      borderRadius: BorderRadius.circular(20)),
+                                  child: Center(
+                                      child: Padding(
+                                    padding: const EdgeInsets.only(
+                                        top: 8, bottom: 8),
+                                    child: customText(
+                                        "Interests", 12, Colors.white),
+                                  )),
+                                ),
+                              ),
+                              customHeightBox(15),
+                              InkWell(
+                                onTap: () {
+                                  state(() {});
+                                  defaultValues();
+                                  Navigator.pop(context);
+                                },
+                                child: Container(
+                                  width: 80,
+                                  decoration: BoxDecoration(
+                                      gradient: (selectedBottomIndex == 3)
+                                          ? commonButtonLinearGridient
+                                          : null,
+                                      border: selectedBottomIndex != 3
+                                          ? Border.all(
+                                              color: Colors.white,
+                                              width: 1,
+                                              style: BorderStyle.solid)
+                                          : null,
+                                      borderRadius: BorderRadius.circular(20)),
+                                  child: Center(
+                                      child: Padding(
+                                    padding: const EdgeInsets.only(
+                                        top: 8, bottom: 8),
+                                    child: customText(
+                                        "Clear All", 12, Colors.white),
+                                  )),
+                                ),
+                              ),
+                            ])),
+                    Container(
+                        margin: EdgeInsets.only(left: 15),
+                        height: phoneHeight(context) / 2.07,
+                        decoration: BoxDecoration(
+                            border: Border(
+                                left: BorderSide(
+                                    color: Colors.grey, width: 0.8))),
+                        child: Stack(
+                          alignment: Alignment.bottomCenter,
+                          children: [
+                            Container(
+                                width: phoneWidth(context) / 1.5,
+                                child: selectedBottomIndex == 0
+                                    ? Column(
+                                        children: [
+                                          Container(
+                                            height: 40,
+                                            decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(10),
+                                                color: Colors.black),
+                                            margin: const EdgeInsets.only(
+                                                top: 15, left: 10, right: 10),
+                                            child: const TextField(
+                                                keyboardType:
+                                                    TextInputType.text,
+                                                style: TextStyle(
+                                                    fontSize: 14,
+                                                    color: Colors.white),
+                                                decoration: InputDecoration(
+                                                  border: InputBorder.none,
+                                                  contentPadding:
+                                                      EdgeInsets.only(
+                                                          top: 8, left: 15),
+                                                  prefixIcon: Icon(
+                                                    Icons.search,
+                                                    color: Color(0xFFDFB48C),
+                                                  ),
+                                                )),
+                                          ),
+                                          customHeightBox(10),
+                                          Container(
+                                              height:
+                                                  phoneHeight(context) / 2.7,
+                                              child:
+                                                  FutureBuilder<CountryModel>(
+                                                future: _getCountries,
+                                                builder: (context, snapshot) {
+                                                  return snapshot.hasData &&
+                                                          snapshot.data != null
+                                                      ? ListView.builder(
+                                                          itemCount: snapshot
+                                                              .data!
+                                                              .data!
+                                                              .length,
+                                                          itemBuilder:
+                                                              (context, index) {
+                                                            return ListTile(
+                                                              leading:
+                                                                  CachedNetworkImage(
+                                                                height: 35,
+                                                                width: 35,
+                                                                imageUrl: flagImageUrl
+                                                                        .toString() +
+                                                                    snapshot
+                                                                        .data!
+                                                                        .data![
+                                                                            index]
+                                                                        .iso2
+                                                                        .toString()
+                                                                        .toLowerCase() +
+                                                                    ".png",
+                                                                placeholder: (context,
+                                                                        url) =>
+                                                                    const Icon(
+                                                                        Icons
+                                                                            .flag),
+                                                                errorWidget: (context,
+                                                                        url,
+                                                                        error) =>
+                                                                    const Icon(Icons
+                                                                        .error),
+                                                              ),
+                                                              title: customText(
+                                                                  snapshot
+                                                                      .data!
+                                                                      .data![
+                                                                          index]
+                                                                      .title
+                                                                      .toString(),
+                                                                  15,
+                                                                  white),
+                                                              trailing:
+                                                                  Checkbox(
+                                                                      value: snapshot
+                                                                          .data!
+                                                                          .data![
+                                                                              index]
+                                                                          .isSelected,
+                                                                      onChanged:
+                                                                          (val) {
+                                                                        state(
+                                                                            () {
+                                                                          snapshot
+                                                                              .data!
+                                                                              .data![index]
+                                                                              .isSelected = !snapshot.data!.data![index].isSelected;
+                                                                          addRemoveCountriesIds(
+                                                                              snapshot.data!.data![index].sId.toString(),
+                                                                              snapshot.data!.data![index].isSelected);
+                                                                        });
+                                                                      }),
+                                                            );
+                                                          })
+                                                      : Center(
+                                                          child: customText(
+                                                              "No countries found!",
+                                                              15,
+                                                              white),
+                                                        );
+                                                },
+                                              ))
+                                        ],
+                                      )
+                                    : selectedBottomIndex == 1
+                                        ? Container(
+                                            margin: const EdgeInsets.only(
+                                                top: 15, left: 10, right: 10),
+                                            width: 270,
+                                            child: Column(
+                                                crossAxisAlignment: cCenter,
+                                                children: [
+                                                  RangeSlider(
+                                                    activeColor: yellowColor,
+                                                    inactiveColor: white,
+                                                    min: 0,
+                                                    max: 500,
+                                                    values:
+                                                        selectedInterestedRange,
+                                                    onChanged:
+                                                        (RangeValues newValue) {
+                                                      state(() {
+                                                        selectedInterestedRange =
+                                                            newValue;
+                                                        _startInterestedRange =
+                                                            newValue.start
+                                                                .toInt();
+                                                        _endIntetestedRange =
+                                                            newValue.end
+                                                                .toInt();
+                                                      });
+                                                    },
+                                                  ),
+                                                  Container(
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            left: 20,
+                                                            right: 11),
+                                                    child: Row(
+                                                      children: [
+                                                        customText(
+                                                            "min " +
+                                                                _startInterestedRange
+                                                                    .toString(),
+                                                            15,
+                                                            white),
+                                                        Spacer(),
+                                                        customText(
+                                                            "max " +
+                                                                _endIntetestedRange
+                                                                    .toString(),
+                                                            15,
+                                                            white)
+                                                      ],
+                                                    ),
+                                                  )
+                                                ]))
+                                        : selectedBottomIndex == 2
+                                            ? Container(
+                                                child:
+                                                    FutureBuilder<
+                                                            AllInterestModel>(
+                                                        future:
+                                                            _getAllInterests,
+                                                        builder: (context,
+                                                            snapshot) {
+                                                          return snapshot
+                                                                      .hasData &&
+                                                                  snapshot.data !=
+                                                                      null
+                                                              ? ListView
+                                                                  .builder(
+                                                                      itemCount: snapshot
+                                                                          .data!
+                                                                          .data!
+                                                                          .length,
+                                                                      itemBuilder:
+                                                                          (context,
+                                                                              index) {
+                                                                        return ListTile(
+                                                                          title: customText(
+                                                                              snapshot.data!.data![index].title.toString(),
+                                                                              15,
+                                                                              white),
+                                                                          trailing: Checkbox(
+                                                                              value: snapshot.data!.data![index].isSelected,
+                                                                              onChanged: (val) {
+                                                                                state(() {
+                                                                                  snapshot.data!.data![index].isSelected = !snapshot.data!.data![index].isSelected;
+                                                                                  addRemoveInterestsIds(snapshot.data!.data![index].sId.toString(), snapshot.data!.data![index].isSelected);
+                                                                                });
+                                                                              }),
+                                                                        );
+                                                                      })
+                                                              : Center(
+                                                                  child: customText(
+                                                                      "No categories found!",
+                                                                      15,
+                                                                      white),
+                                                                );
+                                                        }))
+                                            : Container()),
+                            Align(
+                              alignment: Alignment.bottomCenter,
+                              child: InkWell(
+                                onTap: () {
+                                  setState(() {});
+
+                                  Navigator.pop(context);
+                                },
+                                child: Container(
+                                    margin: EdgeInsets.only(bottom: 15),
+                                    padding: const EdgeInsets.only(
+                                        top: 7, bottom: 7, left: 20, right: 20),
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(50),
+                                      gradient: commonButtonLinearGridient,
+                                    ),
+                                    child:
+                                        customText("Apply", 16, Colors.white)),
+                              ),
+                            )
+                          ],
+                        ))
+                  ])
+                ]));
+          });
+        });
+  }
+
+  //Remove and add items into list
+  addRemoveCountriesIds(String id, bool value) {
+    if (value) {
+      tempCountriesIds.add(id.toString());
+    } else {
+      tempCountriesIds.remove(id.toString());
+    }
+    countriesIds = tempCountriesIds.join(",");
+  }
+
+  addRemoveInterestsIds(String id, bool value) {
+    if (value) {
+      tempInterestsIds.add(id.toString());
+    } else {
+      tempInterestsIds.remove(id.toString());
+    }
+    interestsIds = tempInterestsIds.join(",");
+  }
+
+  //Get countries
+  getCountries() {
+    Future.delayed(Duration.zero, () {
+      _getCountries = getCountriesList(context, isShow: false);
+      setState(() {});
+      _getCountries!.whenComplete(() => {});
+    });
+  }
+
+  //Get All Interests list
+  getInterestsList() {
+    Future.delayed(Duration.zero, () {
+      _getAllInterests = getInterestssList(context, isShow: false);
+      setState(() {});
+      _getAllInterests!.whenComplete(() => () {});
+    });
   }
 }
