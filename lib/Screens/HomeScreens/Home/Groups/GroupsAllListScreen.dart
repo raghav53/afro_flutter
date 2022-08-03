@@ -31,17 +31,17 @@ String? userID, countryId;
 var searchGroup = "";
 String countriesIds = "";
 List<String> tempCountriesIds = [];
-Future<CountryModel>? _getCountries;
-int _startInterestedRange = 0;
-int _endIntetestedRange = 500;
-var selectedInterestedRange = const RangeValues(0, 500);
-Future<AllInterestModel>? _getAllInterests;
-var selectedCategoryIndex = -1;
-String? searchCategory = "";
-
 String interestsIds = "";
 
 List<String> tempInterestsIds = [];
+Future<CountryModel>? _getCountries;
+Future<AllInterestModel>? _getAllInterests;
+int _startInterestedRange = 0;
+int _endIntetestedRange = 500;
+var selectedInterestedRange = const RangeValues(0, 500);
+
+var selectedCategoryIndex = -1;
+String? searchCategory = "";
 
 class _GroupsAllListScreenState extends State<GroupsAllListScreen> {
   int clickPosition = 0;
@@ -752,7 +752,6 @@ class _GroupsAllListScreenState extends State<GroupsAllListScreen> {
   //BottomSheet
   openFillterbottomSheet() {
     var selectedBottomIndex = 1;
-
     var indexTitle = "Country";
     showModalBottomSheet(
         isDismissible: false,

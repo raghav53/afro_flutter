@@ -13,17 +13,27 @@ var user = UserDataConstants();
 final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
 
 Future<GetAllFriendsModel> getAllUsers(BuildContext context,
-    {bool showProgress = true}) async {
+    {bool showProgress = true,
+    String page = "1",
+    String limit = "500",
+    String search = "",
+    String country = "",
+    String min_age = "",
+    String max_age = "",
+    String interests = ""}) async {
   SharedPreferences sharedPreferences = await _prefs;
   String token = sharedPreferences.getString(user.token).toString();
   String userId = sharedPreferences.getString(user.id).toString();
   print(token);
   var jsonResponse = null;
 
-  var response = await http.get(Uri.parse(BASE_URL + "users"), headers: {
-    'api-key': API_KEY,
-    'x-access-token': token,
-  });
+  var response = await http.get(
+      Uri.parse(BASE_URL +
+          "users?page=$page&limit=$limit&search=$search&interests=$interests&country=$country&min_age=$min_age&max_age=$max_age"),
+      headers: {
+        'api-key': API_KEY,
+        'x-access-token': token,
+      });
   print(response.body);
   jsonResponse = json.decode(response.body);
   var message = jsonResponse["message"];

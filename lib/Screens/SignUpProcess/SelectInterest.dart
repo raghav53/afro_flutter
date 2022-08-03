@@ -84,7 +84,7 @@ class _Intrests extends State<SelectIntrest> {
                                           snapshot.data!.data![index]
                                                   .isSelected =
                                               !snapshot.data!.data![index]
-                                                  .isSelected!;
+                                                  .isSelected;
                                           print(snapshot
                                               .data!.data![index].isSelected);
                                           addInterestInArray(

@@ -42,30 +42,6 @@ class _AllUsersPageState extends State<AllUsersPage> {
     });
   }
 
-  //Search users list
-  Future<GetAllFriendsModel> _getSearchCountriesList(String search) async {
-    GetAllFriendsModel mm = await _getAllUsersList!;
-    var ss = mm.toJson();
-    GetAllFriendsModel model = GetAllFriendsModel.fromJson(ss);
-
-    if (search.isEmpty) {
-      return model;
-    }
-
-    int i = 0;
-    while (i < model.data!.length) {
-      if (!model.data![i].fullName
-          .toString()
-          .toLowerCase()
-          .contains(search.toLowerCase())) {
-        model.data!.removeAt(i);
-      } else {
-        i++;
-      }
-    }
-    return model;
-  }
-
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<GetAllFriendsModel>(
