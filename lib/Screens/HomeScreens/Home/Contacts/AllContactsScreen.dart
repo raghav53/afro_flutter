@@ -242,7 +242,12 @@ class _AllContactsListScreenState extends State<AllContactsListScreen> {
           });
     } else if (index == 3) {
       return FutureBuilder<UsersFriendsModel>(
-          future: getAllFriends(context),
+          future: getAllFriends(context,
+              search: searchFriend,
+              country: countriesIds,
+              interests: interestsIds,
+              min_age: _startInterestedRange.toString(),
+              max_age: _endIntetestedRange.toString()),
           builder: (context, snapshot) {
             return snapshot.hasData && snapshot.data != null
                 ? ListAllFriendsOfUser(snapshot.data!)

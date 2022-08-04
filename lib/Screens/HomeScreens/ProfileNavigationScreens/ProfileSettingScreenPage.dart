@@ -105,6 +105,7 @@ class _ProfilePage extends State<ProfileSettingScreenPage> {
                     ),
                     listItemButton("Membership", context),
                     customDivider(10, Colors.white),
+                    
                     listItemButton("Contacts", context),
                     customDivider(10, Colors.white),
                     listItemButton("Send Feedback", context),

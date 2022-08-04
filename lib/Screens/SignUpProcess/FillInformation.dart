@@ -699,23 +699,29 @@ class _Information extends State<FillInformation> {
   void SaveInformation() {
     homeAdd = homeTown.text.toString();
     userBio = bio.text.toString();
-    if (userBio.isEmpty) {
-      customToastMsg("Please enter the bio!");
-      return;
-    } else if (homeAdd.isEmpty) {
-      customToastMsg("Please enter the hometown address");
-      return;
-    } else if (country.isEmpty) {
+    if (country.isEmpty) {
       customToastMsg("Please select the country!");
       return;
-    } else if (state.isEmpty) {
+    }
+    if (state.isEmpty) {
       customToastMsg("Please select the state!");
       return;
-    } else if (city.isEmpty) {
+    }
+    if (city.isEmpty) {
       customToastMsg("Please select city!");
       return;
-    } else if (Gender.isEmpty) {
+    }
+
+    if (homeAdd.isEmpty) {
+      customToastMsg("Please enter the hometown address");
+      return;
+    }
+    if (Gender.isEmpty) {
       customToastMsg("Please select the gender!");
+      return;
+    }
+    if (userBio.isEmpty) {
+      customToastMsg("Please enter the bio!");
       return;
     }
     UpdateTheUserInfo(homeAdd, userBio);

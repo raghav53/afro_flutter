@@ -386,8 +386,7 @@ class _SignUpPage extends State<SignUpPageScreen> {
                           dateOrder: DatePickerDateOrder.dmy,
                           mode: CupertinoDatePickerMode.date,
                           initialDateTime: DateTime(1990, 01, 1),
-                          maximumDate: DateTime(DateTime.now().year,
-                              DateTime.now().month, DateTime.now().day),
+                          maximumDate: DateTime.now(),
                           onDateTimeChanged: (DateTime newDateTime) {
                             setState(() {
                               //hh:mm:ss
@@ -479,7 +478,7 @@ class _SignUpPage extends State<SignUpPageScreen> {
       customToastMsg(jsonResponse["data"]["code"]);
       Navigator.pop(context);
       Map<String, dynamic>? map = checkValues()!.cast<String, dynamic>();
-      Navigator.push(
+      Navigator.pushReplacement(
           context,
           MaterialPageRoute(
               builder: (context) => EmailVerification(

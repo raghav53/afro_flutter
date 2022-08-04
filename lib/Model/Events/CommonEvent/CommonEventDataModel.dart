@@ -34,6 +34,8 @@ Future<CommonEventsModel> getAllEventsUsers(BuildContext context,
   var jsonResponse = null;
   print("=============================================================" +
       countryIds);
+  print(
+      "events?page=$page&limit=$limit&search=$search&guests_max=$maxGoing&guests_min=$minGoing&interested_max=$maxInterested&interested_min=$minInterested&country=$countryIds&is_online=$isLink");
   var response = await http.get(
       Uri.parse(BASE_URL +
           "events?page=$page&limit=$limit&search=$search&guests_max=$maxGoing&guests_min=$minGoing&interested_max=$maxInterested&interested_min=$minInterested&country=$countryIds&is_online=$isLink"),

@@ -349,7 +349,15 @@ class _ForumsNewThreadPage extends State<ForumsNewThreadPage> {
               child: Row(
                 children: [
                   Radio(
-                      value: 0, groupValue: _groupValue, onChanged: (index) {}),
+                      value: 0,
+                      groupValue: _groupValue,
+                      onChanged: (index) {
+                        setState(() {
+                          _groupValue = 0;
+                          countryId = "0";
+                          countryName = "";
+                        });
+                      }),
                   Expanded(
                     child: customText("Global", 14, Colors.white),
                   )
@@ -368,7 +376,14 @@ class _ForumsNewThreadPage extends State<ForumsNewThreadPage> {
               child: Row(
                 children: [
                   Radio(
-                      value: 1, groupValue: _groupValue, onChanged: (index) {}),
+                      value: 1,
+                      groupValue: _groupValue,
+                      onChanged: (index) {
+                        setState(() {
+                          _groupValue = 1;
+                          showCountryDialog(context);
+                        });
+                      }),
                   Expanded(
                       child: customText(
                           countryName!.isEmpty
