@@ -186,6 +186,7 @@ class _AllContactsListScreenState extends State<AllContactsListScreen> {
   Widget filterItem(String filterList, int index, String title) {
     return InkWell(
       onTap: () {
+        defaultValues();
         setState(() {
           selectedIndex = index;
           selectedText = title;

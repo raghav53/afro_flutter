@@ -98,12 +98,28 @@ class _Intrests extends State<SelectIntrest> {
                                         leading:
                                             customText(title, 15, Colors.white),
                                         trailing: InkWell(
+                                          onTap: () {},
                                           child: Checkbox(
                                             checkColor: Colors.white,
                                             activeColor: Color(0xFF7822A0),
                                             value: snapshot
                                                 .data!.data![index].isSelected,
-                                            onChanged: (value) {},
+                                            onChanged: (value) {
+                                              setState(() {
+                                                snapshot.data!.data![index]
+                                                        .isSelected =
+                                                    !snapshot.data!.data![index]
+                                                        .isSelected;
+                                                print(snapshot.data!
+                                                    .data![index].isSelected);
+                                                addInterestInArray(
+                                                    snapshot.data!.data![index]
+                                                        .isSelected,
+                                                    snapshot
+                                                        .data!.data![index].sId
+                                                        .toString());
+                                              });
+                                            },
                                           ),
                                         ),
                                       ));

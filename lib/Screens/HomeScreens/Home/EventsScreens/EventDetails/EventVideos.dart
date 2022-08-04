@@ -7,7 +7,6 @@ import 'package:afro/Util/CustomWidget.dart';
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:video_thumbnail/video_thumbnail.dart';
 
 class EventVideos extends StatefulWidget {
   String eventId = "";
@@ -34,13 +33,6 @@ class _EventVideosState extends State<EventVideos> {
     });
   }
 
-  generateThumbnail(String path) async {
-    return VideoThumbnail.thumbnailFile(
-        video: path,
-        thumbnailPath: (await getTemporaryDirectory()).path,
-        imageFormat: ImageFormat.WEBP);
-  }
-
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -58,7 +50,6 @@ class _EventVideosState extends State<EventVideos> {
                     crossAxisCount: 3,
                     children:
                         List.generate(snapshot.data!.data!.length, (index) {
-                      getThumbnail(snapshot.data!.data![index].path.toString());
                       return InkWell(
                         onTap: () {
                           Navigator.push(
@@ -80,8 +71,7 @@ class _EventVideosState extends State<EventVideos> {
                           child: ClipRRect(
                               borderRadius: BorderRadius.circular(10),
                               child: Image.file(
-                                File(getThumbnail(snapshot
-                                        .data!.data![index].path
+                                File((snapshot.data!.data![index].path
                                         .toString())
                                     .toString()),
                                 fit: BoxFit.fill,
@@ -94,19 +84,5 @@ class _EventVideosState extends State<EventVideos> {
                   );
           }),
     );
-  }
-
-  Future<String> getThumbnail(String url) async {
-    final fileName = await VideoThumbnail.thumbnailFile(
-      video:
-          "https://flutter.github.io/assets-for-api-docs/assets/videos/butterfly.mp4",
-      thumbnailPath: (await getTemporaryDirectory()).path,
-      imageFormat: ImageFormat.PNG,
-      maxHeight:
-          64, // specify the height of the thumbnail, let the width auto-scaled to keep the source aspect ratio
-      quality: 75,
-    );
-    print(fileName.toString());
-    return fileName.toString();
   }
 }

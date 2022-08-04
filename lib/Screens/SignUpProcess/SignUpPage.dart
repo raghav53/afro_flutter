@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:afro/Network/Apis.dart';
 import 'package:afro/Screens/Authentication/SignInPage2.dart';
 import 'package:afro/Util/Colors.dart';
+import 'package:afro/Util/CommonMethods.dart';
 import 'package:afro/Util/CommonUI.dart';
 import 'package:afro/Util/CustomWidget.dart';
 import 'package:afro/Screens/SignUpProcess/EmailVerification.dart';
@@ -384,7 +385,8 @@ class _SignUpPage extends State<SignUpPageScreen> {
                         child: CupertinoDatePicker(
                           dateOrder: DatePickerDateOrder.dmy,
                           mode: CupertinoDatePickerMode.date,
-                          initialDateTime: DateTime(DateTime.now().year,
+                          initialDateTime: DateTime(1990, 01, 1),
+                          maximumDate: DateTime(DateTime.now().year,
                               DateTime.now().month, DateTime.now().day),
                           onDateTimeChanged: (DateTime newDateTime) {
                             setState(() {
@@ -439,8 +441,10 @@ class _SignUpPage extends State<SignUpPageScreen> {
       customToastMsg("Enter the first name");
     else if (lastName.isEmpty)
       customToastMsg("Enter the last name");
+    else if (!isEmailValid(email1))
+      customToastMsg("Email address not valid!");
     else if (email1.isEmpty)
-      customToastMsg("Enter the valid email");
+      customToastMsg("Please enter the email address!");
     else if (createPassword.isEmpty)
       customToastMsg("Enter the new password");
     else if (conFirmPassword.isEmpty)

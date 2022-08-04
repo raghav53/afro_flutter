@@ -51,41 +51,42 @@ class _SplashScreen extends State<SplashScreenPage> {
 
     if (process.toString().isNotEmpty && process != null) {
       print(process.toString());
-      switch (process.toString()) {
-        case "verified":
-          Timer(
-              const Duration(seconds: 3),
-              () => Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => FillInformation(
-                            token: token,
-                          ))));
-          break;
-        case "infofilled":
-          Timer(
-              const Duration(seconds: 3),
-              () => Navigator.pushReplacement(context,
-                  MaterialPageRoute(builder: (context) => UploadPhotoPage())));
-          break;
-        case "profileuploaded":
-          Timer(
-              const Duration(seconds: 3),
-              () => Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => const SelectIntrest())));
-          break;
-        case "interestupdated":
-          Timer(
-              const Duration(seconds: 3),
-              () => Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => SelectLanguageScreenPage())));
-          break;
 
-        default:
+      if (process.toString() == "verified") {
+        Timer(
+            const Duration(seconds: 3),
+            () => Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => FillInformation(
+                          token: token,
+                        ))));
+        return;
+      }
+      if (process.toString() == "infofilled") {
+        Timer(
+            const Duration(seconds: 3),
+            () => Navigator.pushReplacement(context,
+                MaterialPageRoute(builder: (context) => UploadPhotoPage())));
+        return;
+      }
+      if (process.toString() == "profileuploaded") {
+        Timer(
+            const Duration(seconds: 3),
+            () => Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => const SelectIntrest())));
+        return;
+      }
+      if (process.toString() == "interestupdated") {
+        Timer(
+            const Duration(seconds: 3),
+            () => Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => SelectLanguageScreenPage())));
+        return;
       }
     }
     if (checkLogin == "yes") {
