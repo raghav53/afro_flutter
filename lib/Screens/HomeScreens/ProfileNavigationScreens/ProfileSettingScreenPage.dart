@@ -105,7 +105,6 @@ class _ProfilePage extends State<ProfileSettingScreenPage> {
                     ),
                     listItemButton("Membership", context),
                     customDivider(10, Colors.white),
-                    
                     listItemButton("Contacts", context),
                     customDivider(10, Colors.white),
                     listItemButton("Send Feedback", context),
@@ -128,10 +127,9 @@ class _ProfilePage extends State<ProfileSettingScreenPage> {
               elevation: 0.0,
               child: Container(
                 padding: EdgeInsets.all(20),
-                height: phoneHeight(context) / 6,
                 decoration: BoxDecoration(
                     color: gray1, borderRadius: BorderRadius.circular(10)),
-                child: Column(children: [
+                child: Column(mainAxisSize: MainAxisSize.min, children: [
                   customText("Afro United", 15, white),
                   customHeightBox(15),
                   customText("Do you want to logout?", 13, white),

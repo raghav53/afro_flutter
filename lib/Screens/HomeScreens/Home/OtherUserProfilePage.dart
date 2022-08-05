@@ -1,9 +1,11 @@
 import 'dart:convert';
 
+import 'package:afro/Helper/ReportOperation.dart';
 import 'package:afro/Model/UserProfile.dart' as Experiences;
 import 'package:afro/Model/UserProfile.dart' as Educations;
 import 'package:afro/Model/UserProfileModel.dart';
 import 'package:afro/Network/Apis.dart';
+import 'package:afro/Screens/HomeScreens/Home/EventsScreens/EventDetails/EventsDetailsPage.dart';
 import 'package:afro/Screens/HomeScreens/Home/Messages/UserMessageScreen.dart';
 import 'package:afro/Util/Colors.dart';
 import 'package:afro/Util/CommonMethods.dart';
@@ -31,6 +33,7 @@ Future<UserProfile>? _getUserProfileData;
 UserProfile? _profile;
 Future<SharedPreferences> _pref = SharedPreferences.getInstance();
 UserDataConstants _userDataConstants = UserDataConstants();
+var loginUserId = "";
 
 class _OtherUserProfilePageScreenState extends State<OtherUserProfilePageScreen>
     with WidgetsBindingObserver {
@@ -60,6 +63,15 @@ class _OtherUserProfilePageScreenState extends State<OtherUserProfilePageScreen>
           });
       print("User Profile Api");
     });
+    getUserInfo();
+  }
+
+  //get user info
+  getUserInfo() async {
+    SharedPreferences sharedPreferences = await _pref;
+    loginUserId = sharedPreferences.getString(_userDataConstants.id).toString();
+    print(loginUserId);
+    setState(() {});
   }
 
   //Update the userData
@@ -102,8 +114,7 @@ class _OtherUserProfilePageScreenState extends State<OtherUserProfilePageScreen>
                                 decoration: BoxDecoration(
                                     color: gray1,
                                     borderRadius: BorderRadius.circular(10)),
-                                child:
-                                 Row(
+                                child: Row(
                                   crossAxisAlignment: cStart,
                                   children: [
                                     //Profile Image
@@ -481,10 +492,27 @@ class _OtherUserProfilePageScreenState extends State<OtherUserProfilePageScreen>
                                           itemCount: snapshot
                                               .data!.data!.events!.length,
                                           itemBuilder: (context, eventsIndex) {
-                                            return eventItemWidget(snapshot
-                                                .data!
-                                                .data!
-                                                .events![eventsIndex]);
+                                            return InkWell(
+                                              onTap: () {
+                                                Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                        builder: (builder) =>
+                                                            EventDetailsScreenPage(
+                                                                eventId: snapshot
+                                                                    .data!
+                                                                    .data!
+                                                                    .events![
+                                                                        eventsIndex]
+                                                                    .id,
+                                                                userId:
+                                                                    loginUserId)));
+                                              },
+                                              child: eventItemWidget(snapshot
+                                                  .data!
+                                                  .data!
+                                                  .events![eventsIndex]),
+                                            );
                                           })
                                       : null),
                               customHeightBox(30),
@@ -683,53 +711,57 @@ class _OtherUserProfilePageScreenState extends State<OtherUserProfilePageScreen>
               backgroundColor: Colors.transparent,
               elevation: 0.0,
               child: Container(
-                height: 130,
-                width: 200,
+                // height: 130,
+                // width: 200,
                 decoration: BoxDecoration(
                     color: gray1, borderRadius: BorderRadius.circular(10)),
-                child: Column(crossAxisAlignment: cCenter, children: [
-                  customHeightBox(15),
-                  customText("Unfollow Alert!", 15, white),
-                  customDivider(10, white),
-                  customHeightBox(5),
-                  customText("Do you want to Unfollow this user?", 12, white24),
-                  customHeightBox(30),
-                  Row(
-                    mainAxisAlignment: mCenter,
+                child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: cCenter,
                     children: [
-                      InkWell(
-                        onTap: () {
-                          setState(() {
-                            Navigator.pop(context);
-                            unfollow(userID, type);
-                          });
-                        },
-                        child: Container(
-                          padding: const EdgeInsets.only(
-                              top: 7, bottom: 7, left: 30, right: 30),
-                          decoration: BoxDecoration(
-                              gradient: commonButtonLinearGridient,
-                              borderRadius: BorderRadius.circular(10)),
-                          child: customText("Unfollow", 13, white),
-                        ),
-                      ),
-                      customWidthBox(15),
-                      InkWell(
-                        onTap: () {
-                          Navigator.pop(context);
-                        },
-                        child: Container(
-                          padding: const EdgeInsets.only(
-                              top: 7, bottom: 7, left: 30, right: 30),
-                          decoration: BoxDecoration(
-                              gradient: commonButtonLinearGridient,
-                              borderRadius: BorderRadius.circular(10)),
-                          child: customText("Cancel", 13, white),
-                        ),
+                      customHeightBox(15),
+                      customText("Unfollow Alert!", 15, white),
+                      customDivider(10, white),
+                      customHeightBox(5),
+                      customText(
+                          "Do you want to Unfollow this user?", 12, white24),
+                      customHeightBox(30),
+                      Row(
+                        mainAxisAlignment: mCenter,
+                        children: [
+                          InkWell(
+                            onTap: () {
+                              setState(() {
+                                Navigator.pop(context);
+                                unfollow(userID, type);
+                              });
+                            },
+                            child: Container(
+                              padding: const EdgeInsets.only(
+                                  top: 7, bottom: 7, left: 30, right: 30),
+                              decoration: BoxDecoration(
+                                  gradient: commonButtonLinearGridient,
+                                  borderRadius: BorderRadius.circular(10)),
+                              child: customText("Unfollow", 13, white),
+                            ),
+                          ),
+                          customWidthBox(15),
+                          InkWell(
+                            onTap: () {
+                              Navigator.pop(context);
+                            },
+                            child: Container(
+                              padding: const EdgeInsets.only(
+                                  top: 7, bottom: 7, left: 30, right: 30),
+                              decoration: BoxDecoration(
+                                  gradient: commonButtonLinearGridient,
+                                  borderRadius: BorderRadius.circular(10)),
+                              child: customText("Cancel", 13, white),
+                            ),
+                          )
+                        ],
                       )
-                    ],
-                  )
-                ]),
+                    ]),
               ));
         });
   }

@@ -44,6 +44,7 @@ dependencies:
   shared_preferences: ^2.0.15
   cached_network_image: ^3.2.1
   intl: ^0.17.0
+  webview_flutter: ^3.0.4
   image_picker: ^0.8.5+3
   connectivity_plus: ^2.3.6
   share_plus: ^4.0.10

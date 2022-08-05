@@ -6,6 +6,7 @@ import 'package:afro/Util/CustomWidget.dart';
 import 'package:afro/Util/CustomWidgetAttributes.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class SettingsScreenPage extends StatefulWidget {
   @override
@@ -88,8 +89,14 @@ void goNavigate(String title, BuildContext context) {
     Navigator.of(context)
         .push(MaterialPageRoute(builder: (context) => ChangePasswordPage()));
   } else if (title == "Privacy Policy") {
-    Navigator.of(context)
-        .push(MaterialPageRoute(builder: (context) => PrivacyPolicyScreen()));
+    _launchURLApp() async {
+      var url = Uri.parse("https://www.geeksforgeeks.org/");
+      if (await canLaunchUrl(url)) {
+        await launchUrl(url);
+      } else {
+        throw 'Could not launch $url';
+      }
+    }
   } else if (title == "Switch Language") {
     Navigator.of(context)
         .push(MaterialPageRoute(builder: (context) => ChooseLanguage()));
