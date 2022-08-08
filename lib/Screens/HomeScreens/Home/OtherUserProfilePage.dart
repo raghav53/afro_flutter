@@ -6,6 +6,7 @@ import 'package:afro/Model/UserProfile.dart' as Educations;
 import 'package:afro/Model/UserProfileModel.dart';
 import 'package:afro/Network/Apis.dart';
 import 'package:afro/Screens/HomeScreens/Home/EventsScreens/EventDetails/EventsDetailsPage.dart';
+import 'package:afro/Screens/HomeScreens/Home/Groups/GroupDetails/GroupDetailsPage.dart';
 import 'package:afro/Screens/HomeScreens/Home/Messages/UserMessageScreen.dart';
 import 'package:afro/Util/Colors.dart';
 import 'package:afro/Util/CommonMethods.dart';
@@ -470,14 +471,63 @@ class _OtherUserProfilePageScreenState extends State<OtherUserProfilePageScreen>
                               customText("Member of", 15, yellowColor),
                               customHeightBox(10),
                               Container(
-                                height: 20,
-                                child: Center(
-                                  child: customText(
-                                      "Haven't created or joined any group",
-                                      12,
-                                      white),
-                                ),
-                              ),
+                                  height: 25,
+                                  child: snapshot.data!.data!.groups!.isNotEmpty
+                                      ? ListView.builder(
+                                          shrinkWrap: true,
+                                          scrollDirection: Axis.horizontal,
+                                          itemCount: snapshot
+                                              .data!.data!.groups!.length,
+                                          itemBuilder: (context, index) {
+                                            return InkWell(
+                                                onTap: () {
+                                                  Navigator.push(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                          builder: (builder) =>
+                                                              GroupDetailsPage(
+                                                                  groupId: snapshot
+                                                                      .data!
+                                                                      .data!
+                                                                      .groups![
+                                                                          index]
+                                                                      .sId
+                                                                      .toString(),
+                                                                  groupAdmin: snapshot
+                                                                      .data!
+                                                                      .data!
+                                                                      .groups![
+                                                                          index]
+                                                                      .userId
+                                                                      .toString())));
+                                                },
+                                                child: Container(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          left: 20, right: 20),
+                                                  margin: const EdgeInsets.only(
+                                                      right: 10),
+                                                  height: 30,
+                                                  decoration: BoxDecoration(
+                                                      gradient:
+                                                          commonButtonLinearGridient,
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              30)),
+                                                  child: Center(
+                                                    child: customText(
+                                                        snapshot
+                                                            .data!
+                                                            .data!
+                                                            .groups![index]
+                                                            .title
+                                                            .toString(),
+                                                        12,
+                                                        white),
+                                                  ),
+                                                ));
+                                          })
+                                      : customText("No groups", 15, white)),
                               customHeightBox(20),
 
                               //Events
@@ -514,7 +564,7 @@ class _OtherUserProfilePageScreenState extends State<OtherUserProfilePageScreen>
                                                   .events![eventsIndex]),
                                             );
                                           })
-                                      : null),
+                                      : customText("No events", 15, white)),
                               customHeightBox(30),
                               customText(
                                   "International Experience", 15, yellowColor),

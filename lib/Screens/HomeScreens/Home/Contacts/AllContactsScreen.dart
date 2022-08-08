@@ -30,41 +30,42 @@ class AllContactsListScreen extends StatefulWidget {
   State<AllContactsListScreen> createState() => _AllContactsListScreenState();
 }
 
+var selectedIndex = 0;
+var selectedText = "People You may Know";
+var user = UserDataConstants();
+Future<CountryModel>? _getCountries;
+Future<AllInterestModel>? _getAllInterests;
+int _startInterestedRange = 0;
+int _endIntetestedRange = 100;
+var selectedInterestedRange = const RangeValues(0, 100);
+String countriesIds = "";
+List<String> tempCountriesIds = [];
+String interestsIds = "";
+List<String> tempInterestsIds = [];
+final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+var searchFriend = "", loginUserId = "";
+List<String> titleList = [
+  "People You May Know",
+  "Contacts Requests",
+  "Send Requests",
+  "My Friends"
+];
+
+List<String> filterList = [
+  "Discover",
+  "Contacts Requests",
+  "Sent Requests",
+  "My Friends"
+];
+
 class _AllContactsListScreenState extends State<AllContactsListScreen> {
-  var selectedIndex = 0;
-  var selectedText = "People You may Know";
-  var user = UserDataConstants();
-  Future<CountryModel>? _getCountries;
-  Future<AllInterestModel>? _getAllInterests;
-  int _startInterestedRange = 0;
-  int _endIntetestedRange = 100;
-  var selectedInterestedRange = const RangeValues(0, 100);
-  String countriesIds = "";
-  List<String> tempCountriesIds = [];
-  String interestsIds = "";
-  List<String> tempInterestsIds = [];
-  final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
-  var searchFriend = "";
-  List<String> titleList = [
-    "People You May Know",
-    "Contacts Requests",
-    "Send Requests",
-    "My Friends"
-  ];
-
-  List<String> filterList = [
-    "Discover",
-    "Contacts Requests",
-    "Sent Requests",
-    "My Friends"
-  ];
-
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     getInterestsList();
     getCountries();
+    getUserDetails();
   }
 
   defaultValues() {
@@ -78,6 +79,11 @@ class _AllContactsListScreenState extends State<AllContactsListScreen> {
       interestsIds = "";
       searchFriend = "";
     });
+  }
+
+  getUserDetails() async {
+    SharedPreferences sharedPreferences = await _prefs;
+    loginUserId = sharedPreferences.getString(user.id).toString();
   }
 
   @override
@@ -214,7 +220,6 @@ class _AllContactsListScreenState extends State<AllContactsListScreen> {
 
   //Selected  list
   setTheListview(int index) {
-    print(index);
     if (index == 0) {
       return FutureBuilder<GetAllFriendsModel>(
           future: getAllUsers(context,
@@ -232,7 +237,14 @@ class _AllContactsListScreenState extends State<AllContactsListScreen> {
           });
     } else if (index == 1) {
       return FutureBuilder<ReceivedRequestModel>(
-          future: getAllReceivedContactsRequests(context, search: searchFriend),
+          future: getAllReceivedContactsRequests(
+            context,
+            search: searchFriend,
+            country: countriesIds,
+            interests: interestsIds,
+            min_age: _startInterestedRange.toString(),
+            max_age: _endIntetestedRange.toString(),
+          ),
           builder: (context, snapshot) {
             return snapshot.hasData && snapshot.data != null
                 ? AllReceivedFriendRequestsList(snapshot.data!)
@@ -510,97 +522,113 @@ class _AllContactsListScreenState extends State<AllContactsListScreen> {
           shrinkWrap: true,
           itemCount: snapshot.data!.length,
           itemBuilder: (context, index) {
-            return Column(
-              children: [
-                Container(
-                  padding: const EdgeInsets.only(top: 10, bottom: 10),
-                  child: Row(
-                    children: [
-                      Stack(
-                        alignment: Alignment.bottomRight,
-                        children: [
-                          DottedBorder(
-                            radius: const Radius.circular(2),
-                            padding: const EdgeInsets.all(5),
-                            borderType: BorderType.Circle,
-                            color: const Color(0xFF3E55AF),
-                            child: Container(
-                              padding: const EdgeInsets.all(1),
-                              child: CachedNetworkImage(
-                                  imageUrl: IMAGE_URL +
-                                      snapshot.data![index].friend!.profileImage
-                                          .toString(),
-                                  errorWidget: (error, context, url) =>
-                                      Icon(Icons.person),
-                                  placeholder: (context, url) =>
-                                      Icon(Icons.person),
-                                  imageBuilder: (context, url) {
-                                    return CircleAvatar(
-                                      backgroundImage: url,
-                                    );
-                                  }),
-                            ),
-                          ),
-                          Container(
-                            height: 9,
-                            width: 9,
-                            margin: const EdgeInsets.only(right: 3, bottom: 3),
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10),
-                                gradient: commonButtonLinearGridient),
-                          )
-                        ],
-                      ),
-                      customWidthBox(10),
-                      Column(
-                        crossAxisAlignment: cStart,
-                        children: [
-                          customText(
-                              snapshot.data![index].friend!.fullName.toString(),
-                              15,
-                              white),
-                          customHeightBox(5),
-                          Row(
-                            children: [
-                              Icon(
-                                Icons.location_pin,
-                                color: yellowColor,
-                                size: 15,
+            return InkWell(
+              onTap: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => OtherUserProfilePageScreen(
+                              userID: snapshot.data![index].friend!.sId,
+                              name: snapshot.data![index].friend!.fullName
+                                  .toString(),
+                              loginUserId: loginUserId,
+                            )));
+              },
+              child: Column(
+                children: [
+                  Container(
+                    padding: const EdgeInsets.only(top: 10, bottom: 10),
+                    child: Row(
+                      children: [
+                        Stack(
+                          alignment: Alignment.bottomRight,
+                          children: [
+                            DottedBorder(
+                              radius: const Radius.circular(2),
+                              padding: const EdgeInsets.all(5),
+                              borderType: BorderType.Circle,
+                              color: const Color(0xFF3E55AF),
+                              child: Container(
+                                padding: const EdgeInsets.all(1),
+                                child: CachedNetworkImage(
+                                    imageUrl: IMAGE_URL +
+                                        snapshot
+                                            .data![index].friend!.profileImage
+                                            .toString(),
+                                    errorWidget: (error, context, url) =>
+                                        Icon(Icons.person),
+                                    placeholder: (context, url) =>
+                                        Icon(Icons.person),
+                                    imageBuilder: (context, url) {
+                                      return CircleAvatar(
+                                        backgroundImage: url,
+                                      );
+                                    }),
                               ),
-                              customText(
-                                  snapshot.data![index].friend!.city!.isEmpty
-                                      ? "Not available"
-                                      : snapshot
-                                          .data![index].friend!.city![0].title
-                                          .toString(),
-                                  9.5,
-                                  white)
-                            ],
-                          )
-                        ],
-                      ),
-                      const Spacer(),
-                      InkWell(
-                        onTap: () {
-                          showTheUnFriendAlertBox(
-                              context,
-                              snapshot.data![index].friend!.fullName.toString(),
-                              snapshot.data![index].friend!.sId.toString());
-                        },
-                        child: Padding(
-                            padding: const EdgeInsets.only(right: 8.0),
-                            child: Image.asset(
-                              "assets/icons/friends.png",
-                              height: 25,
-                              width: 25,
-                              color: circleColor,
-                            )),
-                      )
-                    ],
+                            ),
+                            Container(
+                              height: 9,
+                              width: 9,
+                              margin:
+                                  const EdgeInsets.only(right: 3, bottom: 3),
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10),
+                                  gradient: commonButtonLinearGridient),
+                            )
+                          ],
+                        ),
+                        customWidthBox(10),
+                        Column(
+                          crossAxisAlignment: cStart,
+                          children: [
+                            customText(
+                                snapshot.data![index].friend!.fullName
+                                    .toString(),
+                                15,
+                                white),
+                            customHeightBox(5),
+                            Row(
+                              children: [
+                                Icon(
+                                  Icons.location_pin,
+                                  color: yellowColor,
+                                  size: 15,
+                                ),
+                                customText(
+                                    snapshot.data![index].friend!.city!.isEmpty
+                                        ? "Not available"
+                                        : snapshot
+                                            .data![index].friend!.city![0].title
+                                            .toString(),
+                                    9.5,
+                                    white)
+                              ],
+                            )
+                          ],
+                        ),
+                        const Spacer(),
+                        InkWell(
+                          onTap: () {
+                            showTheUnFriendAlertBox(
+                                context,
+                                snapshot.data![index].friend!.fullName
+                                    .toString(),
+                                snapshot.data![index].friend!.sId.toString());
+                          },
+                          child: Padding(
+                              padding: const EdgeInsets.only(right: 8.0),
+                              child: Image.asset(
+                                "assets/icons/friends.png",
+                                height: 25,
+                                width: 25,
+                                color: circleColor,
+                              )),
+                        )
+                      ],
+                    ),
                   ),
-                ),
-                customDivider(10, white)
-              ],
+                ],
+              ),
             );
           }),
     );
@@ -1011,7 +1039,6 @@ class _AllContactsListScreenState extends State<AllContactsListScreen> {
     print(jsonResponse);
     var message = jsonResponse["message"];
     if (response.statusCode == 200) {
-      Navigator.pop(context);
       Navigator.pop(context);
     } else if (response.statusCode == 401) {
       customToastMsg("Unauthorized User!");

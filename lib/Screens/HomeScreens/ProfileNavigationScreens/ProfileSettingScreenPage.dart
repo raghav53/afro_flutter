@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:afro/Screens/Authentication/SignInPage2.dart';
 import 'package:afro/Screens/HomeScreens/Home/Contacts/AllContactsScreen.dart';
 import 'package:afro/Screens/HomeScreens/Home/MembershipScreenPage.dart';
+import 'package:afro/Util/Constants.dart';
 import 'package:afro/Util/CustomWidget.dart';
 import 'package:afro/Screens/HomeScreens/Home/MyProfile.dart';
 import 'package:afro/Screens/HomeScreens/ProfileNavigationScreens/SendFeedbackPage.dart';
@@ -21,6 +22,7 @@ class ProfileSettingScreenPage extends StatefulWidget {
 }
 
 String? fullName, imageURl;
+UserDataConstants user = UserDataConstants();
 
 class _ProfilePage extends State<ProfileSettingScreenPage> {
   final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
