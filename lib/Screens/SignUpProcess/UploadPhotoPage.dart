@@ -29,8 +29,10 @@ bool storageGranted = false;
 class _UploadPhoto extends State<UploadPhotoPage> {
   @override
   void initState() {
-    getPer();
     super.initState();
+    Future.delayed(Duration.zero, () {
+      getPer();
+    });
   }
 
   final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
@@ -222,9 +224,8 @@ class _UploadPhoto extends State<UploadPhotoPage> {
     if (permission != PermissionStatus.granted &&
         permission != PermissionStatus.denied) {
       final Map<Permission, PermissionStatus> permissionStatus =
-          await [Permission.contacts].request();
-      return permissionStatus[Permission.contacts] ??
-          PermissionStatus.restricted;
+          await [Permission.camera].request();
+      return permissionStatus[Permission.camera] ?? PermissionStatus.restricted;
     } else {
       return permission;
     }
@@ -236,8 +237,8 @@ class _UploadPhoto extends State<UploadPhotoPage> {
     if (permission != PermissionStatus.granted &&
         permission != PermissionStatus.denied) {
       final Map<Permission, PermissionStatus> permissionStatus =
-          await [Permission.contacts].request();
-      return permissionStatus[Permission.contacts] ??
+          await [Permission.storage].request();
+      return permissionStatus[Permission.storage] ??
           PermissionStatus.restricted;
     } else {
       return permission;

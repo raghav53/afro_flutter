@@ -205,7 +205,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                         ForgetPasswordPage()));
                               },
                               child: customText(
-                                  "Forget your password?", 13, yellowColor)),
+                                  "Forgot your password?", 13, yellowColor)),
                         ],
                         mainAxisAlignment: MainAxisAlignment.center,
                       ),

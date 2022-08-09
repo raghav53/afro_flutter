@@ -269,7 +269,14 @@ class _AllContactsListScreenState extends State<AllContactsListScreen> {
           });
     } else if (index == 2) {
       return FutureBuilder<SendRequestModel>(
-          future: getAllSendRequests(context, search: searchFriend),
+          future: getAllSendRequests(
+            context,
+            search: searchFriend,
+            country: countriesIds,
+            interests: interestsIds,
+            min_age: _startInterestedRange.toString(),
+            max_age: _endIntetestedRange.toString(),
+          ),
           builder: (context, snapshot) {
             return snapshot.hasData && snapshot.data != null
                 ? AllSentFriendRequestList(snapshot.data!)
@@ -277,7 +284,6 @@ class _AllContactsListScreenState extends State<AllContactsListScreen> {
                     child: CircularProgressIndicator(),
                   );
           });
-      ;
     }
   }
 

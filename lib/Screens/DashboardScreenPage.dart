@@ -590,131 +590,103 @@ class _HomeScreen extends State<DashboardPageScreen> {
                                   : 5,
                               itemBuilder: (context, index) {
                                 return InkWell(
-                                  onTap: () {
-                                    Navigator.of(context)
-                                        .push(MaterialPageRoute(
-                                            builder: (context) =>
-                                                OtherUserProfilePageScreen(
-                                                  userID: snapshot
-                                                      .data!.data![index].sId,
-                                                  name: snapshot.data!
-                                                      .data![index].fullName
-                                                      .toString(),
-                                                )))
-                                        .then((value) => onResumed());
-                                  },
-                                  child: Container(
-                                      margin: const EdgeInsets.only(top: 5),
-                                      child: Column(
-                                        children: [
-                                          Row(
-                                            children: [
-                                              Stack(
-                                                alignment:
-                                                    Alignment.bottomRight,
-                                                children: [
-                                                  DottedBorder(
-                                                    radius:
-                                                        const Radius.circular(
-                                                            2),
-                                                    padding:
-                                                        const EdgeInsets.all(5),
-                                                    borderType:
-                                                        BorderType.Circle,
-                                                    color:
-                                                        const Color(0xFF3E55AF),
-                                                    child: Container(
-                                                      padding:
-                                                          const EdgeInsets.all(
-                                                              1),
-                                                      child: CachedNetworkImage(
-                                                          imageUrl: IMAGE_URL +
-                                                              snapshot
-                                                                  .data!
-                                                                  .data![index]
-                                                                  .profileImage
-                                                                  .toString(),
-                                                          errorWidget: (error,
-                                                                  context,
-                                                                  url) =>
-                                                              const Icon(
-                                                                  Icons.person),
-                                                          placeholder: (context,
-                                                                  url) =>
-                                                              const Icon(
-                                                                  Icons.person),
-                                                          imageBuilder:
-                                                              (context, url) {
-                                                            return CircleAvatar(
-                                                              backgroundImage:
-                                                                  url,
-                                                            );
-                                                          }),
-                                                    ),
-                                                  ),
-                                                  Container(
-                                                    height: 9,
-                                                    width: 9,
-                                                    margin:
-                                                        const EdgeInsets.only(
-                                                            right: 3,
-                                                            bottom: 3),
-                                                    decoration: BoxDecoration(
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(10),
-                                                        gradient:
-                                                            commonButtonLinearGridient),
-                                                  )
-                                                ],
+                                    onTap: () {
+                                      Navigator.of(context)
+                                          .push(MaterialPageRoute(
+                                              builder: (context) =>
+                                                  OtherUserProfilePageScreen(
+                                                    userID: snapshot
+                                                        .data!.data![index].sId,
+                                                    name: snapshot.data!
+                                                        .data![index].fullName
+                                                        .toString(),
+                                                  )))
+                                          .then((value) => onResumed());
+                                    },
+                                    child: ListTile(
+                                      leading: Stack(
+                                          alignment: Alignment.bottomRight,
+                                          children: [
+                                            DottedBorder(
+                                              radius: const Radius.circular(2),
+                                              padding: const EdgeInsets.all(5),
+                                              borderType: BorderType.Circle,
+                                              color: const Color(0xFF3E55AF),
+                                              child: Container(
+                                                padding:
+                                                    const EdgeInsets.all(1),
+                                                child: CachedNetworkImage(
+                                                    imageUrl: IMAGE_URL +
+                                                        snapshot
+                                                            .data!
+                                                            .data![index]
+                                                            .profileImage
+                                                            .toString(),
+                                                    errorWidget:
+                                                        (error, context, url) =>
+                                                            const Icon(
+                                                                Icons.person),
+                                                    placeholder:
+                                                        (context, url) =>
+                                                            const Icon(
+                                                                Icons.person),
+                                                    imageBuilder:
+                                                        (context, url) {
+                                                      return CircleAvatar(
+                                                        backgroundImage: url,
+                                                      );
+                                                    }),
                                               ),
-                                              customWidthBox(10),
-                                              Column(
-                                                mainAxisAlignment: mStart,
-                                                crossAxisAlignment: cStart,
-                                                children: [
-                                                  customText(
-                                                      snapshot.data!
-                                                          .data![index].fullName
-                                                          .toString(),
-                                                      12,
-                                                      white),
-                                                  customHeightBox(7),
-                                                  Row(
-                                                    children: [
-                                                      Icon(
-                                                        Icons.location_pin,
-                                                        color: yellowColor,
-                                                        size: 15,
-                                                      ),
-                                                      customWidthBox(2),
-                                                      customText(
-                                                          snapshot
-                                                                  .data!
-                                                                  .data![index]
-                                                                  .city![0]
-                                                                  .title
-                                                                  .toString() +
-                                                              " , " +
-                                                              snapshot
-                                                                  .data!
-                                                                  .data![index]
-                                                                  .country![0]
-                                                                  .title
-                                                                  .toString(),
-                                                          12,
-                                                          yellowColor)
-                                                    ],
-                                                  )
-                                                ],
-                                              )
-                                            ],
+                                            ),
+                                            Container(
+                                              height: 9,
+                                              width: 9,
+                                              margin: const EdgeInsets.only(
+                                                  right: 3, bottom: 3),
+                                              decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.circular(10),
+                                                  gradient:
+                                                      commonButtonLinearGridient),
+                                            )
+                                          ]),
+                                      title: customText(
+                                          snapshot.data!.data![index].fullName
+                                              .toString(),
+                                          12,
+                                          white),
+                                      subtitle: Row(
+                                        children: [
+                                          Icon(
+                                            Icons.location_pin,
+                                            color: yellowColor,
+                                            size: 15,
                                           ),
-                                          customHeightBox(10),
-                                          customDivider(5, white)
+                                          customWidthBox(2),
+                                          Container(
+                                            child: snapshot.data!.data![index]
+                                                        .city!.isNotEmpty &&
+                                                    snapshot.data!.data![index]
+                                                        .country!.isNotEmpty
+                                                ? customText(
+                                                    snapshot.data!.data![index]
+                                                            .city![0].title
+                                                            .toString() +
+                                                        " , " +
+                                                        snapshot
+                                                            .data!
+                                                            .data![index]
+                                                            .country![0]
+                                                            .title
+                                                            .toString(),
+                                                    12,
+                                                    yellowColor)
+                                                : customText("No available..",
+                                                    12, white),
+                                          )
                                         ],
-                                      )),
-                                );
+                                      ),
+                                    ));
                               }),
                         )
                       : Container();

@@ -240,7 +240,7 @@ class _Email extends State<EmailVerification> {
                         decoration: TextDecoration.underline,
                       ),
                     )),
-
+                customHeightBox(70),
                 //Verify Button
                 InkWell(
                   onTap: () {
@@ -255,7 +255,6 @@ class _Email extends State<EmailVerification> {
                     }
                   },
                   child: Container(
-                      margin: EdgeInsets.only(top: 80),
                       alignment: Alignment.center,
                       height: 40.0,
                       width: 200,
