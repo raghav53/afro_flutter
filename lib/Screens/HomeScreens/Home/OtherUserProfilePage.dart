@@ -108,14 +108,17 @@ class _OtherUserProfilePageScreenState extends State<OtherUserProfilePageScreen>
                   return snapshot.hasData
                       ? SingleChildScrollView(
                           child: Column(
+                            mainAxisSize: MainAxisSize.min,
                             crossAxisAlignment: cStart,
                             children: [
                               Container(
-                                padding: const EdgeInsets.all(10),
+                                padding: const EdgeInsets.only(
+                                    left: 5, right: 5, top: 10, bottom: 10),
                                 decoration: BoxDecoration(
                                     color: gray1,
                                     borderRadius: BorderRadius.circular(10)),
                                 child: Row(
+                                  mainAxisSize: MainAxisSize.min,
                                   crossAxisAlignment: cStart,
                                   children: [
                                     //Profile Image
@@ -151,8 +154,84 @@ class _OtherUserProfilePageScreenState extends State<OtherUserProfilePageScreen>
                                     Column(
                                       crossAxisAlignment: cStart,
                                       children: [
-                                        customText(
-                                            widget.name.toString(), 15, white),
+                                        Row(
+                                          children: [
+                                            customText(widget.name.toString(),
+                                                15, white),
+                                            customWidthBox(5),
+                                            FutureBuilder<UserProfile>(
+                                                future: _getUserProfileData,
+                                                builder: (context, snapshot) {
+                                                  return snapshot.hasData
+                                                      ? Row(
+                                                          children: [
+                                                            CachedNetworkImage(
+                                                              height: 15,
+                                                              width: 15,
+                                                              imageUrl: country_code_url +
+                                                                  snapshot
+                                                                      .data!
+                                                                      .data!
+                                                                      .country!
+                                                                      .iso2
+                                                                      .toString()
+                                                                      .toLowerCase() +
+                                                                  ".png",
+                                                              imageBuilder:
+                                                                  (context,
+                                                                      url) {
+                                                                return CircleAvatar(
+                                                                  backgroundImage:
+                                                                      url,
+                                                                );
+                                                              },
+                                                            ),
+                                                            Container(
+                                                              height: 15,
+                                                              width: 150,
+                                                              child: ListView
+                                                                  .builder(
+                                                                      shrinkWrap:
+                                                                          true,
+                                                                      itemCount: snapshot
+                                                                          .data!
+                                                                          .data!
+                                                                          .visits!
+                                                                          .length,
+                                                                      scrollDirection:
+                                                                          Axis
+                                                                              .horizontal,
+                                                                      itemBuilder:
+                                                                          (context,
+                                                                              index) {
+                                                                        return Padding(
+                                                                          padding:
+                                                                              const EdgeInsets.only(left: 3),
+                                                                          child:
+                                                                              CachedNetworkImage(
+                                                                            height:
+                                                                                15,
+                                                                            width:
+                                                                                15,
+                                                                            imageUrl: country_code_url +
+                                                                                snapshot.data!.data!.visits![index].iso2.toString().toLowerCase() +
+                                                                                ".png",
+                                                                            imageBuilder:
+                                                                                (context, url) {
+                                                                              return CircleAvatar(
+                                                                                backgroundImage: url,
+                                                                              );
+                                                                            },
+                                                                          ),
+                                                                        );
+                                                                      }),
+                                                            )
+                                                          ],
+                                                        )
+                                                      : Container();
+                                                })
+                                          ],
+                                        ),
                                         customHeightBox(2),
                                         customText(
                                             "Newcorner Buddy", 11, white),
@@ -184,7 +263,7 @@ class _OtherUserProfilePageScreenState extends State<OtherUserProfilePageScreen>
                                                   12,
                                                   white),
                                             ),
-                                            customWidthBox(30),
+                                            customWidthBox(10),
                                             InkWell(
                                               child: customText(
                                                   "Follower: " +
@@ -194,7 +273,7 @@ class _OtherUserProfilePageScreenState extends State<OtherUserProfilePageScreen>
                                                   12,
                                                   white),
                                             ),
-                                            customWidthBox(30),
+                                            customWidthBox(10),
                                             InkWell(
                                               child: customText(
                                                   "Contacts: " +

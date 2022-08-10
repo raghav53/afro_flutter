@@ -748,99 +748,102 @@ class _ForumsNewThreadPage extends State<ForumsNewThreadPage> {
                 elevation: 0.0,
                 child: Container(
                     padding: EdgeInsets.all(10),
-                    height: phoneHeight(context) / 4.5,
                     decoration: BoxDecoration(
                         color: gray1, borderRadius: BorderRadius.circular(10)),
-                    child: Column(crossAxisAlignment: cCenter, children: [
-                      Row(
+                    child: Column(
+                        mainAxisSize: MainAxisSize.min,
                         crossAxisAlignment: cCenter,
-                        mainAxisAlignment: mCenter,
                         children: [
-                          Spacer(),
-                          Spacer(),
-                          customText("Afro-united", 15, white),
-                          Spacer(),
-                          IconButton(
-                              onPressed: () {
-                                Navigator.pop(context);
-                              },
-                              icon: Icon(
-                                Icons.close,
-                                color: white,
-                              ))
-                        ],
-                      ),
-                      customText(
-                          "Do you want to post this thread as:", 15, white),
-                      customHeightBox(15),
-                      Container(
-                        margin: EdgeInsets.only(left: 10, right: 10),
-                        child: Row(
-                          children: [
-                            Expanded(
-                              child: InkWell(
-                                onTap: () {
-                                  state(() {
-                                    _usergroupValue = 0;
-                                    userType = "0";
-                                    print(userType);
-                                  });
-                                },
-                                child: Row(
-                                  children: [
-                                    Radio(
-                                        focusColor: Colors.blueAccent,
-                                        value: 0,
-                                        groupValue: _usergroupValue,
-                                        onChanged: (index) {}),
-                                    Expanded(
-                                      child: customText(
-                                          "Real Identity", 13, Colors.white),
-                                    )
-                                  ],
+                          Row(
+                            crossAxisAlignment: cCenter,
+                            mainAxisAlignment: mCenter,
+                            children: [
+                              Spacer(),
+                              Spacer(),
+                              customText("Afro-united", 15, white),
+                              Spacer(),
+                              IconButton(
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                  },
+                                  icon: Icon(
+                                    Icons.close,
+                                    color: white,
+                                  ))
+                            ],
+                          ),
+                          customText(
+                              "Do you want to post this thread as:", 15, white),
+                          customHeightBox(15),
+                          Container(
+                            margin: EdgeInsets.only(left: 10, right: 10),
+                            child: Row(
+                              children: [
+                                Expanded(
+                                  child: InkWell(
+                                    onTap: () {
+                                      state(() {
+                                        _usergroupValue = 0;
+                                        userType = "0";
+                                        print(userType);
+                                      });
+                                    },
+                                    child: Row(
+                                      children: [
+                                        Radio(
+                                            focusColor: Colors.blueAccent,
+                                            value: 0,
+                                            groupValue: _usergroupValue,
+                                            onChanged: (index) {}),
+                                        Expanded(
+                                          child: customText("Real Identity", 13,
+                                              Colors.white),
+                                        )
+                                      ],
+                                    ),
+                                  ),
                                 ),
-                              ),
-                            ),
-                            Expanded(
-                              child: InkWell(
-                                onTap: () {
-                                  state(() {
-                                    _usergroupValue = 1;
-                                    userType = "1";
-                                    print(userType);
-                                  });
-                                },
-                                child: Row(
-                                  children: [
-                                    Radio(
-                                        focusColor: Colors.blueAccent,
-                                        value: 1,
-                                        groupValue: _usergroupValue,
-                                        onChanged: (index) {}),
-                                    Expanded(
-                                        child: customText(
-                                            "Anonymous", 13, Colors.white))
-                                  ],
+                                Expanded(
+                                  child: InkWell(
+                                    onTap: () {
+                                      state(() {
+                                        _usergroupValue = 1;
+                                        userType = "1";
+                                        print(userType);
+                                      });
+                                    },
+                                    child: Row(
+                                      children: [
+                                        Radio(
+                                            focusColor: Colors.blueAccent,
+                                            value: 1,
+                                            groupValue: _usergroupValue,
+                                            onChanged: (index) {}),
+                                        Expanded(
+                                            child: customText(
+                                                "Anonymous", 13, Colors.white))
+                                      ],
+                                    ),
+                                  ),
                                 ),
-                              ),
+                              ],
                             ),
-                          ],
-                        ),
-                      ),
-                      InkWell(
-                        onTap: () {
-                          postTheForumThread();
-                        },
-                        child: Container(
-                          width: 100,
-                          decoration: BoxDecoration(
-                              gradient: commonButtonLinearGridient,
-                              borderRadius: BorderRadius.circular(30)),
-                          padding: EdgeInsets.only(top: 10, bottom: 10),
-                          child: Center(child: customText("Done", 15, white)),
-                        ),
-                      )
-                    ])));
+                          ),
+                          InkWell(
+                            onTap: () {
+                              postTheForumThread();
+                            },
+                            child: Container(
+                              width: 100,
+                              decoration: BoxDecoration(
+                                  gradient: commonButtonLinearGridient,
+                                  borderRadius: BorderRadius.circular(30)),
+                              padding: EdgeInsets.only(top: 10, bottom: 10),
+                              child:
+                                  Center(child: customText("Done", 15, white)),
+                            ),
+                          )
+                        ])));
           });
         });
   }

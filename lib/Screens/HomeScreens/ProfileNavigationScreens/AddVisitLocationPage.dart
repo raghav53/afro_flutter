@@ -256,7 +256,7 @@ class _Timeline extends State<AddTimelinePageScreen> {
                       });
                     },
                   ),
-                  customText("I currently work here", 15, white),
+                  customText("I currently living here", 15, white),
                   customWidthBox(80)
                 ],
               ),

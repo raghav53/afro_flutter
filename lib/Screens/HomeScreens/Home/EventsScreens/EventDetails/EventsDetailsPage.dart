@@ -857,9 +857,9 @@ class _EventDetailsScreenPageState extends State<EventDetailsScreenPage> {
                           14,
                           white)
                       : customText(
-                          "Are your sure want " +
-                              type.toString() +
-                              " in this event?",
+                          type.toString() == "going"
+                              ? "Are you Sure you are going this event?"
+                              : "Are you interested in this event?",
                           14,
                           white),
                   customHeightBox(20),
@@ -1344,7 +1344,7 @@ class _EventDetailsScreenPageState extends State<EventDetailsScreenPage> {
   getUsersForEvent() {
     Future.delayed(Duration.zero, () {
       _getAllEventUsers =
-          getAllEventsUsers(context,  widget.eventId.toString(),"1","1000");
+          getAllEventsUsers(context, widget.eventId.toString(), "1", "1000");
       setState(() {});
       _getAllEventUsers!.whenComplete(() => () {});
     });

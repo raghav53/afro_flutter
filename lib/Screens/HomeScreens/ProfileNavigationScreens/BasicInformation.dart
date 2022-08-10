@@ -932,6 +932,8 @@ class _Basic extends State<BasicInformation> {
     var message = jsonResponse["message"];
     if (response.statusCode == 200) {
       Navigator.pop(context);
+      Navigator.pop(context);
+
       customToastMsg("user profile updated successfully!");
     } else if (response.statusCode == 401) {
       customToastMsg("Unauthorized User!");

@@ -304,8 +304,8 @@ class _GroupsAllListScreenState extends State<GroupsAllListScreen> {
 //Discover groups List
   DiscoverGroupsList(AllGroupsModel snapshot) {
     return Container(
-      height: phoneHeight(context),
       width: phoneWidth(context),
+      height: 400,
       child: ListView.builder(
           padding: EdgeInsets.zero,
           shrinkWrap: true,
@@ -527,7 +527,7 @@ class _GroupsAllListScreenState extends State<GroupsAllListScreen> {
   //Joined Groups List
   JoinedGroupsList(JoinedGroupModel snapshot) {
     return Container(
-        height: phoneHeight(context),
+        height: 400,
         width: phoneWidth(context),
         child: ListView.builder(
             padding: EdgeInsets.zero,
@@ -627,9 +627,8 @@ class _GroupsAllListScreenState extends State<GroupsAllListScreen> {
   //User Groups List
   MyGroupsListScreen(BuildContext context, UserGroupsModel snapshot) {
     return Container(
-        margin: EdgeInsets.only(bottom: 70),
         width: phoneWidth(context),
-        height: phoneHeight(context),
+        height: 400,
         child: ListView.builder(
             padding: EdgeInsets.zero,
             shrinkWrap: true,

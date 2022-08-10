@@ -195,7 +195,7 @@ class _CreateNewEventState extends State<CreateNewEvent> {
                                     borderRadius: BorderRadius.circular(10)),
                                 child: customText(
                                     fromTextStartDate.isEmpty
-                                        ? ""
+                                        ? "Start Date"
                                         : fromTextStartDate,
                                     15,
                                     fromTextStartDate.isEmpty
