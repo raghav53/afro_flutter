@@ -266,6 +266,9 @@ class _MyProffile extends State<MyProfilePage> {
                               customHeightBox(15),
                               //Following , Follower , Friends/Contacts
                               Row(
+                                mainAxisSize: MainAxisSize.max,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceAround,
                                 children: [
                                   InkWell(
                                     onTap: () {
@@ -280,7 +283,7 @@ class _MyProffile extends State<MyProfilePage> {
                                         12,
                                         white),
                                   ),
-                                  customWidthBox(30),
+                                  customWidthBox(15),
                                   InkWell(
                                     onTap: () {
                                       Navigator.of(context).push(
@@ -294,7 +297,7 @@ class _MyProffile extends State<MyProfilePage> {
                                         12,
                                         white),
                                   ),
-                                  customWidthBox(30),
+                                  customWidthBox(15),
                                   InkWell(
                                     onTap: () {
                                       Navigator.of(context).push(

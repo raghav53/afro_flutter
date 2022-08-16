@@ -248,8 +248,12 @@ class _AllContactsListScreenState extends State<AllContactsListScreen> {
           builder: (context, snapshot) {
             return snapshot.hasData && snapshot.data != null
                 ? AllReceivedFriendRequestsList(snapshot.data!)
-                : const Center(
-                    child: CircularProgressIndicator(),
+                : Container(
+                    margin: EdgeInsets.only(top: 100),
+                    alignment: Alignment.center,
+                    child: Center(
+                      child: customText("No data!", 15, white),
+                    ),
                   );
           });
     } else if (index == 3) {
@@ -263,8 +267,12 @@ class _AllContactsListScreenState extends State<AllContactsListScreen> {
           builder: (context, snapshot) {
             return snapshot.hasData && snapshot.data != null
                 ? ListAllFriendsOfUser(snapshot.data!)
-                : const Center(
-                    child: CircularProgressIndicator(),
+                : Container(
+                    margin: EdgeInsets.only(top: 100),
+                    alignment: Alignment.center,
+                    child: Center(
+                      child: customText("No data!", 15, white),
+                    ),
                   );
           });
     } else if (index == 2) {
@@ -280,8 +288,12 @@ class _AllContactsListScreenState extends State<AllContactsListScreen> {
           builder: (context, snapshot) {
             return snapshot.hasData && snapshot.data != null
                 ? AllSentFriendRequestList(snapshot.data!)
-                : const Center(
-                    child: CircularProgressIndicator(),
+                : Container(
+                    margin: EdgeInsets.only(top: 100),
+                    alignment: Alignment.center,
+                    child: Center(
+                      child: customText("No data!", 15, white),
+                    ),
                   );
           });
     }

@@ -53,21 +53,14 @@ clearAllDatabase(BuildContext context) async {
       (Route<dynamic> route) => false);
 }
 
-String getFullDateWithTime(String time) {
-  DateTime parseDate = DateFormat("HH:mm:ss.SSS'Z'").parse(time);
-  var inputDate = DateTime.parse(parseDate.toString());
-  var outputFormat = DateFormat('dd/MMM/yyyy hh:mm a');
-  var outputDate = outputFormat.format(inputDate);
-  print(outputDate);
-  return outputDate;
-}
-
 String getTimeFormat(String time) {
   DateTime parseDate = DateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").parse(time);
   var inputDate = DateTime.parse(parseDate.toString());
-  var outputFormat = DateFormat('hh:mm a');
-  var outputDate = outputFormat.format(inputDate);
-  return outputDate;
+  var outputFormat1 = DateFormat('hh:mm a');
+  var outputFormat2 = DateFormat('dd MMM');
+  return outputFormat2.format(inputDate) +
+      " at " +
+      outputFormat1.format(inputDate);
 }
 
 //Format(07 Apr , 12:00 AM)
@@ -75,20 +68,21 @@ Map dataTimeTextFormater(String text) {
   Map dateTime = {};
   String formatedTimeText = '';
   String formatedDateText = '';
-  DateTime datetime = DateTime.parse(text);
+  DateTime datetime = DateTime.fromMillisecondsSinceEpoch(int.parse(text));
   formatedTimeText = DateFormat("hh:mm a").format(datetime);
   formatedDateText = DateFormat("dd  MMM").format(datetime);
   dateTime.addAll({"date": formatedDateText, "time": formatedTimeText});
+  print(dateTime["date"] + " " + dateTime["time"]);
   return dateTime;
 }
 
-//Format(07 Apr , 12:00 AM)
+//Format(Sundy,07 Apr , 12:00 AM)
 Map dayTimeTextFormater(String text) {
   Map dateTime = {};
   String formatedTimeText = '';
   String formatedDateText = '';
   String formatedDayText = '';
-  DateTime datetime = DateTime.parse(text);
+  DateTime datetime = DateTime.fromMillisecondsSinceEpoch(int.parse(text));
   formatedTimeText = DateFormat("hh:mm a").format(datetime);
   formatedDateText = DateFormat("dd  MMM").format(datetime);
   formatedDayText = DateFormat("EEEE").format(datetime);

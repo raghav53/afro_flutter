@@ -907,6 +907,7 @@ class _ForumsNewThreadPage extends State<ForumsNewThreadPage> {
     if (response.statusCode == 200) {
       Navigator.pop(context);
       print("success");
+      clearData();
       Navigator.pop(context);
       Navigator.pop(context);
     } else if (response.statusCode == 401) {
@@ -920,5 +921,16 @@ class _ForumsNewThreadPage extends State<ForumsNewThreadPage> {
       Navigator.pop(context);
       throw Exception("Failed to load the work experience!");
     }
+  }
+
+  clearData() {
+    titleController.clear();
+    linkController.clear();
+    contentController.clear();
+    _groupValue = -1;
+    _usergroupValue = -1;
+    caption = "";
+    userType = "";
+    imagesList.clear();
   }
 }

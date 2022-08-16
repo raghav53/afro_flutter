@@ -319,22 +319,18 @@ class _EventDetailsScreenPageState extends State<EventDetailsScreenPage> {
                                           customText(
                                               dataTimeTextFormater(snapshot
                                                       .data!.data!.startDate
-                                                      .toString()
                                                       .toString())["date"] +
                                                   " , " +
                                                   dataTimeTextFormater(snapshot
                                                       .data!.data!.startDate
-                                                      .toString()
                                                       .toString())["time"] +
-                                                  "  to " +
+                                                  " to " +
                                                   dataTimeTextFormater(snapshot
                                                       .data!.data!.endDate
-                                                      .toString()
                                                       .toString())["date"] +
                                                   " , " +
                                                   dataTimeTextFormater(snapshot
                                                       .data!.data!.endDate
-                                                      .toString()
                                                       .toString())["time"],
                                               9,
                                               Colors.white)
@@ -625,6 +621,11 @@ class _EventDetailsScreenPageState extends State<EventDetailsScreenPage> {
         ),
       ),
     );
+  }
+
+  String getTime(int time) {
+    print(DateTime.fromMillisecondsSinceEpoch(time).toString());
+    return DateTime.fromMillisecondsSinceEpoch(time).toString();
   }
 
   //Fillter items

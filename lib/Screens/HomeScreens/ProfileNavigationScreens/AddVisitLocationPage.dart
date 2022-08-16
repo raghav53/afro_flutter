@@ -68,7 +68,7 @@ class _Timeline extends State<AddTimelinePageScreen> {
     return SafeArea(
         child: Scaffold(
       appBar: commonAppbar(
-          widget.dataMap.isEmpty ? "Placed live in" : "Update place details"),
+          widget.dataMap.isEmpty ? "Places Lived In" : "Update place details"),
       extendBodyBehindAppBar: true,
       resizeToAvoidBottomInset: false,
       body: Container(
@@ -256,7 +256,7 @@ class _Timeline extends State<AddTimelinePageScreen> {
                       });
                     },
                   ),
-                  customText("I currently living here", 15, white),
+                  customText("I am currently Living Here", 15, white),
                   customWidthBox(80)
                 ],
               ),

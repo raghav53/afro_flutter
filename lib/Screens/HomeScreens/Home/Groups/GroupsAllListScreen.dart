@@ -276,8 +276,12 @@ class _GroupsAllListScreenState extends State<GroupsAllListScreen> {
             print("kjvgkvcyvctkucdkghfm: $snapshot");
             return snapshot.hasData && snapshot.data!.data!.isNotEmpty
                 ? DiscoverGroupsList(snapshot.data!)
-                : const Center(
-                    child: CircularProgressIndicator(),
+                : Container(
+                    margin: EdgeInsets.only(top: 100),
+                    alignment: Alignment.center,
+                    child: Center(
+                      child: customText("No data!", 15, white),
+                    ),
                   );
           });
     } else if (postion == 1) {
@@ -286,8 +290,12 @@ class _GroupsAllListScreenState extends State<GroupsAllListScreen> {
           builder: (context, snapshot) {
             return snapshot.hasData && snapshot.data!.data!.isNotEmpty
                 ? JoinedGroupsList(snapshot.data!)
-                : const Center(
-                    child: CircularProgressIndicator(),
+                : Container(
+                    margin: EdgeInsets.only(top: 100),
+                    alignment: Alignment.center,
+                    child: Center(
+                      child: customText("No data!", 15, white),
+                    ),
                   );
           });
     } else if (postion == 2) {
@@ -296,7 +304,13 @@ class _GroupsAllListScreenState extends State<GroupsAllListScreen> {
           builder: (context, snapshot) {
             return snapshot.hasData && snapshot.data!.data!.isNotEmpty
                 ? MyGroupsListScreen(context, snapshot.data!)
-                : const CircularProgressIndicator();
+                : Container(
+                    margin: EdgeInsets.only(top: 100),
+                    alignment: Alignment.center,
+                    child: Center(
+                      child: customText("No data!", 15, white),
+                    ),
+                  );
           });
     }
   }

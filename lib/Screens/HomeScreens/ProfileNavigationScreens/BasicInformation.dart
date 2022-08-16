@@ -140,253 +140,238 @@ class _Basic extends State<BasicInformation> {
               height: phoneHeight(context),
               width: phoneWidth(context),
               decoration: commonBoxDecoration(),
-              child: Stack(
-                fit: StackFit.expand,
-                children: [
-                  //Save Button
+              child: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: cStart,
+                  children: [
+                    //Heading
+                    customText("Your Login Details", 15, white),
+                    customHeightBox(5),
+                    customText(
+                        "Share your information with our community", 13, white),
+                    customHeightBox(30),
+                    customText("Your Basic Details", 15, white),
+                    customHeightBox(10),
+                    customDivider(10, white),
 
-                  SingleChildScrollView(
-                    child: Column(
-                      crossAxisAlignment: cStart,
-                      children: [
-                        //Heading
-                        customText("Your Login Details", 15, white),
-                        customHeightBox(5),
-                        customText("Share your information with our community",
-                            13, white),
-                        customHeightBox(30),
-                        customText("Your Basic Details", 15, white),
-                        customHeightBox(10),
-                        customDivider(10, white),
+                    //First Name
+                    customHeightBox(20),
+                    customEdittext("First Name", fName, "", firstName),
 
-                        //First Name
-                        customHeightBox(20),
-                        customEdittext("First Name", fName, "", firstName),
+                    //Last Name
+                    customHeightBox(20),
+                    customEdittext("Last Name", lName, "", lastName),
 
-                        //Last Name
-                        customHeightBox(20),
-                        customEdittext("Last Name", lName, "", lastName),
-
-                        /////////////////////////////////////////////////////////////////////////////
-                        /***Location Information / Gender Selection  / Date Of Birth */
-                        //Country
-                        customHeightBox(20),
-                        customText("Country", 15, white),
-                        customHeightBox(10),
-                        InkWell(
-                          onTap: () {
-                            showCountryDialog(context);
-                          },
-                          child: Container(
-                            padding: const EdgeInsets.only(
-                                top: 15, bottom: 15, left: 10, right: 10),
-                            width: phoneWidth(context),
-                            decoration: BoxDecoration(
-                                color: black,
-                                borderRadius: BorderRadius.circular(10)),
-                            child: Row(
-                              children: [
-                                customText(
-                                    country.isEmpty ? "Country" : country,
-                                    12,
-                                    country.isEmpty ? white24 : white),
-                                Spacer(),
-                                Icon(
-                                  Icons.arrow_drop_down_rounded,
-                                  color: yellowColor,
-                                )
-                              ],
-                            ),
-                          ),
-                        ),
-                        customHeightBox(15),
-
-                        //State
-                        customText("State", 15, white),
-                        customHeightBox(10),
-                        InkWell(
-                          onTap: () {
-                            showStatesDialog(context);
-                          },
-                          child: Container(
-                            padding: const EdgeInsets.only(
-                                top: 15, bottom: 15, left: 10, right: 10),
-                            width: phoneWidth(context),
-                            decoration: BoxDecoration(
-                                color: black,
-                                borderRadius: BorderRadius.circular(10)),
-                            child: Row(
-                              children: [
-                                customText(
-                                    stateName.isEmpty ? "State" : stateName,
-                                    12,
-                                    stateName.isEmpty ? white24 : white),
-                                Spacer(),
-                                Icon(
-                                  Icons.arrow_drop_down_rounded,
-                                  color: yellowColor,
-                                )
-                              ],
-                            ),
-                          ),
-                        ),
-
-                        //City and Hometown
-                        customHeightBox(20),
-                        buildLocationInfo(),
-
-                        //Gender
-                        customHeightBox(20),
-                        customText("I AM", 12, white),
-                        customHeightBox(10),
-                        Container(
-                          padding: EdgeInsets.only(left: 16, right: 10),
-                          decoration: BoxDecoration(
+                    /////////////////////////////////////////////////////////////////////////////
+                    /***Location Information / Gender Selection  / Date Of Birth */
+                    //Country
+                    customHeightBox(20),
+                    customText("Country", 15, white),
+                    customHeightBox(10),
+                    InkWell(
+                      onTap: () {
+                        showCountryDialog(context);
+                      },
+                      child: Container(
+                        padding: const EdgeInsets.only(
+                            top: 15, bottom: 15, left: 10, right: 10),
+                        width: phoneWidth(context),
+                        decoration: BoxDecoration(
                             color: black,
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          child: FormField(
-                              builder: (FormFieldState<String> state) {
-                            return InputDecorator(
-                              decoration: const InputDecoration(
-                                hintStyle: TextStyle(color: Colors.white),
-                              ),
-                              isEmpty: selectedGender == '',
-                              child: DropdownButtonHideUnderline(
-                                child: DropdownButton<String>(
-                                  icon: Icon(
-                                    Icons.arrow_drop_down_outlined,
-                                    color: yellowColor,
-                                  ),
-                                  dropdownColor: Colors.black,
-                                  value: selectedGender,
-                                  isDense: true,
-                                  onChanged: (val) {
-                                    setState(() {
-                                      selectedGender = val;
-                                      state.didChange(val);
-                                      gender = val.toString();
-                                    });
-                                  },
-                                  items: _gender.map((String value) {
-                                    return DropdownMenuItem<String>(
-                                      value: value,
-                                      child: Text(
-                                        value,
-                                        style: const TextStyle(
-                                            color: Colors.white),
-                                      ),
-                                    );
-                                  }).toList(),
-                                ),
-                              ),
-                            );
-                          }),
+                            borderRadius: BorderRadius.circular(10)),
+                        child: Row(
+                          children: [
+                            customText(country.isEmpty ? "Country" : country,
+                                12, country.isEmpty ? white24 : white),
+                            Spacer(),
+                            Icon(
+                              Icons.arrow_drop_down_rounded,
+                              color: yellowColor,
+                            )
+                          ],
                         ),
-
-                        //Date of Birth
-                        customHeightBox(20),
-                        customText("Date Of Birth", 15, white),
-                        customHeightBox(10),
-                        InkWell(
-                          onTap: () {
-                            openDateBottomSheet(context);
-                          },
-                          child: Container(
-                            padding: const EdgeInsets.only(
-                                top: 15, bottom: 15, left: 10, right: 10),
-                            width: phoneWidth(context),
-                            decoration: BoxDecoration(
-                                color: black,
-                                borderRadius: BorderRadius.circular(10)),
-                            child: Row(
-                              children: [
-                                customText(
-                                    dateOfBirth.isEmpty
-                                        ? "Date Of Birth"
-                                        : dateOfBirth,
-                                    12,
-                                    dateOfBirth.isEmpty ? white24 : white),
-                                Spacer(),
-                                Icon(
-                                  Icons.arrow_drop_down_rounded,
-                                  color: yellowColor,
-                                )
-                              ],
-                            ),
-                          ),
-                        ),
-
-                        /////////////////////////////////////////////////////////////////////////////////////////////////////
-
-                        //Instagram
-                        customHeightBox(20),
-                        customEdittext("Instagram", instagram, "", sInstagram),
-
-                        //Twitter
-                        customHeightBox(20),
-                        customEdittext("Twitter", twitter, "", sTwitter),
-
-                        //Facebook
-                        customHeightBox(20),
-                        customEdittext("Facebook", facebook, "", sFacebook),
-
-                        //Linkdin
-                        customHeightBox(20),
-                        customEdittext("Linked In", linkdin, "", sLinkedIn),
-
-                        //Website
-                        customHeightBox(20),
-                        customEdittext(
-                            "Business Website", website, "", sWebsite),
-
-                        customHeightBox(20),
-                        customText("Bio", 12, white),
-                        customHeightBox(10),
-                        Container(
-                          height: 120,
-                          decoration: BoxDecoration(
-                              color: Colors.black,
-                              borderRadius: BorderRadius.circular(10)),
-                          child: TextField(
-                            controller: userBio,
-                            keyboardType: TextInputType.multiline,
-                            maxLines: 10,
-                            style: const TextStyle(
-                                fontSize: 14, color: Colors.white),
-                            decoration: const InputDecoration(
-                                border: InputBorder.none,
-                                hintText: "Enter your bio",
-                                contentPadding:
-                                    EdgeInsets.only(left: 10, top: 12),
-                                hintStyle: TextStyle(color: Colors.white24)),
-                          ),
-                        ),
-
-                        customHeightBox(20),
-                      ],
-                    ),
-                  ),
-                  Container(
-                    padding: const EdgeInsets.only(left: 50, right: 50),
-                    margin: const EdgeInsets.only(bottom: 30),
-                    child: Align(
-                      alignment: Alignment.bottomCenter,
-                      child: InkWell(
-                        onTap: () {
-                          updateProfileInfo();
-                        },
-                        child: Container(
-                            padding: const EdgeInsets.only(
-                                left: 50, right: 50, top: 10, bottom: 10),
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(30),
-                                gradient: commonButtonLinearGridient),
-                            child: customText("Save", 15, white)),
                       ),
                     ),
-                  ),
-                ],
+                    customHeightBox(15),
+
+                    //State
+                    customText("State", 15, white),
+                    customHeightBox(10),
+                    InkWell(
+                      onTap: () {
+                        showStatesDialog(context);
+                      },
+                      child: Container(
+                        padding: const EdgeInsets.only(
+                            top: 15, bottom: 15, left: 10, right: 10),
+                        width: phoneWidth(context),
+                        decoration: BoxDecoration(
+                            color: black,
+                            borderRadius: BorderRadius.circular(10)),
+                        child: Row(
+                          children: [
+                            customText(stateName.isEmpty ? "State" : stateName,
+                                12, stateName.isEmpty ? white24 : white),
+                            Spacer(),
+                            Icon(
+                              Icons.arrow_drop_down_rounded,
+                              color: yellowColor,
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
+
+                    //City and Hometown
+                    customHeightBox(20),
+                    buildLocationInfo(),
+
+                    //Gender
+                    customHeightBox(20),
+                    customText("I AM", 12, white),
+                    customHeightBox(10),
+                    Container(
+                      padding: EdgeInsets.only(left: 16, right: 10),
+                      decoration: BoxDecoration(
+                        color: black,
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: FormField(builder: (FormFieldState<String> state) {
+                        return InputDecorator(
+                          decoration: const InputDecoration(
+                            hintStyle: TextStyle(color: Colors.white),
+                          ),
+                          isEmpty: selectedGender == '',
+                          child: DropdownButtonHideUnderline(
+                            child: DropdownButton<String>(
+                              icon: Icon(
+                                Icons.arrow_drop_down_outlined,
+                                color: yellowColor,
+                              ),
+                              dropdownColor: Colors.black,
+                              value: selectedGender,
+                              isDense: true,
+                              onChanged: (val) {
+                                setState(() {
+                                  selectedGender = val;
+                                  state.didChange(val);
+                                  gender = val.toString();
+                                });
+                              },
+                              items: _gender.map((String value) {
+                                return DropdownMenuItem<String>(
+                                  value: value,
+                                  child: Text(
+                                    value,
+                                    style: const TextStyle(color: Colors.white),
+                                  ),
+                                );
+                              }).toList(),
+                            ),
+                          ),
+                        );
+                      }),
+                    ),
+
+                    //Date of Birth
+                    customHeightBox(20),
+                    customText("Date Of Birth", 15, white),
+                    customHeightBox(10),
+                    InkWell(
+                      onTap: () {
+                        openDateBottomSheet(context);
+                      },
+                      child: Container(
+                        padding: const EdgeInsets.only(
+                            top: 15, bottom: 15, left: 10, right: 10),
+                        width: phoneWidth(context),
+                        decoration: BoxDecoration(
+                            color: black,
+                            borderRadius: BorderRadius.circular(10)),
+                        child: Row(
+                          children: [
+                            customText(
+                                dateOfBirth.isEmpty
+                                    ? "Date Of Birth"
+                                    : dateOfBirth,
+                                12,
+                                dateOfBirth.isEmpty ? white24 : white),
+                            Spacer(),
+                            Icon(
+                              Icons.arrow_drop_down_rounded,
+                              color: yellowColor,
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
+
+                    /////////////////////////////////////////////////////////////////////////////////////////////////////
+
+                    //Instagram
+                    customHeightBox(20),
+                    customEdittext("Instagram", instagram, "", sInstagram),
+
+                    //Twitter
+                    customHeightBox(20),
+                    customEdittext("Twitter", twitter, "", sTwitter),
+
+                    //Facebook
+                    customHeightBox(20),
+                    customEdittext("Facebook", facebook, "", sFacebook),
+
+                    //Linkdin
+                    customHeightBox(20),
+                    customEdittext("Linked In", linkdin, "", sLinkedIn),
+
+                    //Website
+                    customHeightBox(20),
+                    customEdittext("Business Website", website, "", sWebsite),
+
+                    customHeightBox(20),
+                    customText("Bio", 12, white),
+                    customHeightBox(10),
+                    Container(
+                      height: 120,
+                      decoration: BoxDecoration(
+                          color: Colors.black,
+                          borderRadius: BorderRadius.circular(10)),
+                      child: TextField(
+                        controller: userBio,
+                        keyboardType: TextInputType.multiline,
+                        maxLines: 10,
+                        style:
+                            const TextStyle(fontSize: 14, color: Colors.white),
+                        decoration: const InputDecoration(
+                            border: InputBorder.none,
+                            hintText: "Enter your bio",
+                            contentPadding: EdgeInsets.only(left: 10, top: 12),
+                            hintStyle: TextStyle(color: Colors.white24)),
+                      ),
+                    ),
+
+                    customHeightBox(20),
+                    Container(
+                      padding: const EdgeInsets.only(left: 50, right: 50),
+                      margin: const EdgeInsets.only(bottom: 30),
+                      child: Align(
+                        alignment: Alignment.bottomCenter,
+                        child: InkWell(
+                          onTap: () {
+                            updateProfileInfo();
+                          },
+                          child: Container(
+                              padding: const EdgeInsets.only(
+                                  left: 50, right: 50, top: 10, bottom: 10),
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(30),
+                                  gradient: commonButtonLinearGridient),
+                              child: customText("Save", 15, white)),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
             )));
   }

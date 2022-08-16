@@ -275,12 +275,6 @@ class _HomeScreen extends State<DashboardPageScreen> {
                                   ? snapshot.data!.data!.length
                                   : 5,
                               itemBuilder: (context, index) {
-                                DateTime datetime = DateTime.parse(snapshot
-                                    .data!.data![index].startDate
-                                    .toString());
-                                String day = DateFormat("dd").format(datetime);
-                                String month =
-                                    DateFormat("MMM").format(datetime);
                                 String city =
                                     snapshot.data!.data![index].city.toString();
                                 String country = snapshot
@@ -332,9 +326,10 @@ class _HomeScreen extends State<DashboardPageScreen> {
                                                       fit: BoxFit.cover),
                                                 ),
                                               ),
-                                              placeholder: (context, url) => Center(
-                                                  child:
-                                                      CircularProgressIndicator()),
+                                              placeholder: (context, url) =>
+                                                  const Center(
+                                                      child:
+                                                          CircularProgressIndicator()),
                                               errorWidget:
                                                   (context, url, error) =>
                                                       const Icon(Icons.error),
@@ -360,7 +355,13 @@ class _HomeScreen extends State<DashboardPageScreen> {
                                                                     10))),
                                                 child: Center(
                                                     child: customText(
-                                                        "$month\n$day",
+                                                        dataTimeTextFormater(
+                                                                snapshot
+                                                                    .data!
+                                                                    .data![index]
+                                                                    .startDate
+                                                                    .toString())[
+                                                            "date"],
                                                         10,
                                                         white)),
                                               ),
@@ -780,7 +781,10 @@ class _HomeScreen extends State<DashboardPageScreen> {
                           model.userId!.fullName.toString(), 15, yellowColor),
                       customHeightBox(10),
                       customText(
-                          "Last Post: 04 Jul at 07:30 pm", 15, yellowColor),
+                          "Last Post: " +
+                              getTimeFormat(model.createdAt.toString()),
+                          15,
+                          yellowColor),
                     ],
                   )
                 ],
