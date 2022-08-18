@@ -34,12 +34,20 @@ class LoginScreen extends StatefulWidget {
 var user = UserDataConstants();
 TextEditingController Emailcontroller = new TextEditingController();
 TextEditingController PasswordController = new TextEditingController();
-
+Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
 LoginModel? loginModel;
 
 class _LoginScreenState extends State<LoginScreen> {
   final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
   bool _checkbox = false;
+  var fcmToken = "";
+  UserDataConstants userDataConstants = UserDataConstants();
+  @override
+  void initState() {
+    super.initState();
+    init();
+  }
+
   late bool _isLoading;
   bool? _isConnected;
   @override
@@ -371,6 +379,12 @@ class _LoginScreenState extends State<LoginScreen> {
     }
   }
 
+  init() async {
+    SharedPreferences userData = await _prefs;
+    fcmToken = userData.getString(userDataConstants.fcm_token).toString();
+    print(fcmToken);
+  }
+
   Future<void> login(String email, String password) async {
     SharedPreferences sharedPreferences = await _prefs;
     showProgressDialogBox(context);
@@ -378,7 +392,7 @@ class _LoginScreenState extends State<LoginScreen> {
       'email': email,
       'password': password,
       'timezone': "Asia/Kolkata",
-      'device_token': generateTheTokenString(),
+      'device_token': fcmToken,
       'device_type': "Android",
       'social_type': "APP"
     };

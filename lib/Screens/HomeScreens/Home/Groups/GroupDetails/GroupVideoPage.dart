@@ -9,7 +9,6 @@ import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:video_thumbnail/video_thumbnail.dart';
 
 import '../../../../../Util/CustomWidget.dart';
 
@@ -39,17 +38,6 @@ class _GroupDisscussionVideosPageState
     });
   }
 
-  getThumb(String url) async {
-    return await VideoThumbnail.thumbnailFile(
-      video: url,
-      thumbnailPath: (await getTemporaryDirectory()).path,
-      imageFormat: ImageFormat.PNG,
-      maxHeight:
-          64, // specify the height of the thumbnail, let the width auto-scaled to keep the source aspect ratio
-      quality: 75,
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -73,9 +61,9 @@ class _GroupDisscussionVideosPageState
                               context,
                               MaterialPageRoute(
                                   builder: (context) => VideoImageViewPage(
-                                      url: getThumb(IMAGE_URL +
+                                      url: IMAGE_URL +
                                           snapshot.data!.data![index].path
-                                              .toString()),
+                                              .toString(),
                                       type: 0)));
                         },
                         child: Container(

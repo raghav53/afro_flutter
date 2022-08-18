@@ -4,6 +4,7 @@ import 'package:sizer/sizer.dart';
 import 'Screens/SplashScreenPage.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(const MyApp());
 }
 

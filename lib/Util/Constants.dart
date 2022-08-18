@@ -49,4 +49,5 @@ class UserDataConstants {
   String totalFollowers = "totalFollowers";
   String totalFollowings = "totalFollowings";
   String totalContacts = "totalContacts";
+  String fcm_token = "fcmToken";
 }
