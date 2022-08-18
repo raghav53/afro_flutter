@@ -1,14 +1,6 @@
 import 'package:afro/Model/Friends/ReceivedRequest/GetAllReceivedDataModel.dart';
-import 'package:afro/Model/Friends/SendRequest/GetAllSendRequestDataModel..dart';
-import 'package:afro/Model/MyProfile/FollowingData.dart';
-
-import 'package:afro/Model/MyProfile/FollowerData.dart';
-import 'package:afro/Model/MyProfile/FollowingData.dart';
 import 'dart:convert';
-
-import 'package:afro/Model/MyProfile/FollowingModel.dart';
 import 'package:afro/Network/Apis.dart';
-import 'package:afro/Screens/OnBoardingScreen/FirstOnBoard.dart';
 import 'package:afro/Util/CommonMethods.dart';
 import 'package:afro/Util/CommonUI.dart';
 import 'package:afro/Util/Constants.dart';
@@ -25,8 +17,8 @@ Future<ReceivedRequestModel> getAllReceivedContactsRequests(
     {String search = "",
     String page = "1",
     String limit = "500",
-    String gender = "",
-    String cities = "",
+    String interests = "",
+    String country = "",
     String min_age = "",
     String max_age = ""}) async {
   SharedPreferences sharedPreferences = await _prefs;
@@ -37,7 +29,7 @@ Future<ReceivedRequestModel> getAllReceivedContactsRequests(
 
   var response = await http.get(
       Uri.parse(BASE_URL +
-          "received_friend_requests?page=$page&limit=$limit&search=$search&city=$cities&gender=$gender&min_age=$min_age&max_age=$max_age"),
+          "received_friend_requests?page=$page&limit=$limit&search=$search&country=$country&min_age=$min_age&max_age=$max_age"),
       headers: {
         'api-key': API_KEY,
         'x-access-token': token,

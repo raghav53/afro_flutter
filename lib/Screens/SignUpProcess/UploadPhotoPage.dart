@@ -29,8 +29,8 @@ bool storageGranted = false;
 class _UploadPhoto extends State<UploadPhotoPage> {
   @override
   void initState() {
-    getPer();
     super.initState();
+    checkpermission_opencamera();
   }
 
   final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
@@ -216,60 +216,77 @@ class _UploadPhoto extends State<UploadPhotoPage> {
     }
   }
 
-  //Check contacts permission
-  Future<PermissionStatus> _getCameraPermission() async {
-    final PermissionStatus permission = await Permission.camera.status;
-    if (permission != PermissionStatus.granted &&
-        permission != PermissionStatus.denied) {
-      final Map<Permission, PermissionStatus> permissionStatus =
-          await [Permission.contacts].request();
-      return permissionStatus[Permission.contacts] ??
-          PermissionStatus.restricted;
-    } else {
-      return permission;
-    }
-  }
+  // //Check contacts permission
+  // Future<PermissionStatus> _getCameraPermission() async {
+  //   final PermissionStatus permission = await Permission.camera.status;
+  //   if (permission != PermissionStatus.granted &&
+  //       permission != PermissionStatus.denied) {
+  //     final Map<Permission, PermissionStatus> permissionStatus =
+  //         await [Permission.camera].request();
+  //     return permissionStatus[Permission.camera] ?? PermissionStatus.restricted;
+  //   } else {
+  //     return permission;
+  //   }
+  // }
 
-  //Check contacts permission
-  Future<PermissionStatus> _getStoragePermission() async {
-    final PermissionStatus permission = await Permission.storage.status;
-    if (permission != PermissionStatus.granted &&
-        permission != PermissionStatus.denied) {
-      final Map<Permission, PermissionStatus> permissionStatus =
-          await [Permission.contacts].request();
-      return permissionStatus[Permission.contacts] ??
-          PermissionStatus.restricted;
-    } else {
-      return permission;
-    }
-  }
+  // //Check contacts permission
+  // Future<PermissionStatus> _getStoragePermission() async {
+  //   final PermissionStatus permission = await Permission.storage.status;
+  //   if (permission != PermissionStatus.granted &&
+  //       permission != PermissionStatus.denied) {
+  //     final Map<Permission, PermissionStatus> permissionStatus =
+  //         await [Permission.storage].request();
+  //     return permissionStatus[Permission.storage] ??
+  //         PermissionStatus.restricted;
+  //   } else {
+  //     return permission;
+  //   }
+  // }
 
-  getPer() async {
-    _getCameraPermission();
-    _getStoragePermission();
-    final PermissionStatus permissionCameraStatus =
-        await _getCameraPermission();
-    final PermissionStatus permissionStorageStatus =
-        await _getStoragePermission();
-    if (permissionCameraStatus == PermissionStatus.granted) {
-      setState(() {
+  // getPer() async {
+  //   _getCameraPermission();
+  //   _getStoragePermission();
+  //   final PermissionStatus permissionCameraStatus =
+  //       await _getCameraPermission();
+  //   final PermissionStatus permissionStorageStatus =
+  //       await _getStoragePermission();
+  //   if (permissionCameraStatus == PermissionStatus.granted) {
+  //     setState(() {
+  //       cameraGranted = true;
+  //     });
+  //   } else if (permissionStorageStatus == PermissionStatus.granted) {
+  //     setState(() {
+  //       storageGranted = true;
+  //     });
+  //   } else {
+  //     setState(() {
+  //       cameraGranted = false;
+  //       storageGranted = false;
+  //     });
+  //   }
+  // }
+
+  checkpermission_opencamera() async {
+    var cameraStatus = await Permission.camera.status;
+    var storageStatus = await Permission.storage.status;
+    if (!cameraStatus.isGranted) await Permission.camera.request();
+    if (!storageStatus.isGranted) await Permission.storage.request();
+    if (await Permission.camera.isGranted) {
+      if (await Permission.storage.isGranted) {
         cameraGranted = true;
-      });
-    } else if (permissionStorageStatus == PermissionStatus.granted) {
-      setState(() {
-        cameraGranted = true;
-      });
-    } else {
-      setState(() {
-        cameraGranted = false;
+        storageGranted = true;
+      } else {
         storageGranted = false;
-      });
+      }
+    } else {
+      storageGranted = false;
     }
   }
 
   openSettings() async {
-    customToastMsg("Please grant the permission of storage!");
-    await AppSettings.openAppSettings();
+    customToastMsg("Please grant the permission");
+    await AppSettings.openAppSettings()
+        .then((value) => checkpermission_opencamera());
   }
 
   openPickImageBottomsheet() {

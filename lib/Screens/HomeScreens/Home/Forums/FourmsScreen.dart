@@ -38,7 +38,6 @@ String countriesIds = "";
 List<String> tempCountriesIds = [];
 bool enableFillterButton = true;
 
-
 Future<CountryModel>? _getCountries;
 Future<ForumCategoryModel>? _getCategries;
 
@@ -329,8 +328,12 @@ class _ForumsPage extends State<ForumsScreenPage> {
           builder: (context, snapshot) {
             return snapshot.hasData && snapshot.data!.data!.isNotEmpty
                 ? AllThreadListPage(snapshot.data!)
-                : const Center(
-                    child: CircularProgressIndicator(),
+                : Container(
+                    margin: EdgeInsets.only(top: 100),
+                    alignment: Alignment.center,
+                    child: Center(
+                      child: customText("No data!", 15, white),
+                    ),
                   );
           });
     } else if (index == 1) {
@@ -339,7 +342,13 @@ class _ForumsPage extends State<ForumsScreenPage> {
           builder: (context, snapshot) {
             return snapshot.hasData && snapshot.data!.data!.isNotEmpty
                 ? AllUserThreadList(snapshot.data!)
-                : const Center(child: CircularProgressIndicator());
+                : Container(
+                    margin: EdgeInsets.only(top: 100),
+                    alignment: Alignment.center,
+                    child: Center(
+                      child: customText("No data!", 15, white),
+                    ),
+                  );
           });
     } else if (index == 2) {
       return FutureBuilder<MyForumAllRepliesModel>(
@@ -347,7 +356,14 @@ class _ForumsPage extends State<ForumsScreenPage> {
           builder: (context, snapshot) {
             return snapshot.hasData && snapshot.data!.data!.isNotEmpty
                 ? MyRepliesListPage(profileImage.toString(), snapshot.data!)
-                : const Center(child: CircularProgressIndicator());
+                : Container(
+                    margin: EdgeInsets.only(top: 100),
+                    alignment: Alignment.center,
+                    child: Center(
+                      child: customText("No data!", 15, white),
+                    ),
+                  );
+            ;
           });
     }
   }
@@ -464,12 +480,7 @@ class _ForumsPage extends State<ForumsScreenPage> {
                 Spacer(),
                 customText("Last Post: ", 13, Colors.grey[600]!),
                 customText(
-                    dataTimeTextFormater(model.createdAt.toString())["date"] +
-                        " at " +
-                        dataTimeTextFormater(
-                            model.createdAt.toString())["time"],
-                    12,
-                    white),
+                    getTimeFormat(model.createdAt.toString()), 12, white),
                 customWidthBox(10)
               ],
             ),
@@ -715,13 +726,9 @@ class _ForumsPage extends State<ForumsScreenPage> {
                                             color: white24, fontSize: 15),
                                         children: [
                                       TextSpan(
-                                          text: dataTimeTextFormater(snapshot
-                                                  .data![index].createdAt
-                                                  .toString())["date"] +
-                                              " at " +
-                                              dataTimeTextFormater(snapshot
-                                                  .data![index].createdAt
-                                                  .toString())["time"],
+                                          text: getTimeFormat(snapshot
+                                              .data![index].createdAt
+                                              .toString()),
                                           style: TextStyle(
                                               color: yellowColor, fontSize: 15))
                                     ]))
@@ -1037,8 +1044,7 @@ class _ForumsPage extends State<ForumsScreenPage> {
                             Container(
                                 width: phoneWidth(context) / 1.5,
                                 child: bottomSheetIndex == 0
-                                    ? 
-                                    Column(
+                                    ? Column(
                                         children: [
                                           Container(
                                             height: 40,
@@ -1254,6 +1260,7 @@ class _ForumsPage extends State<ForumsScreenPage> {
     countriesIds = tempCountriesIds.join(",");
   }
 
+  //Get Countries
   getCountries() {
     Future.delayed(Duration.zero, () {
       _getCountries = getCountriesList(context, isShow: false);
@@ -1262,6 +1269,7 @@ class _ForumsPage extends State<ForumsScreenPage> {
     });
   }
 
+  //Get Categories of Forums
   getForumsCategories() {
     Future.delayed(Duration.zero, () {
       _getCategries = getForumCategorisList(context, isShow: false);
@@ -1269,7 +1277,4 @@ class _ForumsPage extends State<ForumsScreenPage> {
       _getCategries!.whenComplete(() => {});
     });
   }
-
-
-
 }

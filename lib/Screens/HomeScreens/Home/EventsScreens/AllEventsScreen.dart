@@ -791,8 +791,12 @@ class _AllEventsScreenState extends State<AllEventsScreen> {
                     ? const Center(
                         child: CircularProgressIndicator(),
                       )
-                    : Center(
-                        child: customText("Not data!", 15, white),
+                    : Container(
+                        margin: EdgeInsets.only(top: 100),
+                        alignment: Alignment.center,
+                        child: Center(
+                          child: customText("No data!", 15, white),
+                        ),
                       );
           });
     } else if (index == 1) {
@@ -807,8 +811,12 @@ class _AllEventsScreenState extends State<AllEventsScreen> {
           builder: (context, snapshot) {
             return snapshot.hasData && snapshot.data!.data!.isNotEmpty
                 ? GoingEventsScreen(context, snapshot.data!)
-                : Center(
-                    child: customText("Not data!", 15, white),
+                : Container(
+                    margin: EdgeInsets.only(top: 100),
+                    alignment: Alignment.center,
+                    child: Center(
+                      child: customText("No data!", 15, white),
+                    ),
                   );
           });
     } else if (index == 2) {
@@ -822,7 +830,13 @@ class _AllEventsScreenState extends State<AllEventsScreen> {
           builder: (context, snapshot) {
             return snapshot.hasData && snapshot.data!.data!.isNotEmpty
                 ? InterestedEventsScreen(context, snapshot.data!)
-                : const Center(child: CircularProgressIndicator());
+                : Container(
+                    margin: EdgeInsets.only(top: 100),
+                    alignment: Alignment.center,
+                    child: Center(
+                      child: customText("No data!", 15, white),
+                    ),
+                  );
           });
     } else if (index == 3) {
       return FutureBuilder<InvitedEventsModel>(
@@ -831,8 +845,12 @@ class _AllEventsScreenState extends State<AllEventsScreen> {
           builder: (context, snapshot) {
             return snapshot.hasData && snapshot.data!.data!.isNotEmpty
                 ? InvitedEventsScreen(context, snapshot.data!)
-                : Center(
-                    child: customText("Not data!", 15, white),
+                : Container(
+                    margin: EdgeInsets.only(top: 100),
+                    alignment: Alignment.center,
+                    child: Center(
+                      child: customText("No data!", 15, white),
+                    ),
                   );
           });
     } else if (index == 4) {
@@ -845,8 +863,12 @@ class _AllEventsScreenState extends State<AllEventsScreen> {
           builder: (context, snapshot) {
             return snapshot.hasData && snapshot.data!.data!.isNotEmpty
                 ? MyEventsScreenState(context, snapshot.data!)
-                : Center(
-                    child: customText("Not data!", 15, white),
+                : Container(
+                    margin: EdgeInsets.only(top: 100),
+                    alignment: Alignment.center,
+                    child: Center(
+                      child: customText("No data!", 15, white),
+                    ),
                   );
           });
     }

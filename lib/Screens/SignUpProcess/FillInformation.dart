@@ -67,16 +67,14 @@ class _Information extends State<FillInformation> {
         extendBodyBehindAppBar: true,
         appBar: onlyTitleCommonAppbar("Tell Us More About You"),
         body: Container(
+          padding: EdgeInsets.only(top: 70, left: 20, right: 20),
           height: phoneHeight(context),
           width: phoneWidth(context),
           decoration: commonBoxDecoration(),
           child: SingleChildScrollView(
-            padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 50),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                customDivider(10, gray4D),
-                customHeightBox(50),
                 customText("Update your info", 15, white),
                 customHeightBox(10),
                 customText(
@@ -226,7 +224,7 @@ class _Information extends State<FillInformation> {
                         width: 200,
                         padding: const EdgeInsets.only(
                             top: 10, bottom: 10, left: 50, right: 50),
-                        margin: const EdgeInsets.only(top: 80),
+                        margin: const EdgeInsets.only(top: 50, bottom: 30),
                         decoration: BoxDecoration(
                             gradient: commonButtonLinearGridient,
                             borderRadius: BorderRadius.circular(30)),

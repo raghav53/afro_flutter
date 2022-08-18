@@ -25,7 +25,7 @@ MyRepliesListPage(String profileImage, MyForumAllRepliesModel snapshot) {
             },
             child: Column(
               children: [
-                replyItem(profileImage,snapshot.data![index]),
+                replyItem(profileImage, snapshot.data![index]),
                 customHeightBox(4),
                 customDivider(1, Colors.grey[300]!)
               ],
@@ -35,7 +35,7 @@ MyRepliesListPage(String profileImage, MyForumAllRepliesModel snapshot) {
   );
 }
 
-Widget replyItem(String profileImage,MyAllForumRepliesDataModel model) {
+Widget replyItem(String profileImage, MyAllForumRepliesDataModel model) {
   return Container(
     padding: EdgeInsets.all(5),
     child: Row(children: [
@@ -56,12 +56,7 @@ Widget replyItem(String profileImage,MyAllForumRepliesDataModel model) {
         children: [
           customText(model.reply.toString(), 15, white),
           customHeightBox(5),
-          customText(
-              dataTimeTextFormater(model.createdAt.toString())["date"] +
-                  " at " +
-                  dataTimeTextFormater(model.createdAt.toString())["time"],
-              13,
-              white24)
+          customText(getTimeFormat(model.createdAt.toString()), 13, white24)
         ],
       )
     ]),

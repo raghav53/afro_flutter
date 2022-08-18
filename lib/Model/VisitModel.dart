@@ -39,30 +39,7 @@ Future<VisitModel> getAllLivedPlace(BuildContext context) async {
   }
 }
 
-//Delete the visit image item
-Future<void> deleteVisitPlaceItem(BuildContext context, String itemId) async {
-  SharedPreferences sharedPreferences = await _prefs;
-  String token = sharedPreferences.getString(user.token).toString();
-  var jsonResponse = null;
-  var response =
-      await http.delete(Uri.parse(BASE_URL + "visit/${itemId}"), headers: {
-    'api-key': API_KEY,
-    'x-access-token': token,
-  });
-  print(response.body);
-  jsonResponse = json.decode(response.body);
-  var message = jsonResponse["message"];
-  if (response.statusCode == 200) {
-    customToastMsg("Item deleted successfully!");
-  } else if (response.statusCode == 401) {
-    customToastMsg("Unauthorized User!");
-    clearAllDatabase(context);
-    throw Exception("Unauthorized User!");
-  } else {
-    Navigator.pop(context);
-    customToastMsg(message);
-  }
-}
+
 
 class VisitModel {
   bool? success;

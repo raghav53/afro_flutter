@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:afro/Model/AllInterestsModel.dart';
 import 'package:afro/Network/Apis.dart';
+import 'package:afro/Screens/HomeScreens/Home/EventsScreens/AllEventsScreen.dart';
 import 'package:afro/Util/CommonMethods.dart';
 import 'package:http/http.dart' as http;
 import 'package:afro/Util/Colors.dart';
@@ -122,7 +123,12 @@ class _CreateNewEventState extends State<CreateNewEvent> {
                                       activeColor: white,
                                       value: 1,
                                       groupValue: defaultValue,
-                                      onChanged: (value) {},
+                                      onChanged: (value) {
+                                        setState(() {
+                                          defaultValue = 1;
+                                          eventLocationLink.text = "";
+                                        });
+                                      },
                                     ),
                                     const Text(
                                       "In-Person",
@@ -151,7 +157,12 @@ class _CreateNewEventState extends State<CreateNewEvent> {
                                       activeColor: white,
                                       value: 2,
                                       groupValue: defaultValue,
-                                      onChanged: (value) {},
+                                      onChanged: (value) {
+                                        setState(() {
+                                          defaultValue = 2;
+                                          eventLocationLink.text = "";
+                                        });
+                                      },
                                     ),
                                     const Text(
                                       "Online",
@@ -195,7 +206,7 @@ class _CreateNewEventState extends State<CreateNewEvent> {
                                     borderRadius: BorderRadius.circular(10)),
                                 child: customText(
                                     fromTextStartDate.isEmpty
-                                        ? ""
+                                        ? "Start Date"
                                         : fromTextStartDate,
                                     15,
                                     fromTextStartDate.isEmpty
@@ -674,8 +685,8 @@ class _CreateNewEventState extends State<CreateNewEvent> {
     request.fields["category"] = categoryTypeID.toString();
     request.fields["privacy"] = _selectedPrivacy;
     request.fields["about"] = eventAbout.text.toString();
-    request.fields["start_date"] = fromText.toString().substring(0, 9);
-    request.fields["end_date"] = toText.toString().substring(0, 9);
+    request.fields["start_date"] = fromText.toString();
+    request.fields["end_date"] = toText.toString();
     request.fields["website"] = eventWebsite.text.toString();
     request.fields["location"] = eventLocationLink.text.toString();
     request.fields["event_link"] = eventTicketLink.text.toString();
@@ -688,6 +699,7 @@ class _CreateNewEventState extends State<CreateNewEvent> {
 
     if (response.statusCode == 200) {
       Navigator.pop(context);
+      clearData();
       print("success");
       Navigator.pop(context);
     } else if (response.statusCode == 401) {
@@ -715,58 +727,61 @@ class _CreateNewEventState extends State<CreateNewEvent> {
                   alignment: Alignment.center,
                   padding:
                       const EdgeInsets.only(left: 20, right: 10, bottom: 10),
-                  height: phoneHeight(context) / 2,
                   decoration: BoxDecoration(
                       color: black, borderRadius: BorderRadius.circular(10)),
                   child: StatefulBuilder(builder: (context, state) {
                     return Column(
+                      mainAxisSize: MainAxisSize.min,
                       children: [
                         customHeightBox(10),
                         customText("Select the category", 15, white),
                         customHeightBox(10),
                         Container(
-                          height: 380,
                           child: FutureBuilder<AllInterestModel>(
                             future: _getAllInterests,
                             builder: (context, snapshot) {
                               return snapshot.hasData &&
                                       snapshot.data!.data!.isNotEmpty
-                                  ? ListView.builder(
-                                      itemCount: snapshot.data!.data!.length,
-                                      shrinkWrap: true,
-                                      itemBuilder: (context, index) {
-                                        return InkWell(
-                                          onTap: () {
-                                            setState(() {
-                                              Navigator.pop(context);
-                                              categoryTypeID = snapshot
-                                                  .data!.data![index].sId
-                                                  .toString();
-                                              categoryTypeName = snapshot
-                                                  .data!.data![index].title
-                                                  .toString();
-                                            });
-                                          },
-                                          child: Container(
-                                              margin: const EdgeInsets.only(
-                                                  left: 10, right: 10, top: 5),
-                                              decoration: BoxDecoration(
-                                                  color: white24,
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          10)),
-                                              padding: const EdgeInsets.only(
-                                                  top: 10,
-                                                  bottom: 10,
-                                                  left: 15),
-                                              child: customText(
-                                                  snapshot
-                                                      .data!.data![index].title
-                                                      .toString(),
-                                                  15,
-                                                  white)),
-                                        );
-                                      },
+                                  ? Flexible(
+                                      child: ListView.builder(
+                                        itemCount: snapshot.data!.data!.length,
+                                        shrinkWrap: true,
+                                        itemBuilder: (context, index) {
+                                          return InkWell(
+                                            onTap: () {
+                                              setState(() {
+                                                Navigator.pop(context);
+                                                categoryTypeID = snapshot
+                                                    .data!.data![index].sId
+                                                    .toString();
+                                                categoryTypeName = snapshot
+                                                    .data!.data![index].title
+                                                    .toString();
+                                              });
+                                            },
+                                            child: Container(
+                                                margin: const EdgeInsets.only(
+                                                    left: 10,
+                                                    right: 10,
+                                                    top: 5),
+                                                decoration: BoxDecoration(
+                                                    color: white24,
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            10)),
+                                                padding: const EdgeInsets.only(
+                                                    top: 10,
+                                                    bottom: 10,
+                                                    left: 15),
+                                                child: customText(
+                                                    snapshot.data!.data![index]
+                                                        .title
+                                                        .toString(),
+                                                    15,
+                                                    white)),
+                                          );
+                                        },
+                                      ),
                                     )
                                   : Center(
                                       child: customText(
@@ -779,5 +794,19 @@ class _CreateNewEventState extends State<CreateNewEvent> {
                     );
                   })));
         });
+  }
+
+  clearData() {
+    eventName.clear();
+    eventLocationLink.clear();
+    eventWebsite.clear();
+    eventAbout.clear();
+    eventTicketLink.clear();
+    imageFile = null;
+    privacyType = "Public";
+    categoryTypeID = "";
+    categoryTypeName = "";
+    fromTextStartDate = "";
+    toTextEndDate = "";
   }
 }

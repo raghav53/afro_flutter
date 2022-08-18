@@ -46,8 +46,10 @@ class UserProfileData {
   bool? isBlock;
   String? blockBy;
   List<Events>? events;
+  List<Groups>? groups;
   List<Interests>? interests;
   List<Educations>? educations;
+
   List<Visits>? visits;
   List<Experiences>? experiences;
   UserProfileData(
@@ -156,7 +158,12 @@ class UserProfileData {
         experiences!.add(new Experiences.fromJson(v));
       });
     }
-
+    if (json['groups'] != null) {
+      groups = <Groups>[];
+      json['groups'].forEach((v) {
+        groups!.add(new Groups.fromJson(v));
+      });
+    }
     if (json['events'] != null) {
       events = <Events>[];
       json['events'].forEach((v) {
@@ -243,7 +250,9 @@ class UserProfileData {
     if (this.events != null) {
       data['events'] = this.events!.map((v) => v.toJson()).toList();
     }
-
+    if (this.groups != null) {
+      data['groups'] = this.groups!.map((v) => v.toJson()).toList();
+    }
     if (this.interests != null) {
       data['interests'] = this.interests!.map((v) => v.toJson()).toList();
     }
@@ -971,6 +980,83 @@ class Experiences {
     data['createdAt'] = this.createdAt;
     data['updatedAt'] = this.updatedAt;
     data['__v'] = this.iV;
+    return data;
+  }
+}
+
+class Groups {
+  String? sId;
+  String? title;
+  String? userId;
+  String? category;
+  String? country;
+  String? state;
+  String? city;
+  int? privacy;
+  String? about;
+  String? profileImage;
+  String? coverImage;
+  String? status;
+  String? createdAt;
+  String? updatedAt;
+  int? iV;
+  String? id;
+
+  Groups(
+      {this.sId,
+      this.title,
+      this.userId,
+      this.category,
+      this.country,
+      this.state,
+      this.city,
+      this.privacy,
+      this.about,
+      this.profileImage,
+      this.coverImage,
+      this.status,
+      this.createdAt,
+      this.updatedAt,
+      this.iV,
+      this.id});
+
+  Groups.fromJson(Map<String, dynamic> json) {
+    sId = json['_id'];
+    title = json['title'];
+    userId = json['user_id'];
+    category = json['category'];
+    country = json['country'];
+    state = json['state'];
+    city = json['city'];
+    privacy = json['privacy'];
+    about = json['about'];
+    profileImage = json['profile_image'];
+    coverImage = json['cover_image'];
+    status = json['status'];
+    createdAt = json['createdAt'];
+    updatedAt = json['updatedAt'];
+    iV = json['__v'];
+    id = json['id'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['_id'] = this.sId;
+    data['title'] = this.title;
+    data['user_id'] = this.userId;
+    data['category'] = this.category;
+    data['country'] = this.country;
+    data['state'] = this.state;
+    data['city'] = this.city;
+    data['privacy'] = this.privacy;
+    data['about'] = this.about;
+    data['profile_image'] = this.profileImage;
+    data['cover_image'] = this.coverImage;
+    data['status'] = this.status;
+    data['createdAt'] = this.createdAt;
+    data['updatedAt'] = this.updatedAt;
+    data['__v'] = this.iV;
+    data['id'] = this.id;
     return data;
   }
 }

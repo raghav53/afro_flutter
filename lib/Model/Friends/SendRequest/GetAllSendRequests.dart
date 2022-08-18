@@ -17,7 +17,8 @@ Future<SendRequestModel> getAllSendRequests(BuildContext context,
     String page = "1",
     String limit = "500",
     String gender = "",
-    String cities = "",
+    String country = "",
+    String interests = "",
     String min_age = "",
     String max_age = ""}) async {
   SharedPreferences sharedPreferences = await _prefs;
@@ -28,7 +29,7 @@ Future<SendRequestModel> getAllSendRequests(BuildContext context,
 
   var response = await http.get(
       Uri.parse(BASE_URL +
-          "sent_friend_requests?page=$page&limit=$limit&search=$search&city=$cities&gender=$gender&min_age=$min_age&max_age=$max_age"),
+          "sent_friend_requests?page=$page&limit=$limit&search=$search&country=$country&interests=$interests&min_age=$min_age&max_age=$max_age"),
       headers: {
         'api-key': API_KEY,
         'x-access-token': token,

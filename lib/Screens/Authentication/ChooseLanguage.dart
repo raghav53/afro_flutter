@@ -50,13 +50,18 @@ class _ChooseLangauge extends State<ChooseLanguage> {
                         flagNameList[index], indexList[index]);
                   }),
               customHeightBox(50),
-              Container(
-                width: 150,
-                height: 35,
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20),
-                    gradient: commonButtonLinearGridient),
-                child: Center(child: customText("Done", 12, white)),
+              InkWell(
+                onTap: () {
+                  Navigator.pop(context);
+                },
+                child: Container(
+                  width: 150,
+                  height: 35,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20),
+                      gradient: commonButtonLinearGridient),
+                  child: Center(child: customText("Done", 12, white)),
+                ),
               )
             ],
           ),

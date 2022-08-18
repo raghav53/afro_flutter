@@ -436,9 +436,9 @@ class _SignUpPage extends State<SignUpPageScreen> {
     String createPassword = createPasswordController.text.toString();
     String conFirmPassword = confirmPasswordController.text.toString();
 
-    if (firstName.isEmpty)
+    if (firstName.isEmpty) {
       customToastMsg("Enter the first name");
-    else if (lastName.isEmpty)
+    } else if (lastName.isEmpty)
       customToastMsg("Enter the last name");
     else if (!isEmailValid(email1))
       customToastMsg("Email address not valid!");

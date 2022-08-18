@@ -81,6 +81,14 @@ class _MyProffile extends State<MyProfilePage> {
     getCode();
   }
 
+  refresh() {
+    Future.delayed(Duration.zero, () {
+      _getUserProfile = getUserProfileinfo(context, userID.toString());
+      setState(() {});
+      _getUserProfile!.whenComplete(() => () {});
+    });
+  }
+
   getCode() async {
     await CountryCodes.init();
     Locale? deviceLocale = CountryCodes.getDeviceLocale();
@@ -258,6 +266,9 @@ class _MyProffile extends State<MyProfilePage> {
                               customHeightBox(15),
                               //Following , Follower , Friends/Contacts
                               Row(
+                                mainAxisSize: MainAxisSize.max,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceAround,
                                 children: [
                                   InkWell(
                                     onTap: () {
@@ -272,7 +283,7 @@ class _MyProffile extends State<MyProfilePage> {
                                         12,
                                         white),
                                   ),
-                                  customWidthBox(30),
+                                  customWidthBox(15),
                                   InkWell(
                                     onTap: () {
                                       Navigator.of(context).push(
@@ -286,7 +297,7 @@ class _MyProffile extends State<MyProfilePage> {
                                         12,
                                         white),
                                   ),
-                                  customWidthBox(30),
+                                  customWidthBox(15),
                                   InkWell(
                                     onTap: () {
                                       Navigator.of(context).push(
@@ -474,160 +485,168 @@ class _MyProffile extends State<MyProfilePage> {
       customToastMsg("Something gone wrong...");
     }
   }
-}
 
 //(done)
-Widget customSocialMembers(BuildContext context) {
-  return Container(
-    margin: const EdgeInsets.only(left: 20, right: 20, top: 30),
-    child: Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        GestureDetector(
-          onTap: () {},
-          child: Column(
+  Widget customSocialMembers(BuildContext context) {
+    return Container(
+      margin: const EdgeInsets.only(left: 20, right: 20, top: 30),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          GestureDetector(
+            onTap: () {},
+            child: Column(
+              children: [
+                customText(totalFollowings.toString(), 15, white),
+                customHeightBox(5),
+                customText("Following", 15, white)
+              ],
+            ),
+          ),
+          Container(
+            width: 1,
+            color: Color(0x3dFFFFFF),
+            height: 40,
+          ),
+          Column(
             children: [
-              customText(totalFollowings.toString(), 15, white),
+              customText(totalFollowers.toString(), 15, white),
               customHeightBox(5),
-              customText("Following", 15, white)
+              customText("Followers", 15, white)
             ],
           ),
-        ),
-        Container(
-          width: 1,
-          color: Color(0x3dFFFFFF),
-          height: 40,
-        ),
-        Column(
-          children: [
-            customText(totalFollowers.toString(), 15, white),
-            customHeightBox(5),
-            customText("Followers", 15, white)
-          ],
-        ),
-        Container(
-          width: 1,
-          color: Color(0x3dFFFFFF),
-          height: 40,
-        ),
-        GestureDetector(
-          onTap: () {},
-          child: Column(
-            children: [
-              customText(totalContacts.toString(), 15, white),
-              customHeightBox(5),
-              customText("Members", 15, white)
-            ],
+          Container(
+            width: 1,
+            color: Color(0x3dFFFFFF),
+            height: 40,
           ),
-        ),
-      ],
-    ),
-  );
-}
+          GestureDetector(
+            onTap: () {},
+            child: Column(
+              children: [
+                customText(totalContacts.toString(), 15, white),
+                customHeightBox(5),
+                customText("Members", 15, white)
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
 
 //Social Icons Links
-Widget socialIconsLink() {
-  return Row(
-    mainAxisAlignment: MainAxisAlignment.center,
-    children: [
-      InkWell(
-        child: Container(
-          height: 20,
-          width: 20,
-          decoration: BoxDecoration(
-              color: Colors.black, borderRadius: BorderRadius.circular(2)),
-          child: Padding(
-            padding: const EdgeInsets.all(4),
-            child: Image.asset(
-              "assets/social/facebook.png",
+  Widget socialIconsLink() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        InkWell(
+          child: Container(
+            height: 20,
+            width: 20,
+            decoration: BoxDecoration(
+                color: Colors.black, borderRadius: BorderRadius.circular(2)),
+            child: Padding(
+              padding: const EdgeInsets.all(4),
+              child: Image.asset(
+                "assets/social/facebook.png",
+              ),
             ),
           ),
         ),
-      ),
-      customWidthBox(10),
-      InkWell(
-        child: Container(
-          height: 20,
-          width: 20,
-          decoration: BoxDecoration(
-              color: Colors.black, borderRadius: BorderRadius.circular(2)),
-          child: Padding(
-            padding: const EdgeInsets.all(4.0),
-            child: Image.asset("assets/social/instagram.png"),
-          ),
-        ),
-      ),
-      customWidthBox(10),
-      InkWell(
-        child: Container(
-          height: 20,
-          width: 20,
-          decoration: BoxDecoration(
-              color: Colors.black, borderRadius: BorderRadius.circular(2)),
-          child: Padding(
-            padding: const EdgeInsets.all(4.0),
-            child: Image.asset("assets/social/twitter.png"),
-          ),
-        ),
-      ),
-      customWidthBox(10),
-      InkWell(
-        child: Container(
-          height: 20,
-          width: 20,
-          decoration: BoxDecoration(
-              color: Colors.black, borderRadius: BorderRadius.circular(2)),
-          child: Padding(
-            padding: const EdgeInsets.all(4.0),
-            child: Image.asset(
-              "assets/social/linkedin.png",
+        customWidthBox(10),
+        InkWell(
+          child: Container(
+            height: 20,
+            width: 20,
+            decoration: BoxDecoration(
+                color: Colors.black, borderRadius: BorderRadius.circular(2)),
+            child: Padding(
+              padding: const EdgeInsets.all(4.0),
+              child: Image.asset("assets/social/instagram.png"),
             ),
           ),
         ),
-      )
-    ],
-  );
-}
+        customWidthBox(10),
+        InkWell(
+          child: Container(
+            height: 20,
+            width: 20,
+            decoration: BoxDecoration(
+                color: Colors.black, borderRadius: BorderRadius.circular(2)),
+            child: Padding(
+              padding: const EdgeInsets.all(4.0),
+              child: Image.asset("assets/social/twitter.png"),
+            ),
+          ),
+        ),
+        customWidthBox(10),
+        InkWell(
+          child: Container(
+            height: 20,
+            width: 20,
+            decoration: BoxDecoration(
+                color: Colors.black, borderRadius: BorderRadius.circular(2)),
+            child: Padding(
+              padding: const EdgeInsets.all(4.0),
+              child: Image.asset(
+                "assets/social/linkedin.png",
+              ),
+            ),
+          ),
+        )
+      ],
+    );
+  }
 
-Widget customListItemButton(
-    String title, String subTitle, String onClick, BuildContext context) {
-  return InkWell(
-    onTap: () {
-      clickListeners(onClick, context);
-    },
-    child: Container(
-        child: ListTile(
-      title: customText(title, 15, Colors.white),
-      subtitle: customText(subTitle, 12, Color(0x3dFFFFFF)),
-      trailing: Icon(
-        Icons.arrow_forward_ios_outlined,
-        color: Color(0xFFDFB48C),
-      ),
-    )),
-  );
-}
+  Widget customListItemButton(
+      String title, String subTitle, String onClick, BuildContext context) {
+    return InkWell(
+      onTap: () {
+        clickListeners(onClick, context);
+      },
+      child: Container(
+          child: ListTile(
+        title: customText(title, 15, Colors.white),
+        subtitle: customText(subTitle, 12, Color(0x3dFFFFFF)),
+        trailing: Icon(
+          Icons.arrow_forward_ios_outlined,
+          color: Color(0xFFDFB48C),
+        ),
+      )),
+    );
+  }
 
-void clickListeners(String title, BuildContext context) {
-  if (title == "basic") {
-    Navigator.of(context)
-        .push(MaterialPageRoute(builder: (context) => BasicInformation()));
-  } else if (title == "education") {
-    Navigator.of(context)
-        .push(MaterialPageRoute(builder: (context) => EducationPageScreen()));
-  } else if (title == "work") {
-    Navigator.of(context)
-        .push(MaterialPageRoute(builder: (context) => WorkPageScreen()));
-  } else if (title == "location") {
-    Navigator.of(context)
-        .push(MaterialPageRoute(builder: (context) => LocationPageScreen()));
-  } else if (title == "language") {
-    Navigator.of(context).push(
-        MaterialPageRoute(builder: (context) => SelectLanguageScreenPage()));
-  } else if (title == "interest") {
-    Navigator.of(context)
-        .push(MaterialPageRoute(builder: (context) => SelectIntrest()));
+  void clickListeners(String title, BuildContext context) {
+    if (title == "basic") {
+      Navigator.of(context)
+          .push(MaterialPageRoute(builder: (context) => BasicInformation()))
+          .then((value) => refresh());
+    } else if (title == "education") {
+      Navigator.of(context)
+          .push(MaterialPageRoute(builder: (context) => EducationPageScreen()))
+          .then((value) => refresh());
+    } else if (title == "work") {
+      Navigator.of(context)
+          .push(MaterialPageRoute(builder: (context) => WorkPageScreen()))
+          .then((value) => refresh());
+    } else if (title == "location") {
+      Navigator.of(context)
+          .push(MaterialPageRoute(builder: (context) => LocationPageScreen()))
+          .then((value) => refresh());
+    } else if (title == "language") {
+      Navigator.of(context)
+          .push(MaterialPageRoute(
+              builder: (context) => SelectLanguageScreenPage()))
+          .then((value) => refresh());
+    } else if (title == "interest") {
+      Navigator.of(context)
+          .push(MaterialPageRoute(builder: (context) => SelectIntrest()))
+          .then((value) => refresh());
+    }
   }
 }
+
 
 /**
  * Row(

@@ -189,6 +189,8 @@ class GoupDetailsPageState extends State<GroupDetailsPage> {
                                 ),
                                 customHeightBox(15),
                                 Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
                                   children: [
                                     Row(
                                       children: [
@@ -206,7 +208,6 @@ class GoupDetailsPageState extends State<GroupDetailsPage> {
                                             white)
                                       ],
                                     ),
-                                    customWidthBox(60),
                                     Row(
                                       children: [
                                         Image.asset(
@@ -222,7 +223,6 @@ class GoupDetailsPageState extends State<GroupDetailsPage> {
                                             white)
                                       ],
                                     ),
-                                    customWidthBox(40),
                                     InkWell(
                                       onTap: () {
                                         Navigator.of(context).push(

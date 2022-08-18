@@ -276,8 +276,12 @@ class _GroupsAllListScreenState extends State<GroupsAllListScreen> {
             print("kjvgkvcyvctkucdkghfm: $snapshot");
             return snapshot.hasData && snapshot.data!.data!.isNotEmpty
                 ? DiscoverGroupsList(snapshot.data!)
-                : const Center(
-                    child: CircularProgressIndicator(),
+                : Container(
+                    margin: EdgeInsets.only(top: 100),
+                    alignment: Alignment.center,
+                    child: Center(
+                      child: customText("No data!", 15, white),
+                    ),
                   );
           });
     } else if (postion == 1) {
@@ -286,8 +290,12 @@ class _GroupsAllListScreenState extends State<GroupsAllListScreen> {
           builder: (context, snapshot) {
             return snapshot.hasData && snapshot.data!.data!.isNotEmpty
                 ? JoinedGroupsList(snapshot.data!)
-                : const Center(
-                    child: CircularProgressIndicator(),
+                : Container(
+                    margin: EdgeInsets.only(top: 100),
+                    alignment: Alignment.center,
+                    child: Center(
+                      child: customText("No data!", 15, white),
+                    ),
                   );
           });
     } else if (postion == 2) {
@@ -296,7 +304,13 @@ class _GroupsAllListScreenState extends State<GroupsAllListScreen> {
           builder: (context, snapshot) {
             return snapshot.hasData && snapshot.data!.data!.isNotEmpty
                 ? MyGroupsListScreen(context, snapshot.data!)
-                : const CircularProgressIndicator();
+                : Container(
+                    margin: EdgeInsets.only(top: 100),
+                    alignment: Alignment.center,
+                    child: Center(
+                      child: customText("No data!", 15, white),
+                    ),
+                  );
           });
     }
   }
@@ -304,8 +318,8 @@ class _GroupsAllListScreenState extends State<GroupsAllListScreen> {
 //Discover groups List
   DiscoverGroupsList(AllGroupsModel snapshot) {
     return Container(
-      height: phoneHeight(context),
       width: phoneWidth(context),
+      height: 400,
       child: ListView.builder(
           padding: EdgeInsets.zero,
           shrinkWrap: true,
@@ -527,7 +541,7 @@ class _GroupsAllListScreenState extends State<GroupsAllListScreen> {
   //Joined Groups List
   JoinedGroupsList(JoinedGroupModel snapshot) {
     return Container(
-        height: phoneHeight(context),
+        height: 400,
         width: phoneWidth(context),
         child: ListView.builder(
             padding: EdgeInsets.zero,
@@ -627,9 +641,8 @@ class _GroupsAllListScreenState extends State<GroupsAllListScreen> {
   //User Groups List
   MyGroupsListScreen(BuildContext context, UserGroupsModel snapshot) {
     return Container(
-        margin: EdgeInsets.only(bottom: 70),
         width: phoneWidth(context),
-        height: phoneHeight(context),
+        height: 400,
         child: ListView.builder(
             padding: EdgeInsets.zero,
             shrinkWrap: true,
