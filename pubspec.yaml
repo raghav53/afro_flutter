@@ -107,7 +107,7 @@ flutter:
     - start_group_img.png
     - upload_img_logo.png
     - anonymous.jpg
-
+    - app_icon.png
     ##Icons
     - assets/icons/ic_next.png
     - assets/icons/event_icn.png

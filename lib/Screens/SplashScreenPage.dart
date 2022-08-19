@@ -17,6 +17,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'DashboardScreenPage.dart';
@@ -33,60 +34,6 @@ class _SplashScreen extends State<SplashScreenPage> {
     super.initState();
     init();
     checkUserExist(context);
-  }
-
-  init() async {
-    await Firebase.initializeApp();
-    LocalNotificationService.initialize(context);
-    final fcmToken = await FirebaseMessaging.instance.getToken();
-
-    print("FCM_TOKEN-MyApp-$fcmToken");
-    SaveStringToSF(data.fcm_token, fcmToken!);
-    FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
-
-    // 1. This method call when app in terminated state and you get a notification
-    // when you click on notification app open from terminated state and you can get notification data in this method
-    FirebaseMessaging.instance.getInitialMessage().then(
-      (message) {
-        print("FirebaseMessaging- Terminated State");
-        if (message != null) {
-          print("Terminated_Notification-${message.data['_id']}");
-          if (message.data['section'] != null) {
-            Navigator.of(context).push(
-              MaterialPageRoute(
-                builder: (context) => NotificationScreenPage(),
-              ),
-            );
-          }
-        }
-      },
-    );
-    // 2. This method only call when App in forground it mean app must be opened
-    FirebaseMessaging.onMessage.listen(
-      (message) {
-        print("FirebaseMessaging-Forground State-${message.data}");
-        // if (message.notification != null) {
-        // print(message.notification!.title);
-        //  print(message.notification!.body);
-        LocalNotificationService.createanddisplaynotification(message);
-        //  }
-      },
-    );
-
-    // 3. This method only call when App in background and not terminated(not closed)
-    FirebaseMessaging.onMessageOpenedApp.listen(
-      (message) {
-        print("FirebaseMessaging-Background State");
-        if (message != null) {
-          print("message.data11 ${message.data}");
-          //LocalNotificationService.createanddisplaynotification(message);
-        }
-      },
-    );
-  }
-
-  Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
-    LocalNotificationService.createanddisplaynotification(message);
   }
 
   @override
@@ -168,5 +115,89 @@ class _SplashScreen extends State<SplashScreenPage> {
                 MaterialPageRoute(builder: (context) => FirstOnBoardScreen())));
       }
     }
+  }
+
+  //Firebase notification
+  final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+      FlutterLocalNotificationsPlugin();
+
+  Future<void> _firebaseMessagingBackgroundHandler(
+      RemoteMessage message) async {
+    await Firebase.initializeApp();
+    print('A bg message just showed up :  ${message.messageId}');
+  }
+
+  AndroidNotificationChannel channel = const AndroidNotificationChannel(
+      'high_importance_channel', // id
+      'High Importance Notifications', // title
+      description:
+          'This channel is used for important notifications.', // description
+      importance: Importance.high,
+      playSound: true);
+
+  init() async {
+    await Firebase.initializeApp();
+    //LocalNotificationService.initialize(context);
+    final fcmToken = await FirebaseMessaging.instance.getToken();
+
+    await flutterLocalNotificationsPlugin
+        .resolvePlatformSpecificImplementation<
+            AndroidFlutterLocalNotificationsPlugin>()
+        ?.createNotificationChannel(channel);
+
+    await FirebaseMessaging.instance
+        .setForegroundNotificationPresentationOptions(
+      alert: true,
+      badge: true,
+      sound: true,
+    );
+    SaveStringToSF(data.fcm_token, fcmToken!);
+    FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
+
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+      RemoteNotification notification = message.notification!;
+      AndroidNotification android = message.notification!.android!;
+      if (notification != null && android != null) {
+        flutterLocalNotificationsPlugin.show(
+            notification.hashCode,
+            notification.title,
+            notification.body,
+            NotificationDetails(
+              android: AndroidNotificationDetails(
+                channel.id,
+                channel.name,
+                channelDescription: channel.description,
+                color: Colors.blue,
+                playSound: true,
+                icon: '@mipmap/ic_launcher',
+              ),
+            ));
+      }
+    });
+
+    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
+      print('A new onMessageOpenedApp event was published!');
+      RemoteNotification notification = message.notification!;
+      AndroidNotification android = message.notification!.android!;
+      if (notification != null && android != null) {
+        showDialog(
+            context: context,
+            builder: (_) {
+              return AlertDialog(
+                title: Text(notification.title!),
+                content: SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [Text(notification.body!)],
+                  ),
+                ),
+              );
+            });
+      }
+    });
+  }
+
+  Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+    LocalNotificationService.createanddisplaynotification(message);
   }
 }

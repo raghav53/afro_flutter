@@ -15,6 +15,7 @@ import 'package:afro/Util/Constants.dart';
 import 'package:afro/Util/CustomWidget.dart';
 import 'package:afro/Util/CustomWidgetAttributes.dart';
 import 'package:afro/Util/SharedPreferencfes.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -50,6 +51,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   late bool _isLoading;
   bool? _isConnected;
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -366,6 +368,17 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
+  //Firebase notification
+  init() async {
+    FirebaseMessaging.instance.getToken().then((value) {
+      String? token = value;
+      print("_______________________________________________1" +
+          token.toString());
+    });
+    fcmToken = (await FirebaseMessaging.instance.getToken())!;
+    print("_______________________________________________" + fcmToken);
+  }
+
   void loginWithEmailPassword() {
     String email = Emailcontroller.text.trim().toString();
     String password = PasswordController.text.trim().toString();
@@ -377,12 +390,6 @@ class _LoginScreenState extends State<LoginScreen> {
     } else {
       login(email, password);
     }
-  }
-
-  init() async {
-    SharedPreferences userData = await _prefs;
-    fcmToken = userData.getString(userDataConstants.fcm_token).toString();
-    print(fcmToken);
   }
 
   Future<void> login(String email, String password) async {
@@ -416,9 +423,13 @@ class _LoginScreenState extends State<LoginScreen> {
       await SaveStringToSF("login", "yes");
       SaveTheUserInfo();
       Navigator.pop(context);
-      Navigator.of(context).pushReplacement(MaterialPageRoute(
-        builder: (context) => HomePagescreen(),
-      ));
+      Navigator.of(context)
+          .pushReplacement(MaterialPageRoute(
+            builder: (context) => HomePagescreen(),
+          ))
+          .then((value) => () {
+                init();
+              });
     } else {
       Navigator.pop(context);
       customToastMsg(message);

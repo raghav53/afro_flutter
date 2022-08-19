@@ -239,9 +239,16 @@ class _ProfilePage extends State<ProfileSettingScreenPage> {
       SharedPreferences preferences = await SharedPreferences.getInstance();
       await preferences.clear();
       Navigator.pop(context);
-      Navigator.of(context).pushReplacement(MaterialPageRoute(
-        builder: (context) => LoginScreen(),
-      ));
+      // Navigator.of(context).pushReplacement(MaterialPageRoute(
+      //   builder: (context) => LoginScreen(),
+      // ));
+      Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(
+            builder: (BuildContext context) => LoginScreen(),
+          ),
+          (route) => false,
+        );
     } else {
       Navigator.pop(context);
       customToastMsg(message);
