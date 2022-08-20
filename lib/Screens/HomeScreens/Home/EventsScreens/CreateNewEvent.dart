@@ -27,6 +27,12 @@ class CreateNewEvent extends StatefulWidget {
   _CreateNewEventState createState() => _CreateNewEventState();
 }
 
+
+Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+Future<AllInterestModel>? _getAllInterests;
+
+class _CreateNewEventState extends State<CreateNewEvent> {
+  
 String? privacyType = "Public";
 String? categoryTypeID = "";
 String? categoryTypeName = "";
@@ -50,11 +56,6 @@ TextEditingController eventTicketLink = TextEditingController();
 var type = ["In-Person", "Online"];
 var defaultValue = 1;
 var _selectedPrivacy = "1";
-
-Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
-Future<AllInterestModel>? _getAllInterests;
-
-class _CreateNewEventState extends State<CreateNewEvent> {
   @override
   void initState() {
     super.initState();

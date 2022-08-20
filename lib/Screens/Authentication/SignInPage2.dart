@@ -32,14 +32,13 @@ class LoginScreen extends StatefulWidget {
   State<LoginScreen> createState() => _LoginScreenState();
 }
 
-var user = UserDataConstants();
-TextEditingController Emailcontroller = new TextEditingController();
-TextEditingController PasswordController = new TextEditingController();
-Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
-LoginModel? loginModel;
-
 class _LoginScreenState extends State<LoginScreen> {
-  final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+  var user = UserDataConstants();
+  TextEditingController Emailcontroller = new TextEditingController();
+  TextEditingController PasswordController = new TextEditingController();
+  Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+  LoginModel? loginModel;
+
   bool _checkbox = false;
   var fcmToken = "";
   UserDataConstants userDataConstants = UserDataConstants();
@@ -186,9 +185,8 @@ class _LoginScreenState extends State<LoginScreen> {
                             hintStyle: TextStyle(color: Colors.white54)),
                       ),
                       const SizedBox(height: 5),
-                      Row(
-                        children: [
-                          Checkbox(
+                      ListTile(
+                        leading: Checkbox(
                             value: _checkbox,
                             checkColor: Colors.white,
                             activeColor: Colors.purple,
@@ -196,9 +194,14 @@ class _LoginScreenState extends State<LoginScreen> {
                               setState(() {
                                 _checkbox = !_checkbox;
                               });
-                            },
-                          ),
-                          const Text(
+                            }),
+                        title: InkWell(
+                          onTap: () {
+                            setState(() {
+                              _checkbox = !_checkbox;
+                            });
+                          },
+                          child: const Text(
                             'Remember me',
                             style: TextStyle(
                               fontSize: 15,
@@ -206,19 +209,48 @@ class _LoginScreenState extends State<LoginScreen> {
                               fontWeight: FontWeight.normal,
                             ),
                           ),
-
-                          const SizedBox(width: 20), // give it width
-                          TextButton(
-                              onPressed: () {
-                                Navigator.of(context).push(MaterialPageRoute(
-                                    builder: (context) =>
-                                        ForgetPasswordPage()));
-                              },
-                              child: customText(
-                                  "Forgot your password?", 13, yellowColor)),
-                        ],
-                        mainAxisAlignment: MainAxisAlignment.center,
+                        ),
+                        trailing: TextButton(
+                            onPressed: () {
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (context) => ForgetPasswordPage()));
+                            },
+                            child: customText(
+                                "Forgot your password?", 13, yellowColor)),
                       ),
+                      // Row(
+                      //   children: [
+                      //     Checkbox(
+                      //       value: _checkbox,
+                      //       checkColor: Colors.white,
+                      //       activeColor: Colors.purple,
+                      //       onChanged: (value) {
+                      //         setState(() {
+                      //           _checkbox = !_checkbox;
+                      //         });
+                      //       },
+                      //     ),
+                      //     const Text(
+                      //       'Remember me',
+                      //       style: TextStyle(
+                      //         fontSize: 15,
+                      //         color: Colors.white,
+                      //         fontWeight: FontWeight.normal,
+                      //       ),
+                      //     ),
+
+                      //     const SizedBox(width: 20), // give it width
+                      //     TextButton(
+                      //         onPressed: () {
+                      //           Navigator.of(context).push(MaterialPageRoute(
+                      //               builder: (context) =>
+                      //                   ForgetPasswordPage()));
+                      //         },
+                      //         child: customText(
+                      //             "Forgot your password?", 13, yellowColor)),
+                      //   ],
+                      //   mainAxisAlignment: MainAxisAlignment.center,
+                      // ),
                       const SizedBox(height: 50),
                       InkWell(
                         onTap: () {

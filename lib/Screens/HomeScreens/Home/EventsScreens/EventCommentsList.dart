@@ -75,9 +75,7 @@ class _CommentListState extends State<CommentList> {
             extendBodyBehindAppBar: true,
             extendBody: true,
             appBar: commonAppbar("Comments"),
-            body:
-            
-             Container(
+            body: Container(
                 padding: EdgeInsets.only(top: 55),
                 decoration: commonBoxDecoration(),
                 height: phoneHeight(context),
@@ -253,15 +251,9 @@ class _CommentListState extends State<CommentList> {
                                             ),
                                           ),
                                           Text(
-                                            dataTimeTextFormater(snapshot.data!
-                                                    .data![index].createdAt
-                                                    .toString())["date"] +
-                                                " at " +
-                                                dataTimeTextFormater(snapshot
-                                                    .data!
-                                                    .data![index]
-                                                    .createdAt
-                                                    .toString())["time"],
+                                            getTimeFormat(snapshot
+                                                .data!.data![index].createdAt
+                                                .toString()),
                                             style: TextStyle(
                                               fontSize: 11,
                                               color: gray1,

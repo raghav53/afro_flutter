@@ -1,12 +1,15 @@
 import 'dart:async';
+import 'dart:convert';
 import 'package:afro/Screens/Authentication/SignInPage2.dart';
 import 'package:afro/Screens/HomePageScreen.dart';
+import 'package:afro/Screens/HomeScreens/Home/NotificationScreen.dart';
 import 'package:afro/Screens/HomeScreens/ProfileNavigationScreens/SelectLanguage.dart';
 import 'package:afro/Screens/OnBoardingScreen/FirstOnBoard.dart';
 import 'package:afro/Screens/SignUpProcess/FillInformation.dart';
 import 'package:afro/Screens/SignUpProcess/SelectInterest.dart';
 import 'package:afro/Screens/SignUpProcess/UploadPhotoPage.dart';
 import 'package:afro/Util/Constants.dart';
+import 'package:afro/Util/local_notification_service.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -27,6 +30,7 @@ Future<void> main() async {
     badge: true,
     sound: true,
   );
+
   runApp(const MyApp());
 }
 
@@ -70,13 +74,13 @@ class _SplashScreen extends State<SplashScreenPage> {
   @override
   void initState() {
     super.initState();
+    LocalNotificationService.initialize(context);
     init();
     checkUserExist(context);
   }
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     return Scaffold(
         body: Container(
       child: Image.asset(
@@ -89,47 +93,47 @@ class _SplashScreen extends State<SplashScreenPage> {
   }
 
   init() {
-    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-      RemoteNotification notification = message.notification!;
-      AndroidNotification android = message.notification!.android!;
-      if (notification != null && android != null) {
-        flutterLocalNotificationsPlugin.show(
-            notification.hashCode,
-            notification.title,
-            notification.body,
-            NotificationDetails(
-              android: AndroidNotificationDetails(
-                channel.id,
-                channel.name,
-                channelDescription: channel.description,
-                color: Colors.blue,
-                playSound: true,
-                icon: '@mipmap/ic_launcher',
-              ),
-            ));
-      }
-    });
+    FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
 
-    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
-      print('A new onMessageOpenedApp event was published!');
-      RemoteNotification notification = message.notification!;
-      AndroidNotification android = message.notification!.android!;
-      if (notification != null && android != null) {
-        showDialog(
-            context: context,
-            builder: (_) {
-              return AlertDialog(
-                title: Text(notification.title!),
-                content: SingleChildScrollView(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [Text(notification.body!)],
-                  ),
-                ),
-              );
-            });
-      }
-    });
+    // 1. This method call when app in terminated state and you get a notification
+    // when you click on notification app open from terminated state and you can get notification data in this method
+    FirebaseMessaging.instance.getInitialMessage().then(
+      (message) {
+        print("FirebaseMessaging- Terminated State");
+        if (message != null) {
+          print("Terminated_Notification-${message.data['_id']}");
+          if (message.data['section'] != null) {
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => NotificationScreenPage(),
+              ),
+            );
+          }
+        }
+      },
+    );
+    // 2. This method only call when App in forground it mean app must be opened
+    FirebaseMessaging.onMessage.listen(
+      (message) {
+        //print("FirebaseMessaging-Forground State-${message.data}");
+        // if (message.notification != null) {
+        // print(message.notification!.title);
+        //  print(message.notification!.body);
+        LocalNotificationService.createanddisplaynotification(message);
+        //  }
+      },
+    );
+
+    // 3. This method only call when App in background and not terminated(not closed)
+    FirebaseMessaging.onMessageOpenedApp.listen(
+      (message) {
+        print("FirebaseMessaging-Background State");
+        if (message != null) {
+          print("message.data11 ${message.data}");
+          //LocalNotificationService.createanddisplaynotification(message);
+        }
+      },
+    );
   }
 
   Future<void> checkUserExist(BuildContext context) async {
@@ -197,5 +201,9 @@ class _SplashScreen extends State<SplashScreenPage> {
                 MaterialPageRoute(builder: (context) => FirstOnBoardScreen())));
       }
     }
+  }
+
+  Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+    LocalNotificationService.createanddisplaynotification(message);
   }
 }

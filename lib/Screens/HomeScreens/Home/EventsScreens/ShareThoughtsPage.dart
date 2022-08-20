@@ -25,15 +25,13 @@ class ShareThoughts extends StatefulWidget {
   State<ShareThoughts> createState() => _ShareThoughtsState();
 }
 
-Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
-
-List<File> imagesList = [];
-
-String caption = "";
-
 class _ShareThoughtsState extends State<ShareThoughts> {
   Future<Uint8List>? uint8list;
+  Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
 
+  List<File> imagesList = [];
+
+  String caption = "";
   @override
   Widget build(BuildContext context) {
     return SafeArea(
