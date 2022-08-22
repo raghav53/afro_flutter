@@ -1,8 +1,10 @@
 import 'dart:convert';
 
-import 'package:afro/Model/Language.dart';
+import 'package:afro/Model/AllLanguageModel.dart';
+import 'package:afro/Model/UserLanguageModel.dart';
 import 'package:afro/Model/UserProfileModel.dart';
 import 'package:afro/Screens/HomePageScreen.dart';
+import 'package:afro/Screens/HomeScreens/Home/MyProfile.dart';
 import 'package:afro/Util/CommonUI.dart';
 import 'package:afro/Util/Constants.dart';
 import 'package:afro/Util/SharedPreferencfes.dart';
@@ -16,22 +18,26 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SelectLanguageScreenPage extends StatefulWidget {
+  String? type;
+
+  SelectLanguageScreenPage({Key? key, required this.type}) : super(key: key);
   _SelectLanguage createState() => _SelectLanguage();
 }
 
+UserLanguageModel? userLanguagesList;
 final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
-List<String> selectedLanguagesName = [];
 List<String> selectedLanguagesSId = [];
 
-Future<Language>? _getLanguageList;
+Future<AllLanguageModel>? _getLanguageList;
 var user = UserDataConstants();
 Future<UserProfile>? _getUserProfile;
 
 class _SelectLanguage extends State<SelectLanguageScreenPage> {
-  Language? allLanguageList;
+  AllLanguageModel? allLanguageList;
   @override
   void initState() {
     super.initState();
+    getAllUsersLanguages();
     Future.delayed(Duration.zero, () {
       _getLanguageList = getLanguagesList(context);
       setState(() {});
@@ -45,7 +51,9 @@ class _SelectLanguage extends State<SelectLanguageScreenPage> {
         child: Scaffold(
       extendBodyBehindAppBar: true,
       resizeToAvoidBottomInset: false,
-      appBar: onlyTitleCommonAppbar("Select Language"),
+      appBar: widget.type == "1"
+          ? commonAppbar("Update your languages")
+          : onlyTitleCommonAppbar("Select language"),
       body: Container(
         padding: EdgeInsets.only(top: 70),
         height: phoneHeight(context),
@@ -64,7 +72,7 @@ class _SelectLanguage extends State<SelectLanguageScreenPage> {
                         color: white)),
               ),
               customHeightBox(30),
-              FutureBuilder<Language>(
+              FutureBuilder<AllLanguageModel>(
                   future: _getLanguageList,
                   builder: (context, snapshot) {
                     return snapshot.hasData && snapshot.data!.data!.isNotEmpty
@@ -76,6 +84,18 @@ class _SelectLanguage extends State<SelectLanguageScreenPage> {
                               shrinkWrap: true,
                               itemCount: snapshot.data!.data!.length,
                               itemBuilder: (context, int index) {
+                                for (var i = 0;
+                                    i < snapshot.data!.data!.length;
+                                    i++) {
+                                  for (var j = 0;
+                                      j < selectedLanguagesSId.length;
+                                      j++) {
+                                    if (selectedLanguagesSId[j] ==
+                                        snapshot.data!.data![i].sId) {
+                                      snapshot.data!.data![i].isSelected = true;
+                                    }
+                                  }
+                                }
                                 return InkWell(
                                   onTap: () {
                                     setState(() {
@@ -130,7 +150,7 @@ class _SelectLanguage extends State<SelectLanguageScreenPage> {
               customHeightBox(30),
               InkWell(
                 onTap: () {
-                  addInterestOfUser();
+                  addLanguageOfUser();
                 },
                 child: Container(
                   margin: const EdgeInsets.only(left: 100, right: 100),
@@ -172,7 +192,7 @@ class _SelectLanguage extends State<SelectLanguageScreenPage> {
     );
     jsonResponse = json.decode(response.body);
     var message = jsonResponse["message"];
-    allLanguageList = Language.fromJson(jsonResponse);
+    allLanguageList = AllLanguageModel.fromJson(jsonResponse);
     if (response.statusCode == 200) {
       setState(() {
         Navigator.pop(context);
@@ -186,7 +206,7 @@ class _SelectLanguage extends State<SelectLanguageScreenPage> {
     }
   }
 
-  Future<void> addInterestOfUser() async {
+  Future<void> addLanguageOfUser() async {
     if (selectedLanguagesSId.isEmpty) {
       customToastMsg("Please select the language!");
       return;
@@ -214,15 +234,40 @@ class _SelectLanguage extends State<SelectLanguageScreenPage> {
       SaveStringToSF("login", "yes");
       SaveStringToSF("newuser", "");
 
-      Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (context) => HomePagescreen()));
+      widget.type == "1"
+          ? Navigator.pushReplacement(
+              context, MaterialPageRoute(builder: (context) => MyProfilePage()))
+          : Navigator.pushReplacement(context,
+              MaterialPageRoute(builder: (context) => HomePagescreen()));
     } else {
       Navigator.pop(context);
       setState(() {
-        selectedLanguagesName.clear();
         selectedLanguagesSId.clear();
         //selectionClear();
       });
+      customToastMsg(message);
+    }
+  }
+
+  Future<void> getAllUsersLanguages() async {
+    SharedPreferences sharedPreferences = await _prefs;
+    String? token = sharedPreferences.getString("token");
+    var jsonResponse = null;
+    var response = await http.get(
+      Uri.parse(BASE_URL + "user_languages"),
+      headers: {'api-key': API_KEY, 'x-access-token': token!},
+    );
+    jsonResponse = json.decode(response.body);
+    var message = jsonResponse["message"];
+    userLanguagesList = UserLanguageModel.fromJson(jsonResponse);
+    if (response.statusCode == 200) {
+      for (var i = 0; i < userLanguagesList!.data!.length; i++) {
+        setState(() {
+          selectedLanguagesSId
+              .add(userLanguagesList!.data![i].languageId.toString());
+        });
+      }
+    } else {
       customToastMsg(message);
     }
   }

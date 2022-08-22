@@ -25,27 +25,26 @@ class LocalNotificationService {
   }
 
   static void createanddisplaynotification(RemoteMessage message) async {
-    
     try {
       print(message.data["body"]);
 
       Map<String, dynamic> map = Map();
       map.addAll(message.data);
 
-      print("__________________________________________Encode    " + map["body"].toString());
+      String map2 = map["body"];
 
+      List<String> str = map2
+          .replaceAll("{", "")
+          .replaceAll("}", "")
+          .replaceAll("\"", "")
+          .replaceAll("'", "")
+          .split(",");
+      Map<String, dynamic> result = {};
+      for (int i = 0; i < str.length; i++) {
+        List<String> s = str[i].split(":");
+        result.putIfAbsent(s[0].trim(), () => s[1].trim());
+      }
 
- String map2 = map["body"];
-
-      print("__________________________________________Encode@@@@@@@@    " + map2.toString());
-      // var result = jsonEncode(message.data);
-      // String data = result.toString();
-      // print("__________________________________________Encode    " + data);
-      // var decodeData = jsonDecode(result);
-      // print(
-      //     "-----------------------------Decode       " + decodeData.toString());
-      // NotificationPojo pojo = NotificationPojo.fromJson(decodeData);
-      // // print("-----------------------------2  " +pojo.title.toString());
       final id = DateTime.now().millisecondsSinceEpoch ~/ 1000;
       const NotificationDetails notificationDetails = NotificationDetails(
         android: AndroidNotificationDetails(
@@ -59,8 +58,8 @@ class LocalNotificationService {
 
       await _notificationsPlugin.show(
         id,
-        "AfroUnitd",
-        message.data['message'],
+        result["title"].toString(),
+        result["message"].toString(),
         notificationDetails,
         payload: message.data['section'],
       );

@@ -129,14 +129,14 @@ var category = [
   "History"
 ];
 
-Widget customButton(BuildContext context) {
-  return TextButton(
-      onPressed: () {
-        Navigator.of(context)
-            .push(MaterialPageRoute(builder: (context) => SelectIntrest()));
-      },
-      child: Text("Forword"));
-}
+// Widget customButton(BuildContext context) {
+//   return TextButton(
+//       onPressed: () {
+//         Navigator.of(context)
+//             .push(MaterialPageRoute(builder: (context) => SelectIntrest()));
+//       },
+//       child: Text("Forword"));
+// }
 
 AppBar commonAppbar(String title) {
   return AppBar(

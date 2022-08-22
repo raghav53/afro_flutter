@@ -22,26 +22,26 @@ class ForumsNewThreadPage extends StatefulWidget {
   _ForumsNewThreadPage createState() => _ForumsNewThreadPage();
 }
 
-String? visible;
-String? selectedItem = "Item 1";
-var userType = "";
-String? categoryTypeID = "";
-String? categoryTypeName = "", countryId = "", countryName = "";
-int _groupValue = -1;
-int _usergroupValue = -1;
-List<File> imagesList = [];
-//Country
-Future<CountryModel>? _getCountriesList;
-Future<ForumCategoryModel>? _getForumsCategories;
-String? caption = "";
-Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
-TextEditingController titleController = TextEditingController();
-TextEditingController linkController = TextEditingController();
-TextEditingController contentController = TextEditingController();
-
-bool showList = false;
-
 class _ForumsNewThreadPage extends State<ForumsNewThreadPage> {
+  String? visible;
+  String? selectedItem = "Item 1";
+  var userType = "";
+  String? categoryTypeID = "";
+  String? categoryTypeName = "", countryId = "", countryName = "";
+  int _groupValue = -1;
+  int _usergroupValue = -1;
+  List<File> imagesList = [];
+//Country
+  Future<CountryModel>? _getCountriesList;
+  Future<ForumCategoryModel>? _getForumsCategories;
+  String? caption = "";
+  Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+  TextEditingController titleController = TextEditingController();
+  TextEditingController linkController = TextEditingController();
+  TextEditingController contentController = TextEditingController();
+
+  bool showList = false;
+
   @override
   void initState() {
     super.initState();

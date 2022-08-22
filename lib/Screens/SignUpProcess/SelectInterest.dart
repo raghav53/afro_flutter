@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:afro/Model/AllInterestsModel.dart';
+import 'package:afro/Model/UserInterestModel.dart';
 import 'package:afro/Network/Apis.dart';
 import 'package:afro/Screens/HomeScreens/ProfileNavigationScreens/SelectLanguage.dart';
 import 'package:afro/Util/Colors.dart';
@@ -8,30 +9,33 @@ import 'package:afro/Util/CommonUI.dart';
 import 'package:afro/Util/CustomWidget.dart';
 import 'package:afro/Util/CustomWidgetAttributes.dart';
 import 'package:afro/Util/SharedPreferencfes.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
 class SelectIntrest extends StatefulWidget {
-  const SelectIntrest({Key? key}) : super(key: key);
+  String? type;
+  SelectIntrest({Key? key, required this.type}) : super(key: key);
 
   @override
   _Intrests createState() => _Intrests();
 }
 
-TextEditingController interestTitle = TextEditingController();
-final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
-AllInterestModel? interestModel;
-AllInterestModel searchModel = AllInterestModel();
-List<String> selectedInterestedList = <String>[];
-List<Map> interestOptionJson = [];
-
-Future<AllInterestModel>? _getInterestsList;
-
 class _Intrests extends State<SelectIntrest> {
+  TextEditingController interestTitle = TextEditingController();
+  final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+  UserInterestModel? userAllInterests;
+
+  AllInterestModel searchModel = AllInterestModel();
+  List<String> selectedInterestedList = <String>[];
+
+  Future<AllInterestModel>? _getInterestsList;
   @override
   void initState() {
     super.initState();
+    getAllLanguages();
+    print(widget.type);
     Future.delayed(Duration.zero, () {
       _getInterestsList = getInterestssList(context);
       setState(() {});
@@ -43,7 +47,9 @@ class _Intrests extends State<SelectIntrest> {
   Widget build(BuildContext context) {
     return SafeArea(
         child: Scaffold(
-      appBar: onlyTitleCommonAppbar("Interest"),
+      appBar: widget.type == "1"
+          ? commonAppbar("Update your interests")
+          : onlyTitleCommonAppbar("Interests"),
       extendBodyBehindAppBar: true,
       resizeToAvoidBottomInset: true,
       body: Container(
@@ -78,6 +84,19 @@ class _Intrests extends State<SelectIntrest> {
                                   String title = snapshot
                                       .data!.data![index].title
                                       .toString();
+                                  for (var i = 0;
+                                      i < snapshot.data!.data!.length;
+                                      i++) {
+                                    for (var j = 0;
+                                        j < selectedInterestedList.length;
+                                        j++) {
+                                      if (selectedInterestedList[j] ==
+                                          snapshot.data!.data![i].sId) {
+                                        snapshot.data!.data![i].isSelected =
+                                            true;
+                                      }
+                                    }
+                                  }
                                   return InkWell(
                                       onTap: () {
                                         setState(() {
@@ -145,7 +164,10 @@ class _Intrests extends State<SelectIntrest> {
                     decoration: fixedButtonDesign(),
                     child: Row(
                       mainAxisAlignment: mCenter,
-                      children: [customText("Next", 17, Colors.white)],
+                      children: [
+                        customText(widget.type == "1" ? "Save" : "Next", 17,
+                            Colors.white)
+                      ],
                     ),
                   ),
                 ),
@@ -194,13 +216,40 @@ class _Intrests extends State<SelectIntrest> {
     if (response.statusCode == 200) {
       Navigator.pop(context);
       SaveStringToSF("newuser", "interestupdated");
-      Navigator.push(context,
-          MaterialPageRoute(builder: (context) => SelectLanguageScreenPage()));
+      widget.type == "1"
+          ? Navigator.pop(context)
+          : Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => SelectLanguageScreenPage(type: "")));
     } else {
       Navigator.pop(context);
       setState(() {
         selectedInterestedList.clear();
       });
+      customToastMsg(message);
+    }
+  }
+
+  Future<void> getAllLanguages() async {
+    SharedPreferences sharedPreferences = await _prefs;
+    String? token = sharedPreferences.getString("token");
+    var jsonResponse = null;
+    var response = await http.get(
+      Uri.parse(BASE_URL + "user_interests"),
+      headers: {'api-key': API_KEY, 'x-access-token': token!},
+    );
+    jsonResponse = json.decode(response.body);
+    var message = jsonResponse["message"];
+    userAllInterests = UserInterestModel.fromJson(jsonResponse);
+    if (response.statusCode == 200) {
+      for (var i = 0; i < userAllInterests!.data!.length; i++) {
+        setState(() {
+          selectedInterestedList
+              .add(userAllInterests!.data![i].interestId.toString());
+        });
+      }
+    } else {
       customToastMsg(message);
     }
   }

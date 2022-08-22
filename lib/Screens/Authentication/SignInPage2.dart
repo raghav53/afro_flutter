@@ -218,39 +218,6 @@ class _LoginScreenState extends State<LoginScreen> {
                             child: customText(
                                 "Forgot your password?", 13, yellowColor)),
                       ),
-                      // Row(
-                      //   children: [
-                      //     Checkbox(
-                      //       value: _checkbox,
-                      //       checkColor: Colors.white,
-                      //       activeColor: Colors.purple,
-                      //       onChanged: (value) {
-                      //         setState(() {
-                      //           _checkbox = !_checkbox;
-                      //         });
-                      //       },
-                      //     ),
-                      //     const Text(
-                      //       'Remember me',
-                      //       style: TextStyle(
-                      //         fontSize: 15,
-                      //         color: Colors.white,
-                      //         fontWeight: FontWeight.normal,
-                      //       ),
-                      //     ),
-
-                      //     const SizedBox(width: 20), // give it width
-                      //     TextButton(
-                      //         onPressed: () {
-                      //           Navigator.of(context).push(MaterialPageRoute(
-                      //               builder: (context) =>
-                      //                   ForgetPasswordPage()));
-                      //         },
-                      //         child: customText(
-                      //             "Forgot your password?", 13, yellowColor)),
-                      //   ],
-                      //   mainAxisAlignment: MainAxisAlignment.center,
-                      // ),
                       const SizedBox(height: 50),
                       InkWell(
                         onTap: () {

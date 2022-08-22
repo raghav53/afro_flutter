@@ -56,50 +56,35 @@ class _ProfilePage extends State<ProfileSettingScreenPage> {
                     child: Column(
                   children: [
                     customHeightBox(50),
-                    GestureDetector(
+                    ListTile(
                       onTap: () {
                         Navigator.of(context).push(MaterialPageRoute(
                             builder: (context) => MyProfilePage()));
                       },
-                      child: Container(
-                        margin: EdgeInsets.only(top: 20),
-                        child: Row(
-                          children: [
-                            //Profile Image
-                            Container(
-                              margin: EdgeInsets.all(20),
-                              width: 60,
-                              height: 60,
-                              child: CachedNetworkImage(
-                                imageUrl: IMAGE_URL + imageURl.toString(),
-                                placeholder: (context, url) => CircleAvatar(
-                                    backgroundImage:
-                                        AssetImage("tom_cruise.jpeg")),
-                                imageBuilder: (context, image) => CircleAvatar(
-                                  backgroundImage: image,
-                                ),
-                              ),
-                            ),
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                customText(
-                                    fullName.toString(), 19, Colors.white),
-                                customText(
-                                    "View and Edit Profile", 16, Colors.white)
-                              ],
-                            ),
-                            Spacer(),
-                            IconButton(
-                                onPressed: () => {},
-                                icon: const Icon(
-                                  Icons.arrow_forward_ios_outlined,
-                                  color: Color(0xFFDFB48C),
-                                )),
-                          ],
+                      leading: Container(
+                        width: 60,
+                        height: 60,
+                        child: CachedNetworkImage(
+                          imageUrl: IMAGE_URL + imageURl.toString(),
+                          placeholder: (context, url) => CircleAvatar(
+                              backgroundImage: AssetImage("tom_cruise.jpeg")),
+                          imageBuilder: (context, image) => CircleAvatar(
+                            backgroundImage: image,
+                          ),
                         ),
                       ),
+                      title: customText(fullName.toString(), 19, Colors.white),
+                      subtitle:
+                          customText("View and Edit Profile", 16, Colors.white),
+                      trailing: IconButton(
+                          onPressed: () => {
+                                Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (context) => MyProfilePage()))
+                              },
+                          icon: const Icon(
+                            Icons.arrow_forward_ios_outlined,
+                            color: Color(0xFFDFB48C),
+                          )),
                     ),
                     Divider(
                       height: 10,
@@ -128,7 +113,7 @@ class _ProfilePage extends State<ProfileSettingScreenPage> {
               backgroundColor: Colors.transparent,
               elevation: 0.0,
               child: Container(
-                padding: EdgeInsets.all(20),
+                padding: const EdgeInsets.all(20),
                 decoration: BoxDecoration(
                     color: gray1, borderRadius: BorderRadius.circular(10)),
                 child: Column(mainAxisSize: MainAxisSize.min, children: [
@@ -144,7 +129,7 @@ class _ProfilePage extends State<ProfileSettingScreenPage> {
                           logoutTheUser();
                         },
                         child: Container(
-                          padding: EdgeInsets.only(
+                          padding: const EdgeInsets.only(
                               top: 10, bottom: 10, left: 25, right: 25),
                           decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(30),
@@ -159,7 +144,7 @@ class _ProfilePage extends State<ProfileSettingScreenPage> {
                           Navigator.pop(context);
                         },
                         child: Container(
-                          padding: EdgeInsets.only(
+                          padding: const EdgeInsets.only(
                               top: 10, bottom: 10, left: 25, right: 25),
                           decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(30),
@@ -243,12 +228,12 @@ class _ProfilePage extends State<ProfileSettingScreenPage> {
       //   builder: (context) => LoginScreen(),
       // ));
       Navigator.pushAndRemoveUntil(
-          context,
-          MaterialPageRoute(
-            builder: (BuildContext context) => LoginScreen(),
-          ),
-          (route) => false,
-        );
+        context,
+        MaterialPageRoute(
+          builder: (BuildContext context) => LoginScreen(),
+        ),
+        (route) => false,
+      );
     } else {
       Navigator.pop(context);
       customToastMsg(message);

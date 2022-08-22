@@ -27,17 +27,16 @@ class GroupPostCommentListPage extends StatefulWidget {
       _GroupPostCommentListPageState();
 }
 
-var user = UserDataConstants();
-final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
-Future<GroupPostAllCommentsModel>? _getPostComments;
-Future<GroupPostAllCommentsModel>? _getPostCommentsReplies;
-bool? replyComment = false;
-String? parentCommentId = "";
-FocusNode focusNode = FocusNode();
-TextEditingController comment = TextEditingController();
-String? replyCommentUserName = "";
-
 class _GroupPostCommentListPageState extends State<GroupPostCommentListPage> {
+  var user = UserDataConstants();
+  final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+  Future<GroupPostAllCommentsModel>? _getPostComments;
+  Future<GroupPostAllCommentsModel>? _getPostCommentsReplies;
+  bool? replyComment = false;
+  String? parentCommentId = "";
+  FocusNode focusNode = FocusNode();
+  TextEditingController comment = TextEditingController();
+  String? replyCommentUserName = "";
   @override
   void initState() {
     super.initState();
@@ -220,13 +219,9 @@ class _GroupPostCommentListPageState extends State<GroupPostCommentListPage> {
                                       ),
                                     ),
                                     Text(
-                                      dataTimeTextFormater(snapshot
-                                              .data!.data![index].createdAt
-                                              .toString())["date"] +
-                                          " at " +
-                                          dataTimeTextFormater(snapshot
-                                              .data!.data![index].createdAt
-                                              .toString())["time"],
+                                      getTimeFormat(snapshot
+                                          .data!.data![index].createdAt
+                                          .toString()),
                                       style: TextStyle(
                                         fontSize: 11,
                                         color: gray1,
@@ -387,6 +382,7 @@ class _GroupPostCommentListPageState extends State<GroupPostCommentListPage> {
       getCommentsReplies(parentCommentId.toString());
       parentCommentId = "";
       setState(() {
+        comment.clear();
         replyComment = false;
       });
       print(message);

@@ -182,8 +182,8 @@ class _UploadPhoto extends State<UploadPhotoPage> {
     if (res.statusCode == 200) {
       Navigator.pop(context);
       SaveStringToSF("newuser", "profileuploaded");
-      Navigator.push(
-          context, MaterialPageRoute(builder: (context) => SelectIntrest()));
+      Navigator.push(context,
+          MaterialPageRoute(builder: (context) => SelectIntrest(type: "")));
     } else {
       Navigator.pop(context);
       customToastMsg("Something gone wrong...");

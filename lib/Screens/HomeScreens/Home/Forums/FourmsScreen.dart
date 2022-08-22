@@ -69,8 +69,12 @@ class _ForumsPage extends State<ForumsScreenPage> {
       appBar: onlyTitleCommonAppbar("Forums"),
       floatingActionButton: GestureDetector(
         onTap: () {
-          Navigator.of(context).push(
-              MaterialPageRoute(builder: (context) => ForumsNewThreadPage()));
+          Navigator.of(context)
+              .push(MaterialPageRoute(
+                  builder: (context) => ForumsNewThreadPage()))
+              .then((value) {
+            setState(() {});
+          });
         },
         child: Container(
           height: 50,

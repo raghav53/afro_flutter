@@ -57,7 +57,7 @@ class _Location extends State<LocationPageScreen> {
         child: Scaffold(
       extendBodyBehindAppBar: true,
       resizeToAvoidBottomInset: false,
-      appBar: commonAppbar("Placed live in"),
+      appBar: commonAppbar("Places Lived In"),
       floatingActionButton: GestureDetector(
         onTap: () {
           dataMap.clear();

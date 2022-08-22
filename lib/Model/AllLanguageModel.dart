@@ -13,7 +13,7 @@ var user = UserDataConstants();
 final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
 
 //Get all language List
-Future<Language> getLanguagesList(BuildContext context) async {
+Future<AllLanguageModel> getLanguagesList(BuildContext context) async {
   showProgressDialogBox(context);
   SharedPreferences sharedPreferences = await _prefs;
   String token = sharedPreferences.getString(user.token).toString();
@@ -30,7 +30,7 @@ Future<Language> getLanguagesList(BuildContext context) async {
   if (response.statusCode == 200) {
     Navigator.pop(context);
     print("success");
-    return Language.fromJson(jsonDecode(response.body));
+    return AllLanguageModel.fromJson(jsonDecode(response.body));
   } else if (response.statusCode == 401) {
     customToastMsg("Unauthorized User!");
     clearAllDatabase(context);
@@ -42,16 +42,17 @@ Future<Language> getLanguagesList(BuildContext context) async {
   }
 }
 
-class Language {
+class AllLanguageModel {
   bool? success;
   int? code;
   String? message;
   List<Data>? data;
   Metadata? metadata;
 
-  Language({this.success, this.code, this.message, this.data, this.metadata});
+  AllLanguageModel(
+      {this.success, this.code, this.message, this.data, this.metadata});
 
-  Language.fromJson(Map<String, dynamic> json) {
+  AllLanguageModel.fromJson(Map<String, dynamic> json) {
     success = json['success'];
     code = json['code'];
     message = json['message'];

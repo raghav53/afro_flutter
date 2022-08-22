@@ -170,7 +170,9 @@ class _SplashScreen extends State<SplashScreenPage> {
             () => Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
-                    builder: (context) => const SelectIntrest())));
+                    builder: (context) => SelectIntrest(
+                          type: "",
+                        ))));
         return;
       }
       if (process.toString() == "interestupdated") {
@@ -179,7 +181,7 @@ class _SplashScreen extends State<SplashScreenPage> {
             () => Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
-                    builder: (context) => SelectLanguageScreenPage())));
+                    builder: (context) => SelectLanguageScreenPage(type: ""))));
         return;
       }
     }

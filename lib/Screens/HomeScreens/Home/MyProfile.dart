@@ -637,11 +637,14 @@ class _MyProffile extends State<MyProfilePage> {
     } else if (title == "language") {
       Navigator.of(context)
           .push(MaterialPageRoute(
-              builder: (context) => SelectLanguageScreenPage()))
+              builder: (context) => SelectLanguageScreenPage(type: "1")))
           .then((value) => refresh());
     } else if (title == "interest") {
       Navigator.of(context)
-          .push(MaterialPageRoute(builder: (context) => SelectIntrest()))
+          .push(MaterialPageRoute(
+              builder: (context) => SelectIntrest(
+                    type: "1",
+                  )))
           .then((value) => refresh());
     }
   }
