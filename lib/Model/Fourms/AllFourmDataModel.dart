@@ -1,9 +1,11 @@
+import 'package:afro/Model/MediaModel.dart';
+
 class AllFourmDataModel {
   String? sId;
   UserId? userId;
   String? title;
   String? question;
-  List<Media>? media;
+  List<MediaModel>? media;
   int? type;
   String? category;
   String? link;
@@ -47,9 +49,9 @@ class AllFourmDataModel {
     title = json['title'];
     question = json['question'];
     if (json['media'] != null) {
-      media = <Media>[];
+      media = <MediaModel>[];
       json['media'].forEach((v) {
-        media!.add(new Media.fromJson(v));
+        media!.add(new MediaModel.fromJson(v));
       });
     }
     type = json['type'];
@@ -150,24 +152,3 @@ class Metadata {
   }
 }
 
-class Media {
-  String? path;
-  String? type;
-  String? sId;
-
-  Media({this.path, this.type, this.sId});
-
-  Media.fromJson(Map<String, dynamic> json) {
-    path = json['path'];
-    type = json['type'];
-    sId = json['_id'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['path'] = this.path;
-    data['type'] = this.type;
-    data['_id'] = this.sId;
-    return data;
-  }
-}

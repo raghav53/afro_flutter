@@ -37,7 +37,6 @@ Future<EventDetailModel> getEventDetails(
   if (response.statusCode == 200) {
     Navigator.pop(context);
     print("Get event details api success");
-
     return EventDetailModel.fromJson(jsonDecode(response.body));
   } else if (response.statusCode == 401) {
     customToastMsg("Unauthorized User!");

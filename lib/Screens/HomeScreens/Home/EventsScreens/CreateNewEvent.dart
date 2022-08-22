@@ -5,6 +5,7 @@ import 'package:afro/Model/AllInterestsModel.dart';
 import 'package:afro/Network/Apis.dart';
 import 'package:afro/Screens/HomeScreens/Home/EventsScreens/AllEventsScreen.dart';
 import 'package:afro/Util/CommonMethods.dart';
+
 import 'package:http/http.dart' as http;
 import 'package:afro/Util/Colors.dart';
 import 'package:afro/Util/CommonUI.dart';
@@ -18,6 +19,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:http_parser/http_parser.dart';
 import 'package:mime/mime.dart';
+import 'package:omni_datetime_picker/omni_datetime_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class CreateNewEvent extends StatefulWidget {
@@ -27,35 +29,33 @@ class CreateNewEvent extends StatefulWidget {
   _CreateNewEventState createState() => _CreateNewEventState();
 }
 
-
 Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
 Future<AllInterestModel>? _getAllInterests;
 
 class _CreateNewEventState extends State<CreateNewEvent> {
-  
-String? privacyType = "Public";
-String? categoryTypeID = "";
-String? categoryTypeName = "";
-var items = [
-  'Public',
-  'Private',
-  'Secret',
-];
+  String? privacyType = "Public";
+  String? categoryTypeID = "";
+  String? categoryTypeName = "";
+  var items = [
+    'Public',
+    'Private',
+    'Secret',
+  ];
 
-String fromText = "000000000";
-String toText = "000000000";
+  String fromText = "000000000";
+  String toText = "000000000";
 
-String fromTextStartDate = "";
-String toTextEndDate = "";
-var imageFile = null;
-TextEditingController eventName = TextEditingController();
-TextEditingController eventLocationLink = TextEditingController();
-TextEditingController eventWebsite = TextEditingController();
-TextEditingController eventAbout = TextEditingController();
-TextEditingController eventTicketLink = TextEditingController();
-var type = ["In-Person", "Online"];
-var defaultValue = 1;
-var _selectedPrivacy = "1";
+  String fromTextStartDate = "";
+  String toTextEndDate = "";
+  var imageFile = null;
+  TextEditingController eventName = TextEditingController();
+  TextEditingController eventLocationLink = TextEditingController();
+  TextEditingController eventWebsite = TextEditingController();
+  TextEditingController eventAbout = TextEditingController();
+  TextEditingController eventTicketLink = TextEditingController();
+  var type = ["In-Person", "Online"];
+  var defaultValue = 1;
+  var _selectedPrivacy = "1";
   @override
   void initState() {
     super.initState();
@@ -334,7 +334,7 @@ var _selectedPrivacy = "1";
                             child: customText("Save", 15, white)),
                       ),
                     ),
-                    customHeightBox(50)
+                    customHeightBox(30),
                   ],
                 ),
               )
@@ -809,5 +809,30 @@ var _selectedPrivacy = "1";
     categoryTypeName = "";
     fromTextStartDate = "";
     toTextEndDate = "";
+  }
+
+  showDateTime() {
+    showOmniDateTimePicker(
+      context: context,
+      type: OmniDateTimePickerType.dateAndTime,
+      primaryColor: Colors.cyan,
+      backgroundColor: Colors.grey[900],
+      calendarTextColor: Colors.white,
+      tabTextColor: Colors.white,
+      unselectedTabBackgroundColor: Colors.grey[700],
+      buttonTextColor: Colors.white,
+      timeSpinnerTextStyle:
+          const TextStyle(color: Colors.white70, fontSize: 18),
+      timeSpinnerHighlightedTextStyle:
+          const TextStyle(color: Colors.white, fontSize: 24),
+      is24HourMode: false,
+      isShowSeconds: false,
+      startInitialDate: DateTime.now(),
+      startFirstDate: DateTime(1600).subtract(const Duration(days: 3652)),
+      startLastDate: DateTime.now().add(
+        const Duration(days: 3652),
+      ),
+      borderRadius: const Radius.circular(16),
+    );
   }
 }

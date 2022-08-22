@@ -7,13 +7,16 @@ import 'package:afro/Model/Fourms/ForumCategoryModel.dart';
 import 'package:afro/Model/Fourms/MyForumReplies/MyForumAllRepliesModel.dart';
 import 'package:afro/Model/Fourms/MyForumThread/MyForumThreadDataModel.dart';
 import 'package:afro/Model/Fourms/MyForumThread/MyForumThreadModel.dart';
+import 'package:afro/Model/MediaModel.dart';
 import 'package:afro/Network/Apis.dart';
 import 'package:afro/Screens/HomeScreens/Home/Forums/ForumsAllScreens/MyRepliesPage.dart';
 import 'package:afro/Screens/HomeScreens/Home/Forums/FourmDetailsPage.dart';
+import 'package:afro/Screens/VideoImageViewPage.dart';
 import 'package:afro/Util/Colors.dart';
 import 'package:afro/Util/CommonMethods.dart';
 import 'package:afro/Util/CommonUI.dart';
 import 'package:afro/Util/Constants.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:http/http.dart' as http;
 import 'package:afro/Util/CustomWidget.dart';
 import 'package:afro/Screens/HomeScreens/Home/Forums/ForumsNewThread.dart';
@@ -388,7 +391,10 @@ class _ForumsPage extends State<ForumsScreenPage> {
                             fourmId: snapshot.data![index].sId.toString(),
                           )));
                 },
-                child: fourmItem(snapshot.data![index]));
+                child: Container(
+                    margin: EdgeInsets.only(
+                        bottom: snapshot.data!.length - 1 == index ? 100 : 0),
+                    child: fourmItem(snapshot.data![index])));
           }),
     );
   }
@@ -479,6 +485,9 @@ class _ForumsPage extends State<ForumsScreenPage> {
               padding: const EdgeInsets.only(left: 5.0),
               child: customText(model.question.toString(), 15, white),
             ),
+            customHeightBox(15),
+            mediaWidget(model.media),
+            customHeightBox(15),
             Row(
               children: [
                 Spacer(),
@@ -780,9 +789,9 @@ class _ForumsPage extends State<ForumsScreenPage> {
                             15,
                             white),
                       ),
-                      customHeightBox(10),
-                      customDivider(1, white),
-                      customHeightBox(2),
+                      customHeightBox(15),
+                      mediaWidget(snapshot.data![index].media),
+                      customHeightBox(15),
                       customDivider(1, white),
                       customHeightBox(5),
                       Row(
@@ -1280,5 +1289,118 @@ class _ForumsPage extends State<ForumsScreenPage> {
       setState(() {});
       _getCategries!.whenComplete(() => {});
     });
+  }
+
+  //Media Widget for comment
+  mediaWidget(List<MediaModel>? data) {
+    int currentPos = 0;
+    return Container(
+        child: data!.isNotEmpty
+            ? Container(
+                padding: EdgeInsets.all(5),
+                child: Column(
+                  children: [
+                    CarouselSlider.builder(
+                      itemCount: data.length,
+                      itemBuilder: (BuildContext context, int itemIndex,
+                              int pageViewIndex) =>
+                          data[itemIndex].type == "image"
+                              ? InkWell(
+                                  onTap: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                VideoImageViewPage(
+                                                    url: IMAGE_URL +
+                                                        data[itemIndex]
+                                                            .path
+                                                            .toString(),
+                                                    type: 1)));
+                                  },
+                                  child: Container(
+                                    height: 150,
+                                    child: CachedNetworkImage(
+                                      imageUrl: IMAGE_URL +
+                                          data[itemIndex].path.toString(),
+                                      placeholder: (context, url) => const Icon(
+                                        Icons.person,
+                                        size: 50,
+                                      ),
+                                      imageBuilder: (context, image) {
+                                        return Container(
+                                            decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                          image: DecorationImage(
+                                            image: image,
+                                            fit: BoxFit.fitWidth,
+                                          ),
+                                        ));
+                                      },
+                                    ),
+                                  ),
+                                )
+                              : InkWell(
+                                  onTap: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                VideoImageViewPage(
+                                                    url: data[itemIndex]
+                                                        .path
+                                                        .toString(),
+                                                    type: 0)));
+                                  },
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(10),
+                                        color: white24),
+                                    child: Center(
+                                        child: Icon(
+                                      Icons.play_circle,
+                                      color: white,
+                                      size: 70,
+                                    )),
+                                  ),
+                                ),
+                      options: CarouselOptions(
+                        onPageChanged: (index, reason) {
+                          setState(() {
+                            currentPos = index;
+                          });
+                        },
+                        autoPlay: true,
+                        enlargeCenterPage: true,
+                        enableInfiniteScroll: false,
+                        viewportFraction: 0.9,
+                        aspectRatio: 2.0,
+                        initialPage: 2,
+                      ),
+                    ),
+                    customHeightBox(10),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: data.map((url) {
+                        int index = data.indexOf(url);
+                        return Container(
+                          width: 8.0,
+                          height: 8.0,
+                          margin: EdgeInsets.symmetric(
+                              vertical: 10.0, horizontal: 2.0),
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: currentPos == index
+                                ? Color.fromARGB(228, 218, 218, 218)
+                                : Color.fromRGBO(0, 0, 0, 0.4),
+                          ),
+                        );
+                      }).toList(),
+                    ),
+                  ],
+                ),
+              )
+            : null);
   }
 }

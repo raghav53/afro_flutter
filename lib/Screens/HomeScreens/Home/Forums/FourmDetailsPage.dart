@@ -166,13 +166,9 @@ class _FourmDetailsPageState extends State<FourmDetailsPage> {
                                         padding: const EdgeInsets.only(
                                             top: 10, right: 10),
                                         child: customText(
-                                            dataTimeTextFormater(snapshot
-                                                    .data!.data!.createdAt
-                                                    .toString())["date"] +
-                                                " at " +
-                                                dataTimeTextFormater(snapshot
-                                                    .data!.data!.createdAt
-                                                    .toString())["time"],
+                                            getTimeFormat(snapshot
+                                                .data!.data!.createdAt
+                                                .toString()),
                                             15,
                                             yellowColor),
                                       ),
@@ -523,12 +519,7 @@ class forumReplyTile extends StatelessWidget {
           children: [
             customText(model!.user!.fullName.toString(), 14, white),
             Spacer(),
-            customText(
-                dataTimeTextFormater(model!.createdAt!.toString())["date"] +
-                    " at " +
-                    dataTimeTextFormater(model!.createdAt.toString())["time"],
-                12,
-                white24),
+            customText(getTimeFormat(model!.createdAt.toString()), 12, white24),
           ],
         ),
         subtitle: Padding(

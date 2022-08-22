@@ -887,7 +887,9 @@ class _EventDetailsScreenPageState extends State<EventDetailsScreenPage> {
                               onTap: () {
                                 if (type == "going") {
                                   goingEvent(eventId);
-                                } else if (type == "interested") {}
+                                } else if (type == "interested") {
+                                  interestedEvent(eventId);
+                                }
                               },
                               child: Container(
                                 width: 100,
@@ -1014,6 +1016,7 @@ class _EventDetailsScreenPageState extends State<EventDetailsScreenPage> {
     if (response.statusCode == 200) {
       Navigator.pop(context);
       Navigator.pop(context);
+      getUpdatedDetails();
       print("Going event  api success");
     } else if (response.statusCode == 401) {
       customToastMsg("Unauthorized User!");
@@ -1031,7 +1034,7 @@ class _EventDetailsScreenPageState extends State<EventDetailsScreenPage> {
     showProgressDialogBox(context);
     SharedPreferences sharedPreferences = await _prefs;
     String token = sharedPreferences.getString(user.token).toString();
-    Map data = {"event_id": eventId, "is_going": true};
+    Map data = {"event_id": eventId, "is_going": "false"};
     print(token);
     var jsonResponse = null;
     var response = await http.post(Uri.parse(BASE_URL + "go_event"),
@@ -1045,6 +1048,8 @@ class _EventDetailsScreenPageState extends State<EventDetailsScreenPage> {
     var message = jsonResponse["message"];
     if (response.statusCode == 200) {
       Navigator.pop(context);
+      Navigator.pop(context);
+      getUpdatedDetails();
       print("Going event  api success");
     } else if (response.statusCode == 401) {
       customToastMsg("Unauthorized User!");
