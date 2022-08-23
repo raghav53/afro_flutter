@@ -9,6 +9,7 @@ import 'package:afro/Screens/HomeScreens/Home/EventsScreens/AllEventsScreen/Goin
 import 'package:afro/Screens/HomeScreens/Home/EventsScreens/AllEventsScreen/InterestedEventsScreen.dart';
 import 'package:afro/Screens/HomeScreens/Home/EventsScreens/AllEventsScreen/InvitedEventsScreen.dart';
 import 'package:afro/Screens/HomeScreens/Home/EventsScreens/AllEventsScreen/MyEventsScreen.dart';
+import 'package:afro/Screens/HomeScreens/Home/EventsScreens/EventDetails/EventsDetailsPage.dart';
 import 'package:afro/Util/Colors.dart';
 import 'package:afro/Util/Constants.dart';
 import 'package:afro/Util/CustomWidget.dart';
@@ -87,8 +88,9 @@ class _AllEventsScreenState extends State<AllEventsScreen> {
         appBar: onlyTitleCommonAppbar("Events"),
         floatingActionButton: GestureDetector(
           onTap: () {
-            Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) => const CreateNewEvent()));
+            Navigator.of(context)
+                .push(MaterialPageRoute(builder: (context) => CreateNewEvent()))
+                .then((value) => setState(() {}));
           },
           child: Container(
             height: 50,
@@ -872,6 +874,88 @@ class _AllEventsScreenState extends State<AllEventsScreen> {
                   );
           });
     }
+  }
+
+  //Discover events
+  DiscoverEventsScreen(BuildContext context, CommonEventsModel getAllEvents) {
+    return Container(
+      width: phoneWidth(context),
+      child: Column(
+        children: [
+          customHeightBox(20),
+          Container(
+              margin: EdgeInsets.only(left: 20, right: 20),
+              height: phoneHeight(context) / 1.5,
+              child: ListView.builder(
+                  padding: EdgeInsets.zero,
+                  shrinkWrap: true,
+                  itemCount: getAllEvents.data!.length,
+                  itemBuilder: (context, index) {
+                    return InkWell(
+                      onTap: () {
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => EventDetailsScreenPage(
+                                  eventId:
+                                      getAllEvents.data![index].sId.toString(),
+                                  userId: getAllEvents.data![index].userId,
+                                )));
+                      },
+                      child: Column(
+                        mainAxisAlignment: mStart,
+                        crossAxisAlignment: cStart,
+                        children: [
+                          CachedNetworkImage(
+                            imageUrl: IMAGE_URL +
+                                getAllEvents.data![index].coverImage.toString(),
+                            imageBuilder: (context, imageProvider) => Container(
+                              width: phoneWidth(context),
+                              height: 150.0,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                image: DecorationImage(
+                                    image: imageProvider, fit: BoxFit.cover),
+                              ),
+                            ),
+                            placeholder: (context, url) =>
+                                CircularProgressIndicator(),
+                            errorWidget: (context, url, error) =>
+                                Icon(Icons.error),
+                          ),
+                          customHeightBox(10),
+                          customText(getAllEvents.data![index].title.toString(),
+                              12, Colors.white),
+                          customHeightBox(5),
+                          customText(
+                            getAllEvents.data![index].totalInterested
+                                    .toString() +
+                                " Interested",
+                            11,
+                            const Color(0xff7822A0),
+                          ),
+                          customHeightBox(5),
+                          Row(
+                            children: [
+                              const Icon(
+                                Icons.location_pin,
+                                color: Color(0xFFDFB48C),
+                                size: 15,
+                              ),
+                              customWidthBox(5),
+                              customText(
+                                  getAllEvents.data![index].country!.title
+                                      .toString(),
+                                  12,
+                                  Colors.white)
+                            ],
+                          ),
+                          customHeightBox(30)
+                        ],
+                      ),
+                    );
+                  })),
+        ],
+      ),
+    );
   }
 
   getCountries() {

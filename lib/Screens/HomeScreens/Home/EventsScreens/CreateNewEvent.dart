@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:ffi';
 import 'dart:io';
 
 import 'package:afro/Model/AllInterestsModel.dart';
@@ -36,6 +37,7 @@ class _CreateNewEventState extends State<CreateNewEvent> {
   String? privacyType = "Public";
   String? categoryTypeID = "";
   String? categoryTypeName = "";
+  var tempTime = 0;
   var items = [
     'Public',
     'Private',
@@ -334,6 +336,12 @@ class _CreateNewEventState extends State<CreateNewEvent> {
                             child: customText("Save", 15, white)),
                       ),
                     ),
+
+                    // TextButton(
+                    //     onPressed: () {
+                    //       openTimeBottomSheet();
+                    //     },
+                    //     child: Text("Pick Time")),
                     customHeightBox(30),
                   ],
                 ),
@@ -572,6 +580,7 @@ class _CreateNewEventState extends State<CreateNewEvent> {
                         TextButton(
                             onPressed: () {
                               Navigator.pop(context);
+                              openTimeBottomSheet("from");
                             },
                             child: customText("Done", 14, circleColor))
                       ],
@@ -622,6 +631,90 @@ class _CreateNewEventState extends State<CreateNewEvent> {
                     ),
                   ],
                 ));
+          });
+        });
+  }
+
+  //time picker bottomsheet
+  void openTimeBottomSheet(String type) {
+    final now = new DateTime.now();
+    Duration initialtimer = Duration(
+        hours: int.parse(DateFormat('H').format(now).toString()),
+        minutes: int.parse(DateFormat('m').format(now).toString()));
+
+    showModalBottomSheet(
+        isDismissible: false,
+        backgroundColor: Colors.transparent,
+        context: context,
+        clipBehavior: Clip.antiAlias,
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(10.0),
+            topRight: Radius.circular(10.0),
+          ),
+        ),
+        builder: (context) {
+          return StatefulBuilder(builder: (context, state) {
+            return Container(
+              height: 300,
+              margin: EdgeInsets.only(top: 30),
+              decoration: commonBoxDecoration(),
+              child: Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: mCenter,
+                    crossAxisAlignment: cCenter,
+                    children: [
+                      Spacer(),
+                      Spacer(),
+                      customText("Pick Time", 15, white),
+                      Spacer(),
+                      customWidthBox(25),
+                      TextButton(
+                          onPressed: () {
+                            if (tempTime == 0) {
+                              customToastMsg("Please select time!");
+                              return;
+                            }
+                            if (type.contains("from")) {
+                              setState(() {
+                                fromText =
+                                    (int.parse(fromText) + tempTime).toString();
+                                print("fromDate------------------------" +
+                                    fromText);
+                                tempTime = 0;
+                              });
+                            }
+                            if (type.contains("to")) {
+                              setState(() {
+                                toText =
+                                    (int.parse(toText) + tempTime).toString();
+                                print(
+                                    "toDate------------------------" + toText);
+                                tempTime = 0;
+                              });
+                            }
+                            Navigator.pop(context);
+                          },
+                          child: customText("Done", 14, circleColor))
+                    ],
+                  ),
+                  customDivider(10, white),
+                  customHeightBox(10),
+                  CupertinoTimerPicker(
+                      minuteInterval: 1,
+                      secondInterval: 1,
+                      initialTimerDuration: initialtimer,
+                      mode: CupertinoTimerPickerMode.hm,
+                      onTimerDurationChanged: (onTimerDurationChanged) {
+                        state(() {
+                          tempTime = onTimerDurationChanged.inMilliseconds;
+                        });
+                        print(onTimerDurationChanged.inMilliseconds);
+                      }),
+                ],
+              ),
+            );
           });
         });
   }
@@ -809,30 +902,5 @@ class _CreateNewEventState extends State<CreateNewEvent> {
     categoryTypeName = "";
     fromTextStartDate = "";
     toTextEndDate = "";
-  }
-
-  showDateTime() {
-    showOmniDateTimePicker(
-      context: context,
-      type: OmniDateTimePickerType.dateAndTime,
-      primaryColor: Colors.cyan,
-      backgroundColor: Colors.grey[900],
-      calendarTextColor: Colors.white,
-      tabTextColor: Colors.white,
-      unselectedTabBackgroundColor: Colors.grey[700],
-      buttonTextColor: Colors.white,
-      timeSpinnerTextStyle:
-          const TextStyle(color: Colors.white70, fontSize: 18),
-      timeSpinnerHighlightedTextStyle:
-          const TextStyle(color: Colors.white, fontSize: 24),
-      is24HourMode: false,
-      isShowSeconds: false,
-      startInitialDate: DateTime.now(),
-      startFirstDate: DateTime(1600).subtract(const Duration(days: 3652)),
-      startLastDate: DateTime.now().add(
-        const Duration(days: 3652),
-      ),
-      borderRadius: const Radius.circular(16),
-    );
   }
 }

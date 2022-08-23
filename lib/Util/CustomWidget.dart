@@ -260,3 +260,16 @@ Future<String>? openCommonBottomSheet(BuildContext context) async {
       });
   return timeStamp;
 }
+
+void showInSnackBar(String value, BuildContext context) {
+  ScaffoldMessenger.of(context).showSnackBar(
+    SnackBar(
+      backgroundColor: Colors.red,
+      content: Text(
+        value,
+        style: const TextStyle(color: Colors.white),
+      ),
+      duration: const Duration(milliseconds: 3000),
+    ),
+  );
+}
