@@ -18,19 +18,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sizer/sizer.dart';
 
 Future<void> main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
-  await flutterLocalNotificationsPlugin
-      .resolvePlatformSpecificImplementation<
-          AndroidFlutterLocalNotificationsPlugin>()
-      ?.createNotificationChannel(channel);
-
-  await FirebaseMessaging.instance.setForegroundNotificationPresentationOptions(
-    alert: true,
-    badge: true,
-    sound: true,
-  );
-
   runApp(const MyApp());
 }
 
@@ -74,7 +61,7 @@ class _SplashScreen extends State<SplashScreenPage> {
   @override
   void initState() {
     super.initState();
-    LocalNotificationService.initialize(context);
+
     init();
     checkUserExist(context);
   }
@@ -92,7 +79,11 @@ class _SplashScreen extends State<SplashScreenPage> {
     ));
   }
 
-  init() {
+  init() async {
+    WidgetsFlutterBinding.ensureInitialized();
+    await Firebase.initializeApp();
+
+    LocalNotificationService.initialize(context);
     FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
 
     // 1. This method call when app in terminated state and you get a notification
@@ -100,16 +91,11 @@ class _SplashScreen extends State<SplashScreenPage> {
     FirebaseMessaging.instance.getInitialMessage().then(
       (message) {
         print("FirebaseMessaging- Terminated State");
-        if (message != null) {
-          print("Terminated_Notification-${message.data['_id']}");
-          if (message.data['section'] != null) {
-            Navigator.of(context).push(
-              MaterialPageRoute(
-                builder: (context) => NotificationScreenPage(),
-              ),
-            );
-          }
-        }
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (context) => NotificationScreenPage(),
+          ),
+        );
       },
     );
     // 2. This method only call when App in forground it mean app must be opened
@@ -120,6 +106,12 @@ class _SplashScreen extends State<SplashScreenPage> {
         // print(message.notification!.title);
         //  print(message.notification!.body);
         LocalNotificationService.createanddisplaynotification(message);
+
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (context) => NotificationScreenPage(),
+          ),
+        );
         //  }
       },
     );
@@ -127,11 +119,14 @@ class _SplashScreen extends State<SplashScreenPage> {
     // 3. This method only call when App in background and not terminated(not closed)
     FirebaseMessaging.onMessageOpenedApp.listen(
       (message) {
+        LocalNotificationService.createanddisplaynotification(message);
         print("FirebaseMessaging-Background State");
-        if (message != null) {
-          print("message.data11 ${message.data}");
-          //LocalNotificationService.createanddisplaynotification(message);
-        }
+        print("message.data11 ${message.data}");
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (context) => NotificationScreenPage(),
+          ),
+        );
       },
     );
   }
@@ -209,3 +204,16 @@ class _SplashScreen extends State<SplashScreenPage> {
     LocalNotificationService.createanddisplaynotification(message);
   }
 }
+/**
+ *     await flutterLocalNotificationsPlugin
+        .resolvePlatformSpecificImplementation<
+            AndroidFlutterLocalNotificationsPlugin>()
+        ?.createNotificationChannel(channel);
+
+    await FirebaseMessaging.instance
+        .setForegroundNotificationPresentationOptions(
+      alert: true,
+      badge: true,
+      sound: true,
+    );
+ */

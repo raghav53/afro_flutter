@@ -1,10 +1,8 @@
 import 'package:afro/Model/MyProfile/FollowerData.dart';
-import 'package:afro/Model/MyProfile/FollowingData.dart';
-import 'dart:convert';
 
-import 'package:afro/Model/MyProfile/FollowingModel.dart';
+import 'dart:convert';
 import 'package:afro/Network/Apis.dart';
-import 'package:afro/Screens/OnBoardingScreen/FirstOnBoard.dart';
+
 import 'package:afro/Util/CommonMethods.dart';
 import 'package:afro/Util/CommonUI.dart';
 import 'package:afro/Util/Constants.dart';
@@ -16,7 +14,8 @@ import 'package:http/http.dart' as http;
 var user = UserDataConstants();
 final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
 
-Future<FollowerModel> getAllFollowerUsers(BuildContext context) async {
+Future<FollowerModel> getAllFollowerUsers(BuildContext context,
+    {String search = "", String page = "1", String limit = "100"}) async {
   showProgressDialogBox(context);
   SharedPreferences sharedPreferences = await _prefs;
   String token = sharedPreferences.getString(user.token).toString();
@@ -24,11 +23,13 @@ Future<FollowerModel> getAllFollowerUsers(BuildContext context) async {
   print(token);
   var jsonResponse = null;
 
-  var response = await http
-      .get(Uri.parse(BASE_URL + "follows?user_id=$userId&type=0"), headers: {
-    'api-key': API_KEY,
-    'x-access-token': token,
-  });
+  var response = await http.get(
+      Uri.parse(BASE_URL +
+          "follows?user_id=$userId&type=0&page=$page&limit=$limit&search=$search"),
+      headers: {
+        'api-key': API_KEY,
+        'x-access-token': token,
+      });
   print(response.body);
   jsonResponse = json.decode(response.body);
   var message = jsonResponse["message"];

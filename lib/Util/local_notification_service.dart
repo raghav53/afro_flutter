@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:afro/Model/NotificationPojo.dart';
+import 'package:afro/Screens/HomeScreens/Home/NotificationScreen.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -18,9 +19,7 @@ class LocalNotificationService {
 
     _notificationsPlugin.initialize(
       initializationSettings,
-      onSelectNotification: (String? id) async {
-        print("onSelectNotification-$id");
-      },
+      onSelectNotification: (String? payload) async {},
     );
   }
 
