@@ -25,12 +25,13 @@ Future<FollowingModel>? _getFollowingUsers;
 Future<SharedPreferences> _pref = SharedPreferences.getInstance();
 
 class _FollowingTabState extends State<FollowingTab> {
+  var search = "";
   @override
   void initState() {
     super.initState();
     print("Init State");
     Future.delayed(Duration.zero, () {
-      _getFollowingUsers = getAllFollowingUsers(context);
+      _getFollowingUsers = getAllFollowingUsers(context, isShow: false);
       setState(() {});
       _getFollowingUsers!.whenComplete(() => () {});
     });
@@ -40,7 +41,7 @@ class _FollowingTabState extends State<FollowingTab> {
   updateUSerData() {
     setState(() {
       Future.delayed(Duration.zero, () {
-        _getFollowingUsers = getAllFollowingUsers(context);
+        _getFollowingUsers = getAllFollowingUsers(context, isShow: false);
         setState(() {});
         _getFollowingUsers!.whenComplete(() => () {});
       });
@@ -49,126 +50,175 @@ class _FollowingTabState extends State<FollowingTab> {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<FollowingModel>(
-        future: _getFollowingUsers,
-        builder: (context, snaapshot) {
-          return snaapshot.hasData && snaapshot.data!.data!.isNotEmpty
-              ? Container(
-                  margin: const EdgeInsets.only(left: 25, right: 25),
-                  decoration: const BoxDecoration(
-                      borderRadius: BorderRadius.all(Radius.circular(20)),
-                      color: Color(0XFF121220)),
-                  child: ListView.builder(
-                    shrinkWrap: true,
-                    padding: EdgeInsets.zero,
-                    itemCount: snaapshot.data!.data!.length,
-                    itemBuilder: (context, index) {
-                      String? userFullName = snaapshot
-                          .data!.data![index].user!.fullName
-                          .toString();
-
-                      String? userId =
-                          snaapshot.data!.data![index].user!.sId!.toString();
-
-                      String? userImage = IMAGE_URL +
-                          snaapshot.data!.data![index].user!.profileImage
-                              .toString();
-
-                      String? cName = snaapshot
-                          .data!.data![index].user!.country![0].title
-                          .toString();
-                      return InkWell(
-                        onTap: () {
-                          print(userId);
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                      OtherUserProfilePageScreen(
-                                        name: userFullName,
-                                        userID: userId.toString(),
-                                      )));
-                        },
-                        child: Container(
-                          margin: EdgeInsets.all(7),
-                          decoration: const BoxDecoration(
-                            borderRadius: BorderRadius.all(Radius.circular(5)),
-                            color: Color(0xFF191831),
-                          ),
-                          child: Container(
-                            width: phoneWidth(context),
-                            margin: EdgeInsets.all(10),
-                            child: Row(
-                              children: [
-                                CachedNetworkImage(
-                                  errorWidget: (context, url, error) => Icon(
-                                    Icons.person,
-                                    size: 40,
-                                  ),
-                                  placeholder: (context, image) =>
-                                      Icon(Icons.person),
-                                  imageBuilder: (context, image) =>
-                                      CircleAvatar(
-                                    backgroundImage: image,
-                                  ),
-                                  imageUrl: IMAGE_URL +
-                                      snaapshot
-                                          .data!.data![index].user!.profileImage
-                                          .toString(),
-                                ),
-                                customWidthBox(10),
-                                Column(
-                                  crossAxisAlignment: cStart,
-                                  children: [
-                                    customText(userFullName, 13, Colors.white),
-                                    customHeightBox(5),
-                                    Row(
-                                      children: [
-                                        Icon(
-                                          Icons.location_pin,
-                                          color: yellowColor,
-                                          size: 12,
-                                        ),
-                                        customWidthBox(5),
-                                        customText(cName, 12, white)
-                                      ],
-                                    ),
-                                    customHeightBox(5),
-                                    customText("Share 2 Mutual friend", 12,
-                                        Color(0x3dFFFFFF)),
-                                  ],
-                                ),
-                                Spacer(),
-                                InkWell(
-                                  onTap: () {
-                                    unfollow(snaapshot
-                                        .data!.data![index].user!.sId
-                                        .toString());
-                                  },
-                                  child: Container(
-                                    decoration: fixedButtonDesign(),
-                                    child: Container(
-                                        padding: const EdgeInsets.only(
-                                            top: 10,
-                                            left: 20,
-                                            right: 20,
-                                            bottom: 10),
-                                        child: customText(
-                                            "UnFollow", 12, Colors.white)),
-                                  ),
-                                )
-                              ],
-                            ),
-                          ),
-                        ),
-                      );
+    return Scaffold(
+      backgroundColor: Colors.transparent,
+      body: Column(
+        children: [
+          Container(
+            margin: const EdgeInsets.only(left: 30, right: 40),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                customHeightBox(10),
+                Container(
+                  alignment: Alignment.centerLeft,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      boxShadow: const [
+                        BoxShadow(color: Colors.black, offset: Offset(0, 2))
+                      ]),
+                  height: 50,
+                  child: TextField(
+                    onChanged: (value) {
+                      setState(() {
+                        search = value.toString();
+                      });
                     },
+                    keyboardType: TextInputType.text,
+                    style: const TextStyle(fontSize: 14, color: Colors.white),
+                    decoration: const InputDecoration(
+                        prefixIcon: Icon(
+                          Icons.search,
+                          color: Color(0xFFDFB48C),
+                        ),
+                        border: InputBorder.none,
+                        hintText: "Search",
+                        contentPadding: EdgeInsets.only(left: 15, top: 15),
+                        hintStyle: TextStyle(color: Colors.white24)),
                   ),
-                )
-              : Center(
-                  child: customText("No data found", 15, white),
-                );
-        });
+                ),
+              ],
+            ),
+          ),
+          customHeightBox(20),
+          FutureBuilder<FollowingModel>(
+              future:
+                  getAllFollowingUsers(context, isShow: false, search: search),
+              builder: (context, snaapshot) {
+                return snaapshot.hasData && snaapshot.data!.data!.isNotEmpty
+                    ? Container(
+                        margin: const EdgeInsets.only(left: 25, right: 25),
+                        decoration: const BoxDecoration(
+                          borderRadius: BorderRadius.all(Radius.circular(20)),
+                        ),
+                        child: ListView.builder(
+                          shrinkWrap: true,
+                          padding: EdgeInsets.zero,
+                          itemCount: snaapshot.data!.data!.length,
+                          itemBuilder: (context, index) {
+                            String? userFullName = snaapshot
+                                .data!.data![index].user!.fullName
+                                .toString();
+
+                            String? userId = snaapshot
+                                .data!.data![index].user!.sId!
+                                .toString();
+
+                            String? userImage = IMAGE_URL +
+                                snaapshot.data!.data![index].user!.profileImage
+                                    .toString();
+
+                            String? cName = snaapshot
+                                .data!.data![index].user!.country![0].title
+                                .toString();
+                            return InkWell(
+                              onTap: () {
+                                print(userId);
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            OtherUserProfilePageScreen(
+                                              name: userFullName,
+                                              userID: userId.toString(),
+                                            )));
+                              },
+                              child: Container(
+                                margin: EdgeInsets.all(7),
+                                decoration: const BoxDecoration(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(5)),
+                                  color: Color(0xFF191831),
+                                ),
+                                child: Container(
+                                  width: phoneWidth(context),
+                                  margin: EdgeInsets.all(10),
+                                  child: Row(
+                                    children: [
+                                      CachedNetworkImage(
+                                        errorWidget: (context, url, error) =>
+                                            const Icon(
+                                          Icons.person,
+                                          size: 40,
+                                        ),
+                                        placeholder: (context, image) =>
+                                            Icon(Icons.person),
+                                        imageBuilder: (context, image) =>
+                                            CircleAvatar(
+                                          backgroundImage: image,
+                                        ),
+                                        imageUrl: IMAGE_URL +
+                                            snaapshot.data!.data![index].user!
+                                                .profileImage
+                                                .toString(),
+                                      ),
+                                      customWidthBox(10),
+                                      Column(
+                                        crossAxisAlignment: cStart,
+                                        children: [
+                                          customText(
+                                              userFullName, 13, Colors.white),
+                                          customHeightBox(5),
+                                          Row(
+                                            children: [
+                                              Icon(
+                                                Icons.location_pin,
+                                                color: yellowColor,
+                                                size: 12,
+                                              ),
+                                              customWidthBox(5),
+                                              customText(cName, 12, white)
+                                            ],
+                                          ),
+                                          customHeightBox(5),
+                                          customText("Share 2 Mutual friend",
+                                              12, Color(0x3dFFFFFF)),
+                                        ],
+                                      ),
+                                      Spacer(),
+                                      InkWell(
+                                        onTap: () {
+                                          unfollow(snaapshot
+                                              .data!.data![index].user!.sId
+                                              .toString());
+                                        },
+                                        child: Container(
+                                          decoration: fixedButtonDesign(),
+                                          child: Container(
+                                              padding: const EdgeInsets.only(
+                                                  top: 10,
+                                                  left: 20,
+                                                  right: 20,
+                                                  bottom: 10),
+                                              child: customText("UnFollow", 12,
+                                                  Colors.white)),
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            );
+                          },
+                        ),
+                      )
+                    : Center(
+                        child: customText("No data found", 15, white),
+                      );
+              }),
+        ],
+      ),
+    );
   }
 
   Future<void> unfollow(String userId) async {

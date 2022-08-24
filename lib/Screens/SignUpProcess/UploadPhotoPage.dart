@@ -58,16 +58,16 @@ class _UploadPhoto extends State<UploadPhotoPage> {
                           Colors.white24),
                       customHeightBox(50),
                       Container(
-                          height: 400,
-                          width: phoneWidth(context),
+                          height: phoneHeight(context) / 3,
+                          width: phoneWidth(context) / 1.5,
                           decoration: const BoxDecoration(
                               image: DecorationImage(
                                   fit: BoxFit.fill,
                                   image: AssetImage("upload_img_logo.png"))),
                           child: Padding(
-                            padding: EdgeInsets.all(100),
+                            padding: EdgeInsets.all(50),
                             child: ClipRRect(
-                              borderRadius: BorderRadius.circular(100),
+                              borderRadius: BorderRadius.circular(200),
                               child: imageFile.isNotEmpty
                                   ? Image.file(
                                       File(imageFile),
@@ -215,56 +215,6 @@ class _UploadPhoto extends State<UploadPhotoPage> {
       pickImage(ImageSource.gallery);
     }
   }
-
-  // //Check contacts permission
-  // Future<PermissionStatus> _getCameraPermission() async {
-  //   final PermissionStatus permission = await Permission.camera.status;
-  //   if (permission != PermissionStatus.granted &&
-  //       permission != PermissionStatus.denied) {
-  //     final Map<Permission, PermissionStatus> permissionStatus =
-  //         await [Permission.camera].request();
-  //     return permissionStatus[Permission.camera] ?? PermissionStatus.restricted;
-  //   } else {
-  //     return permission;
-  //   }
-  // }
-
-  // //Check contacts permission
-  // Future<PermissionStatus> _getStoragePermission() async {
-  //   final PermissionStatus permission = await Permission.storage.status;
-  //   if (permission != PermissionStatus.granted &&
-  //       permission != PermissionStatus.denied) {
-  //     final Map<Permission, PermissionStatus> permissionStatus =
-  //         await [Permission.storage].request();
-  //     return permissionStatus[Permission.storage] ??
-  //         PermissionStatus.restricted;
-  //   } else {
-  //     return permission;
-  //   }
-  // }
-
-  // getPer() async {
-  //   _getCameraPermission();
-  //   _getStoragePermission();
-  //   final PermissionStatus permissionCameraStatus =
-  //       await _getCameraPermission();
-  //   final PermissionStatus permissionStorageStatus =
-  //       await _getStoragePermission();
-  //   if (permissionCameraStatus == PermissionStatus.granted) {
-  //     setState(() {
-  //       cameraGranted = true;
-  //     });
-  //   } else if (permissionStorageStatus == PermissionStatus.granted) {
-  //     setState(() {
-  //       storageGranted = true;
-  //     });
-  //   } else {
-  //     setState(() {
-  //       cameraGranted = false;
-  //       storageGranted = false;
-  //     });
-  //   }
-  // }
 
   checkpermission_opencamera() async {
     var cameraStatus = await Permission.camera.status;

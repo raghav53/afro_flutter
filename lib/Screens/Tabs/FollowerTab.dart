@@ -57,8 +57,8 @@ class _FollowerTabState extends State<FollowerTab> {
               ? Container(
                   margin: const EdgeInsets.only(left: 25, right: 25),
                   decoration: const BoxDecoration(
-                      borderRadius: BorderRadius.all(Radius.circular(20)),
-                      color: Color(0XFF121220)),
+                    borderRadius: BorderRadius.all(Radius.circular(20)),
+                  ),
                   child: ListView.builder(
                     shrinkWrap: true,
                     padding: EdgeInsets.zero,

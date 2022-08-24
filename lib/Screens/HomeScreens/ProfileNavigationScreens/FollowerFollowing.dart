@@ -78,7 +78,7 @@ class _FollowerFollowing extends State<FollowerFollowingPage>
                         borderRadius: BorderRadius.circular(45),
                       ),
                       controller: tabController,
-                      tabs: [
+                      tabs: const [
                         Tab(
                           height: 30,
                           text: 'Following',
@@ -93,40 +93,6 @@ class _FollowerFollowing extends State<FollowerFollowingPage>
                 ),
               ),
               customWidthBox(20),
-              Container(
-                margin: EdgeInsets.only(left: 30, right: 40),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    customHeightBox(10),
-                    Container(
-                      alignment: Alignment.centerLeft,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          boxShadow: const [
-                            BoxShadow(color: Colors.black, offset: Offset(0, 2))
-                          ]),
-                      height: 50,
-                      child: TextField(
-                        keyboardType: TextInputType.text,
-                        style:
-                            const TextStyle(fontSize: 14, color: Colors.white),
-                        decoration: InputDecoration(
-                            prefixIcon: Icon(
-                              Icons.search,
-                              color: Color(0xFFDFB48C),
-                            ),
-                            border: InputBorder.none,
-                            hintText: "Search",
-                            contentPadding:
-                                const EdgeInsets.only(left: 15, top: 15),
-                            hintStyle: const TextStyle(color: Colors.white24)),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              customHeightBox(20),
               Expanded(
                 child: TabBarView(
                   controller: tabController,

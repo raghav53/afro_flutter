@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'package:afro/Model/UserProfileModel.dart';
 import 'package:afro/Screens/Authentication/SignInPage2.dart';
 import 'package:afro/Screens/HomeScreens/Home/Contacts/AllContactsScreen.dart';
 import 'package:afro/Screens/HomeScreens/Home/MembershipScreenPage.dart';
@@ -12,6 +13,7 @@ import 'package:afro/Util/CustomWidgetAttributes.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:loading_indicator/loading_indicator.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../Network/Apis.dart';
 import '../../../Util/Colors.dart';
@@ -27,21 +29,6 @@ UserDataConstants user = UserDataConstants();
 class _ProfilePage extends State<ProfileSettingScreenPage> {
   final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
   @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    getUserData();
-  }
-
-  getUserData() async {
-    SharedPreferences sharedPreferences = await _prefs;
-    fullName = sharedPreferences.getString(user.fullName);
-    imageURl = sharedPreferences.getString(user.profileImage);
-    print(imageURl);
-    setState(() {});
-  }
-
-  @override
   Widget build(BuildContext context) {
     return SafeArea(
         child: Scaffold(
@@ -52,56 +39,90 @@ class _ProfilePage extends State<ProfileSettingScreenPage> {
                 height: phoneHeight(context),
                 width: phoneWidth(context),
                 decoration: commonBoxDecoration(),
-                child: SingleChildScrollView(
-                    child: Column(
-                  children: [
-                    customHeightBox(50),
-                    ListTile(
-                      onTap: () {
-                        Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => MyProfilePage()));
-                      },
-                      leading: Container(
-                        width: 60,
-                        height: 60,
-                        child: CachedNetworkImage(
-                          imageUrl: IMAGE_URL + imageURl.toString(),
-                          placeholder: (context, url) => CircleAvatar(
-                              backgroundImage: AssetImage("tom_cruise.jpeg")),
-                          imageBuilder: (context, image) => CircleAvatar(
-                            backgroundImage: image,
-                          ),
-                        ),
-                      ),
-                      title: customText(fullName.toString(), 19, Colors.white),
-                      subtitle:
-                          customText("View and Edit Profile", 16, Colors.white),
-                      trailing: IconButton(
-                          onPressed: () => {
-                                Navigator.of(context).push(MaterialPageRoute(
-                                    builder: (context) => MyProfilePage()))
-                              },
-                          icon: const Icon(
-                            Icons.arrow_forward_ios_outlined,
-                            color: Color(0xFFDFB48C),
-                          )),
-                    ),
-                    Divider(
-                      height: 10,
-                      color: Colors.white,
-                    ),
-                    listItemButton("Membership", context),
-                    customDivider(10, Colors.white),
-                    listItemButton("Contacts", context),
-                    customDivider(10, Colors.white),
-                    listItemButton("Send Feedback", context),
-                    customDivider(10, Colors.white),
-                    listItemButton("Settings", context),
-                    customDivider(10, Colors.white),
-                    listItemButton("Logout", context),
-                    customDivider(10, Colors.white),
-                  ],
-                )))));
+                child: FutureBuilder<UserProfile>(
+                  future: getUserProfileinfo(context, userID.toString()),
+                  builder: (context, snapshot) {
+                    return snapshot.hasData
+                        ? SingleChildScrollView(
+                            child: Column(
+                            children: [
+                              customHeightBox(50),
+                              ListTile(
+                                onTap: () {
+                                  Navigator.of(context)
+                                      .push(MaterialPageRoute(
+                                          builder: (context) =>
+                                              MyProfilePage()))
+                                      .then((value) => {setState(() {})});
+                                },
+                                leading: Container(
+                                  width: 60,
+                                  height: 60,
+                                  child: CachedNetworkImage(
+                                    imageUrl: IMAGE_URL +
+                                        snapshot.data!.data!.profileImage
+                                            .toString(),
+                                    placeholder: (context, url) =>
+                                        const CircleAvatar(
+                                            backgroundImage:
+                                                AssetImage("tom_cruise.jpeg")),
+                                    imageBuilder: (context, image) =>
+                                        CircleAvatar(
+                                      backgroundImage: image,
+                                    ),
+                                  ),
+                                ),
+                                title: customText(
+                                    snapshot.data!.data!.fullName.toString(),
+                                    19,
+                                    Colors.white),
+                                subtitle: customText(
+                                    "View and Edit Profile", 16, Colors.white),
+                                trailing: IconButton(
+                                    onPressed: () => {
+                                          Navigator.of(context).push(
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      MyProfilePage()))
+                                        },
+                                    icon: const Icon(
+                                      Icons.arrow_forward_ios_outlined,
+                                      color: Color(0xFFDFB48C),
+                                    )),
+                              ),
+                              const Divider(
+                                height: 10,
+                                color: Colors.white,
+                              ),
+                              listItemButton("Membership", context),
+                              customDivider(10, Colors.white),
+                              listItemButton("Contacts", context),
+                              customDivider(10, Colors.white),
+                              listItemButton("Send Feedback", context),
+                              customDivider(10, Colors.white),
+                              listItemButton("Settings", context),
+                              customDivider(10, Colors.white),
+                              listItemButton("Logout", context),
+                              customDivider(10, Colors.white),
+                            ],
+                          ))
+                        : Center(
+                            child: Container(
+                              height: 50,
+                              width: 50,
+                              child: const LoadingIndicator(
+                                  indicatorType: Indicator.ballClipRotate,
+                                  colors: [
+                                    Colors.white,
+                                    Colors.black,
+                                    Colors.yellow,
+                                  ],
+                                  strokeWidth: 1,
+                                  pathBackgroundColor: Colors.black),
+                            ),
+                          );
+                  },
+                ))));
   }
 
   //Show Logout dialog box
@@ -209,6 +230,7 @@ class _ProfilePage extends State<ProfileSettingScreenPage> {
     }
   }
 
+  //Logout the user api
   Future<void> logoutTheUser() async {
     showProgressDialogBox(context);
     SharedPreferences sharedPreferences = await _prefs;
@@ -224,9 +246,6 @@ class _ProfilePage extends State<ProfileSettingScreenPage> {
       SharedPreferences preferences = await SharedPreferences.getInstance();
       await preferences.clear();
       Navigator.pop(context);
-      // Navigator.of(context).pushReplacement(MaterialPageRoute(
-      //   builder: (context) => LoginScreen(),
-      // ));
       Navigator.pushAndRemoveUntil(
         context,
         MaterialPageRoute(

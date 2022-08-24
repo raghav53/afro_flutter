@@ -29,55 +29,60 @@ MyEventsScreenState(BuildContext context, UsersEventsModel eventData) {
                                     .toString(),
                               )));
                     },
-                    child: Column(
-                      mainAxisAlignment: mStart,
-                      crossAxisAlignment: cStart,
-                      children: [
-                        CachedNetworkImage(
-                          imageUrl: IMAGE_URL +
-                              eventData.data![index].coverImage.toString(),
-                          imageBuilder: (context, imageProvider) => Container(
-                            width: phoneWidth(context),
-                            height: 150.0,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              image: DecorationImage(
-                                  image: imageProvider, fit: BoxFit.cover),
+                    child: Container(
+                      margin: EdgeInsets.only(
+                          bottom:
+                              eventData.data!.length - 1 == index ? 100 : 0),
+                      child: Column(
+                        mainAxisAlignment: mStart,
+                        crossAxisAlignment: cStart,
+                        children: [
+                          CachedNetworkImage(
+                            imageUrl: IMAGE_URL +
+                                eventData.data![index].coverImage.toString(),
+                            imageBuilder: (context, imageProvider) => Container(
+                              width: phoneWidth(context),
+                              height: 150.0,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                image: DecorationImage(
+                                    image: imageProvider, fit: BoxFit.cover),
+                              ),
                             ),
+                            placeholder: (context, url) =>
+                                CircularProgressIndicator(),
+                            errorWidget: (context, url, error) =>
+                                Icon(Icons.error),
                           ),
-                          placeholder: (context, url) =>
-                              CircularProgressIndicator(),
-                          errorWidget: (context, url, error) =>
-                              Icon(Icons.error),
-                        ),
-                        customHeightBox(10),
-                        customText(eventData.data![index].title.toString(), 12,
-                            Colors.white),
-                        customHeightBox(5),
-                        customText(
-                          eventData.data![index].totalInterested.toString() +
-                              " Interested",
-                          11,
-                          const Color(0xff7822A0),
-                        ),
-                        customHeightBox(5),
-                        Row(
-                          children: [
-                            const Icon(
-                              Icons.location_pin,
-                              color: Color(0xFFDFB48C),
-                              size: 15,
-                            ),
-                            customWidthBox(5),
-                            customText(
-                                eventData.data![index].country!.title
-                                    .toString(),
-                                12,
-                                Colors.white)
-                          ],
-                        ),
-                        customHeightBox(30)
-                      ],
+                          customHeightBox(10),
+                          customText(eventData.data![index].title.toString(),
+                              12, Colors.white),
+                          customHeightBox(5),
+                          customText(
+                            eventData.data![index].totalInterested.toString() +
+                                " Interested",
+                            11,
+                            const Color(0xff7822A0),
+                          ),
+                          customHeightBox(5),
+                          Row(
+                            children: [
+                              const Icon(
+                                Icons.location_pin,
+                                color: Color(0xFFDFB48C),
+                                size: 15,
+                              ),
+                              customWidthBox(5),
+                              customText(
+                                  eventData.data![index].country!.title
+                                      .toString(),
+                                  12,
+                                  Colors.white)
+                            ],
+                          ),
+                          customHeightBox(30)
+                        ],
+                      ),
                     ),
                   );
                 })),

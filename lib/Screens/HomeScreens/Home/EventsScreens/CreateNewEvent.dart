@@ -580,7 +580,7 @@ class _CreateNewEventState extends State<CreateNewEvent> {
                         TextButton(
                             onPressed: () {
                               Navigator.pop(context);
-                              openTimeBottomSheet("from");
+                              openTimeBottomSheet(type);
                             },
                             child: customText("Done", 14, circleColor))
                       ],
@@ -682,7 +682,6 @@ class _CreateNewEventState extends State<CreateNewEvent> {
                                     (int.parse(fromText) + tempTime).toString();
                                 print("fromDate------------------------" +
                                     fromText);
-                                tempTime = 0;
                               });
                             }
                             if (type.contains("to")) {
@@ -691,7 +690,6 @@ class _CreateNewEventState extends State<CreateNewEvent> {
                                     (int.parse(toText) + tempTime).toString();
                                 print(
                                     "toDate------------------------" + toText);
-                                tempTime = 0;
                               });
                             }
                             Navigator.pop(context);
@@ -723,6 +721,8 @@ class _CreateNewEventState extends State<CreateNewEvent> {
     int fromTime = int.parse(fromText);
     int toTime = int.parse(toText);
     if (toTime <= fromTime) {
+      print("From text:-" + fromText);
+      print("To text:-" + toText);
       customToastMsg("Please select another end date!");
       return;
     }
@@ -762,6 +762,8 @@ class _CreateNewEventState extends State<CreateNewEvent> {
       customToastMsg("Please select the image of event");
       return;
     }
+    print(fromText);
+    print(toText);
     showProgressDialogBox(context);
     SharedPreferences sharedPreferences = await _prefs;
     String? token = sharedPreferences.getString("token");

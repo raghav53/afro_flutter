@@ -13,46 +13,9 @@ class ForgetPasswordPage extends StatefulWidget {
   _ForgetPassword createState() => _ForgetPassword();
 }
 
-TextEditingController Emailcontroller = new TextEditingController();
-
-Widget BuildEmailTextField() {
-  return Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: <Widget>[
-      const Text(
-        "Your Email",
-        style: TextStyle(
-            color: Colors.white, fontSize: 16, fontWeight: FontWeight.w500),
-      ),
-      const SizedBox(
-        height: 10,
-      ),
-      Container(
-        alignment: Alignment.centerLeft,
-        decoration: BoxDecoration(
-            color: Colors.black,
-            borderRadius: BorderRadius.circular(10),
-            boxShadow: const [
-              BoxShadow(
-                  color: Colors.black26, blurRadius: 6, offset: Offset(0, 2))
-            ]),
-        height: 50,
-        child: TextField(
-          controller: Emailcontroller,
-          keyboardType: TextInputType.emailAddress,
-          style: const TextStyle(fontSize: 14, color: Colors.white),
-          decoration: const InputDecoration(
-              border: InputBorder.none,
-              contentPadding: EdgeInsets.only(left: 15),
-              hintText: "hello@gmail.com",
-              hintStyle: TextStyle(color: Colors.white24)),
-        ),
-      )
-    ],
-  );
-}
-
 class _ForgetPassword extends State<ForgetPasswordPage> {
+  TextEditingController Emailcontroller = new TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -95,7 +58,45 @@ class _ForgetPassword extends State<ForgetPasswordPage> {
                 customHeightBox(40),
                 Container(
                     margin: const EdgeInsets.only(top: 20, left: 20, right: 20),
-                    child: BuildEmailTextField()),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        const Text(
+                          "Your Email",
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w500),
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        Container(
+                          alignment: Alignment.centerLeft,
+                          decoration: BoxDecoration(
+                              color: Colors.black,
+                              borderRadius: BorderRadius.circular(10),
+                              boxShadow: const [
+                                BoxShadow(
+                                    color: Colors.black26,
+                                    blurRadius: 6,
+                                    offset: Offset(0, 2))
+                              ]),
+                          height: 50,
+                          child: TextField(
+                            controller: Emailcontroller,
+                            keyboardType: TextInputType.emailAddress,
+                            style: const TextStyle(
+                                fontSize: 14, color: Colors.white),
+                            decoration: const InputDecoration(
+                                border: InputBorder.none,
+                                contentPadding: EdgeInsets.only(left: 15),
+                                hintText: "hello@gmail.com",
+                                hintStyle: TextStyle(color: Colors.white24)),
+                          ),
+                        )
+                      ],
+                    )),
                 customHeightBox(50),
                 InkWell(
                   onTap: () {

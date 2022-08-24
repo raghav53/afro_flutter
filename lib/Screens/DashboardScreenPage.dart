@@ -1,4 +1,5 @@
 import 'dart:convert';
+
 import 'package:afro/Model/Events/CommonEvent/CommonEventDataModel.dart';
 import 'package:afro/Model/Fourms/AllFourmDataModel.dart';
 import 'package:afro/Model/Fourms/AllFourmModel.dart';
@@ -9,7 +10,6 @@ import 'package:afro/Model/UserProfileModel.dart';
 import 'package:afro/Network/Apis.dart';
 import 'package:afro/Screens/HomeScreens/Home/Contacts/AllContactsScreen.dart';
 import 'package:afro/Screens/HomeScreens/Home/EventsScreens/EventDetails/EventsDetailsPage.dart';
-import 'package:afro/Screens/HomeScreens/Home/Forums/ForumsAllScreens/AllTheradsScreenPage.dart';
 import 'package:afro/Screens/HomeScreens/Home/Forums/FourmDetailsPage.dart';
 import 'package:afro/Screens/HomeScreens/Home/Forums/FourmsScreen.dart';
 import 'package:afro/Screens/HomeScreens/Home/Groups/GroupDetails/GroupDetailsPage.dart';
@@ -171,6 +171,9 @@ class _HomeScreen extends State<DashboardPageScreen> {
                           imageUrl: IMAGE_URL + profileImage.toString(),
                           placeholder: (context, url) => const CircleAvatar(
                               backgroundImage: AssetImage("tom_cruise.jpeg")),
+                          errorWidget: (context, url, jgf) {
+                            return Image.asset("tom_cruise.jpeg");
+                          },
                           imageBuilder: (context, image) => CircleAvatar(
                             backgroundImage: image,
                           ),

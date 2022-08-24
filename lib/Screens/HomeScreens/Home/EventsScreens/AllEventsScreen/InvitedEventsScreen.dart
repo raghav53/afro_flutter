@@ -28,58 +28,62 @@ InvitedEventsScreen(BuildContext context, InvitedEventsModel snapshot) {
                                 userId: snapshot.data![index].senderId,
                               )));
                     },
-                    child: Column(
-                      mainAxisAlignment: mStart,
-                      crossAxisAlignment: cStart,
-                      children: [
-                        CachedNetworkImage(
-                          imageUrl: IMAGE_URL +
-                              snapshot.data![index].event!.coverImage
-                                  .toString(),
-                          imageBuilder: (context, imageProvider) => Container(
-                            width: phoneWidth(context),
-                            height: 150.0,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              image: DecorationImage(
-                                  image: imageProvider, fit: BoxFit.cover),
-                            ),
-                          ),
-                          placeholder: (context, url) =>
-                              CircularProgressIndicator(),
-                          errorWidget: (context, url, error) =>
-                              Icon(Icons.error),
-                        ),
-                        customHeightBox(10),
-                        customText(
-                            snapshot.data![index].event!.title.toString(),
-                            12,
-                            Colors.white),
-                        customHeightBox(5),
-                        customText(
-                          snapshot.data![index].totalInterested.toString() +
-                              " Interested",
-                          11,
-                          const Color(0xff7822A0),
-                        ),
-                        customHeightBox(5),
-                        Row(
-                          children: [
-                            const Icon(
-                              Icons.location_pin,
-                              color: Color(0xFFDFB48C),
-                              size: 15,
-                            ),
-                            customWidthBox(5),
-                            customText(
-                                snapshot.data![index].event!.country![0].title
+                    child: Container(
+                      margin: EdgeInsets.only(
+                          bottom: snapshot.data!.length - 1 == index ? 100 : 0),
+                      child: Column(
+                        mainAxisAlignment: mStart,
+                        crossAxisAlignment: cStart,
+                        children: [
+                          CachedNetworkImage(
+                            imageUrl: IMAGE_URL +
+                                snapshot.data![index].event!.coverImage
                                     .toString(),
-                                12,
-                                Colors.white)
-                          ],
-                        ),
-                        customHeightBox(30)
-                      ],
+                            imageBuilder: (context, imageProvider) => Container(
+                              width: phoneWidth(context),
+                              height: 150.0,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                image: DecorationImage(
+                                    image: imageProvider, fit: BoxFit.cover),
+                              ),
+                            ),
+                            placeholder: (context, url) =>
+                                CircularProgressIndicator(),
+                            errorWidget: (context, url, error) =>
+                                Icon(Icons.error),
+                          ),
+                          customHeightBox(10),
+                          customText(
+                              snapshot.data![index].event!.title.toString(),
+                              12,
+                              Colors.white),
+                          customHeightBox(5),
+                          customText(
+                            snapshot.data![index].totalInterested.toString() +
+                                " Interested",
+                            11,
+                            const Color(0xff7822A0),
+                          ),
+                          customHeightBox(5),
+                          Row(
+                            children: [
+                              const Icon(
+                                Icons.location_pin,
+                                color: Color(0xFFDFB48C),
+                                size: 15,
+                              ),
+                              customWidthBox(5),
+                              customText(
+                                  snapshot.data![index].event!.country![0].title
+                                      .toString(),
+                                  12,
+                                  Colors.white)
+                            ],
+                          ),
+                          customHeightBox(30)
+                        ],
+                      ),
                     ),
                   );
                 })),

@@ -4,7 +4,7 @@ import 'package:afro/Model/Events/Going/GoingInterestedEventsModel.dart';
 import 'package:afro/Model/Events/InvitedEvents/InvitedEventsModel.dart';
 import 'package:afro/Model/Events/UserEvents/UserEventModel.dart';
 import 'package:afro/Network/Apis.dart';
-import 'package:afro/Screens/HomeScreens/Home/EventsScreens/AllEventsScreen/DiscoverEventsScreen.dart';
+
 import 'package:afro/Screens/HomeScreens/Home/EventsScreens/AllEventsScreen/GoingEventsScreen.dart';
 import 'package:afro/Screens/HomeScreens/Home/EventsScreens/AllEventsScreen/InterestedEventsScreen.dart';
 import 'package:afro/Screens/HomeScreens/Home/EventsScreens/AllEventsScreen/InvitedEventsScreen.dart';
@@ -62,6 +62,7 @@ class _AllEventsScreenState extends State<AllEventsScreen> {
   @override
   void initState() {
     super.initState();
+    selectedIndex = 0;
     getCountries();
     defaultValue();
   }
@@ -772,6 +773,10 @@ class _AllEventsScreenState extends State<AllEventsScreen> {
             );
           });
         });
+  }
+
+  refresh() {
+    setState(() {});
   }
 
   selectedListView(int index) {

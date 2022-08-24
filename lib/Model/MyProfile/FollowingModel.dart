@@ -18,24 +18,34 @@ import 'package:http/http.dart' as http;
 var user = UserDataConstants();
 final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
 
-Future<FollowingModel> getAllFollowingUsers(BuildContext context) async {
-  showProgressDialogBox(context);
+Future<FollowingModel> getAllFollowingUsers(BuildContext context,
+    {String search = "",
+    bool isShow = true,
+    String page = "1",
+    String limit = "100"}) async {
+  if (isShow) {
+    showProgressDialogBox(context);
+  }
   SharedPreferences sharedPreferences = await _prefs;
   String token = sharedPreferences.getString(user.token).toString();
   String userId = sharedPreferences.getString(user.id).toString();
   print(token);
   var jsonResponse = null;
 
-  var response = await http
-      .get(Uri.parse(BASE_URL + "follows?user_id=$userId&type=1"), headers: {
-    'api-key': API_KEY,
-    'x-access-token': token,
-  });
+  var response = await http.get(
+      Uri.parse(BASE_URL +
+          "follows?user_id=$userId&type=1&search=$search&page=$page&limit=$limit"),
+      headers: {
+        'api-key': API_KEY,
+        'x-access-token': token,
+      });
   print(response.body);
   jsonResponse = json.decode(response.body);
   var message = jsonResponse["message"];
-  if (response.statusCode == 200) {
+  if (isShow) {
     Navigator.pop(context);
+  }
+  if (response.statusCode == 200) {
     print("Following users api success");
     return FollowingModel.fromJson(jsonDecode(response.body));
   } else if (response.statusCode == 401) {
@@ -43,7 +53,6 @@ Future<FollowingModel> getAllFollowingUsers(BuildContext context) async {
     clearAllDatabase(context);
     throw Exception("Unauthorized User!");
   } else {
-    Navigator.pop(context);
     customToastMsg(message);
     throw Exception("Failed to load the work experience!");
   }

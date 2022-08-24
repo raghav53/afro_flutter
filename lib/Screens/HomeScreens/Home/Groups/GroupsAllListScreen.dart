@@ -53,6 +53,7 @@ class _GroupsAllListScreenState extends State<GroupsAllListScreen> {
     getUserData();
     getCountries();
     getInterestsList();
+    clickPosition = 0;
   }
 
   defaultValues() {
@@ -549,10 +550,13 @@ class _GroupsAllListScreenState extends State<GroupsAllListScreen> {
             itemCount: snapshot.data!.length,
             itemBuilder: (context, index) {
               return Container(
-                margin: const EdgeInsets.only(top: 10, left: 10, right: 5),
+                margin: EdgeInsets.only(
+                    top: 25,
+                    left: 20,
+                    right: 5,
+                    bottom: snapshot.data!.length - 1 == index ? 50 : 1),
                 decoration:
                     BoxDecoration(borderRadius: BorderRadius.circular(10)),
-                padding: const EdgeInsets.only(top: 15, bottom: 15, left: 10),
                 child: Column(
                   children: [
                     Row(children: [
@@ -649,10 +653,13 @@ class _GroupsAllListScreenState extends State<GroupsAllListScreen> {
             itemCount: snapshot.data!.length,
             itemBuilder: (context, index) {
               return Container(
-                margin: const EdgeInsets.only(top: 10, left: 15, right: 5),
+                margin: EdgeInsets.only(
+                    top: 25,
+                    left: 25,
+                    right: 5,
+                    bottom: snapshot.data!.length - 1 == index ? 50 : 0),
                 decoration:
                     BoxDecoration(borderRadius: BorderRadius.circular(10)),
-                padding: const EdgeInsets.only(top: 15, bottom: 15, left: 10),
                 child: Column(
                   children: [
                     Row(children: [

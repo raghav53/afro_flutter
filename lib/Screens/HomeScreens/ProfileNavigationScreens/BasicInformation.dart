@@ -85,7 +85,7 @@ class _Basic extends State<BasicInformation> {
   //Get the information from shared Preferences
   getUserData() async {
     SharedPreferences sharedPreferences = await _prefs;
-    firstName = sharedPreferences.getString(user.firstName)!;
+    firstName = sharedPreferences.getString(user.firstName).toString();
     lastName = sharedPreferences.getString(user.lastName)!;
     email = sharedPreferences.getString(user.useremail).toString();
     dateOfBirth =
@@ -117,7 +117,7 @@ class _Basic extends State<BasicInformation> {
 
   //set the information from shared Preferences
   setTheBasicDataInformation() {
-    fName.text = fullName.toString();
+    fName.text = firstName.toString();
     lName.text = lastName.toString();
     instagram.text = sInstagram.toString();
     website.text = sLinkedIn.toString();
