@@ -735,14 +735,16 @@ class _AllContactsListScreenState extends State<AllContactsListScreen> {
             onTap: () {
               FriendRequest(context, 0, user.sId.toString());
             },
-            child: Padding(
-                padding: const EdgeInsets.only(right: 8.0),
-                child: Image.asset(
-                  "assets/icons/add_user.png",
-                  height: 25,
-                  width: 25,
-                  color: circleColor,
-                )),
+            child: Container(
+              height: 25,
+              width: 25,
+              child: Image.asset(
+                "assets/icons/add_user.png",
+                height: 25,
+                width: 25,
+                color: circleColor,
+              ),
+            ),
           )
         : user.isReqSent == 1
             ? InkWell(
@@ -750,14 +752,16 @@ class _AllContactsListScreenState extends State<AllContactsListScreen> {
                   showCancelFriendRequestAlertBox(
                       context, user.fullName.toString(), user.sId.toString());
                 },
-                child: Padding(
-                    padding: const EdgeInsets.only(right: 8.0),
-                    child: Image.asset(
-                      "assets/icons/request_send.png",
-                      height: 25,
-                      width: 25,
-                      color: circleColor,
-                    )),
+                child: Container(
+                  height: 25,
+                  width: 25,
+                  child: Image.asset(
+                    "assets/icons/request_send.png",
+                    height: 25,
+                    width: 25,
+                    color: circleColor,
+                  ),
+                ),
               )
             : user.isFriend == 1
                 ? InkWell(
@@ -765,16 +769,25 @@ class _AllContactsListScreenState extends State<AllContactsListScreen> {
                       showTheUnFriendAlertBox(context, user.fullName.toString(),
                           user.sId.toString());
                     },
-                    child: Padding(
-                        padding: const EdgeInsets.only(right: 8.0),
-                        child: Image.asset(
-                          "assets/icons/friends.png",
-                          height: 25,
-                          width: 25,
-                          color: circleColor,
-                        )),
+                    child: Container(
+                      height: 25,
+                      width: 25,
+                      child: Image.asset(
+                        "assets/icons/friends.png",
+                        height: 25,
+                        width: 25,
+                        color: circleColor,
+                      ),
+                    ),
                   )
-                : user.isReqReceived == 1
+                : Container(
+                    height: 20,
+                    width: 20 ,
+                  );
+  }
+
+  /***
+   *  : user.isReqReceived == 1
                     ? Row(
                         children: [
                           InkWell(
@@ -786,7 +799,7 @@ class _AllContactsListScreenState extends State<AllContactsListScreen> {
                               color: white,
                             ),
                           ),
-                          customWidthBox(10),
+                          customWidthBox(2),
                           InkWell(
                             onTap: () {},
                             child: const Icon(
@@ -797,8 +810,7 @@ class _AllContactsListScreenState extends State<AllContactsListScreen> {
                           )
                         ],
                       )
-                    : null;
-  }
+   */
 
   //Alert Boxes
   //Show the unfriend alertbox

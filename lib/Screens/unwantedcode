@@ -1,0 +1,144 @@
+/***
+ * FirebaseMessaging.onBackgroundMessage(backgroundHandler);
+
+    // 1. This method call when app in terminated state and you get a notification
+    // when you click on notification app open from terminated state and you can get notification data in this method
+    FirebaseMessaging.instance.getInitialMessage().then(
+      (message) {
+        print("FirebaseMessaging- Terminated State");
+      },
+    );
+    // 2. This method only call when App in forground it mean app must be opened
+    FirebaseMessaging.onMessage.listen(
+      (message) {
+        //print("FirebaseMessaging-Forground State-${message.data}");
+        // if (message.notification != null) {
+        // print(message.notification!.title);
+        //  print(message.notification!.body);
+        LocalNotificationService.createanddisplaynotification(message);
+
+        //  }
+      },
+    );
+
+    // 3. This method only call when App in background and not terminated(not closed)
+    FirebaseMessaging.onMessageOpenedApp.listen(
+      (message) {
+        print("FirebaseMessaging-Background State");
+        print("message.data11 ${message.data}");
+        LocalNotificationService.redirectionScreenPage(message, context);
+      },
+    );
+
+      // Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  //   LocalNotificationService.createanddisplaynotification(message);
+  // }
+
+  static Future<void> backgroundHandler(RemoteMessage message) async {
+    debugPrint(
+        "LocalNotificationService_backgroundHandler: ${jsonEncode(message.data)}");
+    if (Platform.isAndroid) {
+      LocalNotificationService.createanddisplaynotification(message);
+    }
+  }
+ */
+
+// class LocalNotificationService {
+//   static AndroidNotificationChannel channel = const AndroidNotificationChannel(
+//       'high_importance_channel', // id
+//       'High Importance Notifications', // title
+//       description:
+//           'This channel is used for important notifications.', // description
+//       importance: Importance.high,
+//       playSound: true);
+
+//   static FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+//       FlutterLocalNotificationsPlugin();
+//   static Future<void> initialize(BuildContext context) async {
+//     await flutterLocalNotificationsPlugin
+//         .resolvePlatformSpecificImplementation<
+//             AndroidFlutterLocalNotificationsPlugin>()
+//         ?.createNotificationChannel(channel);
+
+//     await FirebaseMessaging.instance
+//         .setForegroundNotificationPresentationOptions(
+//       alert: true,
+//       badge: true,
+//       sound: true,
+//     );
+//     // initializationSettings  for Android
+//     const InitializationSettings initializationSettings =
+//         InitializationSettings(
+//       android: AndroidInitializationSettings("@mipmap/app_icon"),
+//     );
+
+//     flutterLocalNotificationsPlugin.initialize(
+//       initializationSettings,
+//       onSelectNotification: (String? payload) async {
+//         if (payload!.isNotEmpty) {
+//           Navigator.push(
+//               context,
+//               MaterialPageRoute(
+//                   builder: (builder) => NotificationScreenPage()));
+//         }
+//         print(payload);
+//       },
+//     );
+//   }
+
+//   static void createanddisplaynotification(RemoteMessage message) async {
+//     try {
+//       print(message.data["body"]);
+
+//       Map<String, dynamic> map = Map();
+//       map.addAll(message.data);
+
+//       String map2 = map["body"];
+
+//       List<String> str = map2
+//           .replaceAll("{", "")
+//           .replaceAll("}", "")
+//           .replaceAll("\"", "")
+//           .replaceAll("'", "")
+//           .split(",");
+//       Map<String, dynamic> result = {};
+//       for (int i = 0; i < str.length; i++) {
+//         List<String> s = str[i].split(":");
+//         result.putIfAbsent(s[0].trim(), () => s[1].trim());
+//       }
+
+//       final id = DateTime.now().millisecondsSinceEpoch ~/ 1000;
+//       const NotificationDetails notificationDetails = NotificationDetails(
+//         android: AndroidNotificationDetails(
+//           "afro",
+//           "pushnotificationappchannel",
+//           icon: "@mipmap/app_icon",
+//           importance: Importance.max,
+//           priority: Priority.high,
+//         ),
+//       );
+
+//       await flutterLocalNotificationsPlugin.show(
+//         id,
+//         result["title"].toString(),
+//         result["message"].toString(),
+//         notificationDetails,
+//         payload: message.data["notification_code"],
+//       );
+//     } on Exception catch (e) {
+//       print(e);
+//     }
+//   }
+
+//   static void redirectionScreenPage(
+//       RemoteMessage message, BuildContext context) {
+//     try {
+//       if (message != null) {
+//         Navigator.push(context,
+//             MaterialPageRoute(builder: (builder) => NotificationScreenPage()));
+//       }
+//     } on Exception catch (e) {
+//       print(e);
+//     }
+//   }
+// }

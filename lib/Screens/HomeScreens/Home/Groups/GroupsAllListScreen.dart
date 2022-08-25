@@ -19,7 +19,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
 class GroupsAllListScreen extends StatefulWidget {
-  const GroupsAllListScreen({Key? key}) : super(key: key);
+  String? type = "";
+  GroupsAllListScreen({Key? key, this.type}) : super(key: key);
 
   @override
   State<GroupsAllListScreen> createState() => _GroupsAllListScreenState();
@@ -81,7 +82,14 @@ class _GroupsAllListScreenState extends State<GroupsAllListScreen> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        appBar: onlyTitleCommonAppbar("Groups"),
+        appBar: widget.type.toString().isNotEmpty
+            ? AppBar(
+                elevation: 0.0,
+                automaticallyImplyLeading: true,
+                title: Text("Groups"),
+                centerTitle: true,
+              )
+            : onlyTitleCommonAppbar("Groups"),
         extendBodyBehindAppBar: true,
         resizeToAvoidBottomInset: false,
         floatingActionButton: GestureDetector(

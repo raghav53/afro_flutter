@@ -9,6 +9,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class NotificationScreenPage extends StatefulWidget {
+  const NotificationScreenPage({Key? key}) : super(key: key);
+
   @override
   State<NotificationScreenPage> createState() => _NotificationScreenPageState();
 }

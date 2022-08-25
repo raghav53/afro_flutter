@@ -19,7 +19,8 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 class AllEventsScreen extends StatefulWidget {
-  const AllEventsScreen({Key? key}) : super(key: key);
+  String? type = "";
+  AllEventsScreen({Key? key, this.type}) : super(key: key);
 
   @override
   State<AllEventsScreen> createState() => _AllEventsScreenState();
@@ -86,7 +87,15 @@ class _AllEventsScreenState extends State<AllEventsScreen> {
       child: Scaffold(
         extendBodyBehindAppBar: true,
         resizeToAvoidBottomInset: false,
-        appBar: onlyTitleCommonAppbar("Events"),
+        appBar: widget.type!.isNotEmpty
+            ? AppBar(
+                elevation: 0.0,
+                backgroundColor: Colors.transparent,
+                centerTitle: true,
+                automaticallyImplyLeading: true,
+                title: Text("Events"),
+              )
+            : onlyTitleCommonAppbar("Events"),
         floatingActionButton: GestureDetector(
           onTap: () {
             Navigator.of(context)

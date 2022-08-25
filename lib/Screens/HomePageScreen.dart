@@ -58,13 +58,17 @@ class _HomePagescreenState extends State<HomePagescreen> {
               selectedScreenPage = DashboardPageScreen();
               break;
             case 1:
-              selectedScreenPage = AllEventsScreen();
+              selectedScreenPage = AllEventsScreen(
+                type: "",
+              );
               break;
             case 2:
               selectedScreenPage = ForumsScreenPage();
               break;
             case 3:
-              selectedScreenPage = GroupsAllListScreen();
+              selectedScreenPage = GroupsAllListScreen(
+                type: "",
+              );
               break;
             case 4:
               selectedScreenPage = MessageListScreen();

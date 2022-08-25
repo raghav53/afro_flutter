@@ -1,8 +1,9 @@
-import 'package:afro/Screens/HomeScreens/Home/Messages/UserMessageScreen.dart';
+import 'package:socket_io_client/socket_io_client.dart' as IO;
 import 'package:afro/Util/Colors.dart';
 import 'package:afro/Util/CustomWidget.dart';
 import 'package:afro/Util/CustomWidgetAttributes.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class MessageListScreen extends StatefulWidget {
   const MessageListScreen({Key? key}) : super(key: key);
@@ -19,6 +20,21 @@ List<String> messagesUserNameList = [
 ];
 
 class _MessageListScreenState extends State<MessageListScreen> {
+  late final IO.Socket _socket;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _socket = IO.io(
+      "http://3.230.218.97:5001",
+      IO.OptionBuilder().setTransports(['websocket']).setQuery({
+        "transports": ["websocket"],
+        "autoConnect": true,
+      }).build(),
+    );
+    _connectSocket();
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -54,14 +70,15 @@ class _MessageListScreenState extends State<MessageListScreen> {
     return InkWell(
       onTap: () {},
       child: Container(
-        margin: EdgeInsets.only(left: 20, right: 20, top: 10),
-        padding: EdgeInsets.only(top: 10, bottom: 10, left: 15, right: 10),
+        margin: const EdgeInsets.only(left: 20, right: 20, top: 10),
+        padding:
+            const EdgeInsets.only(top: 10, bottom: 10, left: 15, right: 10),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
           color: gray1,
         ),
         child: Row(children: [
-          CircleAvatar(
+          const CircleAvatar(
             backgroundImage: AssetImage("tom_cruise.jpeg"),
           ),
           customWidthBox(10),
@@ -70,16 +87,17 @@ class _MessageListScreenState extends State<MessageListScreen> {
             children: [
               customText(name, 15, white),
               customHeightBox(5),
-              customText("Hello , how are you?", 13, Color(0x3DFFFFFF))
+              customText("Hello , how are you?", 13, const Color(0x3DFFFFFF))
             ],
           ),
-          Spacer(),
+          const Spacer(),
           Column(
             children: [
               customText("11:45 AM", 14, Color(0x3DFFFFFF)),
               customHeightBox(5),
               Container(
-                padding: EdgeInsets.only(top: 3, bottom: 3, right: 7, left: 7),
+                padding:
+                    const EdgeInsets.only(top: 3, bottom: 3, right: 7, left: 7),
                 decoration: BoxDecoration(
                     gradient: commonButtonLinearGridient,
                     borderRadius: BorderRadius.circular(50)),
@@ -95,13 +113,13 @@ class _MessageListScreenState extends State<MessageListScreen> {
   //Custom search options
   Widget search() {
     return Container(
-      margin: EdgeInsets.only(left: 20, right: 20),
+      margin: const EdgeInsets.only(left: 20, right: 20),
       height: 43,
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10), color: Colors.black),
       child: const TextField(
         keyboardType: TextInputType.text,
-        style: const TextStyle(fontSize: 14, color: Colors.white),
+        style: TextStyle(fontSize: 14, color: Colors.white),
         decoration: InputDecoration(
             border: InputBorder.none,
             prefixIcon: Icon(
@@ -109,9 +127,15 @@ class _MessageListScreenState extends State<MessageListScreen> {
               color: Color(0xFFDFB48C),
             ),
             hintText: "Search messages",
-            contentPadding: const EdgeInsets.only(left: 15, top: 10),
-            hintStyle: const TextStyle(color: Colors.white24)),
+            contentPadding: EdgeInsets.only(left: 15, top: 10),
+            hintStyle: TextStyle(color: Colors.white24)),
       ),
     );
+  }
+
+  _connectSocket() {
+    _socket.onConnect((data) => print('Connection established'));
+    _socket.onConnectError((data) => print('Connect Error: $data'));
+    _socket.onDisconnect((data) => print('Socket.IO server disconnected'));
   }
 }

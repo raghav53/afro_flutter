@@ -61,7 +61,7 @@ class _Useable extends State<UseableWidgets> {
               selectedScreenPage = ForumsScreenPage();
               break;
             case 3:
-              selectedScreenPage = GroupsAllListScreen();
+              selectedScreenPage = GroupsAllListScreen(type: "",);
               break;
             case 4:
               selectedScreenPage = MessageListScreen();

@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
 import 'package:afro/Screens/Authentication/SignInPage2.dart';
 import 'package:afro/Screens/HomePageScreen.dart';
 import 'package:afro/Screens/HomeScreens/Home/NotificationScreen.dart';
@@ -29,6 +30,7 @@ class MyApp extends StatelessWidget {
       return MaterialApp(
         title: 'Flutter Demo',
         debugShowCheckedModeBanner: false,
+        navigatorKey: navigatorKey,
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
@@ -37,18 +39,7 @@ class MyApp extends StatelessWidget {
     }));
   }
 }
-
-const AndroidNotificationChannel channel = AndroidNotificationChannel(
-    'high_importance_channel', // id
-    'High Importance Notifications', // title
-    description:
-        'This channel is used for important notifications.', // description
-    importance: Importance.high,
-    playSound: true);
-
-final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-    FlutterLocalNotificationsPlugin();
-
+final GlobalKey<NavigatorState>? navigatorKey = GlobalKey<NavigatorState>();
 class SplashScreenPage extends StatefulWidget {
   const SplashScreenPage({Key? key}) : super(key: key);
 
@@ -58,10 +49,11 @@ class SplashScreenPage extends StatefulWidget {
 class _SplashScreen extends State<SplashScreenPage> {
   final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
   UserDataConstants data = UserDataConstants();
+  late LocalNotificationService _local;
   @override
   void initState() {
     super.initState();
-
+    _local = LocalNotificationService(context: context);
     init();
     checkUserExist(context);
   }
@@ -82,53 +74,8 @@ class _SplashScreen extends State<SplashScreenPage> {
   init() async {
     WidgetsFlutterBinding.ensureInitialized();
     await Firebase.initializeApp();
-
-    LocalNotificationService.initialize(context);
-    FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
-
-    // 1. This method call when app in terminated state and you get a notification
-    // when you click on notification app open from terminated state and you can get notification data in this method
-    FirebaseMessaging.instance.getInitialMessage().then(
-      (message) {
-        print("FirebaseMessaging- Terminated State");
-        Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (context) => NotificationScreenPage(),
-          ),
-        );
-      },
-    );
-    // 2. This method only call when App in forground it mean app must be opened
-    FirebaseMessaging.onMessage.listen(
-      (message) {
-        //print("FirebaseMessaging-Forground State-${message.data}");
-        // if (message.notification != null) {
-        // print(message.notification!.title);
-        //  print(message.notification!.body);
-        LocalNotificationService.createanddisplaynotification(message);
-
-        Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (context) => NotificationScreenPage(),
-          ),
-        );
-        //  }
-      },
-    );
-
-    // 3. This method only call when App in background and not terminated(not closed)
-    FirebaseMessaging.onMessageOpenedApp.listen(
-      (message) {
-        LocalNotificationService.createanddisplaynotification(message);
-        print("FirebaseMessaging-Background State");
-        print("message.data11 ${message.data}");
-        Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (context) => NotificationScreenPage(),
-          ),
-        );
-      },
-    );
+    _local.initialize();
+    _local.initNotification();
   }
 
   Future<void> checkUserExist(BuildContext context) async {
@@ -199,21 +146,4 @@ class _SplashScreen extends State<SplashScreenPage> {
       }
     }
   }
-
-  Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
-    LocalNotificationService.createanddisplaynotification(message);
-  }
 }
-/**
- *     await flutterLocalNotificationsPlugin
-        .resolvePlatformSpecificImplementation<
-            AndroidFlutterLocalNotificationsPlugin>()
-        ?.createNotificationChannel(channel);
-
-    await FirebaseMessaging.instance
-        .setForegroundNotificationPresentationOptions(
-      alert: true,
-      badge: true,
-      sound: true,
-    );
- */
