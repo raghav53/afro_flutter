@@ -20,26 +20,7 @@ class GroupMemberListScreen extends StatefulWidget {
 Future<GroupMemberModel>? _getGroupMembers;
 
 class _GroupMemberListScreenState extends State<GroupMemberListScreen> {
-  @override
-  void initState() {
-    super.initState();
-    Future.delayed(Duration.zero, () {
-      _getGroupMembers =
-          getAllGroupsMembers(context, widget.group_id.toString());
-      setState(() {});
-      _getGroupMembers!.whenComplete(() => () {});
-    });
-  }
-
-  refreshData(String search) {
-    Future.delayed(Duration.zero, () {
-      _getGroupMembers = getAllGroupsMembers(
-          context, widget.group_id.toString(),
-          search: search, showProgress: false);
-      setState(() {});
-      _getGroupMembers!.whenComplete(() => () {});
-    });
-  }
+  var searchKey = "";
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +28,7 @@ class _GroupMemberListScreenState extends State<GroupMemberListScreen> {
         child: Scaffold(
       resizeToAvoidBottomInset: false,
       extendBodyBehindAppBar: true,
-      appBar: onlyTitleCommonAppbar("Members"),
+      appBar: commonAppbar("Members"),
       body: Container(
         height: phoneHeight(context),
         width: phoneWidth(context),
@@ -56,6 +37,7 @@ class _GroupMemberListScreenState extends State<GroupMemberListScreen> {
         child: SingleChildScrollView(
           child: Column(
             children: [
+              customHeightBox(50),
               //Search Editext
               Container(
                 alignment: Alignment.centerLeft,
@@ -66,7 +48,9 @@ class _GroupMemberListScreenState extends State<GroupMemberListScreen> {
                     ]),
                 child: TextField(
                   onChanged: (value) {
-                    refreshData(value.toString());
+                    setState(() {
+                      searchKey = value.toString();
+                    });
                   },
                   keyboardType: TextInputType.text,
                   style: const TextStyle(fontSize: 14, color: Colors.white),
@@ -83,7 +67,9 @@ class _GroupMemberListScreenState extends State<GroupMemberListScreen> {
               ),
               customHeightBox(15),
               FutureBuilder<GroupMemberModel>(
-                  future: _getGroupMembers,
+                  future: getAllGroupsMembers(
+                      context, widget.group_id.toString(),
+                      search: searchKey, showProgress: false),
                   builder: (context, snapshot) {
                     return snapshot.hasData && snapshot.data!.data!.isNotEmpty
                         ? ListView.builder(
@@ -174,40 +160,6 @@ class _GroupMemberListScreenState extends State<GroupMemberListScreen> {
                                         ),
                                       ],
                                     ),
-                                    const Spacer(),
-                                    Container(
-                                      child: widget.userId ==
-                                              snapshot
-                                                  .data!.data![index].memberId
-                                          ? null
-                                          : Container(
-                                              width: 110,
-                                              margin: const EdgeInsets.only(
-                                                  right: 20),
-                                              padding: const EdgeInsets.only(
-                                                  top: 10,
-                                                  bottom: 10,
-                                                  left: 10,
-                                                  right: 10),
-                                              decoration: BoxDecoration(
-                                                  borderRadius:
-                                                      BorderRadius.circular(50),
-                                                  gradient:
-                                                      commonButtonLinearGridient),
-                                              child: Center(
-                                                  child: customText(
-                                                      isFriend == 1
-                                                          ? "Friends"
-                                                          : isRequestSend == 1
-                                                              ? "Cancel Request"
-                                                              : isRequestReceived ==
-                                                                      1
-                                                                  ? "Accept Request"
-                                                                  : "Add Friend",
-                                                      11,
-                                                      white)),
-                                            ),
-                                    )
                                   ]),
                                 ),
                               );

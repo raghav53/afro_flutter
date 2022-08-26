@@ -4,6 +4,8 @@ import 'package:afro/Model/Fourms/ForumsReplies/ForumsRepliesDataModel.dart';
 import 'package:afro/Model/Fourms/ForumsReplies/ForumsRepliesModel.dart';
 import 'package:afro/Model/Fourms/FourmDetails/FourmDetailsModel.dart';
 import 'package:afro/Network/Apis.dart';
+import 'package:afro/Screens/HomeScreens/Home/MyProfile.dart';
+import 'package:afro/Screens/HomeScreens/Home/OtherUserProfilePage.dart';
 import 'package:afro/Util/Colors.dart';
 import 'package:afro/Util/CommonMethods.dart';
 import 'package:afro/Util/CommonUI.dart';
@@ -16,9 +18,6 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
-var user = UserDataConstants();
-final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
-
 class FourmDetailsPage extends StatefulWidget {
   String fourmId = "";
   FourmDetailsPage({Key? key, required this.fourmId}) : super(key: key);
@@ -27,6 +26,8 @@ class FourmDetailsPage extends StatefulWidget {
   State<FourmDetailsPage> createState() => _FourmDetailsPageState();
 }
 
+var _userDataConstants = UserDataConstants();
+final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
 Future<FourmDetailsModel>? _getFourmDetails;
 Future<ForumsRepliesModel>? _getForumReplies;
 Future<ForumsRepliesModel>? _getForumParentReplies;
@@ -37,11 +38,13 @@ String? commentCaption = "";
 String? replyCommentUserName = "";
 
 class _FourmDetailsPageState extends State<FourmDetailsPage> {
+  var loginUserID = "";
   FocusNode focusNode = FocusNode();
   @override
   void initState() {
     super.initState();
     print(widget.fourmId);
+    getLoginUserId();
     Future.delayed(Duration.zero, () {
       _getForumReplies = getForumsRepliesList(
           widget.fourmId.toString(), context,
@@ -54,6 +57,11 @@ class _FourmDetailsPageState extends State<FourmDetailsPage> {
       setState(() {});
       _getFourmDetails!.whenComplete(() => () {});
     });
+  }
+
+  getLoginUserId() async {
+    SharedPreferences _data = await _prefs;
+    loginUserID = _data.getString(_userDataConstants.id).toString();
   }
 
   refreshData() {
@@ -132,12 +140,43 @@ class _FourmDetailsPageState extends State<FourmDetailsPage> {
                                             Column(
                                               crossAxisAlignment: cStart,
                                               children: [
-                                                customText(
-                                                    snapshot.data!.data!.userId!
-                                                        .fullName
-                                                        .toString(),
-                                                    15,
-                                                    yellowColor),
+                                                InkWell(
+                                                  onTap: () {
+                                                    if (loginUserID ==
+                                                        snapshot.data!.data!
+                                                            .userId) {
+                                                      Navigator.push(
+                                                          context,
+                                                          MaterialPageRoute(
+                                                              builder: (context) =>
+                                                                  MyProfilePage()));
+                                                    } else {
+                                                      Navigator.push(
+                                                          context,
+                                                          MaterialPageRoute(
+                                                              builder: (context) =>
+                                                                  OtherUserProfilePageScreen(
+                                                                    name: snapshot
+                                                                        .data!
+                                                                        .data!
+                                                                        .userId!
+                                                                        .fullName,
+                                                                    userID: snapshot
+                                                                        .data!
+                                                                        .data!
+                                                                        .userId!
+                                                                        .id
+                                                                        .toString(),
+                                                                  )));
+                                                    }
+                                                  },
+                                                  child: customText(
+                                                      snapshot.data!.data!
+                                                          .userId!.fullName
+                                                          .toString(),
+                                                      15,
+                                                      yellowColor),
+                                                ),
                                                 customHeightBox(7),
                                                 customText(
                                                     snapshot.data!.data!.title
@@ -212,6 +251,7 @@ class _FourmDetailsPageState extends State<FourmDetailsPage> {
                                                 forumReplyTile(
                                                   model: snapshot
                                                       .data!.data![index],
+                                                  userIDlogin: loginUserID,
                                                 ),
                                                 Container(
                                                   margin:
@@ -438,7 +478,10 @@ class _FourmDetailsPageState extends State<FourmDetailsPage> {
                   shrinkWrap: true,
                   itemBuilder: (context, index) {
                     return Container(
-                      child: forumReplyTile(model: snapshot.data!.data![index]),
+                      child: forumReplyTile(
+                        model: snapshot.data!.data![index],
+                        userIDlogin: loginUserID,
+                      ),
                     );
                   })
               : SizedBox();
@@ -454,7 +497,8 @@ class _FourmDetailsPageState extends State<FourmDetailsPage> {
       return;
     }
     SharedPreferences sharedPreferences = await _prefs;
-    String token = sharedPreferences.getString(user.token).toString();
+    String token =
+        sharedPreferences.getString(_userDataConstants.token).toString();
     print(token);
     var jsonResponse = null;
 
@@ -500,7 +544,9 @@ class _FourmDetailsPageState extends State<FourmDetailsPage> {
 
 class forumReplyTile extends StatelessWidget {
   ForumsRepliesDataModel? model;
-  forumReplyTile({Key? key, this.model}) : super(key: key);
+  var userIDlogin = "";
+  forumReplyTile({Key? key, this.model, required this.userIDlogin})
+      : super(key: key);
   @override
   Widget build(BuildContext context) {
     return InkWell(
@@ -517,7 +563,24 @@ class forumReplyTile extends StatelessWidget {
             }),
         title: Row(
           children: [
-            customText(model!.user!.fullName.toString(), 14, white),
+            InkWell(
+                onTap: () {
+                  if (userIDlogin == model!.userId) {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => MyProfilePage()));
+                  } else {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => OtherUserProfilePageScreen(
+                                  name: model!.user!.fullName,
+                                  userID: model!.userId.toString(),
+                                )));
+                  }
+                },
+                child: customText(model!.user!.fullName.toString(), 14, white)),
             Spacer(),
             customText(getTimeFormat(model!.createdAt.toString()), 12, white24),
           ],

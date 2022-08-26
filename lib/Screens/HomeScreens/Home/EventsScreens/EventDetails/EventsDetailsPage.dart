@@ -7,6 +7,8 @@ import 'package:afro/Screens/HomeScreens/Home/EventsScreens/EventDetails/EventPh
 import 'package:afro/Screens/HomeScreens/Home/EventsScreens/EventDetails/EventVideos.dart';
 import 'package:afro/Screens/HomeScreens/Home/EventsScreens/EventDetails/EventsUsers/EventsContacts.dart';
 import 'package:afro/Screens/HomeScreens/Home/EventsScreens/EventDetails/EventsDiscussion.dart';
+import 'package:afro/Screens/HomeScreens/Home/MyProfile.dart';
+import 'package:afro/Screens/HomeScreens/Home/OtherUserProfilePage.dart';
 import 'package:afro/Util/Colors.dart';
 import 'package:afro/Util/CommonMethods.dart';
 import 'package:afro/Util/CommonUI.dart';
@@ -396,20 +398,43 @@ class _EventDetailsScreenPageState extends State<EventDetailsScreenPage> {
                                             )
                                           : null),
                                   //Hosted by
-                                  Row(
-                                    children: [
-                                      Icon(
-                                        Icons.person,
-                                        color: yellowColor,
-                                      ),
-                                      customText(
-                                          "Hosted By : " +
-                                              snapshot
-                                                  .data!.data!.userId!.fullName
-                                                  .toString(),
-                                          12,
-                                          white)
-                                    ],
+                                  InkWell(
+                                    onTap: () {
+                                      if (snapshot.data!.data!.userId!.id ==
+                                          loginUserId) {
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (builder) =>
+                                                    MyProfilePage()));
+                                      } else {
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (builder) =>
+                                                    OtherUserProfilePageScreen(
+                                                      userID: snapshot.data!
+                                                          .data!.userId!.id,
+                                                      name: snapshot.data!.data!
+                                                          .userId!.fullName,
+                                                    )));
+                                      }
+                                    },
+                                    child: Row(
+                                      children: [
+                                        Icon(
+                                          Icons.person,
+                                          color: yellowColor,
+                                        ),
+                                        customText(
+                                            "Hosted By : " +
+                                                snapshot.data!.data!.userId!
+                                                    .fullName
+                                                    .toString(),
+                                            12,
+                                            white)
+                                      ],
+                                    ),
                                   ),
                                   customWidthBox(15),
                                   //Event Privacy

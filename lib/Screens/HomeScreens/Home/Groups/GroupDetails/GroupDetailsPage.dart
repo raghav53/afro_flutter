@@ -1,30 +1,31 @@
 import 'dart:convert';
+
+import 'package:afro/Screens/HomeScreens/Home/MyProfile.dart';
+import 'package:afro/Screens/HomeScreens/Home/OtherUserProfilePage.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:carousel_slider/carousel_slider.dart';
+import 'package:dotted_border/dotted_border.dart';
+import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
+
 import 'package:afro/Model/Group/AllUserForGroup/AllGroupUsersModel.dart';
 import 'package:afro/Model/Group/GroupDetails/Disscussion/GroupPostDataModel.dart';
 import 'package:afro/Model/Group/GroupDetails/Disscussion/GroupPostModel.dart';
+import 'package:afro/Model/Group/GroupDetails/GroupDetailsModel.dart';
 import 'package:afro/Model/Group/GroupDetails/GroupMedia/GroupMediaModel.dart';
+import 'package:afro/Network/Apis.dart';
 import 'package:afro/Screens/HomeScreens/Home/EventsScreens/ShareThoughtsPage.dart';
 import 'package:afro/Screens/HomeScreens/Home/Groups/GroupDetails/GroupContactsPage.dart';
-import 'package:afro/Screens/HomeScreens/Home/Groups/GroupDetails/GroupDiscussion.dart';
-import 'package:afro/Screens/HomeScreens/Home/Groups/GroupDetails/GroupPhotosPage.dart';
 import 'package:afro/Screens/HomeScreens/Home/Groups/GroupDetails/GroupPostCommentList.dart';
-import 'package:afro/Screens/HomeScreens/Home/Groups/GroupDetails/GroupVideoPage.dart';
-import 'package:afro/Screens/VideoImageViewPage.dart';
-import 'package:carousel_slider/carousel_slider.dart';
-import 'package:http/http.dart' as http;
-import 'package:afro/Model/Group/GroupDetails/GroupDetailsModel.dart';
-import 'package:afro/Network/Apis.dart';
 import 'package:afro/Screens/HomeScreens/Home/Groups/GroupMembersList.dart';
+import 'package:afro/Screens/VideoImageViewPage.dart';
 import 'package:afro/Util/Colors.dart';
 import 'package:afro/Util/CommonMethods.dart';
 import 'package:afro/Util/CommonUI.dart';
 import 'package:afro/Util/Constants.dart';
 import 'package:afro/Util/CustomWidget.dart';
 import 'package:afro/Util/CustomWidgetAttributes.dart';
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:dotted_border/dotted_border.dart';
-import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class GroupDetailsPage extends StatefulWidget {
   String groupId = "";
@@ -177,19 +178,45 @@ class GoupDetailsPageState extends State<GroupDetailsPage> {
                                       ],
                                     ),
                                     Spacer(),
-                                    RichText(
-                                      text: TextSpan(
-                                        text: "Created By: ",
-                                        style: const TextStyle(
-                                            color: Color(0x3DFFFFFF),
-                                            fontSize: 11),
-                                        children: <TextSpan>[
-                                          TextSpan(
-                                              text: snapshot
-                                                  .data!.data!.userId!.fullName
-                                                  .toString(),
-                                              style: TextStyle(color: white)),
-                                        ],
+                                    InkWell(
+                                      onTap: () {
+                                        if (snapshot.data!.data!.userId!.id ==
+                                            userId) {
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (builder) =>
+                                                      MyProfilePage()));
+                                        } else {
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (builder) =>
+                                                      OtherUserProfilePageScreen(
+                                                        name: snapshot
+                                                            .data!
+                                                            .data!
+                                                            .userId!
+                                                            .fullName,
+                                                        userID: snapshot.data!
+                                                            .data!.userId!.id,
+                                                      )));
+                                        }
+                                      },
+                                      child: RichText(
+                                        text: TextSpan(
+                                          text: "Created By: ",
+                                          style: const TextStyle(
+                                              color: Color(0x3DFFFFFF),
+                                              fontSize: 11),
+                                          children: <TextSpan>[
+                                            TextSpan(
+                                                text: snapshot.data!.data!
+                                                    .userId!.fullName
+                                                    .toString(),
+                                                style: TextStyle(color: white)),
+                                          ],
+                                        ),
                                       ),
                                     ),
                                   ],
@@ -1265,6 +1292,4 @@ class GoupDetailsPageState extends State<GroupDetailsPage> {
           })),
     );
   }
-
-  
 }

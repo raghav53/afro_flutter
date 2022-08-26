@@ -3,9 +3,10 @@ import 'dart:convert';
 import 'package:afro/Model/Events/EventDetails/EventPosts/EventPostDataModel.dart';
 import 'package:afro/Model/Events/EventDetails/EventPosts/EventPostModel.dart';
 import 'package:afro/Network/Apis.dart';
-
 import 'package:afro/Screens/HomeScreens/Home/EventsScreens/EventCommentsList.dart';
 import 'package:afro/Screens/HomeScreens/Home/EventsScreens/ShareThoughtsPage.dart';
+import 'package:afro/Screens/HomeScreens/Home/MyProfile.dart';
+import 'package:afro/Screens/HomeScreens/Home/OtherUserProfilePage.dart';
 import 'package:afro/Screens/VideoImageViewPage.dart';
 import 'package:afro/Util/Colors.dart';
 import 'package:afro/Util/CommonMethods.dart';
@@ -154,12 +155,45 @@ class _EventDiscussionListState extends State<EventDiscussionList> {
                                               },
                                             ),
                                             customWidthBox(10),
-                                            customText(
-                                                snapshot.data!.data![index]
-                                                    .user!.fullName
-                                                    .toString(),
-                                                15,
-                                                white),
+                                            InkWell(
+                                              onTap: () {
+                                                if (snapshot.data!.data![index]
+                                                        .userId ==
+                                                    userId) {
+                                                  Navigator.push(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                          builder: (builder) =>
+                                                              MyProfilePage()));
+                                                } else {
+                                                  Navigator.push(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                          builder: (builder) =>
+                                                              OtherUserProfilePageScreen(
+                                                                name: snapshot
+                                                                    .data!
+                                                                    .data![
+                                                                        index]
+                                                                    .user!
+                                                                    .fullName,
+                                                                userID: snapshot
+                                                                    .data!
+                                                                    .data![
+                                                                        index]
+                                                                    .user!
+                                                                    .sId
+                                                                    .toString(),
+                                                              )));
+                                                }
+                                              },
+                                              child: customText(
+                                                  snapshot.data!.data![index]
+                                                      .user!.fullName
+                                                      .toString(),
+                                                  15,
+                                                  white),
+                                            ),
                                           ],
                                         ),
                                         customHeightBox(5),
