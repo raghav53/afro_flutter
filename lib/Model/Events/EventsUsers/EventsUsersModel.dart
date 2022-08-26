@@ -22,8 +22,14 @@ final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
 //Interested =1
 
 Future<EventUsesModel> getEventUsers(
-    BuildContext context, String eventId, String type) async {
-  showProgressDialogBox(context);
+    BuildContext context, String eventId, String type,
+    {bool isShow = true,
+    String search = "",
+    String page = "1",
+    String limit = "1000"}) async {
+  if (isShow) {
+    showProgressDialogBox(context);
+  }
   SharedPreferences sharedPreferences = await _prefs;
   String token = sharedPreferences.getString(user.token).toString();
   String userId = sharedPreferences.getString(user.id).toString();
@@ -31,7 +37,8 @@ Future<EventUsesModel> getEventUsers(
   var jsonResponse = null;
 
   var response = await http.get(
-      Uri.parse(BASE_URL + "event_guests?event_id=$eventId&type=$type"),
+      Uri.parse(BASE_URL +
+          "event_guests?event_id=$eventId&type=$type&search=$search&page=$page&limit=$limit"),
       headers: {
         'api-key': API_KEY,
         'x-access-token': token,
@@ -39,8 +46,10 @@ Future<EventUsesModel> getEventUsers(
   print(response.body);
   jsonResponse = json.decode(response.body);
   var message = jsonResponse["message"];
-  if (response.statusCode == 200) {
+  if (isShow) {
     Navigator.pop(context);
+  }
+  if (response.statusCode == 200) {
     print("Get event users api success");
     return EventUsesModel.fromJson(jsonDecode(response.body));
   } else if (response.statusCode == 401) {
@@ -48,7 +57,6 @@ Future<EventUsesModel> getEventUsers(
     clearAllDatabase(context);
     throw Exception("Unauthorized User!");
   } else {
-    Navigator.pop(context);
     customToastMsg(message);
     throw Exception("Failed to load the work experience!");
   }

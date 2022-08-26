@@ -25,25 +25,7 @@ class AllEventUsersScreenPage extends StatefulWidget {
 Future<EventUsesModel>? _getAllEventsUsers;
 
 class _AllEventUsersScreenPageState extends State<AllEventUsersScreenPage> {
-  @override
-  void initState() {
-    super.initState();
-    Future.delayed(Duration.zero, () {
-      _getAllEventsUsers = getEventUsers(
-          context, widget.eventId.toString(), widget.type.toString());
-      setState(() {});
-      _getAllEventsUsers!.whenComplete(() => () {});
-    });
-  }
-
-  refreshList() {
-    Future.delayed(Duration.zero, () {
-      _getAllEventsUsers = getEventUsers(
-          context, widget.eventId.toString(), widget.type.toString());
-      setState(() {});
-      _getAllEventsUsers!.whenComplete(() => () {});
-    });
-  }
+  var searchKey = "";
 
   @override
   Widget build(BuildContext context) {
@@ -64,10 +46,15 @@ class _AllEventUsersScreenPageState extends State<AllEventUsersScreenPage> {
                       BoxShadow(color: Colors.black, offset: Offset(0, 2))
                     ]),
                 height: 50,
-                child: const TextField(
+                child: TextField(
+                  onChanged: (value) {
+                    setState(() {
+                      searchKey = value.toString();
+                    });
+                  },
                   keyboardType: TextInputType.text,
                   style: const TextStyle(fontSize: 14, color: Colors.white),
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                       prefixIcon: Icon(
                         Icons.search,
                         color: Color(0xFFDFB48C),
@@ -78,97 +65,88 @@ class _AllEventUsersScreenPageState extends State<AllEventUsersScreenPage> {
                       hintStyle: const TextStyle(color: Colors.white24)),
                 ),
               ),
+              customHeightBox(30),
+              usersLists(),
               customHeightBox(20),
-              FutureBuilder<EventUsesModel>(
-                  future: _getAllEventsUsers,
-                  builder: (context, snapshot) {
-                    return snapshot.hasData && snapshot.data!.data!.isNotEmpty
-                        ? ListView.builder(
-                            padding: EdgeInsets.zero,
-                            itemCount: snapshot.data!.data!.length,
-                            shrinkWrap: true,
-                            itemBuilder: (context, index) {
-                              return Container(
-                                margin: EdgeInsets.only(top: 5, bottom: 5),
-                                color: Colors.black38,
-                                child: ListTile(
-                                  onTap: () {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                OtherUserProfilePageScreen(
-                                                  userID: snapshot.data!
-                                                      .data![index].user!.sId
-                                                      .toString(),
-                                                  name: snapshot
-                                                      .data!
-                                                      .data![index]
-                                                      .user!
-                                                      .fullName,
-                                                )));
-                                  },
-                                  leading: CachedNetworkImage(
-                                      imageUrl: IMAGE_URL +
-                                          snapshot.data!.data![index].user!
-                                              .profileImage
-                                              .toString(),
-                                      placeholder: (context, url) =>
-                                          const CircleAvatar(
-                                              backgroundImage: AssetImage(
-                                                  "tom_cruise.jpeg")),
-                                      imageBuilder: (context, image) =>
-                                          CircleAvatar(
-                                            backgroundImage: image,
-                                          ),
-                                      errorWidget: (context, url, error) {
-                                        return Icon(
-                                          Icons.person,
-                                          size: 40,
-                                          color: white,
-                                        );
-                                      }),
-                                  title: customText(
-                                      snapshot.data!.data![index].user!.fullName
-                                          .toString(),
-                                      14,
-                                      white),
-                                  subtitle: Row(
-                                    children: [
-                                      Icon(
-                                        Icons.location_pin,
-                                        color: white,
-                                        size: 20,
-                                      ),
-                                      customText(
-                                          snapshot.data!.data![index].user!
-                                              .city![0].title
-                                              .toString(),
-                                          12,
-                                          white)
-                                    ],
-                                  ),
-                                ),
-                              );
-                              ;
-                            })
-                        : Center(
-                            child: customText("Not data found", 15, white),
-                          );
-                  })
             ],
           ),
         ),
       ),
     );
   }
-}
 
-Widget listItem() {
-  return Container(
-    margin: EdgeInsets.only(top: 10),
-    height: 100,
-    decoration:
-        BoxDecoration(borderRadius: BorderRadius.circular(10), color: black),
-  );
+  usersLists() {
+    return FutureBuilder<EventUsesModel>(
+        future: getEventUsers(
+            context, widget.eventId.toString(), widget.type.toString(),
+            isShow: false, search: searchKey),
+        builder: (context, snapshot) {
+          return snapshot.hasData && snapshot.data != null
+              ? ListView.builder(
+                  padding: EdgeInsets.zero,
+                  itemCount: snapshot.data!.data!.length,
+                  shrinkWrap: true,
+                  itemBuilder: (context, index) {
+                    return Container(
+                      decoration: BoxDecoration(
+                          color: Colors.black38,
+                          borderRadius: BorderRadius.circular(10)),
+                      margin: EdgeInsets.only(top: 5, bottom: 5),
+                      child: ListTile(
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      OtherUserProfilePageScreen(
+                                        userID: snapshot
+                                            .data!.data![index].user!.sId
+                                            .toString(),
+                                        name: snapshot
+                                            .data!.data![index].user!.fullName,
+                                      )));
+                        },
+                        leading: CachedNetworkImage(
+                            imageUrl: IMAGE_URL +
+                                snapshot.data!.data![index].user!.profileImage
+                                    .toString(),
+                            placeholder: (context, url) => const CircleAvatar(
+                                backgroundImage: AssetImage("tom_cruise.jpeg")),
+                            imageBuilder: (context, image) => CircleAvatar(
+                                  backgroundImage: image,
+                                ),
+                            errorWidget: (context, url, error) {
+                              return Icon(
+                                Icons.person,
+                                size: 40,
+                                color: white,
+                              );
+                            }),
+                        title: customText(
+                            snapshot.data!.data![index].user!.fullName
+                                .toString(),
+                            14,
+                            white),
+                        subtitle: Row(
+                          children: [
+                            Icon(
+                              Icons.location_pin,
+                              color: white,
+                              size: 20,
+                            ),
+                            customText(
+                                snapshot.data!.data![index].user!.city![0].title
+                                    .toString(),
+                                12,
+                                white)
+                          ],
+                        ),
+                      ),
+                    );
+                  })
+              : Center(
+                  child: customText("Not data found", 15, white),
+                );
+        });
+  }
 }

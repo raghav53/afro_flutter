@@ -6,7 +6,6 @@ import 'package:afro/Util/CommonMethods.dart';
 import 'package:afro/Util/CommonUI.dart';
 import 'package:afro/Util/CustomWidget.dart';
 import 'package:afro/Util/CustomWidgetAttributes.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -41,9 +40,8 @@ class _SendFeedbackPageState extends State<SendFeedbackPage> {
           child: Column(
             crossAxisAlignment: cStart,
             children: [
-              customDivider(10, Colors.white),
               customHeightBox(50),
-              customText("Subject", 12, Colors.white),
+              customText("Subject", 14, Colors.white),
               customHeightBox(10),
               Container(
                 height: 50,
@@ -97,8 +95,8 @@ class _SendFeedbackPageState extends State<SendFeedbackPage> {
                     }
                   },
                   child: Container(
-                    height: 50,
-                    width: 100,
+                    padding: EdgeInsets.only(top: 10, bottom: 10),
+                    margin: EdgeInsets.only(left: 100, right: 100),
                     decoration: BoxDecoration(
                         gradient: commonButtonLinearGridient,
                         borderRadius: BorderRadius.circular(40)),

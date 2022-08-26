@@ -1,9 +1,11 @@
-import 'package:socket_io_client/socket_io_client.dart' as IO;
+import 'package:afro/Helper/SocketManager.dart';
+import 'package:afro/Util/Constants.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
 import 'package:afro/Util/Colors.dart';
 import 'package:afro/Util/CustomWidget.dart';
 import 'package:afro/Util/CustomWidgetAttributes.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 class MessageListScreen extends StatefulWidget {
   const MessageListScreen({Key? key}) : super(key: key);
@@ -18,21 +20,23 @@ List<String> messagesUserNameList = [
   'Anne Marie',
   'Josepeh Stalin'
 ];
+Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+UserDataConstants _userData = UserDataConstants();
 
 class _MessageListScreenState extends State<MessageListScreen> {
-  late final IO.Socket _socket;
+  SocketManager _socketManager = SocketManager();
+  var _userID = "";
+
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
-    _socket = IO.io(
-      "http://3.230.218.97:5001",
-      IO.OptionBuilder().setTransports(['websocket']).setQuery({
-        "transports": ["websocket"],
-        "autoConnect": true,
-      }).build(),
-    );
-    _connectSocket();
+    getUserID();
+    // _socketManager.init(initSocket());
+  }
+
+  getUserID() async {
+    SharedPreferences _getDataSherdPreferecens = await _prefs;
+    _userID = _getDataSherdPreferecens.getString(_userData.id).toString();
   }
 
   @override
@@ -133,9 +137,25 @@ class _MessageListScreenState extends State<MessageListScreen> {
     );
   }
 
-  _connectSocket() {
-    _socket.onConnect((data) => print('Connection established'));
-    _socket.onConnectError((data) => print('Connect Error: $data'));
-    _socket.onDisconnect((data) => print('Socket.IO server disconnected'));
+  @override
+  void dispose() {
+    super.dispose();
   }
+
+  // initSocket() async {
+  //   await _socketManager.init((event, jsonObject) {
+  //     var map = {"user_id": "1"};
+  //     try {
+  //       _socketManager.getInbox(map);
+  //     } catch (error) {
+  //       if (error == 400) {
+  //         initSocket();
+  //       }
+  //     }
+  //   });
+
+  //   _socketManager.addInboxListener((event, p1) {
+  //     print("$event   inbox list: $p1");
+  //   });
+  // }
 }
