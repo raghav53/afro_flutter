@@ -21,7 +21,7 @@ class SocketManager {
 
   late IO.Socket socket;
 
-  Future<void> init(Function(String event, dynamic)? jsonObject) async {
+  Future<void> init(String id, var jsonObject) async {
     socket = IO.io(
         "http://3.230.218.97:5001",
         IO.OptionBuilder()
@@ -31,16 +31,20 @@ class SocketManager {
     socket.connect();
 
     socket.onConnect((_) {
-      var map = {'user_id': '1'};
+      if (socket.connected) {
+        print("Connected");
+      }
+      var map = {'user_id': id};
       //connect user connection
-      socket.emit("create_connection", map);
+      socket.emit("$CONNECT_SOCKET_METHOD", map);
     });
 
     //connect listener user
     socket.on(
-      CONNECT_SOCKET_METHOD,
+      "notification",
       (data) {
-        if (jsonObject != null) jsonObject("connect_listener", data);
+        if (jsonObject != null) print(data);
+        //jsonObject("connect_listener", data);
       },
     );
 
@@ -54,9 +58,10 @@ class SocketManager {
   }
 
   Future<void> getInbox(Map inbox) async {
+    print(inbox);
     if (socket.connected) {
-      debugPrint('SocketManager: inbox => $inbox');
-      socket.emit('inbox', inbox);
+      print('SocketManager: inbox => $inbox');
+      socket.emit(INDIVIDUAL_INBOX_METHOD, inbox);
     } else {
       throw 400;
     }
@@ -64,8 +69,8 @@ class SocketManager {
 
   Future<void> addInboxListener(
       Function(String event, dynamic)? jsonArray) async {
-    socket.on('inbox_listner', (messages) {
-      if (jsonArray != null) jsonArray("inbox_listner", messages);
+    socket.on(INDIVIDUAL_INBOX_LISTENER, (messages) {
+      if (jsonArray != null) jsonArray(INDIVIDUAL_INBOX_LISTENER, jsonArray);
     });
   }
 }

@@ -31,12 +31,16 @@ class _MessageListScreenState extends State<MessageListScreen> {
   void initState() {
     super.initState();
     getUserID();
-    // _socketManager.init(initSocket());
+
+    Future.delayed(Duration(seconds: 3), () {
+      _socketManager.init(_userID, initSocket());
+    });
   }
 
   getUserID() async {
     SharedPreferences _getDataSherdPreferecens = await _prefs;
     _userID = _getDataSherdPreferecens.getString(_userData.id).toString();
+    print(_userID);
   }
 
   @override
@@ -142,20 +146,60 @@ class _MessageListScreenState extends State<MessageListScreen> {
     super.dispose();
   }
 
-  // initSocket() async {
-  //   await _socketManager.init((event, jsonObject) {
-  //     var map = {"user_id": "1"};
-  //     try {
-  //       _socketManager.getInbox(map);
-  //     } catch (error) {
-  //       if (error == 400) {
-  //         initSocket();
-  //       }
-  //     }
-  //   });
+  initSocket() async {
+    await _socketManager.init(_userID, (event, jsonObject) {
+      var map = {"user_id": _userID};
+      try {
+        try {
+          _socketManager.getInbox(map);
+        } catch (error) {
+          print(error.toString());
+        }
+        getMessagesList();
+      } catch (error) {
+        if (error == 400) {
+          initSocket();
+        }
+      }
+    });
+  }
 
-  //   _socketManager.addInboxListener((event, p1) {
-  //     print("$event   inbox list: $p1");
-  //   });
-  // }
+  getMessagesList() async {
+    var map = {"user_id": _userID};
+
+    _socketManager.addInboxListener((event, p1) {
+      print("$event   inbox list: $p1");
+    });
+  }
 }
+
+/***
+ * void initSocketManager() {
+    socket = IO.io(
+        "http://3.230.218.97:5001",
+        IO.OptionBuilder()
+            .setTransports(['websocket']) // for Flutter or Dart VM
+            .disableAutoConnect() // disable auto-connection
+            .build());
+    socket!.connect();
+
+    socket!.onConnect((_) {
+      if (socket!.connected) {
+        print("Connected");
+        var map = {'user_id': ""};
+        //connect user connection
+        socket!.emit("connect_socket", map);
+      }
+    });
+
+    //connect listener user
+    socket!.on(
+      "connect_socket",
+      (data) {
+        if (kDebugMode) {
+          print(data);
+        }
+      },
+    );
+  }
+ */
