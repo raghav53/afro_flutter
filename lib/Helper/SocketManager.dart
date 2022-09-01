@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 
 class SocketManager {
-  String CONNECT_SOCKET_METHOD = "connect_socket";
-  String CONNECT_USER_LISTENER = "notification";
+  String CONNECT_SOCKET_METHOD = "connect_socket"; //done
+  String CONNECT_USER_LISTENER = "notification"; //Done
   String ONLINE_STATUS = "online_status";
 
   String SEND_METHOD = "send_message";
@@ -21,7 +21,8 @@ class SocketManager {
 
   late IO.Socket socket;
 
-  Future<void> init(String id, var jsonObject) async {
+  Future<void> init(
+      String id, Function(String event, dynamic)? jsonObject) async {
     socket = IO.io(
         "http://3.230.218.97:5001",
         IO.OptionBuilder()
@@ -43,8 +44,9 @@ class SocketManager {
     socket.on(
       "notification",
       (data) {
-        if (jsonObject != null) print(data);
-        //jsonObject("connect_listener", data);
+        if (jsonObject != null) {
+          jsonObject("notification", data);
+        }
       },
     );
 
@@ -70,7 +72,25 @@ class SocketManager {
   Future<void> addInboxListener(
       Function(String event, dynamic)? jsonArray) async {
     socket.on(INDIVIDUAL_INBOX_LISTENER, (messages) {
-      if (jsonArray != null) jsonArray(INDIVIDUAL_INBOX_LISTENER, jsonArray);
+      print('SocketManager: inbox_messages => $messages');
+      if (jsonArray != null) jsonArray(INDIVIDUAL_INBOX_LISTENER, messages);
+    });
+  }
+
+  Future<void> getIndividiualchat(Map data) async {
+    print(data);
+    if (socket.connected) {
+      socket.emit(INDIVIDUAL_CHAT_METHOD, data);
+    } else {
+      throw 400;
+    }
+  }
+
+  Future<void> addIndividualChatListener(
+      Function(String event, dynamic)? jsonArray) async {
+    socket.on(INDIVIDUAL_CHAT_LISTENER, (messages) {
+      print('SocketManager: Individual Chats => $messages');
+      if (jsonArray != null) jsonArray(INDIVIDUAL_CHAT_LISTENER, messages);
     });
   }
 }

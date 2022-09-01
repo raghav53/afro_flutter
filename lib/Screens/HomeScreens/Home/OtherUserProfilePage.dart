@@ -316,6 +316,8 @@ class _OtherUserProfilePageScreenState extends State<OtherUserProfilePageScreen>
                                                                   .data!
                                                                   .data!
                                                                   .sId,
+                                                              senderId:
+                                                                  loginUserId,
                                                             )));
                                               },
                                               child: Container(
