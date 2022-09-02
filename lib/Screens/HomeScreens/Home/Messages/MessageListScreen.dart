@@ -34,6 +34,7 @@ class _MessageListScreenState extends State<MessageListScreen> {
   SocketManager _socketManager = SocketManager();
   var _userID = "";
   List<IndividualInboxs> chatInboxes = [];
+
   @override
   void initState() {
     super.initState();
@@ -54,35 +55,33 @@ class _MessageListScreenState extends State<MessageListScreen> {
   Widget build(BuildContext context) {
     return SafeArea(
         child: Scaffold(
+      extendBodyBehindAppBar: true,
+      appBar: onlyTitleCommonAppbar("Message"),
       body: Container(
+        padding: EdgeInsets.only(top: 80),
         height: phoneHeight(context),
         width: phoneWidth(context),
         decoration: commonBoxDecoration(),
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              customHeightBox(10),
-              customText("Message", 20, Colors.white),
-              customHeightBox(30),
-              search(),
-              customHeightBox(20),
-              Container(
-                child: chatInboxes.isNotEmpty
-                    ? ListView.builder(
-                        shrinkWrap: true,
-                        itemCount: chatInboxes[0].list!.length,
-                        itemBuilder: (context, index) {
-                          MessagesList model = chatInboxes[0].list![index];
-                          var image = model.receiverId!.id.toString() == _userID
-                              ? model.senderId!.profileImage.toString()
-                              : model.receiverId!.profileImage.toString();
-                          return Container(
-                            decoration: BoxDecoration(
-                                color: gray1,
-                                borderRadius: BorderRadius.circular(10)),
-                            margin: const EdgeInsets.symmetric(
-                                vertical: 5, horizontal: 20),
-                            child: ListTile(
+        child: Column(
+          children: [
+            search(),
+            const SizedBox(
+              height: 15,
+            ),
+            Container(
+              child: chatInboxes.isNotEmpty
+                  ? Expanded(
+                      child: ListView.builder(
+                          padding: EdgeInsets.zero,
+                          shrinkWrap: true,
+                          itemCount: chatInboxes[0].list!.length,
+                          itemBuilder: (context, index) {
+                            MessagesList model = chatInboxes[0].list![index];
+                            var image =
+                                model.receiverId!.id.toString() == _userID
+                                    ? model.senderId!.profileImage.toString()
+                                    : model.receiverId!.profileImage.toString();
+                            return InkWell(
                               onTap: () {
                                 Navigator.push(
                                     context,
@@ -93,7 +92,8 @@ class _MessageListScreenState extends State<MessageListScreen> {
                                                       _userID
                                                   ? model.senderId!.id
                                                       .toString()
-                                                  : "",
+                                                  : model.receiverId!.id
+                                                      .toString(),
                                               name: model.receiverId!.id
                                                           .toString() ==
                                                       _userID
@@ -104,95 +104,90 @@ class _MessageListScreenState extends State<MessageListScreen> {
                                               senderId: _userID,
                                             ))).then((value) => initSocket());
                               },
-                              leading: ClipRRect(
-                                borderRadius: BorderRadius.circular(100),
-                                child: CachedNetworkImage(
-                                  imageUrl: IMAGE_URL + image,
-                                  imageBuilder: (context, imageProvider) {
-                                    return Image(
-                                      image: imageProvider,
-                                      height: 50,
-                                      width: 50,
-                                      fit: BoxFit.cover,
-                                    );
-                                  },
-                                ),
-                              ),
-                              title: Text(
-                                model.receiverId!.id.toString() == _userID
-                                    ? model.senderId!.fullName.toString()
-                                    : model.receiverId!.fullName.toString(),
-                                style: TextStyle(
-                                    color: white,
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                              subtitle: Text(
-                                model.messageId!.message.toString(),
-                                style: const TextStyle(
-                                    color: Color(0xff656567), fontSize: 13),
-                              ),
-                              trailing: Text(
-                                getTimeFormat(
-                                    model.messageId!.createdAt.toString()),
-                                style: TextStyle(color: Color(0xff656567)),
-                              ),
-                            ),
-                          );
-                        })
-                    : SizedBox(),
-              )
-            ],
-          ),
+                              child: Container(
+                                  decoration: BoxDecoration(
+                                      color: gray1,
+                                      borderRadius: BorderRadius.circular(10)),
+                                  margin: const EdgeInsets.symmetric(
+                                      vertical: 5, horizontal: 20),
+                                  padding: const EdgeInsets.all(10),
+                                  child: Stack(
+                                    children: [
+                                      Row(
+                                        children: [
+                                          ClipRRect(
+                                            borderRadius:
+                                                BorderRadius.circular(100),
+                                            child: CachedNetworkImage(
+                                              imageUrl: IMAGE_URL + image,
+                                              imageBuilder:
+                                                  (context, imageProvider) {
+                                                return Image(
+                                                  image: imageProvider,
+                                                  height: 50,
+                                                  width: 50,
+                                                  fit: BoxFit.cover,
+                                                );
+                                              },
+                                            ),
+                                          ),
+                                          const SizedBox(
+                                            width: 10,
+                                          ),
+                                          Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                model.receiverId!.id
+                                                            .toString() ==
+                                                        _userID
+                                                    ? model.senderId!.fullName
+                                                        .toString()
+                                                    : model.receiverId!.fullName
+                                                        .toString(),
+                                                style: TextStyle(
+                                                    color: white,
+                                                    fontSize: 15,
+                                                    fontWeight:
+                                                        FontWeight.bold),
+                                              ),
+                                              const SizedBox(
+                                                height: 5,
+                                              ),
+                                              Text(
+                                                model.messageId!.message
+                                                    .toString(),
+                                                style: const TextStyle(
+                                                    color: Color(0xff656567),
+                                                    fontSize: 13),
+                                              ),
+                                            ],
+                                          )
+                                        ],
+                                      ),
+                                      Align(
+                                        alignment: Alignment.centerRight,
+                                        child: Text(
+                                          getTimeFormat(model
+                                              .messageId!.createdAt
+                                              .toString()),
+                                          style: const TextStyle(
+                                              color: Color(0xff656567)),
+                                        ),
+                                      )
+                                    ],
+                                  )),
+                            );
+                          }),
+                    )
+                  : SizedBox(),
+            )
+          ],
         ),
       ),
     ));
   }
-
-  // //Message List Item
-  // Widget messageListItem(MessagesList model) {
-  //   return InkWell(
-  //     onTap: () {},
-  //     child: Container(
-  //       margin: const EdgeInsets.only(left: 20, right: 20, top: 10),
-  //       padding:
-  //           const EdgeInsets.only(top: 10, bottom: 10, left: 15, right: 10),
-  //       decoration: BoxDecoration(
-  //         borderRadius: BorderRadius.circular(10),
-  //         color: gray1,
-  //       ),
-  //       child: Row(children: [
-  //         const CircleAvatar(
-  //           backgroundImage: AssetImage("tom_cruise.jpeg"),
-  //         ),
-  //         customWidthBox(10),
-  //         Column(
-  //           crossAxisAlignment: cStart,
-  //           children: [
-  //             customText(name, 15, white),
-  //             customHeightBox(5),
-  //             customText("Hello , how are you?", 13, const Color(0x3DFFFFFF))
-  //           ],
-  //         ),
-  //         const Spacer(),
-  //         Column(
-  //           children: [
-  //             customText("11:45 AM", 14, Color(0x3DFFFFFF)),
-  //             customHeightBox(5),
-  //             Container(
-  //               padding:
-  //                   const EdgeInsets.only(top: 3, bottom: 3, right: 7, left: 7),
-  //               decoration: BoxDecoration(
-  //                   gradient: commonButtonLinearGridient,
-  //                   borderRadius: BorderRadius.circular(50)),
-  //               child: Center(child: customText("5", 15, white)),
-  //             )
-  //           ],
-  //         )
-  //       ]),
-  //     ),
-  //   );
-  // }
 
   //Custom search options
   Widget search() {

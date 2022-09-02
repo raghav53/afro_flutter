@@ -2,9 +2,7 @@ import 'dart:convert';
 
 import 'package:afro/Helper/ReportOperation.dart';
 import 'package:afro/Helper/SocketManager.dart';
-import 'package:afro/Model/ChatMessage.dart';
 import 'package:afro/Model/Messages/Chat/IndividualChatModel.dart';
-import 'package:afro/Model/Messages/Inbox/IndividualInboxModel.dart';
 import 'package:afro/Model/UserProfileModel.dart';
 import 'package:afro/Network/Apis.dart';
 import 'package:afro/Util/Colors.dart';
@@ -18,6 +16,7 @@ import 'package:http/http.dart' as http;
 
 class UserMessagePage extends StatefulWidget {
   String? userID = "", name = "", senderId = "";
+
   UserMessagePage({Key? key, this.name, this.userID, required this.senderId})
       : super(key: key);
   @override
@@ -32,17 +31,22 @@ Future<UserProfile>? __getMessageUserProfile;
 
 class _UserMessagePageState extends State<UserMessagePage> {
   SocketManager _socketManager = SocketManager();
+  FocusNode focusNode = FocusNode();
   List<IndividualChatMessage> chatMessages = [];
+  TextEditingController msgController = TextEditingController();
+  String msg = "";
+  ScrollController _scrollController = new ScrollController();
   @override
   void initState() {
     super.initState();
     initSocket();
-    if (_socketManager.socket.connected) {
-      getUsersChat();
-    } else {
-      initSocket();
-    }
-
+    Future.delayed(Duration(seconds: 1), () {
+      if (_socketManager.socket.connected) {
+        getUsersChat();
+      } else {
+        initSocket();
+      }
+    });
     Future.delayed(Duration.zero, () {
       __getMessageUserProfile =
           getOtherUserProfileinfo(context, widget.userID.toString());
@@ -59,6 +63,12 @@ class _UserMessagePageState extends State<UserMessagePage> {
       setState(() {});
       __getMessageUserProfile!.whenComplete(() => () {});
     });
+  }
+
+  @override
+  void dispose() {
+    _socketManager.socket.dispose();
+    super.dispose();
   }
 
   @override
@@ -79,18 +89,44 @@ class _UserMessagePageState extends State<UserMessagePage> {
                         Column(
                           children: [
                             customAppbar(snapshot.data!),
-                            ListView.builder(
-                                shrinkWrap: true,
-                                itemCount: chatMessages.length,
-                                itemBuilder: (context, index) {
-                                  return customText(
-                                      chatMessages[0]
-                                          .list![index]
-                                          .message
-                                          .toString(),
-                                      13,
-                                      white);
-                                })
+                            Container(
+                                child: chatMessages.isNotEmpty
+                                    ? Expanded(
+                                        child: ListView.builder(
+                                            shrinkWrap: true,
+                                            itemCount:
+                                                chatMessages[0].list!.length,
+                                            itemBuilder: (context, index) {
+                                              return Container(
+                                                margin: EdgeInsets.only(
+                                                    bottom: chatMessages[0]
+                                                                    .list!
+                                                                    .length -
+                                                                1 ==
+                                                            index
+                                                        ? 70
+                                                        : 0),
+                                                child: chatMessageItem(
+                                                    chatMessages[0]
+                                                        .list![index]
+                                                        .message
+                                                        .toString(),
+                                                    chatMessages[0]
+                                                        .list![index]
+                                                        .senderId
+                                                        .toString(),
+                                                    chatMessages[0]
+                                                        .list![index]
+                                                        .receiverId
+                                                        .toString(),
+                                                    chatMessages[0]
+                                                        .list![index]
+                                                        .createdAt
+                                                        .toString()),
+                                              );
+                                            }),
+                                      )
+                                    : SizedBox())
                           ],
                         ),
                         Align(child: userBlockOrNot(snapshot.data!)),
@@ -241,9 +277,16 @@ class _UserMessagePageState extends State<UserMessagePage> {
                   const SizedBox(
                     width: 15,
                   ),
-                  const Expanded(
+                  Expanded(
                     child: TextField(
-                      decoration: InputDecoration(
+                      focusNode: focusNode,
+                      controller: msgController,
+                      onChanged: (v) {
+                        setState(() {
+                          msg = v.toString();
+                        });
+                      },
+                      decoration: const InputDecoration(
                           hintText: "Write message...",
                           hintStyle: TextStyle(color: Colors.black54),
                           border: InputBorder.none),
@@ -253,7 +296,13 @@ class _UserMessagePageState extends State<UserMessagePage> {
                     width: 15,
                   ),
                   FloatingActionButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      if (msg.isEmpty) {
+                        showInSnackBar("Write your msg..", context);
+                        return;
+                      }
+                      sendMessage();
+                    },
                     child: const Icon(
                       Icons.send,
                       color: Colors.white,
@@ -287,11 +336,60 @@ class _UserMessagePageState extends State<UserMessagePage> {
     _socketManager.getIndividiualchat(map);
     _socketManager.addIndividualChatListener(
       (event, p1) {
-        print(p1);
         setState(() {
           chatMessages.add(IndividualChatMessage.fromJson(p1));
         });
       },
+    );
+  }
+
+  sendMessage() {
+    var msgData = {
+      "receiver_id": widget.userID.toString(),
+      "message": msg.toString(),
+      "media": "0",
+      "media_type": "0",
+      "type": "0"
+    };
+    print(msgData);
+    _socketManager.sendMessgae(msgData);
+    _socketManager.getMessage(
+      (event, p1) => {
+        
+      },
+    );
+
+    getUsersChat();
+    msgController.clear();
+    focusNode.unfocus();
+    focusNode.canRequestFocus = false;
+  }
+
+  chatMessageItem(String msg, String senderId, String recevierId, String time) {
+    return Align(
+      alignment: widget.senderId == senderId
+          ? Alignment.centerRight
+          : Alignment.centerLeft,
+      child: Container(
+        margin: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+        child: Column(
+          crossAxisAlignment: widget.senderId == senderId
+              ? CrossAxisAlignment.end
+              : CrossAxisAlignment.start,
+          children: [
+            Container(
+              padding: EdgeInsets.symmetric(horizontal: 5, vertical: 10),
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(5), color: gray1),
+              child: customText(msg, 15, white),
+            ),
+            customHeightBox(5),
+            customText(
+                getTimeFormat(time), 13, Color.fromARGB(255, 49, 49, 49)),
+            customHeightBox(5)
+          ],
+        ),
+      ),
     );
   }
 }

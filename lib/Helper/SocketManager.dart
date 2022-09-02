@@ -93,4 +93,19 @@ class SocketManager {
       if (jsonArray != null) jsonArray(INDIVIDUAL_CHAT_LISTENER, messages);
     });
   }
+
+  Future<void> sendMessgae(Map data) async {
+    if (socket.connected) {
+      socket.emit(SEND_METHOD, data);
+    } else {
+      throw 400;
+    }
+  }
+
+  Future<void> getMessage(Function(String event, dynamic)? jsonArray) async {
+    socket.on(GET_MESSAGE_LISTENER, (messages) {
+      print(messages);
+      if (jsonArray != null) jsonArray(GET_MESSAGE_LISTENER, messages);
+    });
+  }
 }
