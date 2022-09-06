@@ -108,4 +108,15 @@ class SocketManager {
       if (jsonArray != null) jsonArray(GET_MESSAGE_LISTENER, messages);
     });
   }
+
+  Future<void> readAllMessages(Map data) async {
+    print(data);
+    if (socket.connected) {
+      socket.emit(READ_MESSAGE, data);
+    } else {
+      throw 400;
+    }
+  }
+
+
 }

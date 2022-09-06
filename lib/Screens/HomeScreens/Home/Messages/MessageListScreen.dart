@@ -31,7 +31,7 @@ Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
 UserDataConstants _userData = UserDataConstants();
 
 class _MessageListScreenState extends State<MessageListScreen> {
-  SocketManager _socketManager = SocketManager();
+  final SocketManager _socketManager = SocketManager();
   var _userID = "";
   List<IndividualInboxs> chatInboxes = [];
 
@@ -58,7 +58,7 @@ class _MessageListScreenState extends State<MessageListScreen> {
       extendBodyBehindAppBar: true,
       appBar: onlyTitleCommonAppbar("Message"),
       body: Container(
-        padding: EdgeInsets.only(top: 80),
+        padding: const EdgeInsets.only(top: 80),
         height: phoneHeight(context),
         width: phoneWidth(context),
         decoration: commonBoxDecoration(),
@@ -168,12 +168,45 @@ class _MessageListScreenState extends State<MessageListScreen> {
                                       ),
                                       Align(
                                         alignment: Alignment.centerRight,
-                                        child: Text(
-                                          getTimeFormat(model
-                                              .messageId!.createdAt
-                                              .toString()),
-                                          style: const TextStyle(
-                                              color: Color(0xff656567)),
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            Text(
+                                              getTimeFormat(model
+                                                  .messageId!.createdAt
+                                                  .toString()),
+                                              style: const TextStyle(
+                                                  color: Color(0xff656567)),
+                                            ),
+                                            Visibility(
+                                              visible: model.unreadCount
+                                                          .toString() ==
+                                                      "0"
+                                                  ? false
+                                                  : true,
+                                              child: Container(
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                        horizontal: 10,
+                                                        vertical: 5),
+                                                decoration: BoxDecoration(
+                                                    gradient:
+                                                        commonButtonLinearGridient,
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            50)),
+                                                margin: const EdgeInsets.only(
+                                                    top: 5),
+                                                child: Text(
+                                                  model.unreadCount.toString(),
+                                                  style: const TextStyle(
+                                                      color: Colors.white),
+                                                ),
+                                              ),
+                                            )
+                                          ],
                                         ),
                                       )
                                     ],
@@ -181,7 +214,7 @@ class _MessageListScreenState extends State<MessageListScreen> {
                             );
                           }),
                     )
-                  : SizedBox(),
+                  : const SizedBox(),
             )
           ],
         ),
