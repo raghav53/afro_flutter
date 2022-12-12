@@ -142,10 +142,24 @@ class _HomeScreen extends State<DashboardPageScreen> {
                         builder: (context) => SearchOptionScreen()))
                     .then((value) => onResumed());
               },
-              icon: const Icon(
+              icon:
+              ShaderMask(
+                shaderCallback: (Rect bounds) => const RadialGradient(
+                  center: Alignment.center,
+                  radius: 0.5,
+                  colors: [
+                    Color(0xff7822A0),
+                Color(0xff3958B0),
+                  ],
+                  tileMode: TileMode.mirror,
+                ).createShader(bounds),
+                child: Icon(Icons.search,size: 30,),),),
+
+
+              /* const Icon(
                 Icons.search,
                 color: Colors.white,
-              )),
+              )),*/
           IconButton(
               onPressed: () {
                 Navigator.of(context)
@@ -153,10 +167,21 @@ class _HomeScreen extends State<DashboardPageScreen> {
                         builder: (context) => NotificationScreenPage()))
                     .then((value) => onResumed());
               },
-              icon: const Icon(
-                Icons.notification_add,
-                color: Colors.white,
-              )),
+              icon:
+              ShaderMask(
+
+                shaderCallback: (Rect bounds) => const RadialGradient(
+                  center: Alignment.topCenter,
+                  stops: [0.5,1],
+
+                  colors: [
+                    Color(0xff7822A0),
+                    Color(0xff3958B0),
+                  ],
+                  tileMode: TileMode.mirror,
+                ).createShader(bounds),
+                child: const Icon(Icons.notifications_active_outlined,size: 30,),),),
+
           customWidthBox(10),
           InkWell(
               onTap: () {
@@ -199,15 +224,15 @@ class _HomeScreen extends State<DashboardPageScreen> {
                 child: fullName != null
                     ? Text(
                         "Hello " + fullName.toString(),
-                        style: const TextStyle(
-                            color: Colors.white,
+                        style:  TextStyle(
+                            color: yellowColor,
                             fontSize: 30,
                             fontWeight: FontWeight.bold),
                       )
-                    : const Text(
+                    :  Text(
                         "Hello " + "User",
                         style: TextStyle(
-                            color: Colors.white,
+                            color: yellowColor,
                             fontSize: 30,
                             fontWeight: FontWeight.bold),
                       ),
@@ -392,11 +417,8 @@ class _HomeScreen extends State<DashboardPageScreen> {
                                             customHeightBox(3),
                                             Row(
                                               children: [
-                                                Icon(
-                                                  Icons.location_pin,
-                                                  color: yellowColor,
-                                                  size: 15,
-                                                ),
+                                                Image.asset("assets/location.png",height: 15,width: 15,),
+
                                                 customWidthBox(2),
                                                 SizedBox(
                                                     width: 80,
@@ -661,11 +683,7 @@ class _HomeScreen extends State<DashboardPageScreen> {
                                           white),
                                       subtitle: Row(
                                         children: [
-                                          Icon(
-                                            Icons.location_pin,
-                                            color: yellowColor,
-                                            size: 15,
-                                          ),
+                                          Image.asset("assets/location.png",height: 15,width: 15,),
                                           customWidthBox(2),
                                           Container(
                                             child: snapshot.data!.data![index]

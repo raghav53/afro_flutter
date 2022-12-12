@@ -108,209 +108,220 @@ class _MyProffile extends State<MyProfilePage> {
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              Container(
-                                decoration: BoxDecoration(
+
+                              Card(
+                                color: blue,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10.0),
+                                ),
+                                /*decoration: BoxDecoration(
                                     color: blue,
-                                    borderRadius: BorderRadius.circular(10)),
-                                margin: EdgeInsets.only(left: 20, right: 20),
-                                padding: EdgeInsets.all(10),
-                                child: Row(
-                                  crossAxisAlignment: cStart,
-                                  children: [
-                                    //Profile Image
-                                    InkWell(
-                                      onTap: () {
-                                        openBottomSheet();
-                                      },
-                                      child: Stack(
-                                        alignment: Alignment.bottomRight,
+                                    borderRadius: BorderRadius.circular(10)),*/
+                                margin: const EdgeInsets.only(left: 20, right: 20),
+                                /*padding: const EdgeInsets.all(10),*/
+                                child: Padding(
+                                  padding: const EdgeInsets.only(top: 8,bottom: 8),
+                                  child: Row(
+                                    crossAxisAlignment: cStart,
+                                    children: [
+                 const Padding(padding: EdgeInsets.all(5)),
+                                      //Profile Image
+                                      InkWell(
+                                        onTap: () {
+                                          openBottomSheet();
+                                        },
+                                        child: Stack(
+                                          alignment: Alignment.bottomRight,
+                                          children: [
+                                            Container(
+                                              height: 60,
+                                              width: 60,
+                                              decoration: BoxDecoration(
+                                                  border: Border.all(
+                                                      width: 1,
+                                                      color: yellowColor),
+                                                  borderRadius:
+                                                      BorderRadius.circular(50)),
+                                              child: Padding(
+                                                padding:
+                                                    const EdgeInsets.all(3.0),
+                                                child: CachedNetworkImage(
+                                                    imageUrl: IMAGE_URL +
+                                                        snapshot.data!.data!
+                                                            .profileImage
+                                                            .toString(),
+                                                    errorWidget:
+                                                        (error, context, url) =>
+                                                            Icon(Icons.person),
+                                                    placeholder: (context, url) =>
+                                                        Icon(Icons.person),
+                                                    imageBuilder: (context, url) {
+                                                      return CircleAvatar(
+                                                        backgroundImage: url,
+                                                      );
+                                                    }),
+                                              ),
+                                            ),
+                                            Align(
+                                                child: CircleAvatar(
+                                              radius: 10,
+                                              backgroundColor: yellowColor,
+                                              child: Icon(
+                                                Icons.edit,
+                                                color: black,
+                                                size: 15,
+                                              ),
+                                            ))
+                                          ],
+                                        ),
+                                      ),
+                                      customWidthBox(7),
+                                      //Basic Info,
+                                      Column(
+                                        crossAxisAlignment: cStart,
                                         children: [
+                                          Row(
+                                            children: [
+                                              customText(
+                                                  fullName.toString(), 15, white),
+                                              customWidthBox(5),
+                                              Row(
+                                                children: [
+                                                  CachedNetworkImage(
+                                                    height: 15,
+                                                    width: 15,
+                                                    imageUrl: country_code_url +
+                                                        snapshot.data!.data!
+                                                            .country!.iso2
+                                                            .toString()
+                                                            .toLowerCase() +
+                                                        ".png",
+                                                    imageBuilder: (context, url) {
+                                                      return CircleAvatar(
+                                                        backgroundImage: url,
+                                                      );
+                                                    },
+                                                  ),
+                                                  Container(
+                                                    height: 15,
+                                                    width: 150,
+                                                    child: ListView.builder(
+                                                        shrinkWrap: true,
+                                                        itemCount: snapshot.data!
+                                                            .data!.visits!.length,
+                                                        scrollDirection:
+                                                            Axis.horizontal,
+                                                        itemBuilder:
+                                                            (context, index) {
+                                                          return Padding(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                        .only(
+                                                                    left: 3),
+                                                            child:
+                                                                CachedNetworkImage(
+                                                              height: 15,
+                                                              width: 15,
+                                                              imageUrl: country_code_url +
+                                                                  snapshot
+                                                                      .data!
+                                                                      .data!
+                                                                      .visits![
+                                                                          index]
+                                                                      .iso2
+                                                                      .toString()
+                                                                      .toLowerCase() +
+                                                                  ".png",
+                                                              imageBuilder:
+                                                                  (context, url) {
+                                                                return CircleAvatar(
+                                                                  backgroundImage:
+                                                                      url,
+                                                                );
+                                                              },
+                                                            ),
+                                                          );
+                                                        }),
+                                                  )
+                                                ],
+                                              )
+                                            ],
+                                          ),
+                                          customHeightBox(2),
+                                          customText(
+                                              "Newcorner Buddy", 11, white),
+                                          customHeightBox(2),
+                                          customText("Member since April 2022",
+                                              11, white),
+                                          customHeightBox(13),
+                                          customText('Bio', 15, white),
+                                          customHeightBox(3),
                                           Container(
-                                            height: 60,
-                                            width: 60,
-                                            decoration: BoxDecoration(
-                                                border: Border.all(
-                                                    width: 1,
-                                                    color: yellowColor),
-                                                borderRadius:
-                                                    BorderRadius.circular(50)),
-                                            child: Padding(
-                                              padding:
-                                                  const EdgeInsets.all(3.0),
-                                              child: CachedNetworkImage(
-                                                  imageUrl: IMAGE_URL +
-                                                      snapshot.data!.data!
-                                                          .profileImage
-                                                          .toString(),
-                                                  errorWidget:
-                                                      (error, context, url) =>
-                                                          Icon(Icons.person),
-                                                  placeholder: (context, url) =>
-                                                      Icon(Icons.person),
-                                                  imageBuilder: (context, url) {
-                                                    return CircleAvatar(
-                                                      backgroundImage: url,
-                                                    );
-                                                  }),
+                                            width: phoneWidth(context) / 1.5,
+                                            child: Text(
+                                              bio.toString(),
+                                              style: TextStyle(
+                                                  fontSize: 11, color: white),
                                             ),
                                           ),
-                                          Align(
-                                              child: CircleAvatar(
-                                            radius: 10,
-                                            backgroundColor: yellowColor,
-                                            child: Icon(
-                                              Icons.edit,
-                                              color: black,
-                                              size: 15,
-                                            ),
-                                          ))
+                                          customHeightBox(15),
+                                          customHeightBox(15),
+                                          //Following , Follower , Friends/Contacts
+                                          Row(
+                                            mainAxisSize: MainAxisSize.max,
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceAround,
+                                            children: [
+                                              InkWell(
+                                                onTap: () {
+                                                  Navigator.of(context).push(
+                                                      MaterialPageRoute(
+                                                          builder: (context) =>
+                                                              FollowerFollowingPage()));
+                                                },
+                                                child: customText(
+                                                    "Following: " +
+                                                        totalFollowings
+                                                            .toString(),
+                                                    12,
+                                                    white),
+                                              ),
+                                              customWidthBox(15),
+                                              InkWell(
+                                                onTap: () {
+                                                  Navigator.of(context).push(
+                                                      MaterialPageRoute(
+                                                          builder: (context) =>
+                                                              FollowerFollowingPage()));
+                                                },
+                                                child: customText(
+                                                    "Follower: " +
+                                                        totalFollowers.toString(),
+                                                    12,
+                                                    white),
+                                              ),
+                                              customWidthBox(15),
+                                              InkWell(
+                                                onTap: () {
+                                                  Navigator.of(context).push(
+                                                      MaterialPageRoute(
+                                                          builder: (context) =>
+                                                              AllMembers()));
+                                                },
+                                                child: Flexible(
+                                                  child: customText(
+                                                      "Contacts: " +
+                                                          totalContacts.toString(),
+                                                      12,
+                                                      white),
+                                                ),
+                                              )
+                                            ],
+                                          )
                                         ],
                                       ),
-                                    ),
-                                    customWidthBox(7),
-                                    //Basic Info,
-                                    Column(
-                                      crossAxisAlignment: cStart,
-                                      children: [
-                                        Row(
-                                          children: [
-                                            customText(
-                                                fullName.toString(), 15, white),
-                                            customWidthBox(5),
-                                            Row(
-                                              children: [
-                                                CachedNetworkImage(
-                                                  height: 15,
-                                                  width: 15,
-                                                  imageUrl: country_code_url +
-                                                      snapshot.data!.data!
-                                                          .country!.iso2
-                                                          .toString()
-                                                          .toLowerCase() +
-                                                      ".png",
-                                                  imageBuilder: (context, url) {
-                                                    return CircleAvatar(
-                                                      backgroundImage: url,
-                                                    );
-                                                  },
-                                                ),
-                                                Container(
-                                                  height: 15,
-                                                  width: 150,
-                                                  child: ListView.builder(
-                                                      shrinkWrap: true,
-                                                      itemCount: snapshot.data!
-                                                          .data!.visits!.length,
-                                                      scrollDirection:
-                                                          Axis.horizontal,
-                                                      itemBuilder:
-                                                          (context, index) {
-                                                        return Padding(
-                                                          padding:
-                                                              const EdgeInsets
-                                                                      .only(
-                                                                  left: 3),
-                                                          child:
-                                                              CachedNetworkImage(
-                                                            height: 15,
-                                                            width: 15,
-                                                            imageUrl: country_code_url +
-                                                                snapshot
-                                                                    .data!
-                                                                    .data!
-                                                                    .visits![
-                                                                        index]
-                                                                    .iso2
-                                                                    .toString()
-                                                                    .toLowerCase() +
-                                                                ".png",
-                                                            imageBuilder:
-                                                                (context, url) {
-                                                              return CircleAvatar(
-                                                                backgroundImage:
-                                                                    url,
-                                                              );
-                                                            },
-                                                          ),
-                                                        );
-                                                      }),
-                                                )
-                                              ],
-                                            )
-                                          ],
-                                        ),
-                                        customHeightBox(2),
-                                        customText(
-                                            "Newcorner Buddy", 11, white),
-                                        customHeightBox(2),
-                                        customText("Member since April 2022",
-                                            11, white),
-                                        customHeightBox(13),
-                                        customText('Bio', 15, white),
-                                        customHeightBox(3),
-                                        Container(
-                                          width: phoneWidth(context) / 1.5,
-                                          child: Text(
-                                            bio.toString(),
-                                            style: TextStyle(
-                                                fontSize: 11, color: white),
-                                          ),
-                                        ),
-                                        customHeightBox(15),
-                                        customHeightBox(15),
-                                        //Following , Follower , Friends/Contacts
-                                        Row(
-                                          mainAxisSize: MainAxisSize.max,
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceAround,
-                                          children: [
-                                            InkWell(
-                                              onTap: () {
-                                                Navigator.of(context).push(
-                                                    MaterialPageRoute(
-                                                        builder: (context) =>
-                                                            FollowerFollowingPage()));
-                                              },
-                                              child: customText(
-                                                  "Following: " +
-                                                      totalFollowings
-                                                          .toString(),
-                                                  12,
-                                                  white),
-                                            ),
-                                            customWidthBox(15),
-                                            InkWell(
-                                              onTap: () {
-                                                Navigator.of(context).push(
-                                                    MaterialPageRoute(
-                                                        builder: (context) =>
-                                                            FollowerFollowingPage()));
-                                              },
-                                              child: customText(
-                                                  "Follower: " +
-                                                      totalFollowers.toString(),
-                                                  12,
-                                                  white),
-                                            ),
-                                            customWidthBox(15),
-                                            InkWell(
-                                              onTap: () {
-                                                Navigator.of(context).push(
-                                                    MaterialPageRoute(
-                                                        builder: (context) =>
-                                                            AllMembers()));
-                                              },
-                                              child: customText(
-                                                  "Contacts: " +
-                                                      totalContacts.toString(),
-                                                  12,
-                                                  white),
-                                            )
-                                          ],
-                                        )
-                                      ],
-                                    ),
-                                  ],
+                                    ],
+                                  ),
                                 ),
                               ),
                               customHeightBox(20),

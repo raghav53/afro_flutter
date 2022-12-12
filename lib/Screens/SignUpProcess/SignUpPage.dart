@@ -114,7 +114,7 @@ class _SignUpPage extends State<SignUpPageScreen> {
                                 },
                             child: Text(
                               "SIGN IN",
-                              style: TextStyle(color: Colors.yellow[300]),
+                              style: TextStyle(color: yellowColor),
                             ))
                       ],
                     ),
@@ -166,7 +166,7 @@ class _SignUpPage extends State<SignUpPageScreen> {
                 decoration: InputDecoration(
                     border: InputBorder.none,
                     contentPadding: const EdgeInsets.only(left: 14),
-                    hintText: "First Name",
+                    hintText: "Enter Your First Name",
                     hintStyle: const TextStyle(color: Colors.white24)),
               ),
             )
@@ -204,7 +204,7 @@ class _SignUpPage extends State<SignUpPageScreen> {
                 decoration: const InputDecoration(
                     border: InputBorder.none,
                     contentPadding: EdgeInsets.only(left: 14),
-                    hintText: "First Name",
+                    hintText: "Enter Your Last Name",
                     hintStyle: TextStyle(color: Colors.white24)),
               ),
             )
@@ -244,7 +244,7 @@ class _SignUpPage extends State<SignUpPageScreen> {
                 decoration: const InputDecoration(
                     border: InputBorder.none,
                     contentPadding: EdgeInsets.only(left: 14),
-                    hintText: "Email",
+                    hintText: "Enter Your Email",
                     hintStyle: TextStyle(color: Colors.white24)),
               ),
             )
@@ -281,7 +281,7 @@ class _SignUpPage extends State<SignUpPageScreen> {
                 decoration: const InputDecoration(
                     border: InputBorder.none,
                     contentPadding: EdgeInsets.only(left: 14),
-                    hintText: "Create Password",
+                    hintText: "Enter Your  Password",
                     hintStyle: TextStyle(color: Colors.white24)),
               ),
             )
@@ -318,7 +318,7 @@ class _SignUpPage extends State<SignUpPageScreen> {
                 decoration: const InputDecoration(
                     border: InputBorder.none,
                     contentPadding: EdgeInsets.only(left: 14),
-                    hintText: "Confirm Password",
+                    hintText: "Enter Your Confirm Password",
                     hintStyle: TextStyle(color: Colors.white24)),
               ),
             )
@@ -361,7 +361,7 @@ class _SignUpPage extends State<SignUpPageScreen> {
                         TextButton(
                             onPressed: () {
                               if (timeStamp.toString().isEmpty) {
-                                customToastMsg("Please select your dob!");
+                                customToastMsg("Please Select Your dob!");
                                 return;
                               }
                               Navigator.pop(context);
@@ -371,7 +371,7 @@ class _SignUpPage extends State<SignUpPageScreen> {
                     ),
                     customDivider(10, white),
                     customHeightBox(10),
-                    Container(
+                    SizedBox(
                       height: 200,
                       child: CupertinoTheme(
                         data: const CupertinoThemeData(

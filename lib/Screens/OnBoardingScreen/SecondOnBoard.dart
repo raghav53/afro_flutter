@@ -1,9 +1,11 @@
-import 'package:afro/Screens/OnBoardingScreen/ThirdOnBoard.dart';
+
 import 'package:afro/Util/Colors.dart';
 import 'package:afro/Util/CustomWidget.dart';
 import 'package:afro/Util/CustomWidgetAttributes.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+
+import 'FirstOnBoard.dart';
 
 class SecondOnBoardScreen extends StatefulWidget {
   _SecondScreen createState() => _SecondScreen();
@@ -54,7 +56,7 @@ class _SecondScreen extends State<SecondOnBoardScreen> {
                             Navigator.pushReplacement(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => ThirdOnBoardScreen()))
+                                    builder: (context) => FirstOnBoardScreen()))
                           },
                           child: Container(
                             height: 40,

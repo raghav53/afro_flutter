@@ -6,6 +6,8 @@ import 'package:afro/Screens/SignUpProcess/SignUpPage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import '../../Util/google_method.dart';
+
 class SignPage extends StatefulWidget {
   _SignInPageScreen createState() => _SignInPageScreen();
 }
@@ -240,7 +242,9 @@ class _SignInPageScreen extends State<SignPage> {
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: InkWell(
-                            onTap: () => {},
+                            onTap: () => {
+                              googleSignInProcess( context)
+                            },
                             child: Image.asset(
                               "assets/social/google.png",
                               height: 30,
