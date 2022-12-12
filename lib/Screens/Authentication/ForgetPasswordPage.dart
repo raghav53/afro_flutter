@@ -52,7 +52,7 @@ class _ForgetPassword extends State<ForgetPasswordPage> {
                   padding: const EdgeInsets.only(left: 20),
                   child: Text(
                     "Confirm your email and we'll send the instructions",
-                    style: TextStyle(color: Colors.yellow[300]),
+                    style: TextStyle(color: yellowColor),
                   ),
                 ),
                 customHeightBox(40),
@@ -123,7 +123,7 @@ class _ForgetPassword extends State<ForgetPasswordPage> {
                             Icons.lock,
                             color: white,
                           ),
-                          customWidthBox(20),
+                          customWidthBox(15),
                           customText("Reset Password", 15, white)
                         ],
                       ),

@@ -99,7 +99,7 @@ class _AllEventsScreenState extends State<AllEventsScreen> {
         floatingActionButton: GestureDetector(
           onTap: () {
             Navigator.of(context)
-                .push(MaterialPageRoute(builder: (context) => CreateNewEvent()))
+                .push(MaterialPageRoute(builder: (context) => const CreateNewEvent()))
                 .then((value) => setState(() {}));
           },
           child: Container(
@@ -155,7 +155,7 @@ class _AllEventsScreenState extends State<AllEventsScreen> {
                                   Icons.search,
                                   color: Color(0xFFDFB48C),
                                 ),
-                                hintText: "Search",
+                                hintText: "Search By Name",
                                 contentPadding:
                                     EdgeInsets.only(left: 15, top: 15),
                                 hintStyle: TextStyle(color: Colors.white24)),
@@ -178,7 +178,7 @@ class _AllEventsScreenState extends State<AllEventsScreen> {
                 ),
                 customHeightBox(25),
                 Container(
-                  padding: EdgeInsets.only(left: 20, right: 20),
+                  padding: const EdgeInsets.only(left: 20, right: 20),
                   height: 30,
                   child: ListView.builder(
                       itemCount: filterItem.length,
@@ -949,11 +949,7 @@ class _AllEventsScreenState extends State<AllEventsScreen> {
                           customHeightBox(5),
                           Row(
                             children: [
-                              const Icon(
-                                Icons.location_pin,
-                                color: Color(0xFFDFB48C),
-                                size: 15,
-                              ),
+                                Image.asset("assets/location.png",height: 15,width: 15,),
                               customWidthBox(5),
                               customText(
                                   getAllEvents.data![index].country!.title

@@ -68,11 +68,8 @@ InvitedEventsScreen(BuildContext context, InvitedEventsModel snapshot) {
                           customHeightBox(5),
                           Row(
                             children: [
-                              const Icon(
-                                Icons.location_pin,
-                                color: Color(0xFFDFB48C),
-                                size: 15,
-                              ),
+                              Image.asset("assets/location.png",height: 15,width: 15,),
+                              customWidthBox(5),
                               customWidthBox(5),
                               customText(
                                   snapshot.data![index].event!.country![0].title

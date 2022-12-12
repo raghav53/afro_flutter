@@ -1,5 +1,6 @@
 import 'package:afro/Screens/Authentication/SignInPage2.dart';
 import 'package:afro/Screens/OnBoardingScreen/FirstOnBoard.dart';
+import 'package:afro/Screens/OnBoardingScreen/SecondOnBoard.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -49,7 +50,7 @@ clearAllDatabase(BuildContext context) async {
   await preferences.clear();
 
   Navigator.of(context).pushAndRemoveUntil(
-      MaterialPageRoute(builder: (context) => FirstOnBoardScreen()),
+      MaterialPageRoute(builder: (context) => SecondOnBoardScreen()),
       (Route<dynamic> route) => false);
 }
 

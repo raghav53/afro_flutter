@@ -104,7 +104,10 @@ BoxDecoration commonBoxDecoration() {
 }
 
 LinearGradient commonButtonLinearGridient =
-    LinearGradient(colors: [Color(0xff7822A0), Color(0xff3E55AF)]);
+    const LinearGradient(
+        begin: Alignment.topCenter,
+        end: Alignment.bottomCenter,
+        colors: [Color(0xff7822A0), Color(0xff3958B0)]);
 
 var category = [
   "Health and Wellness",

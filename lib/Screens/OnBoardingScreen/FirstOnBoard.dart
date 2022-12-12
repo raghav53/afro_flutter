@@ -4,6 +4,8 @@ import 'package:afro/Util/CustomWidget.dart';
 
 import 'package:flutter/material.dart';
 
+import '../Authentication/SignInPage2.dart';
+
 class FirstOnBoardScreen extends StatefulWidget {
   _FirstScreen createState() => _FirstScreen();
 }
@@ -46,7 +48,7 @@ class _FirstScreen extends State<FirstOnBoardScreen> {
                           Navigator.pushReplacement(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => SecondOnBoardScreen()))
+                                  builder: (context) =>  const LoginScreen()))
                         },
                         child: Image.asset("assets/icons/ic_next.png"),
                       ),

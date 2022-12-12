@@ -4,7 +4,7 @@ import 'dart:math';
 
 import 'package:afro/Model/LoginModel.dart';
 import 'package:afro/Network/Apis.dart';
-import 'package:afro/Screens/Authentication/ChooseLanguage.dart';
+
 import 'package:afro/Screens/Authentication/ForgetPasswordPage.dart';
 
 import 'package:afro/Screens/HomePageScreen.dart';
@@ -84,11 +84,11 @@ class _LoginScreenState extends State<LoginScreen> {
                     height: 70,
                   ),
                   const Padding(
-                      padding: const EdgeInsets.only(left: 10.0),
+                      padding:  EdgeInsets.only(left: 10.0),
                       child: Align(
                         alignment: Alignment.centerLeft,
                         child: Text(
-                          "Enter your email",
+                          " Your email",
                           style: TextStyle(
                               letterSpacing: 0.5,
                               color: Colors.white,
@@ -133,7 +133,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       child: Align(
                         alignment: Alignment.centerLeft,
                         child: Text(
-                          "Enter your password",
+                          " Your password",
                           style: TextStyle(
                               letterSpacing: 0.5,
                               color: Colors.white,
@@ -172,6 +172,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   Row(
                     children: [
                       Checkbox(
+                        side:   BorderSide(color: blueLight),
                         value: _checkbox,
                         checkColor: Colors.white,
                         activeColor: Colors.purple,
@@ -187,11 +188,12 @@ class _LoginScreenState extends State<LoginScreen> {
                             _checkbox = !_checkbox;
                           });
                         },
-                        child: const Text(
+                        child:
+                          Text(
                           'Remember me',
                           style: TextStyle(
                             fontSize: 15,
-                            color: Colors.white,
+                            color:grey,
                             fontWeight: FontWeight.normal,
                           ),
                         ),
@@ -243,31 +245,8 @@ class _LoginScreenState extends State<LoginScreen> {
                     mainAxisAlignment: MainAxisAlignment.center,
                   ),
                   customHeightBox(15),
-                  Row(
-                    children: [
-                      const Text(
-                        'Choose Your',
-                        style: TextStyle(color: Colors.white),
-                      ),
-                      customWidthBox(5),
-                      InkWell(
-                          onTap: () {
-                            Navigator.of(context).push(MaterialPageRoute(
-                                builder: (context) => ChooseLanguage()));
-                          },
-                          child:
-                              customText("languages", 15, Color(0xffDFB48C))),
-                      customWidthBox(3),
-                      const Icon(
-                        Icons.arrow_forward_ios,
-                        size: 15,
-                        color: Color(0xffDFB48C),
-                      )
-                    ],
-                    mainAxisAlignment: MainAxisAlignment.center,
-                  ),
-                  const SizedBox(height: 15),
-                  Container(
+
+                  SizedBox(
                     width: phoneWidth(context) / 0.2,
                     child: Row(
                       crossAxisAlignment: cCenter,
@@ -288,60 +267,63 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                   ),
                   const SizedBox(height: 20),
-                  Row(
-                    crossAxisAlignment: cCenter,
-                    children: [
-                      InkWell(
-                        onTap: () {},
-                        child: Container(
-                          padding: const EdgeInsets.only(left: 20, right: 20),
-                          height: 40,
-                          decoration: BoxDecoration(
-                            gradient: commonButtonLinearGridient,
-                            borderRadius: BorderRadius.circular(50),
-                          ),
-                          child: Row(
-                            children: [
-                              Icon(
-                                Icons.facebook,
-                                color: white,
-                              ),
-                              const SizedBox(
-                                width: 5.0,
-                              ),
-                              customText("Facebook", 15, white)
-                            ],
-                          ),
-                        ),
-                      ),
-                      customWidthBox(30),
-                      InkWell(
-                        child: Container(
-                          padding: const EdgeInsets.only(left: 20, right: 20),
-                          height: 40,
-                          decoration: BoxDecoration(
-                            border: Border.all(color: white, width: 1),
-                            borderRadius: BorderRadius.circular(50),
-                          ),
-                          child: Row(
-                            children: [
-                              Icon(
-                                Icons.gpp_good,
-                                color: white,
-                              ),
-                              const SizedBox(
-                                width: 5.0,
-                              ),
-                              Text(
-                                'GOGGLE',
-                                style: TextStyle(color: white),
-                              ),
-                            ],
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 20),
+                    child: Row(
+                      crossAxisAlignment: cCenter,
+                      children: [
+                        InkWell(
+                          onTap: () {},
+                          child: Container(
+                            padding: const EdgeInsets.only(left: 20, right: 20),
+                            height: 40,
+                            decoration: BoxDecoration(
+                              gradient: commonButtonLinearGridient,
+                              borderRadius: BorderRadius.circular(50),
+                            ),
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                               Image.asset('assets/social/facebook.png',height: 15,width: 15,),
+                                const SizedBox(
+                                  width: 5.0,
+                                ),
+                                Text(
+                                  'Facebook',
+                                  style: TextStyle(color: white,fontSize: 15,fontWeight: FontWeight.w500),
+                                ),
+
+                              ],
+                            ),
                           ),
                         ),
-                      ),
-                    ],
-                    mainAxisAlignment: MainAxisAlignment.center,
+                        customWidthBox(30),
+                        InkWell(
+                          child: Container(
+                            padding: const EdgeInsets.only(left: 20, right: 20),
+                            height: 40,
+                            decoration: BoxDecoration(
+                              gradient: commonButtonLinearGridient,
+                              borderRadius: BorderRadius.circular(50),
+                            ),
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Image.asset('assets/social/google.png',height: 15,width: 15,),
+                                const SizedBox(
+                                  width: 5.0,
+                                ),
+                                Text(
+                                  'Google',
+                                  style: TextStyle(color: white,fontSize: 15,fontWeight: FontWeight.w500),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                      mainAxisAlignment: MainAxisAlignment.center,
+                    ),
                   ),
                 ],
               ),
