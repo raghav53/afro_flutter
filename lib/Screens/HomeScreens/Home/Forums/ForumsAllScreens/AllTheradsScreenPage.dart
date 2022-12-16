@@ -368,7 +368,7 @@ class _AllThreadsPageScreenState extends State<AllThreadsPageScreen>
                         "form", model.sId.toString(), context);
               }),
               child: Container(
-                padding: EdgeInsets.all(10),
+                padding: const EdgeInsets.all(10),
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10), color: black),
                 child: Row(mainAxisAlignment: mAround, children: [

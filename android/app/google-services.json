@@ -14,6 +14,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "4357235401-9g3d4rbap43bouvvmh3qjln7sa754960.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.afro",
+            "certificate_hash": "7347f0c4cf26b8c173ebbe1ecfcf792924ba80f7"
+          }
+        },
+        {
           "client_id": "4357235401-8kk9ngkhu26ba7bd3ti18nbreu73nrib.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -29,6 +37,13 @@
             {
               "client_id": "4357235401-8kk9ngkhu26ba7bd3ti18nbreu73nrib.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "4357235401-csvtvnecsrmn8rk1telcvjsbflojghcj.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.renewash.app"
+              }
             }
           ]
         }
@@ -59,6 +74,22 @@
           }
         },
         {
+          "client_id": "4357235401-tr3o2l6scdn1erdligonnf0g4k00ntfp.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.quad.afrounited",
+            "certificate_hash": "919fa385787676d1b2d9abc180f626d4f293868a"
+          }
+        },
+        {
+          "client_id": "4357235401-tt5s4i3cqrim6j29cu1teaaatu7bi3t8.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.quad.afrounited",
+            "certificate_hash": "7ef9dfd14d0f0548a784057bdb48f21a455edd14"
+          }
+        },
+        {
           "client_id": "4357235401-8kk9ngkhu26ba7bd3ti18nbreu73nrib.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -74,6 +105,13 @@
             {
               "client_id": "4357235401-8kk9ngkhu26ba7bd3ti18nbreu73nrib.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "4357235401-csvtvnecsrmn8rk1telcvjsbflojghcj.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.renewash.app"
+              }
             }
           ]
         }

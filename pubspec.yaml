@@ -63,9 +63,11 @@ dependencies:
   sizer: ^2.0.15
   firebase_messaging: ^12.0.2
   flutter_local_notifications: ^9.7.0
-  firebase_core: ^1.20.0  
+  firebase_core: ^1.20.0
+  firebase_auth: ^3.11.2
   socket_io_client: ^2.0.0
   google_sign_in: ^5.4.2
+  flutter_login_facebook: ^1.7.0
 dev_dependencies:
   flutter_test:
     sdk: flutter 
@@ -112,6 +114,8 @@ flutter:
     - anonymous.jpg
     - app_icon.png
     - location.png
+    - coming_soon.png
+    - website_icon.png
     ##Icons
     - assets/icons/ic_next.png
     - assets/icons/event_icn.png
@@ -136,7 +140,13 @@ flutter:
     - assets/icons/share_icon.png
     - assets/icons/star_icon.png
     - assets/icons/check_right_icon.png
+    - assets/icons/calender_one.png
     - assets/icons/calendar.png
+    - assets/icons/person.png
+    - assets/icons/event.png
+    - assets/icons/http.png
+    - assets/icons/add.png
+    - assets/icons/group-chat.png
     - assets/icons/like.png
     - assets/icons/menu_line.png
     - assets/icons/video.png
@@ -183,15 +193,15 @@ flutter:
   # "family" key with the font family name, and a "fonts" key with a
   # list giving the asset and other descriptors for the font. For
   # example:
-  # fonts:
-  #   - family: Schyler
-  #     fonts:
-  #       - asset: fonts/Schyler-Regular.ttf
-  #       - asset: fonts/Schyler-Italic.ttf
-  #         style: italic
-  #   - family: Trajan Pro
-  #     fonts:
-  #       - asset: fonts/TrajanPro.ttf
+  fonts:
+    - family: Poppins
+      fonts:
+        - asset: assets/fonts/Poppins-Font-2/Poppins-Regular.ttf
+        - asset: assets/fonts/Poppins-Font-2/Poppins-Medium.ttf
+          style: normal
+    - family: Poppins_Bold
+      fonts:
+        - asset: assets/fonts/Poppins-Font-2/Poppins-Bold.ttf
   #       - asset: fonts/TrajanPro_Bold.ttf
   #         weight: 700
   #

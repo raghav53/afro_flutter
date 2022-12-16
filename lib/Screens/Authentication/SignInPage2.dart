@@ -15,6 +15,7 @@ import 'package:afro/Util/Constants.dart';
 import 'package:afro/Util/CustomWidget.dart';
 import 'package:afro/Util/CustomWidgetAttributes.dart';
 import 'package:afro/Util/SharedPreferencfes.dart';
+import 'package:afro/Util/google_method.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 
 import 'package:flutter/material.dart';
@@ -92,7 +93,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           style: TextStyle(
                               letterSpacing: 0.5,
                               color: Colors.white,
-                              fontFamily: "Sans",
+                              fontStyle: FontStyle.normal,fontFamily: "Poppins",
                               // fontWeight: FontWeight.w600,
                               fontSize: 14.0),
                         ),
@@ -108,7 +109,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     controller: Emailcontroller,
                     textAlign: TextAlign.left,
                     style: const TextStyle(
-                        fontSize: 16.0, height: 0.8, color: Colors.white),
+                        fontSize: 14.0, height: 0.8, color: Colors.white, fontStyle: FontStyle.normal,fontFamily: "Poppins"),
                     decoration: const InputDecoration(
                       filled: true,
                       fillColor: Colors.black26,
@@ -124,7 +125,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                           borderSide: BorderSide(color: Colors.transparent)),
                       hintText: 'Enter your email',
-                      hintStyle: TextStyle(color: Colors.white54),
+                      hintStyle: TextStyle(color: Colors.white54, fontStyle: FontStyle.normal,fontFamily: "Poppins"),
                     ),
                   ),
                   const SizedBox(height: 15),
@@ -137,7 +138,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           style: TextStyle(
                               letterSpacing: 0.5,
                               color: Colors.white,
-                              fontFamily: "Sans",
+                              fontStyle: FontStyle.normal,fontFamily: "Poppins",
                               // fontWeight: FontWeight.w600,
                               fontSize: 14.0),
                         ),
@@ -166,7 +167,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             ),
                             borderSide: BorderSide(color: Colors.transparent)),
                         hintText: "Enter your password",
-                        hintStyle: TextStyle(color: Colors.white54)),
+                        hintStyle: TextStyle(color: Colors.white54, fontStyle: FontStyle.normal,fontFamily: "Poppins")),
                   ),
                   const SizedBox(height: 5),
                   Row(
@@ -192,9 +193,10 @@ class _LoginScreenState extends State<LoginScreen> {
                           Text(
                           'Remember me',
                           style: TextStyle(
-                            fontSize: 15,
+                            fontSize: 13,
                             color:grey,
                             fontWeight: FontWeight.normal,
+                              fontStyle: FontStyle.normal,fontFamily: "Poppins"
                           ),
                         ),
                       ),
@@ -231,7 +233,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     children: [
                       const Text(
                         'New around Here?',
-                        style: TextStyle(color: Colors.white),
+                        style: TextStyle(color: Colors.white,fontStyle: FontStyle.normal,fontFamily: "Poppins"),
                       ),
                       customWidthBox(5),
                       InkWell(
@@ -273,7 +275,9 @@ class _LoginScreenState extends State<LoginScreen> {
                       crossAxisAlignment: cCenter,
                       children: [
                         InkWell(
-                          onTap: () {},
+                          onTap: () {
+                            faceBookLogin(context);
+                          },
                           child: Container(
                             padding: const EdgeInsets.only(left: 20, right: 20),
                             height: 40,
@@ -290,7 +294,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 ),
                                 Text(
                                   'Facebook',
-                                  style: TextStyle(color: white,fontSize: 15,fontWeight: FontWeight.w500),
+                                  style: TextStyle(color: white,fontSize: 15,fontWeight: FontWeight.w500,fontStyle: FontStyle.normal,fontFamily: "Poppins"),
                                 ),
 
                               ],
@@ -299,6 +303,9 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                         customWidthBox(30),
                         InkWell(
+                          onTap: (){
+                            googleSignInProcess( context);
+                          },
                           child: Container(
                             padding: const EdgeInsets.only(left: 20, right: 20),
                             height: 40,
@@ -391,7 +398,7 @@ class _LoginScreenState extends State<LoginScreen> {
       Navigator.pop(context);
       Navigator.of(context)
           .pushReplacement(MaterialPageRoute(
-            builder: (context) => HomePagescreen(),
+            builder: (context) => const HomePagescreen(),
           ))
           .then((value) => () {
                 init();

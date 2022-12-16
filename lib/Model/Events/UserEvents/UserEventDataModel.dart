@@ -1,5 +1,6 @@
 
 class UserEventsDataModel {
+  String? eventLink;
   String? sId;
   String? title;
   UserId? userId;
@@ -26,7 +27,8 @@ class UserEventsDataModel {
   String? website;
 
   UserEventsDataModel(
-      {this.sId,
+      {this.eventLink,
+        this.sId,
       this.title,
       this.userId,
       this.category,
@@ -52,6 +54,7 @@ class UserEventsDataModel {
       this.website});
 
   UserEventsDataModel.fromJson(Map<String, dynamic> json) {
+    eventLink = json['event_link'];
     sId = json['_id'];
     title = json['title'];
     userId =
@@ -82,6 +85,7 @@ class UserEventsDataModel {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['event_link'] = this.eventLink;
     data['_id'] = this.sId;
     data['title'] = this.title;
     if (this.userId != null) {

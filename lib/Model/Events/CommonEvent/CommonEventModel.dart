@@ -6,7 +6,7 @@ class CommonEventsDataModel {
   Country? country;
   String? state;
   String? city;
-  Null? pincode;
+  String? pincode;
   String? location;
   String? eventLink;
   int? startDate;
@@ -26,7 +26,7 @@ class CommonEventsDataModel {
   int? isInterested;
   int? isGoSent;
   int? isInviteRecieved;
-  int? isLink;
+  int? isLink;//1 = false and 2 = true
 
   CommonEventsDataModel(
       {this.sId,

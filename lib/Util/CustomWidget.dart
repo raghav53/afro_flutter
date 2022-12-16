@@ -53,6 +53,7 @@ Widget customText(String text, double size, Color color, {String bold = ""}) {
     style: TextStyle(
         fontSize: size,
         color: color,
+        fontStyle: FontStyle.normal,fontFamily: "Poppins",
         fontWeight: bold == "yes" ? FontWeight.bold : null),
   );
 }
@@ -143,7 +144,7 @@ var category = [
 
 AppBar commonAppbar(String title) {
   return AppBar(
-    leading: BackButton(),
+    leading: const BackButton(),
     centerTitle: true,
     elevation: 0.0,
     backgroundColor: Colors.transparent,

@@ -105,15 +105,15 @@ class _EventDetailsScreenPageState extends State<EventDetailsScreenPage> {
         appBar: AppBar(
           backgroundColor: Colors.transparent,
           elevation: 0.0,
-          leading: BackButton(),
+          leading: const BackButton(),
           actions: [
             //Save button
             GestureDetector(
               onTap: () {},
               child: Image.asset(
                 "assets/icons/save_icon.png",
-                height: 30,
-                width: 30,
+                height: 50,
+                width: 50,
               ),
             ),
             //Share button
@@ -125,8 +125,8 @@ class _EventDetailsScreenPageState extends State<EventDetailsScreenPage> {
               },
               child: Image.asset(
                 "assets/icons/share_icon.png",
-                height: 50,
-                width: 50,
+                height: 70,
+                width: 70,
               ),
             ),
             //Show popmenu
@@ -210,7 +210,7 @@ class _EventDetailsScreenPageState extends State<EventDetailsScreenPage> {
                                                         1
                                                     ? null
                                                     : Border.all(
-                                                        color: white, width: 1),
+                                                        color: Colors.white, width: 1),
                                                 borderRadius:
                                                     BorderRadius.circular(20),
                                                 gradient: snapshot.data!.data!
@@ -228,6 +228,7 @@ class _EventDetailsScreenPageState extends State<EventDetailsScreenPage> {
                                                     "assets/icons/check_right_icon.png",
                                                     height: 15,
                                                     width: 15,
+                                                    color: Colors.white,
                                                   ),
                                                   customWidthBox(5),
                                                   customText(
@@ -276,10 +277,11 @@ class _EventDetailsScreenPageState extends State<EventDetailsScreenPage> {
                                                     "assets/icons/star_icon.png",
                                                     height: 15,
                                                     width: 15,
+                                                    color: Colors.white,
                                                   ),
                                                   customWidthBox(5),
                                                   customText("Interested", 10,
-                                                      Colors.white)
+                                                     Colors.white)
                                                 ],
                                               ),
                                             ),
@@ -312,10 +314,11 @@ class _EventDetailsScreenPageState extends State<EventDetailsScreenPage> {
                                       customHeightBox(10),
                                       Row(
                                         children: [
-                                          const Icon(
-                                            Icons.calendar_view_week,
-                                            color: Color(0xFFDFB48C),
-                                            size: 20,
+                                          Image.asset(
+                                            "assets/icons/calender_one.png",
+                                            height: 15,
+                                            width: 15,
+                                            color: yellowColor,
                                           ),
                                           customWidthBox(10),
                                           customText(
@@ -340,7 +343,7 @@ class _EventDetailsScreenPageState extends State<EventDetailsScreenPage> {
                                       )
                                     ],
                                   ),
-                                  Spacer(),
+                                  const Spacer(),
                                   Container(
                                     height: 60,
                                     width: 66,
@@ -385,8 +388,10 @@ class _EventDetailsScreenPageState extends State<EventDetailsScreenPage> {
                                               .isEmpty
                                           ? Row(
                                               children: [
-                                                Icon(
-                                                  Icons.person,
+                                                Image.asset(
+                                                  "assets/icons/person.png",
+                                                  height: 15,
+                                                  width: 15,
                                                   color: yellowColor,
                                                 ),
                                                 customText(
@@ -398,6 +403,7 @@ class _EventDetailsScreenPageState extends State<EventDetailsScreenPage> {
                                             )
                                           : null),
                                   //Hosted by
+                                  const SizedBox(width: 8,),
                                   InkWell(
                                     onTap: () {
                                       if (snapshot.data!.data!.userId!.id ==
@@ -406,7 +412,7 @@ class _EventDetailsScreenPageState extends State<EventDetailsScreenPage> {
                                             context,
                                             MaterialPageRoute(
                                                 builder: (builder) =>
-                                                    MyProfilePage()));
+                                                    const MyProfilePage()));
                                       } else {
                                         Navigator.push(
                                             context,
@@ -420,30 +426,23 @@ class _EventDetailsScreenPageState extends State<EventDetailsScreenPage> {
                                                     )));
                                       }
                                     },
-                                    child: Row(
-                                      children: [
-                                        Icon(
-                                          Icons.person,
-                                          color: yellowColor,
-                                        ),
-                                        customText(
-                                            "Hosted By : " +
-                                                snapshot.data!.data!.userId!
-                                                    .fullName
-                                                    .toString(),
-                                            12,
-                                            white)
-                                      ],
-                                    ),
+
+                                    child: customText(
+                                        "Hosted By : " +
+                                            snapshot.data!.data!.userId!
+                                                .fullName
+                                                .toString(),
+                                        12,
+                                        white),
                                   ),
                                   customWidthBox(15),
                                   //Event Privacy
                                   Row(
                                     children: [
                                       Image.asset(
-                                        "assets/icons/world_grid.png",
-                                        height: 17,
-                                        width: 17,
+                                        "assets/icons/group-chat.png",
+                                        height: 30,
+                                        width: 20,
                                         color: yellowColor,
                                       ),
                                       customWidthBox(5),
@@ -452,7 +451,7 @@ class _EventDetailsScreenPageState extends State<EventDetailsScreenPage> {
                                               ? "Public"
                                               : snapshot.data!.data!.privacy ==
                                                       2
-                                                  ? "Closed"
+                                                  ? "Private"
                                                   : snapshot.data!.data!
                                                               .privacy ==
                                                           3
@@ -468,7 +467,7 @@ class _EventDetailsScreenPageState extends State<EventDetailsScreenPage> {
                             customHeightBox(20),
 
                             Padding(
-                              padding: EdgeInsets.only(left: 15, right: 15),
+                              padding: const EdgeInsets.only(left: 15, right: 15),
                               child: Row(
                                 children: [
                                   //Total going
@@ -488,9 +487,10 @@ class _EventDetailsScreenPageState extends State<EventDetailsScreenPage> {
                                     child: Row(
                                       children: [
                                         Image.asset(
-                                          "assets/icons/calendar.png",
-                                          height: 20,
-                                          width: 20,
+                                          "assets/icons/event.png",
+                                          height: 15,
+                                          width: 15,
+                                          color: yellowColor,
                                         ),
                                         customWidthBox(5),
                                         customText(
@@ -520,8 +520,8 @@ class _EventDetailsScreenPageState extends State<EventDetailsScreenPage> {
                                       children: [
                                         Image.asset(
                                           "assets/icons/star_icon.png",
-                                          height: 20,
-                                          width: 20,
+                                          height: 15,
+                                          width: 15,
                                           color: yellowColor,
                                         ),
                                         customWidthBox(5),
@@ -552,23 +552,37 @@ class _EventDetailsScreenPageState extends State<EventDetailsScreenPage> {
                                   customHeightBox(10),
                                   Row(
                                     children: [
+                                      (snapshot.data!.data!.isLink==2)?
                                       Image.asset(
-                                        "assets/icons/world_grid.png",
-                                        height: 20,
-                                        width: 20,
+                                        "assets/icons/http.png",
+                                        height: 15,
+                                        width: 15,
+                                        color: yellowColor,
+                                      ):  Image.asset(
+                                        "assets/location.png",
+                                        height: 15,
+                                        width: 15,
                                         color: yellowColor,
                                       ),
                                       customWidthBox(10),
-                                      customText(
-                                          snapshot.data!.data!.location
+                                      (snapshot.data!.data!.isLink==2)?customText(
+                                          snapshot.data!.data!.eventLink
                                                   .toString()
-                                                  .isEmpty
+                                                  .isEmpty||snapshot.data!.data!.eventLink ==""
                                               ? "No Link available"
-                                              : snapshot.data!.data!.location
+                                              : snapshot.data!.data!.eventLink
                                                   .toString(),
                                           12,
+                                          white):customText(
+                                          snapshot.data!.data!.location
+                                              .toString()
+                                              .isEmpty||snapshot.data!.data!.location ==""
+                                              ? " "
+                                              : snapshot.data!.data!.location
+                                              .toString(),
+                                          12,
                                           white),
-                                      Spacer(),
+                                      const Spacer(),
                                       InkWell(
                                         onTap: () {},
                                         child: Container(
@@ -578,12 +592,12 @@ class _EventDetailsScreenPageState extends State<EventDetailsScreenPage> {
                                               left: 15,
                                               right: 15),
                                           decoration: BoxDecoration(
-                                              gradient: snapshot
+                                              gradient: /*snapshot
                                                       .data!.data!.location
                                                       .toString()
                                                       .isEmpty
                                                   ? null
-                                                  : commonButtonLinearGridient,
+                                                  : */commonButtonLinearGridient,
                                               color: snapshot
                                                       .data!.data!.location
                                                       .toString()
@@ -662,8 +676,8 @@ class _EventDetailsScreenPageState extends State<EventDetailsScreenPage> {
         });
       },
       child: Container(
-        margin: EdgeInsets.only(right: 10),
-        padding: EdgeInsets.only(left: 20, right: 20, top: 5, bottom: 5),
+        margin: const EdgeInsets.only(right: 10),
+        padding: const EdgeInsets.only(left: 20, right: 20, top: 5, bottom: 5),
         decoration: BoxDecoration(
             gradient:
                 (selectedIndex == index) ? commonButtonLinearGridient : null,
@@ -772,7 +786,7 @@ class _EventDetailsScreenPageState extends State<EventDetailsScreenPage> {
                 showEventDeleteDialogBox(widget.eventId.toString(), context);
               }),
               child: Container(
-                padding: EdgeInsets.only(top: 10, bottom: 10),
+                padding: const EdgeInsets.only(top: 10, bottom: 10),
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10), color: black),
                 child: Row(mainAxisAlignment: mCenter, children: [

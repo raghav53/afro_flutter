@@ -27,32 +27,36 @@ class _FirstScreen extends State<FirstOnBoardScreen> {
                     child: Image.asset("assets/start_members.png"),
                   ),
                   customHeightBox(50),
-                  Row(
-                    children: [
-                      customWidthBox(10),
-                      RichText(
-                          text: TextSpan(
-                              text: "Group's",
-                              style: const TextStyle(
-                                  fontSize: 20,
-                                  color: Color.fromARGB(255, 105, 240, 217)),
-                              children: [
-                            TextSpan(
-                                style: TextStyle(color: white, fontSize: 30),
-                                text:
-                                    "\nLet's Create\na space\nfor your\nworkflow")
-                          ])),
-                      const Spacer(),
-                      GestureDetector(
-                        onTap: () => {
-                          Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) =>  const LoginScreen()))
-                        },
-                        child: Image.asset("assets/icons/ic_next.png"),
-                      ),
-                    ],
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 30),
+                    child: Row(
+                      children: [
+                        customWidthBox(10),
+                        RichText(
+                            text: TextSpan(
+                                text: "Afro unitd",
+                                style: const TextStyle(
+                                    fontSize: 20,
+                                    fontStyle: FontStyle.normal,fontFamily: "Poppins",
+                                    color: Color.fromARGB(255, 105, 240, 217)),
+                                children: [
+                              TextSpan(
+                                  style: TextStyle(color: white, fontSize: 30,fontStyle: FontStyle.normal,fontFamily: "Poppins"),
+                                  text:
+                                      "\nLet your\nAfro\nexperience \nbegin")
+                            ])),
+                        const Spacer(),
+                        GestureDetector(
+                          onTap: () => {
+                            Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>  const LoginScreen()))
+                          },
+                          child: Image.asset("assets/icons/ic_next.png"),
+                        ),
+                      ],
+                    ),
                   ),
                 ],
               ))),

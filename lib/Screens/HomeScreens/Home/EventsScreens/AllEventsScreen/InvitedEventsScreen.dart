@@ -6,6 +6,8 @@ import 'package:afro/Util/CustomWidgetAttributes.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
+import '../../../../../Util/Colors.dart';
+
 InvitedEventsScreen(BuildContext context, InvitedEventsModel snapshot) {
   return Container(
     width: phoneWidth(context),
@@ -68,9 +70,30 @@ InvitedEventsScreen(BuildContext context, InvitedEventsModel snapshot) {
                           customHeightBox(5),
                           Row(
                             children: [
-                              Image.asset("assets/location.png",height: 15,width: 15,),
+                              (snapshot.data![index].event!.isLink.toString()!="2")? Image.asset("assets/location.png",height: 15,width: 15,): Image.asset(
+                                "assets/icons/http.png",
+                                height: 15,
+                                width: 15,
+                                color: yellowColor,
+                              ),
                               customWidthBox(5),
                               customWidthBox(5),
+                              (snapshot
+                                  .data![index].event!.country != null&&snapshot
+                                  .data![index].event!.country!.isNotEmpty&&snapshot.data![index].event!.isLink.toString()!="2")?
+                              customText(
+                                  snapshot
+                                      .data![index].event!.country![0].title.toString(),
+
+                                  12,
+                                  Colors.white):/* (  snapshot
+                                  .data![index].event!.eventLink==""&& snapshot
+                                  .data![index].event!.eventLink == null)?const Text(""):customText(
+                                  snapshot
+                                      .data![index].event!.eventLink.toString(),
+
+                                  12,
+                                  Colors.white),*/
                               customText(
                                   snapshot.data![index].event!.country![0].title
                                       .toString(),

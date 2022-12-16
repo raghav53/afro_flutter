@@ -195,39 +195,41 @@ class _Email extends State<EmailVerification> {
                         ),
                       ),
                       //Fourth OtpCode
-                      SizedBox(
-                        height: 68,
-                        width: 64,
-                        child: TextField(
-                          controller: forthCode,
-                          onChanged: (value) {
-                            forth = value.toString();
-                            if (value.length == 1) {
-                              FocusScope.of(context).nextFocus();
-                            } else if (value.length == 0) {
-                              FocusScope.of(context).previousFocus();
-                            }
-                          },
-                          style: TextStyle(color: Colors.white),
-                          keyboardType: TextInputType.number,
-                          textAlign: TextAlign.center,
-                          decoration: InputDecoration(
-                            hintText: "3",
-                            border: OutlineInputBorder(
-                              borderSide: const BorderSide(
-                                  color: Colors.black, width: 1.0),
-                              borderRadius: BorderRadius.circular(10.0),
+                      Flexible(
+                        child: SizedBox(
+                          height: 68,
+                          width: 64,
+                          child: TextField(
+                            controller: forthCode,
+                            onChanged: (value) {
+                              forth = value.toString();
+                              if (value.length == 1) {
+                                FocusScope.of(context).nextFocus();
+                              } else if (value.length == 0) {
+                                FocusScope.of(context).previousFocus();
+                              }
+                            },
+                            style: const TextStyle(color: Colors.white),
+                            keyboardType: TextInputType.number,
+                            textAlign: TextAlign.center,
+                            decoration: InputDecoration(
+                              hintText: "3",
+                              border: OutlineInputBorder(
+                                borderSide: const BorderSide(
+                                    color: Colors.black, width: 1.0),
+                                borderRadius: BorderRadius.circular(10.0),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderSide: const BorderSide(
+                                    color: Colors.white, width: 1.0),
+                                borderRadius: BorderRadius.circular(10.0),
+                              ),
                             ),
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: const BorderSide(
-                                  color: Colors.white, width: 1.0),
-                              borderRadius: BorderRadius.circular(10.0),
-                            ),
+                            inputFormatters: [
+                              LengthLimitingTextInputFormatter(1),
+                              FilteringTextInputFormatter.digitsOnly
+                            ],
                           ),
-                          inputFormatters: [
-                            LengthLimitingTextInputFormatter(1),
-                            FilteringTextInputFormatter.digitsOnly
-                          ],
                         ),
                       ),
                     ],

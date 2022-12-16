@@ -93,7 +93,7 @@ class _MyProffile extends State<MyProfilePage> {
       child: Scaffold(
           extendBodyBehindAppBar: true,
           resizeToAvoidBottomInset: false,
-          appBar: commonAppbar("My Profile"),
+          appBar: commonAppbar("Edit Profile"),
           body: Container(
               padding: const EdgeInsets.only(top: 70),
               decoration: commonBoxDecoration(),
@@ -341,7 +341,7 @@ class _MyProffile extends State<MyProfilePage> {
                                       padding: const EdgeInsets.only(left: 15),
                                       child: customText(
                                           "International Experience",
-                                          18,
+                                          14,
                                           Color(0xFFDFB48C)),
                                     ),
                                     customHeightBox(20),
@@ -641,10 +641,10 @@ class _MyProffile extends State<MyProfilePage> {
       },
       child: Container(
           child: ListTile(
-        title: customText(title, 15, Colors.white),
+        title: customText(title, 14, Colors.white),
         subtitle: customText(subTitle, 12, Color(0x3dFFFFFF)),
         trailing: Icon(
-          Icons.arrow_forward_ios_outlined,
+          Icons.edit,
           color: Color(0xFFDFB48C),
         ),
       )),

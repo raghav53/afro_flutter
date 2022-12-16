@@ -8,6 +8,7 @@ class EventDetailDataModel {
   String? city;
   var pincode;
   String? location;
+  String? eventLink;
   int? startDate;
   int? endDate;
   int? privacy;
@@ -37,6 +38,7 @@ class EventDetailDataModel {
       this.city,
       this.pincode,
       this.location,
+        this.eventLink,
       this.startDate,
       this.endDate,
       this.privacy,
@@ -70,6 +72,7 @@ class EventDetailDataModel {
     city = json['city'];
     pincode = json['pincode'];
     location = json['location'];
+    eventLink = json['event_link'];
     startDate = json['start_date'];
     endDate = json['end_date'];
     privacy = json['privacy'];
@@ -107,6 +110,7 @@ class EventDetailDataModel {
     data['city'] = this.city;
     data['pincode'] = this.pincode;
     data['location'] = this.location;
+    data['event_link'] = this.eventLink;
     data['start_date'] = this.startDate;
     data['end_date'] = this.endDate;
     data['privacy'] = this.privacy;
