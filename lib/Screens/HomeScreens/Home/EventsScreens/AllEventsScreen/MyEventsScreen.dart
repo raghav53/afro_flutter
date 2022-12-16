@@ -6,6 +6,8 @@ import 'package:afro/Util/CustomWidgetAttributes.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
+import '../../../../../Util/Colors.dart';
+
 MyEventsScreenState(BuildContext context, UsersEventsModel eventData) {
   return Container(
     width: phoneWidth(context),
@@ -67,14 +69,31 @@ MyEventsScreenState(BuildContext context, UsersEventsModel eventData) {
                           customHeightBox(5),
                           Row(
                             children: [
-                              Image.asset("assets/location.png",height: 15,width: 15,),
+                              (eventData.data![index].isLink.toString()!="2")? Image.asset("assets/location.png",height: 15,width: 15,): Image.asset(
+                                "assets/icons/http.png",
+                                height: 15,
+                                width: 15,
+                                color: yellowColor,
+                              ),
+
                               customWidthBox(5),
                               customWidthBox(5),
+                              (eventData
+                                  .data![index].country != null&&eventData
+                                  .data![index].country!= ""&&eventData.data![index].isLink.toString()!="2")?
                               customText(
-                                  eventData.data![index].country!.title
-                                      .toString(),
+                                  eventData
+                                      .data![index].country!.title.toString(),
+
                                   12,
-                                  Colors.white)
+                                  Colors.white): (  eventData
+                                  .data![index].eventLink==""&& eventData
+                                  .data![index].eventLink == null)?const Text(""):customText(
+                                  eventData
+                                      .data![index].eventLink.toString(),
+
+                                  12,
+                                  Colors.white),
                             ],
                           ),
                           customHeightBox(30)

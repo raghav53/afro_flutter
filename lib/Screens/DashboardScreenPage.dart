@@ -123,6 +123,7 @@ class _HomeScreen extends State<DashboardPageScreen> {
     countryId = sharedPreferences.getString(user.countryId);
   }
 
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -130,8 +131,9 @@ class _HomeScreen extends State<DashboardPageScreen> {
       extendBodyBehindAppBar: true,
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        automaticallyImplyLeading: false,
+
+        backgroundColor: Color(0xFF18182C),
+       /* automaticallyImplyLeading: false,*/
         elevation: 0.0,
         title: customText("Dashboard", 20, Colors.white),
         actions: [
@@ -187,7 +189,7 @@ class _HomeScreen extends State<DashboardPageScreen> {
               onTap: () {
                 Navigator.of(context)
                     .push(MaterialPageRoute(
-                        builder: (context) => MyProfilePage()))
+                        builder: (context) => const MyProfilePage()))
                     .then((value) => onResumed());
               },
               child: Container(
@@ -223,18 +225,18 @@ class _HomeScreen extends State<DashboardPageScreen> {
               Container(
                 child: fullName != null
                     ? Text(
-                        "Hello " + fullName.toString(),
+                        '"Hello $fullName"',
                         style:  TextStyle(
                             color: yellowColor,
                             fontSize: 30,
-                            fontWeight: FontWeight.bold),
+                            fontWeight: FontWeight.bold, fontStyle: FontStyle.normal,fontFamily: "Poppins"),
                       )
                     :  Text(
                         "Hello " + "User",
                         style: TextStyle(
                             color: yellowColor,
                             fontSize: 30,
-                            fontWeight: FontWeight.bold),
+                            fontWeight: FontWeight.bold, fontStyle: FontStyle.normal,fontFamily: "Poppins"),
                       ),
               ),
               customHeightBox(10),
@@ -270,7 +272,7 @@ class _HomeScreen extends State<DashboardPageScreen> {
                 },
                 child: Row(
                   children: [
-                    customText("Upcoming Events", 14, Colors.white),
+                    customText("Upcoming Events", 14, Colors.white, ),
                     Spacer(),
                     customText("See all", 12, Colors.white),
                     customWidthBox(10),
@@ -295,7 +297,7 @@ class _HomeScreen extends State<DashboardPageScreen> {
                 future: _upComingEvent,
                 builder: (context, snapshot) {
                   return snapshot.hasData && snapshot.data!.data!.isNotEmpty
-                      ? Container(
+                      ? SizedBox(
                           height: 150,
                           child: ListView.builder(
                               scrollDirection: Axis.horizontal,
@@ -365,8 +367,8 @@ class _HomeScreen extends State<DashboardPageScreen> {
                                             Align(
                                               alignment: Alignment.bottomRight,
                                               child: Container(
-                                                height: 35,
-                                                width: 25,
+                                                height: 40,
+                                                width: 30,
                                                 decoration: BoxDecoration(
                                                     gradient:
                                                         commonButtonLinearGridient,
@@ -488,9 +490,10 @@ class _HomeScreen extends State<DashboardPageScreen> {
                   future: _exploreForums,
                   builder: (context, snapshot) {
                     return snapshot.hasData && snapshot.data!.data!.isNotEmpty
-                        ? Container(
+                        ? SizedBox(
                             height: 320,
                             child: ListView.builder(
+                                physics: const NeverScrollableScrollPhysics(),
                                 padding: EdgeInsets.zero,
                                 shrinkWrap: true,
                                 itemCount: snapshot.data!.data!.length <= 2
@@ -553,7 +556,7 @@ class _HomeScreen extends State<DashboardPageScreen> {
                   future: _allGroups,
                   builder: (context, snapshot) {
                     return snapshot.hasData && snapshot.data!.data!.isNotEmpty
-                        ? Container(
+                        ? SizedBox(
                             height: 180,
                             child: ListView.builder(
                               padding: EdgeInsets.zero,
@@ -607,10 +610,11 @@ class _HomeScreen extends State<DashboardPageScreen> {
                 future: _exploreUsers,
                 builder: (context, snapshot) {
                   return snapshot.hasData && snapshot.data!.data!.isNotEmpty
-                      ? Container(
+                      ? SizedBox(
                           height: 300,
                           child: ListView.builder(
-                              padding: EdgeInsets.only(top: 10),
+                              physics: const NeverScrollableScrollPhysics(),
+                              padding: const EdgeInsets.only(top: 10),
                               itemCount: snapshot.data!.data!.length <= 5
                                   ? snapshot.data!.data!.length
                                   : 5,

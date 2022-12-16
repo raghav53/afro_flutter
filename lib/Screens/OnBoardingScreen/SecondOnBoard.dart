@@ -42,11 +42,11 @@ class _SecondScreen extends State<SecondOnBoardScreen> {
                             text: TextSpan(
                                 text: "Welcome to Afro-United",
                                 style: const TextStyle(
-                                    fontSize: 14,
-                                    color: Color.fromARGB(255, 105, 240, 217)),
+                                    fontSize: 16,
+                                    color: Color.fromARGB(255, 105, 240, 217), fontStyle: FontStyle.normal,fontFamily: "Poppins"),
                                 children: [
                               TextSpan(
-                                  style: TextStyle(color: white, fontSize: 12),
+                                  style: TextStyle(color: white, fontSize: 13, fontStyle: FontStyle.normal,fontFamily: "Poppins"),
                                   text:
                                       "\nAfro-United is a platform created to empower the block community worldwide. Join us today to meet new people and learn more about the Block Community. We offer online and offline events,forums. Fundraising projects and discussion groups that you can join and projects from the comfort of your own home and be a part of the changes in your community.")
                             ])),

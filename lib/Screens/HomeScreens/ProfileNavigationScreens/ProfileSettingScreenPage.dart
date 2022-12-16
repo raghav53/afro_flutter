@@ -77,13 +77,13 @@ class _ProfilePage extends State<ProfileSettingScreenPage> {
                                     19,
                                     Colors.white),
                                 subtitle: customText(
-                                    "View and Edit Profile", 16, Colors.white),
+                                    "Edit Profile", 16, Colors.white,),
                                 trailing: IconButton(
                                     onPressed: () => {
                                           Navigator.of(context).push(
                                               MaterialPageRoute(
                                                   builder: (context) =>
-                                                      MyProfilePage()))
+                                                      const MyProfilePage()))
                                         },
                                     icon: const Icon(
                                       Icons.arrow_forward_ios_outlined,

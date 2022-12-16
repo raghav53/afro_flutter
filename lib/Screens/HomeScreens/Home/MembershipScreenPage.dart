@@ -25,12 +25,13 @@ class _MembershipScreenPageState extends State<MembershipScreenPage> {
         resizeToAvoidBottomInset: false,
         appBar: commonAppbar("Membership"),
         body: Container(
+          alignment: Alignment.center,
           height: phoneHeight(context),
           width: phoneWidth(context),
-          padding: EdgeInsets.only(top: 100, left: 20, right: 20),
           decoration: commonBoxDecoration(),
           child: SingleChildScrollView(
-            child: Column(
+            child: Image.asset("assets/coming_soon.png",height: 150,width: 200,)
+            /*Column(
               crossAxisAlignment: cStart,
               children: [
                 //Profile Image
@@ -365,7 +366,7 @@ class _MembershipScreenPageState extends State<MembershipScreenPage> {
                 ),
                 customHeightBox(30)
               ],
-            ),
+            ),*/
           ),
         ),
       ),

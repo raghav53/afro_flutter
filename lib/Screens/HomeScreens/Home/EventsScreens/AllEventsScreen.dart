@@ -93,7 +93,7 @@ class _AllEventsScreenState extends State<AllEventsScreen> {
                 backgroundColor: Colors.transparent,
                 centerTitle: true,
                 automaticallyImplyLeading: true,
-                title: Text("Events"),
+                title: const Text("Events"),
               )
             : onlyTitleCommonAppbar("Events"),
         floatingActionButton: GestureDetector(
@@ -103,19 +103,17 @@ class _AllEventsScreenState extends State<AllEventsScreen> {
                 .then((value) => setState(() {}));
           },
           child: Container(
+            alignment: Alignment.center,
             height: 50,
             width: 50,
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(50),
                 gradient: commonButtonLinearGridient),
-            child: const Icon(
-              Icons.add,
-              color: Colors.white,
-            ),
+            child:  Image.asset("assets/icons/add.png",height: 25,width: 25,color: Colors.white,)
           ),
         ),
         body: Container(
-          padding: EdgeInsets.only(top: 40),
+          padding: const EdgeInsets.only(top: 40),
           height: phoneHeight(context),
           width: phoneWidth(context),
           decoration: commonBoxDecoration(),
@@ -153,6 +151,7 @@ class _AllEventsScreenState extends State<AllEventsScreen> {
                                 border: InputBorder.none,
                                 prefixIcon: Icon(
                                   Icons.search,
+                                  size: 28,
                                   color: Color(0xFFDFB48C),
                                 ),
                                 hintText: "Search By Name",
@@ -170,8 +169,8 @@ class _AllEventsScreenState extends State<AllEventsScreen> {
                           },
                           child: Image.asset(
                             "assets/icons/fillter.png",
-                            height: 20,
-                            width: 20,
+                            height: 28,
+                            width: 28,
                           ),
                         )),
                   ],
@@ -211,7 +210,7 @@ class _AllEventsScreenState extends State<AllEventsScreen> {
         decoration: BoxDecoration(
             border: selectedIndex == index
                 ? null
-                : Border.all(color: white, width: 1),
+                : Border.all(color: grey, width: 2),
             gradient:
                 selectedIndex == index ? commonButtonLinearGridient : null,
             borderRadius: BorderRadius.circular(20)),
@@ -360,7 +359,7 @@ class _AllEventsScreenState extends State<AllEventsScreen> {
                                           : null,
                                       border: selectedBottomIndex != 2
                                           ? Border.all(
-                                              color: Colors.white,
+                                              color:grey,
                                               width: 1,
                                               style: BorderStyle.solid)
                                           : null,
@@ -433,7 +432,7 @@ class _AllEventsScreenState extends State<AllEventsScreen> {
                           ],
                         ),
                       ),
-                      Spacer(),
+                      const Spacer(),
                       Container(
                           height: phoneHeight(context) / 2.07,
                           decoration: const BoxDecoration(
@@ -443,7 +442,7 @@ class _AllEventsScreenState extends State<AllEventsScreen> {
                           child: Stack(
                               alignment: Alignment.bottomCenter,
                               children: [
-                                Container(
+                                SizedBox(
                                   width: phoneWidth(context) / 1.4,
                                   child: selectedBottomIndex == 0
                                       ? Column(
@@ -474,7 +473,7 @@ class _AllEventsScreenState extends State<AllEventsScreen> {
                                                   )),
                                             ),
                                             customHeightBox(10),
-                                            Container(
+                                            SizedBox(
                                                 height:
                                                     phoneHeight(context) / 2.7,
                                                 child:
@@ -759,7 +758,7 @@ class _AllEventsScreenState extends State<AllEventsScreen> {
                                       Navigator.pop(context);
                                     },
                                     child: Container(
-                                        margin: EdgeInsets.only(bottom: 15),
+                                        margin: const EdgeInsets.only(bottom: 15),
                                         padding: const EdgeInsets.only(
                                             top: 7,
                                             bottom: 7,
@@ -808,7 +807,7 @@ class _AllEventsScreenState extends State<AllEventsScreen> {
                         child: CircularProgressIndicator(),
                       )
                     : Container(
-                        margin: EdgeInsets.only(top: 100),
+                        margin: const EdgeInsets.only(top: 100),
                         alignment: Alignment.center,
                         child: Center(
                           child: customText("No data!", 15, white),
@@ -828,7 +827,7 @@ class _AllEventsScreenState extends State<AllEventsScreen> {
             return snapshot.hasData && snapshot.data!.data!.isNotEmpty
                 ? GoingEventsScreen(context, snapshot.data!)
                 : Container(
-                    margin: EdgeInsets.only(top: 100),
+                    margin: const EdgeInsets.only(top: 100),
                     alignment: Alignment.center,
                     child: Center(
                       child: customText("No data!", 15, white),
@@ -892,13 +891,13 @@ class _AllEventsScreenState extends State<AllEventsScreen> {
 
   //Discover events
   DiscoverEventsScreen(BuildContext context, CommonEventsModel getAllEvents) {
-    return Container(
+    return SizedBox(
       width: phoneWidth(context),
       child: Column(
         children: [
           customHeightBox(20),
           Container(
-              margin: EdgeInsets.only(left: 20, right: 20),
+              margin: const EdgeInsets.only(left: 20, right: 20),
               height: phoneHeight(context) / 1.5,
               child: ListView.builder(
                   padding: EdgeInsets.zero,
@@ -931,9 +930,9 @@ class _AllEventsScreenState extends State<AllEventsScreen> {
                               ),
                             ),
                             placeholder: (context, url) =>
-                                CircularProgressIndicator(),
+                                const CircularProgressIndicator(),
                             errorWidget: (context, url, error) =>
-                                Icon(Icons.error),
+                                const Icon(Icons.error),
                           ),
                           customHeightBox(10),
                           customText(getAllEvents.data![index].title.toString(),
@@ -949,11 +948,16 @@ class _AllEventsScreenState extends State<AllEventsScreen> {
                           customHeightBox(5),
                           Row(
                             children: [
-                                Image.asset("assets/location.png",height: 15,width: 15,),
+                              (getAllEvents.data![index].isLink.toString()!="2")? Image.asset("assets/location.png",height: 15,width: 15,): Image.asset(
+                                "assets/icons/http.png",
+                                height: 15,
+                                width: 15,
+                                color: yellowColor,
+                              ),
                               customWidthBox(5),
                               customText(
-                                  getAllEvents.data![index].country!.title
-                                      .toString(),
+                    (getAllEvents.data![index].isLink.toString()!="2")?getAllEvents.data![index].country!.title
+                                      .toString():getAllEvents.data![index].eventLink.toString(),
                                   12,
                                   Colors.white)
                             ],

@@ -6,9 +6,11 @@ import 'package:afro/Util/CustomWidgetAttributes.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
+import '../../../../../Util/Colors.dart';
+
 InterestedEventsScreen(
     BuildContext context, GoingInterestedEventsModel _getAllGoingEvents) {
-  return Container(
+  return SizedBox(
     width: phoneWidth(context),
     child: Column(
       children: [
@@ -55,9 +57,9 @@ InterestedEventsScreen(
                               ),
                             ),
                             placeholder: (context, url) =>
-                                CircularProgressIndicator(),
+                                const CircularProgressIndicator(),
                             errorWidget: (context, url, error) =>
-                                Icon(Icons.error),
+                                const Icon(Icons.error),
                           ),
                           customHeightBox(10),
                           customText(
@@ -77,17 +79,29 @@ InterestedEventsScreen(
                           customHeightBox(5),
                           Row(
                             children: [
-                               Image.asset("assets/location.png",height: 15,width: 15,),
+                              (_getAllGoingEvents.data![index].event!.isLink.toString()!="2")? Image.asset("assets/location.png",height: 15,width: 15,): Image.asset(
+                                "assets/icons/http.png",
+                                height: 15,
+                                width: 15,
+                                color: yellowColor,
+                              ),
+
                               customWidthBox(5),
                               customWidthBox(5),
-                              if(_getAllGoingEvents
-                                  .data![index].event!.country != null)
-                                if(_getAllGoingEvents
-                                    .data![index].event!.country!.isNotEmpty)
+                              (_getAllGoingEvents
+                                  .data![index].event!.country != null&&_getAllGoingEvents
+                                  .data![index].event!.country!.isNotEmpty&&_getAllGoingEvents.data![index].event!.isLink.toString()!="2")?
                               customText(
                                   _getAllGoingEvents
-                                      .data![index].event!.country![0].title
-                                      .toString(),
+                                      .data![index].event!.country![0].title.toString(),
+
+                                  12,
+                                  Colors.white): (  _getAllGoingEvents
+                                  .data![index].event!.eventLink==""&& _getAllGoingEvents
+                                  .data![index].event!.eventLink == null)?const Text(""):customText(
+                                  _getAllGoingEvents
+                                      .data![index].event!.eventLink.toString(),
+
                                   12,
                                   Colors.white)
                             ],

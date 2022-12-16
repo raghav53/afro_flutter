@@ -3,9 +3,9 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:afro/Screens/Authentication/SignInPage2.dart';
 import 'package:afro/Screens/HomePageScreen.dart';
-import 'package:afro/Screens/HomeScreens/Home/NotificationScreen.dart';
 import 'package:afro/Screens/HomeScreens/ProfileNavigationScreens/SelectLanguage.dart';
 import 'package:afro/Screens/OnBoardingScreen/FirstOnBoard.dart';
+import 'package:afro/Screens/OnBoardingScreen/SecondOnBoard.dart';
 import 'package:afro/Screens/SignUpProcess/FillInformation.dart';
 import 'package:afro/Screens/SignUpProcess/SelectInterest.dart';
 import 'package:afro/Screens/SignUpProcess/UploadPhotoPage.dart';
@@ -34,7 +34,7 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
-        home: SplashScreenPage(),
+        home: const SplashScreenPage(),
       );
     }));
   }
@@ -61,14 +61,12 @@ class _SplashScreen extends State<SplashScreenPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: Container(
-      child: Image.asset(
-        "splash_screen.png",
-        fit: BoxFit.fitWidth,
-        height: MediaQuery.of(context).size.height,
-        width: MediaQuery.of(context).size.width,
-      ),
-    ));
+        body: Image.asset(
+          "splash_screen.png",
+          fit: BoxFit.fitWidth,
+          height: MediaQuery.of(context).size.height,
+          width: MediaQuery.of(context).size.width,
+        ));
   }
 
   init() async {
@@ -142,7 +140,7 @@ class _SplashScreen extends State<SplashScreenPage> {
         Timer(
             const Duration(seconds: 3),
             () => Navigator.pushReplacement(context,
-                MaterialPageRoute(builder: (context) => FirstOnBoardScreen())));
+                MaterialPageRoute(builder: (context) => SecondOnBoardScreen())));
       }
     }
   }

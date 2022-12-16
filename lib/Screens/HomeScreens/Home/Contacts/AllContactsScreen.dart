@@ -103,7 +103,7 @@ class _AllContactsListScreenState extends State<AllContactsListScreen> {
             children: [
               customHeightBox(15),
               Padding(
-                padding: EdgeInsets.only(left: 15, right: 15),
+                padding: const EdgeInsets.only(left: 15, right: 15),
                 child: Row(
                   mainAxisAlignment: mCenter,
                   children: [
@@ -125,7 +125,7 @@ class _AllContactsListScreenState extends State<AllContactsListScreen> {
                             },
                             keyboardType: TextInputType.text,
                             style: const TextStyle(
-                                fontSize: 14, color: Colors.white),
+                                fontSize: 14, color: Colors.white, fontStyle: FontStyle.normal,fontFamily: "Poppins"),
                             decoration: const InputDecoration(
                                 border: InputBorder.none,
                                 prefixIcon: Icon(
@@ -135,7 +135,7 @@ class _AllContactsListScreenState extends State<AllContactsListScreen> {
                                 hintText: "Search",
                                 contentPadding:
                                     EdgeInsets.only(left: 15, top: 15),
-                                hintStyle: TextStyle(color: Colors.white24)),
+                                hintStyle: TextStyle(color: Colors.white24, fontStyle: FontStyle.normal,fontFamily: "Poppins")),
                           ),
                         )),
                     customWidthBox(20),
@@ -157,12 +157,12 @@ class _AllContactsListScreenState extends State<AllContactsListScreen> {
               customHeightBox(15),
               //Fillters List
               Padding(
-                padding: EdgeInsets.only(left: 15, right: 15),
+                padding: const EdgeInsets.only(left: 15, right: 15),
                 child: customText("Choose Fillters", 13, yellowColor),
               ),
               customHeightBox(10),
               Container(
-                padding: EdgeInsets.only(left: 15, right: 15),
+                padding: const EdgeInsets.only(left: 15, right: 15),
                 height: 25,
                 child: ListView.builder(
                     shrinkWrap: true,
@@ -175,7 +175,7 @@ class _AllContactsListScreenState extends State<AllContactsListScreen> {
               ),
               customHeightBox(30),
               Padding(
-                padding: EdgeInsets.only(left: 15, right: 15),
+                padding: const EdgeInsets.only(left: 15, right: 15),
                 child: customText(selectedText, 12, yellowColor),
               ),
 
@@ -208,7 +208,7 @@ class _AllContactsListScreenState extends State<AllContactsListScreen> {
             border: (selectedIndex == index)
                 ? null
                 : Border.all(color: Colors.white, width: 1),
-            borderRadius: BorderRadius.all(Radius.circular(20))),
+            borderRadius: const BorderRadius.all(Radius.circular(20))),
         child: Padding(
           padding:
               const EdgeInsets.only(left: 20, right: 20, top: 5, bottom: 5),
@@ -249,7 +249,7 @@ class _AllContactsListScreenState extends State<AllContactsListScreen> {
             return snapshot.hasData && snapshot.data != null
                 ? AllReceivedFriendRequestsList(snapshot.data!)
                 : Container(
-                    margin: EdgeInsets.only(top: 100),
+                    margin: const EdgeInsets.only(top: 100),
                     alignment: Alignment.center,
                     child: Center(
                       child: customText("No data!", 15, white),
@@ -303,7 +303,7 @@ class _AllContactsListScreenState extends State<AllContactsListScreen> {
   ///Received friend requests List
   AllReceivedFriendRequestsList(ReceivedRequestModel snapshot) {
     return Container(
-      padding: EdgeInsets.only(left: 15, right: 15),
+      padding: const EdgeInsets.only(left: 15, right: 15),
       child: ListView.builder(
           padding: EdgeInsets.zero,
           itemCount: snapshot.data!.length,
@@ -417,7 +417,7 @@ class _AllContactsListScreenState extends State<AllContactsListScreen> {
   //Sent Friend requests list
   AllSentFriendRequestList(SendRequestModel snapshot) {
     return Container(
-      padding: EdgeInsets.only(left: 15, right: 15),
+      padding: const EdgeInsets.only(left: 15, right: 15),
       child: ListView.builder(
           padding: EdgeInsets.zero,
           shrinkWrap: true,
@@ -455,9 +455,9 @@ class _AllContactsListScreenState extends State<AllContactsListScreen> {
                                             .data![index].friend!.profileImage
                                             .toString(),
                                     errorWidget: (error, context, url) =>
-                                        Icon(Icons.person),
+                                        const Icon(Icons.person),
                                     placeholder: (context, url) =>
-                                        Icon(Icons.person),
+                                        const Icon(Icons.person),
                                     imageBuilder: (context, url) {
                                       return CircleAvatar(
                                         backgroundImage: url,
@@ -822,7 +822,7 @@ class _AllContactsListScreenState extends State<AllContactsListScreen> {
               backgroundColor: Colors.transparent,
               elevation: 0.0,
               child: Container(
-                padding: EdgeInsets.all(20),
+                padding: const EdgeInsets.all(20),
                 height: 170,
                 decoration: BoxDecoration(
                     color: gray1, borderRadius: BorderRadius.circular(10)),
@@ -838,7 +838,8 @@ class _AllContactsListScreenState extends State<AllContactsListScreen> {
                       style: const TextStyle(
                           fontSize: 13,
                           color: Color(0x3DFFFFFF),
-                          fontWeight: FontWeight.bold),
+                          fontWeight: FontWeight.bold,
+                          fontStyle: FontStyle.normal,fontFamily: "Poppins"),
                     ),
                     customHeightBox(30),
                     Row(mainAxisAlignment: mCenter, children: [
@@ -939,7 +940,7 @@ class _AllContactsListScreenState extends State<AllContactsListScreen> {
                               borderRadius: BorderRadius.circular(30),
                               border: Border.all(color: white, width: 1)),
                           child: Center(
-                            child: customText("Cancel", 15, white),
+                            child: customText("Cancel", 15, white, ),
                           ),
                         ),
                       )
@@ -1593,7 +1594,7 @@ class _AllContactsListScreenState extends State<AllContactsListScreen> {
     } else {
       tempCountriesIds.remove(id.toString());
     }
-    countriesIds = tempCountriesIds.join(",");
+    countriesIds = tempCountriesIds.join(" ");
   }
 
   addRemoveInterestsIds(String id, bool value) {

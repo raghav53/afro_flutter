@@ -42,7 +42,8 @@ class _ForgetPassword extends State<ForgetPasswordPage> {
                         style: TextStyle(
                             fontSize: 30,
                             color: Colors.white,
-                            fontWeight: FontWeight.bold),
+                            fontWeight: FontWeight.bold,
+                            fontStyle: FontStyle.normal,fontFamily: "Poppins"),
                       ),
                     ],
                   ),
@@ -52,7 +53,7 @@ class _ForgetPassword extends State<ForgetPasswordPage> {
                   padding: const EdgeInsets.only(left: 20),
                   child: Text(
                     "Confirm your email and we'll send the instructions",
-                    style: TextStyle(color: yellowColor),
+                    style: TextStyle(color: yellowColor, fontStyle: FontStyle.normal,fontFamily: "Poppins"),
                   ),
                 ),
                 customHeightBox(40),
@@ -66,7 +67,7 @@ class _ForgetPassword extends State<ForgetPasswordPage> {
                           style: TextStyle(
                               color: Colors.white,
                               fontSize: 16,
-                              fontWeight: FontWeight.w500),
+                              fontWeight: FontWeight.w500, fontStyle: FontStyle.normal,fontFamily: "Poppins"),
                         ),
                         const SizedBox(
                           height: 10,
@@ -92,7 +93,7 @@ class _ForgetPassword extends State<ForgetPasswordPage> {
                                 border: InputBorder.none,
                                 contentPadding: EdgeInsets.only(left: 15),
                                 hintText: "hello@gmail.com",
-                                hintStyle: TextStyle(color: Colors.white24)),
+                                hintStyle: TextStyle(color: Colors.white24, fontStyle: FontStyle.normal,fontFamily: "Poppins")),
                           ),
                         )
                       ],
@@ -124,7 +125,7 @@ class _ForgetPassword extends State<ForgetPasswordPage> {
                             color: white,
                           ),
                           customWidthBox(15),
-                          customText("Reset Password", 15, white)
+                          customText("Reset Password", 14, white)
                         ],
                       ),
                     ),

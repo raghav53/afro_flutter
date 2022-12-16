@@ -94,7 +94,7 @@ class _ChooseLangauge extends State<ChooseLanguage> {
               ),
               Text(
                 name,
-                style: TextStyle(color: Colors.white),
+                style: TextStyle(color: Colors.white, fontStyle: FontStyle.normal,fontFamily: "Poppins"),
               ),
               Radio(
                 focusColor: white,

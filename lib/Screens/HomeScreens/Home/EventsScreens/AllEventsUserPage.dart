@@ -34,7 +34,7 @@ class _AllEventUsersScreenPageState extends State<AllEventUsersScreenPage> {
         extendBodyBehindAppBar: true,
         appBar: commonAppbar(widget.title.toString()),
         body: Container(
-          padding: EdgeInsets.only(top: 70, left: 20, right: 20),
+          padding: const EdgeInsets.only(top: 70, left: 20, right: 20),
           decoration: commonBoxDecoration(),
           child: Column(
             children: [
@@ -61,8 +61,8 @@ class _AllEventUsersScreenPageState extends State<AllEventUsersScreenPage> {
                       ),
                       border: InputBorder.none,
                       hintText: "Search",
-                      contentPadding: const EdgeInsets.only(left: 15, top: 15),
-                      hintStyle: const TextStyle(color: Colors.white24)),
+                      contentPadding:  EdgeInsets.only(left: 15, top: 15),
+                      hintStyle:  TextStyle(color: Colors.white24)),
                 ),
               ),
               customHeightBox(30),
@@ -129,11 +129,7 @@ class _AllEventUsersScreenPageState extends State<AllEventUsersScreenPage> {
                             white),
                         subtitle: Row(
                           children: [
-                            Icon(
-                              Icons.location_pin,
-                              color: white,
-                              size: 20,
-                            ),
+                            Image.asset("assets/location.png",height: 15,width: 15,),
                             customText(
                                 snapshot.data!.data![index].user!.city![0].title
                                     .toString(),

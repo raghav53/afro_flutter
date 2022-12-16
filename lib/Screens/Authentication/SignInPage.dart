@@ -19,7 +19,7 @@ Widget BuildEmailTextField() {
       const Text(
         "Email/ User Name",
         style: TextStyle(
-            color: Colors.white, fontSize: 16, fontWeight: FontWeight.w500),
+            color: Colors.white, fontSize: 16, fontWeight: FontWeight.w500,),
       ),
       const SizedBox(
         height: 10,
@@ -254,7 +254,7 @@ class _SignInPageScreen extends State<SignPage> {
                         ),
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       width: 15,
                     ),
                     ClipOval(
@@ -282,7 +282,7 @@ class _SignInPageScreen extends State<SignPage> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text(
+                    const Text(
                       "New account here?",
                       style: TextStyle(color: Colors.white),
                     ),
