@@ -3,9 +3,9 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>4357235401-csvtvnecsrmn8rk1telcvjsbflojghcj.apps.googleusercontent.com</string>
+	<string>4357235401-di8i2eumo4ijcl4rj8pd2onbh37lmgjl.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.4357235401-csvtvnecsrmn8rk1telcvjsbflojghcj</string>
+	<string>com.googleusercontent.apps.4357235401-di8i2eumo4ijcl4rj8pd2onbh37lmgjl</string>
 	<key>ANDROID_CLIENT_ID</key>
 	<string>4357235401-239i148med1ci475d7rqrqotjras32m5.apps.googleusercontent.com</string>
 	<key>API_KEY</key>
@@ -15,7 +15,7 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.renewash.app</string>
+	<string>com.afro.unitd</string>
 	<key>PROJECT_ID</key>
 	<string>afro-united-23c8e</string>
 	<key>STORAGE_BUCKET</key>
@@ -31,6 +31,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:4357235401:ios:d1d20b4fdcdbc44c462318</string>
+	<string>1:4357235401:ios:4ff4b885f3a2c8bc462318</string>
 </dict>
 </plist>
