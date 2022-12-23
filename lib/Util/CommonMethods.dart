@@ -1,11 +1,15 @@
 import 'package:afro/Screens/Authentication/SignInPage2.dart';
 import 'package:afro/Screens/OnBoardingScreen/FirstOnBoard.dart';
 import 'package:afro/Screens/OnBoardingScreen/SecondOnBoard.dart';
+import 'package:afro/Util/CommonUI.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:url_launcher/url_launcher.dart';
+
+
 
 bool checkEmail(String email) {
   return RegExp(
@@ -77,6 +81,27 @@ Map dataTimeTextFormater(String text) {
   return dateTime;
 }
 
+String formatTimestamp(String timestamp) {
+  var format = new DateFormat('MMM, yyyy' );
+  var date = new DateTime.fromMillisecondsSinceEpoch(int.parse(timestamp));
+  return format.format(date);
+}
+
+String convertTimestamp(String timestamp) {
+  var format = DateFormat.y();
+  DateTime parseDate = DateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ").parse(timestamp);
+ /* var date = new DateTime.fromMillisecondsSinceEpoch(double.parse(timestamp).toInt());*/
+  return format.format(parseDate);
+}
+
+String convertHistoryTimestamp(String timestamp) {
+  var format = new DateFormat('MMM,yyyy' );
+  DateTime parseDate = DateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ").parse(timestamp);
+  /* var date = new DateTime.fromMillisecondsSinceEpoch(double.parse(timestamp).toInt());*/
+  return format.format(parseDate);
+}
+
+
 //Format(Sundy,07 Apr , 12:00 AM)
 Map dayTimeTextFormater(String text) {
   Map dateTime = {};
@@ -141,3 +166,86 @@ bool isEmailValid(String email) {
           r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$')
       .hasMatch(email);
 }
+
+String timeAgoSinceDate(
+    {bool numericDates = true, required DateTime notesDate}) {
+  DateTime date = notesDate;
+  final date2 = DateTime.now().toLocal();
+  final difference = date2.difference(date);
+
+  if (difference.inSeconds < 5) {
+    return 'Just now';
+  } else if (difference.inSeconds <= 60) {
+    return '${difference.inSeconds} seconds ago';
+  } else if (difference.inMinutes <= 1) {
+    return (numericDates) ? '1 minute ago' : 'A minute ago';
+  } else if (difference.inMinutes <= 60) {
+    return '${difference.inMinutes} minutes ago';
+  } else if (difference.inHours <= 1) {
+    return (numericDates) ? '1 hour ago' : 'An hour ago';
+  } else if (difference.inHours <= 24) {
+    return '${difference.inHours} hours ago';
+  } else if (difference.inDays <= 1) {
+    return (numericDates) ? '1 day ago' : 'Yesterday';
+  }
+  String datess = date.day.toString() +
+      " " +
+      getMonth(date.month.toString()) +
+      " " +
+      date.year.toString();
+  return datess;
+}
+
+String getMonth(month) {
+  if (month == "1") {
+    return "Jan";
+  } else if (month == "2") {
+    return "Feb";
+  } else if (month == "3") {
+    return "Mar";
+  } else if (month == "4") {
+    return "Apr";
+  } else if (month == "5") {
+    return "May";
+  } else if (month == "6") {
+    return "Jun";
+  } else if (month == "7") {
+    return "Jul";
+  } else if (month == "8") {
+    return "Aug";
+  } else if (month == "9") {
+    return "Sep";
+  } else if (month == "10") {
+    return "Oct";
+  } else if (month == "11") {
+    return "Nov";
+  } else if (month == "12") {
+    return "Dec";
+  } else {
+    return "";
+  }
+}
+
+
+
+
+
+launchUrlLink(String url) {
+  try {
+    launchUrl(Uri.parse(url));
+  } catch (e) {
+    customToastMsg("Invalid Url");
+  }
+}
+
+
+/*
+shareOnFacebook() async {
+  String result = await FlutterSocialContentShare.share(
+      type: ShareType.facebookWithoutImage,
+      url: "https://www.apple.com",
+      quote: "captions");
+  print(result);
+}
+*/
+

@@ -66,6 +66,7 @@ dependencies:
   firebase_core: ^1.20.0
   firebase_auth: ^3.11.2
   socket_io_client: ^2.0.0
+  flutter_dash: ^1.0.0
   google_sign_in: ^5.4.2
   flutter_login_facebook: ^1.7.0
 dev_dependencies:
@@ -116,6 +117,8 @@ flutter:
     - location.png
     - coming_soon.png
     - website_icon.png
+    - employees_bag.png
+    - graduation_cap.png
     ##Icons
     - assets/icons/ic_next.png
     - assets/icons/event_icn.png

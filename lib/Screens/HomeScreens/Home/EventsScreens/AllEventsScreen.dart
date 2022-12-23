@@ -956,7 +956,8 @@ class _AllEventsScreenState extends State<AllEventsScreen> {
                               ),
                               customWidthBox(5),
                               customText(
-                    (getAllEvents.data![index].isLink.toString()!="2")?getAllEvents.data![index].country!.title
+                    (getAllEvents.data![index].isLink.toString()!="2")?getAllEvents.data![index].state
+                        .toString()+","+getAllEvents.data![index].country!.title
                                       .toString():getAllEvents.data![index].eventLink.toString(),
                                   12,
                                   Colors.white)

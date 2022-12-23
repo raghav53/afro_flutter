@@ -68,15 +68,13 @@ class _Location extends State<LocationPageScreen> {
               .then((value) => updateAll());
         },
         child: Container(
+          alignment: Alignment.center,
           height: 50,
           width: 50,
           decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(50),
               gradient: commonButtonLinearGridient),
-          child: const Icon(
-            Icons.add,
-            color: Colors.white,
-          ),
+            child:  Image.asset("assets/icons/add.png",height: 25,width: 25,color: Colors.white,)
         ),
       ),
       body: Container(
@@ -138,133 +136,135 @@ class _Location extends State<LocationPageScreen> {
                                       .data!.data![index].country
                                       .toString();
 
-                                  return Container(
+                                  return Card(
                                     margin: EdgeInsets.only(bottom: 10),
-                                    decoration: BoxDecoration(
-                                        color: black,
-                                        borderRadius:
-                                            BorderRadius.circular(10)),
-                                    padding: const EdgeInsets.only(
-                                        top: 5, bottom: 5, left: 10, right: 10),
-                                    child: Row(
-                                      children: [
-                                        CachedNetworkImage(
-                                          height: 30,
-                                          width: 30,
-                                          imageUrl: country_code_url +
-                                              snapshot.data!.data![index].iso2
-                                                  .toString()
-                                                  .toLowerCase() +
-                                              ".png",
-                                          imageBuilder: (context, url) {
-                                            return CircleAvatar(
-                                              backgroundImage: url,
-                                            );
-                                          },
-                                        ),
-                                        customWidthBox(15),
-                                        Column(
-                                          crossAxisAlignment: cStart,
-                                          children: [
-                                            customText(
-                                                cityName, 13, yellowColor),
-                                            customHeightBox(5),
-                                            customText(countryName, 10, white),
-                                            customHeightBox(5),
-                                            customText(
-                                                convetDateFormat(snapshot
-                                                        .data!.data![index].from
-                                                        .toString()) +
-                                                    "  to  " +
-                                                    convetDateFormat(snapshot
-                                                        .data!.data![index].to
-                                                        .toString()),
-                                                11,
-                                                white)
-                                          ],
-                                        ),
-                                        Spacer(),
-                                        Row(
-                                          children: [
-                                            InkWell(
-                                              onTap: () {
-                                                showDeleteDialog(snapshot
-                                                    .data!.data![index].sId
-                                                    .toString());
-                                              },
-                                              child: Container(
-                                                padding:
-                                                    const EdgeInsets.all(2),
-                                                decoration: BoxDecoration(
-                                                    color: red,
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            50)),
-                                                child: const Icon(
-                                                  Icons.delete,
-                                                  size: 20,
-                                                ),
-                                              ),
-                                            ),
-                                            customWidthBox(10),
-                                            InkWell(
-                                              onTap: () {
-                                                dataMap = {
-                                                  "country": snapshot.data!
-                                                      .data![index].country
-                                                      .toString(),
-                                                  "state": snapshot
-                                                      .data!.data![index].state
-                                                      .toString(),
-                                                  "city": snapshot
-                                                      .data!.data![index].city
-                                                      .toString(),
-                                                  "id": snapshot
-                                                      .data!.data![index].sId
-                                                      .toString(),
-                                                  "fromText": snapshot
-                                                      .data!.data![index].from
-                                                      .toString(),
-                                                  "toText": snapshot
-                                                      .data!.data![index].to
-                                                      .toString(),
-                                                  "fromDateText":
-                                                      convetDateFormat(snapshot
-                                                          .data!
-                                                          .data![index]
-                                                          .from
-                                                          .toString()),
-                                                  "toDateText":
+                                    color: black,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(10.0),
+                                    ),
+                                    child: Padding(
+                                      padding:  const EdgeInsets.only(
+                                          top: 5, bottom: 5, left: 10, right: 10),
+                                      child: Row(
+                                        children: [
+                                          CachedNetworkImage(
+                                            height: 30,
+                                            width: 30,
+                                            imageUrl: country_code_url +
+                                                snapshot.data!.data![index].iso2
+                                                    .toString()
+                                                    .toLowerCase() +
+                                                ".png",
+                                            imageBuilder: (context, url) {
+                                              return CircleAvatar(
+                                                backgroundImage: url,
+                                              );
+                                            },
+                                          ),
+                                          customWidthBox(15),
+                                          Column(
+                                            crossAxisAlignment: cStart,
+                                            children: [
+                                              customText(
+                                                  cityName, 13, yellowColor),
+                                              customHeightBox(5),
+                                              customText(countryName, 10, white),
+                                              customHeightBox(5),
+                                              customText(
+                                                  convetDateFormat(snapshot
+                                                          .data!.data![index].from
+                                                          .toString()) +
+                                                      "  to  " +
                                                       convetDateFormat(snapshot
                                                           .data!.data![index].to
                                                           .toString()),
-                                                };
-                                                Navigator.push(
-                                                    context,
-                                                    MaterialPageRoute(
-                                                        builder: (context) =>
-                                                            AddTimelinePageScreen(
-                                                                dataMap:
-                                                                    dataMap)));
-                                              },
-                                              child: Container(
-                                                padding:
-                                                    const EdgeInsets.all(3),
-                                                decoration: BoxDecoration(
-                                                    gradient:
-                                                        commonButtonLinearGridient,
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            50)),
-                                                child: const Icon(
-                                                  Icons.edit,
-                                                  size: 20,
+                                                  11,
+                                                  white)
+                                            ],
+                                          ),
+                                          Spacer(),
+                                          Row(
+                                            children: [
+                                              InkWell(
+                                                onTap: () {
+                                                  showDeleteDialog(snapshot
+                                                      .data!.data![index].sId
+                                                      .toString());
+                                                },
+                                                child: Container(
+                                                  padding:
+                                                      const EdgeInsets.all(2),
+                                                  decoration: BoxDecoration(
+                                                      color: red,
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              50)),
+                                                  child: const Icon(
+                                                    Icons.delete,
+                                                    size: 20,
+                                                  ),
                                                 ),
                                               ),
-                                            )
-                                          ],
-                                        )
-                                      ],
+                                              customWidthBox(10),
+                                              InkWell(
+                                                onTap: () {
+                                                  dataMap = {
+                                                    "country": snapshot.data!
+                                                        .data![index].country
+                                                        .toString(),
+                                                    "state": snapshot
+                                                        .data!.data![index].state
+                                                        .toString(),
+                                                    "city": snapshot
+                                                        .data!.data![index].city
+                                                        .toString(),
+                                                    "id": snapshot
+                                                        .data!.data![index].sId
+                                                        .toString(),
+                                                    "fromText": snapshot
+                                                        .data!.data![index].from
+                                                        .toString(),
+                                                    "toText": snapshot
+                                                        .data!.data![index].to
+                                                        .toString(),
+                                                    "fromDateText":
+                                                        convetDateFormat(snapshot
+                                                            .data!
+                                                            .data![index]
+                                                            .from
+                                                            .toString()),
+                                                    "toDateText":
+                                                        convetDateFormat(snapshot
+                                                            .data!.data![index].to
+                                                            .toString()),
+                                                  };
+                                                  Navigator.push(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                          builder: (context) =>
+                                                              AddTimelinePageScreen(
+                                                                  dataMap:
+                                                                      dataMap)));
+                                                },
+                                                child: Container(
+                                                  padding:
+                                                      const EdgeInsets.all(3),
+                                                  decoration: BoxDecoration(
+                                                      gradient:
+                                                          commonButtonLinearGridient,
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              50)),
+                                                  child: const Icon(
+                                                    Icons.edit,
+                                                    size: 20,
+                                                  ),
+                                                ),
+                                              )
+                                            ],
+                                          )
+                                        ],
+                                      ),
                                     ),
                                   );
                                 }),
@@ -289,7 +289,7 @@ class _Location extends State<LocationPageScreen> {
               backgroundColor: Colors.transparent,
               elevation: 0.0,
               child: Container(
-                height: 130,
+                height: 150,
                 width: 200,
                 decoration: BoxDecoration(
                     color: gray1, borderRadius: BorderRadius.circular(10)),
@@ -316,8 +316,10 @@ class _Location extends State<LocationPageScreen> {
                           });
                         },
                         child: Container(
-                          padding: const EdgeInsets.only(
-                              top: 7, bottom: 7, left: 30, right: 30),
+                          alignment: Alignment.center,
+                          height: 30,
+                          width: 60,
+
                           decoration: BoxDecoration(
                               gradient: commonButtonLinearGridient,
                               borderRadius: BorderRadius.circular(10)),
@@ -330,8 +332,9 @@ class _Location extends State<LocationPageScreen> {
                           Navigator.pop(context);
                         },
                         child: Container(
-                          padding: const EdgeInsets.only(
-                              top: 7, bottom: 7, left: 30, right: 30),
+                          alignment: Alignment.center,
+                          height: 30,
+                          width: 60,
                           decoration: BoxDecoration(
                               gradient: commonButtonLinearGridient,
                               borderRadius: BorderRadius.circular(10)),

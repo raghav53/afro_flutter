@@ -1,0 +1,1144 @@
+class SecondProfileApiModel {
+  bool? success;
+  int? code;
+  String? message;
+  Data? data;
+
+  SecondProfileApiModel({this.success, this.code, this.message, this.data});
+
+  SecondProfileApiModel.fromJson(Map<String, dynamic> json) {
+    success = json['success'];
+    code = json['code'];
+    message = json['message'];
+    data = json['data'] != null ? new Data.fromJson(json['data']) : null;
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['success'] = this.success;
+    data['code'] = this.code;
+    data['message'] = this.message;
+    if (this.data != null) {
+      data['data'] = this.data!.toJson();
+    }
+    return data;
+  }
+}
+
+class Data {
+  String? sId;
+  String? firstName;
+  String? lastName;
+  String? email;
+  int? dob;
+  int? age;
+  String? profileImage;
+  String? password;
+  String? randomKey;
+  String? gender;
+  String? userType;
+  String? locale;
+  String? hometown;
+  String? socketId;
+  String? token;
+  String? deviceType;
+  String? deviceToken;
+  bool? isInterests;
+  String? status;
+  String? socialType;
+  String? socialId;
+  String? bio;
+  String? facebook;
+  String? instagram;
+  String? twitter;
+  String? linkdin;
+  String? website;
+  String? createdAt;
+  String? updatedAt;
+  String? fullName;
+  int? iV;
+  City? city;
+  String? community;
+  Country? country;
+  StateCountry? state;
+  String? id;
+  int? totalFirends;
+  int? totalFollowers;
+  int? totalFollowings;
+  int? isFriend;
+  int? isReqSent;
+  int? isReqReceived;
+  int? isFollower;
+  int? isFollowing;
+  bool? isBlock;
+  String? blockBy;
+  List<Experiences>? experiences;
+  List<Educations>? educations;
+  List<Visits>? visits;
+  List<Groups>? groups;
+  List<Events>? events;
+  List<Languages>? languages;
+  List<Interests>? interests;
+
+  Data(
+      {this.sId,
+        this.firstName,
+        this.lastName,
+        this.email,
+        this.dob,
+        this.age,
+        this.profileImage,
+        this.password,
+        this.randomKey,
+        this.gender,
+        this.userType,
+        this.locale,
+        this.hometown,
+        this.socketId,
+        this.token,
+        this.deviceType,
+        this.deviceToken,
+        this.isInterests,
+        this.status,
+        this.socialType,
+        this.socialId,
+        this.bio,
+        this.facebook,
+        this.instagram,
+        this.twitter,
+        this.linkdin,
+        this.website,
+        this.createdAt,
+        this.updatedAt,
+        this.fullName,
+        this.iV,
+        this.city,
+        this.community,
+        this.country,
+        this.state,
+        this.id,
+        this.totalFirends,
+        this.totalFollowers,
+        this.totalFollowings,
+        this.isFriend,
+        this.isReqSent,
+        this.isReqReceived,
+        this.isFollower,
+        this.isFollowing,
+        this.isBlock,
+        this.blockBy,
+        this.experiences,
+        this.educations,
+        this.visits,
+        this.groups,
+        this.events,
+        this.languages,
+        this.interests});
+
+  Data.fromJson(Map<String, dynamic> json) {
+    sId = json['_id'];
+    firstName = json['first_name'];
+    lastName = json['last_name'];
+    email = json['email'];
+    dob = json['dob'];
+    age = json['age'];
+    profileImage = json['profile_image'];
+    password = json['password'];
+    randomKey = json['random_key'];
+    gender = json['gender'];
+    userType = json['user_type'];
+    locale = json['locale'];
+    hometown = json['hometown'];
+    socketId = json['socket_id'];
+    token = json['token'];
+    deviceType = json['device_type'];
+    deviceToken = json['device_token'];
+    isInterests = json['is_interests'];
+    status = json['status'];
+    socialType = json['social_type'];
+    socialId = json['social_id'];
+    bio = json['bio'];
+    facebook = json['facebook'];
+    instagram = json['instagram'];
+    twitter = json['twitter'];
+    linkdin = json['linkdin'];
+    website = json['website'];
+    createdAt = json['createdAt'];
+    updatedAt = json['updatedAt'];
+    fullName = json['full_name'];
+    iV = json['__v'];
+    city = json['city'] != null ? new City.fromJson(json['city']) : null;
+    community = json['community'];
+    country =
+    json['country'] != null ? new Country.fromJson(json['country']) : null;
+    state = json['state'] != null ? new StateCountry.fromJson(json['state']) : null;
+    id = json['id'];
+    totalFirends = json['total_firends'];
+    totalFollowers = json['total_followers'];
+    totalFollowings = json['total_followings'];
+    isFriend = json['is_friend'];
+    isReqSent = json['is_req_sent'];
+    isReqReceived = json['is_req_received'];
+    isFollower = json['is_follower'];
+    isFollowing = json['is_following'];
+    isBlock = json['isBlock'];
+    blockBy = json['blockBy'];
+    if (json['experiences'] != null) {
+      experiences = <Experiences>[];
+      json['experiences'].forEach((v) {
+        experiences!.add(new Experiences.fromJson(v));
+      });
+    }
+    if (json['educations'] != null) {
+      educations = <Educations>[];
+      json['educations'].forEach((v) {
+        educations!.add(new Educations.fromJson(v));
+      });
+    }
+    if (json['visits'] != null) {
+      visits = <Visits>[];
+      json['visits'].forEach((v) {
+        visits!.add(new Visits.fromJson(v));
+      });
+    }
+    if (json['groups'] != null) {
+      groups = <Groups>[];
+      json['groups'].forEach((v) {
+        groups!.add(new Groups.fromJson(v));
+      });
+    }
+    if (json['events'] != null) {
+      events = <Events>[];
+      json['events'].forEach((v) {
+        events!.add(new Events.fromJson(v));
+      });
+    }
+    if (json['languages'] != null) {
+      languages = <Languages>[];
+      json['languages'].forEach((v) {
+        languages!.add(new Languages.fromJson(v));
+      });
+    }
+    if (json['interests'] != null) {
+      interests = <Interests>[];
+      json['interests'].forEach((v) {
+        interests!.add(new Interests.fromJson(v));
+      });
+    }
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['_id'] = this.sId;
+    data['first_name'] = this.firstName;
+    data['last_name'] = this.lastName;
+    data['email'] = this.email;
+    data['dob'] = this.dob;
+    data['age'] = this.age;
+    data['profile_image'] = this.profileImage;
+    data['password'] = this.password;
+    data['random_key'] = this.randomKey;
+    data['gender'] = this.gender;
+    data['user_type'] = this.userType;
+    data['locale'] = this.locale;
+    data['hometown'] = this.hometown;
+    data['socket_id'] = this.socketId;
+    data['token'] = this.token;
+    data['device_type'] = this.deviceType;
+    data['device_token'] = this.deviceToken;
+    data['is_interests'] = this.isInterests;
+    data['status'] = this.status;
+    data['social_type'] = this.socialType;
+    data['social_id'] = this.socialId;
+    data['bio'] = this.bio;
+    data['facebook'] = this.facebook;
+    data['instagram'] = this.instagram;
+    data['twitter'] = this.twitter;
+    data['linkdin'] = this.linkdin;
+    data['website'] = this.website;
+    data['createdAt'] = this.createdAt;
+    data['updatedAt'] = this.updatedAt;
+    data['full_name'] = this.fullName;
+    data['__v'] = this.iV;
+    if (this.city != null) {
+      data['city'] = this.city!.toJson();
+    }
+    data['community'] = this.community;
+    if (this.country != null) {
+      data['country'] = this.country!.toJson();
+    }
+    if (this.state != null) {
+      data['state'] = this.state!.toJson();
+    }
+    data['id'] = this.id;
+    data['total_firends'] = this.totalFirends;
+    data['total_followers'] = this.totalFollowers;
+    data['total_followings'] = this.totalFollowings;
+    data['is_friend'] = this.isFriend;
+    data['is_req_sent'] = this.isReqSent;
+    data['is_req_received'] = this.isReqReceived;
+    data['is_follower'] = this.isFollower;
+    data['is_following'] = this.isFollowing;
+    data['isBlock'] = this.isBlock;
+    data['blockBy'] = this.blockBy;
+    if (this.experiences != null) {
+      data['experiences'] = this.experiences!.map((v) => v.toJson()).toList();
+
+    }
+    if (this.educations != null) {
+      data['educations'] = this.educations!.map((v) => v.toJson()).toList();
+    }
+    if (this.visits != null) {
+      data['visits'] = this.visits!.map((v) => v.toJson()).toList();
+    }
+    if (this.groups != null) {
+      data['groups'] = this.groups!.map((v) => v.toJson()).toList();
+    }
+    if (this.events != null) {
+      data['events'] = this.events!.map((v) => v.toJson()).toList();
+    }
+    if (this.languages != null) {
+      data['languages'] = this.languages!.map((v) => v.toJson()).toList();
+    }
+    if (this.interests != null) {
+      data['interests'] = this.interests!.map((v) => v.toJson()).toList();
+    }
+    return data;
+  }
+}
+
+class City {
+  String? sId;
+  int? id;
+  String? name;
+  int? stateId;
+  String? stateCode;
+  String? stateName;
+  int? countryId;
+  String? countryCode;
+  String? countryName;
+  String? latitude;
+  String? longitude;
+  String? wikiDataId;
+  String? title;
+  String? status;
+
+  City(
+      {this.sId,
+        this.id,
+        this.name,
+        this.stateId,
+        this.stateCode,
+        this.stateName,
+        this.countryId,
+        this.countryCode,
+        this.countryName,
+        this.latitude,
+        this.longitude,
+        this.wikiDataId,
+        this.title,
+        this.status});
+
+  City.fromJson(Map<String, dynamic> json) {
+    sId = json['_id'];
+    id = json['id'];
+    name = json['name'];
+    stateId = json['state_id'];
+    stateCode = json['state_code'];
+    stateName = json['state_name'];
+    countryId = json['country_id'];
+    countryCode = json['country_code'];
+    countryName = json['country_name'];
+    latitude = json['latitude'];
+    longitude = json['longitude'];
+    wikiDataId = json['wikiDataId'];
+    title = json['title'];
+    status = json['status'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['_id'] = this.sId;
+    data['id'] = this.id;
+    data['name'] = this.name;
+    data['state_id'] = this.stateId;
+    data['state_code'] = this.stateCode;
+    data['state_name'] = this.stateName;
+    data['country_id'] = this.countryId;
+    data['country_code'] = this.countryCode;
+    data['country_name'] = this.countryName;
+    data['latitude'] = this.latitude;
+    data['longitude'] = this.longitude;
+    data['wikiDataId'] = this.wikiDataId;
+    data['title'] = this.title;
+    data['status'] = this.status;
+    return data;
+  }
+}
+
+class Country {
+  String? sId;
+  int? id;
+  String? name;
+  String? iso3;
+  String? iso2;
+  String? numericCode;
+  String? phoneCode;
+  String? capital;
+  String? currency;
+  String? currencyName;
+  String? currencySymbol;
+  String? tld;
+  String? native;
+  String? region;
+  String? subregion;
+  List<Timezones>? timezones;
+  Translations? translations;
+  String? latitude;
+  String? longitude;
+  String? emoji;
+  String? emojiU;
+  String? title;
+  String? status;
+
+  Country(
+      {this.sId,
+        this.id,
+        this.name,
+        this.iso3,
+        this.iso2,
+        this.numericCode,
+        this.phoneCode,
+        this.capital,
+        this.currency,
+        this.currencyName,
+        this.currencySymbol,
+        this.tld,
+        this.native,
+        this.region,
+        this.subregion,
+        this.timezones,
+        this.translations,
+        this.latitude,
+        this.longitude,
+        this.emoji,
+        this.emojiU,
+        this.title,
+        this.status});
+
+  Country.fromJson(Map<String, dynamic> json) {
+    sId = json['_id'];
+    id = json['id'];
+    name = json['name'];
+    iso3 = json['iso3'];
+    iso2 = json['iso2'];
+    numericCode = json['numeric_code'];
+    phoneCode = json['phone_code'];
+    capital = json['capital'];
+    currency = json['currency'];
+    currencyName = json['currency_name'];
+    currencySymbol = json['currency_symbol'];
+    tld = json['tld'];
+    native = json['native'];
+    region = json['region'];
+    subregion = json['subregion'];
+    if (json['timezones'] != null) {
+      timezones = <Timezones>[];
+      json['timezones'].forEach((v) {
+        timezones!.add(new Timezones.fromJson(v));
+      });
+    }
+    translations = json['translations'] != null
+        ? new Translations.fromJson(json['translations'])
+        : null;
+    latitude = json['latitude'];
+    longitude = json['longitude'];
+    emoji = json['emoji'];
+    emojiU = json['emojiU'];
+    title = json['title'];
+    status = json['status'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['_id'] = this.sId;
+    data['id'] = this.id;
+    data['name'] = this.name;
+    data['iso3'] = this.iso3;
+    data['iso2'] = this.iso2;
+    data['numeric_code'] = this.numericCode;
+    data['phone_code'] = this.phoneCode;
+    data['capital'] = this.capital;
+    data['currency'] = this.currency;
+    data['currency_name'] = this.currencyName;
+    data['currency_symbol'] = this.currencySymbol;
+    data['tld'] = this.tld;
+    data['native'] = this.native;
+    data['region'] = this.region;
+    data['subregion'] = this.subregion;
+    if (this.timezones != null) {
+      data['timezones'] = this.timezones!.map((v) => v.toJson()).toList();
+    }
+    if (this.translations != null) {
+      data['translations'] = this.translations!.toJson();
+    }
+    data['latitude'] = this.latitude;
+    data['longitude'] = this.longitude;
+    data['emoji'] = this.emoji;
+    data['emojiU'] = this.emojiU;
+    data['title'] = this.title;
+    data['status'] = this.status;
+    return data;
+  }
+}
+
+class Timezones {
+  String? zoneName;
+  int? gmtOffset;
+  String? gmtOffsetName;
+  String? abbreviation;
+  String? tzName;
+
+  Timezones(
+      {this.zoneName,
+        this.gmtOffset,
+        this.gmtOffsetName,
+        this.abbreviation,
+        this.tzName});
+
+  Timezones.fromJson(Map<String, dynamic> json) {
+    zoneName = json['zoneName'];
+    gmtOffset = json['gmtOffset'];
+    gmtOffsetName = json['gmtOffsetName'];
+    abbreviation = json['abbreviation'];
+    tzName = json['tzName'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['zoneName'] = this.zoneName;
+    data['gmtOffset'] = this.gmtOffset;
+    data['gmtOffsetName'] = this.gmtOffsetName;
+    data['abbreviation'] = this.abbreviation;
+    data['tzName'] = this.tzName;
+    return data;
+  }
+}
+
+class Translations {
+  String? kr;
+  String? br;
+  String? pt;
+  String? nl;
+  String? hr;
+  String? fa;
+  String? de;
+  String? es;
+  String? fr;
+  String? ja;
+  String? it;
+  String? cn;
+
+  Translations(
+      {this.kr,
+        this.br,
+        this.pt,
+        this.nl,
+        this.hr,
+        this.fa,
+        this.de,
+        this.es,
+        this.fr,
+        this.ja,
+        this.it,
+        this.cn});
+
+  Translations.fromJson(Map<String, dynamic> json) {
+    kr = json['kr'];
+    br = json['br'];
+    pt = json['pt'];
+    nl = json['nl'];
+    hr = json['hr'];
+    fa = json['fa'];
+    de = json['de'];
+    es = json['es'];
+    fr = json['fr'];
+    ja = json['ja'];
+    it = json['it'];
+    cn = json['cn'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['kr'] = this.kr;
+    data['br'] = this.br;
+    data['pt'] = this.pt;
+    data['nl'] = this.nl;
+    data['hr'] = this.hr;
+    data['fa'] = this.fa;
+    data['de'] = this.de;
+    data['es'] = this.es;
+    data['fr'] = this.fr;
+    data['ja'] = this.ja;
+    data['it'] = this.it;
+    data['cn'] = this.cn;
+    return data;
+  }
+}
+
+class StateCountry {
+  String? sId;
+  int? id;
+  String? name;
+  int? countryId;
+  String? countryCode;
+  String? countryName;
+  String? stateCode;
+  Null? type;
+  String? latitude;
+  String? longitude;
+  String? status;
+  String? title;
+
+  StateCountry(
+      {this.sId,
+        this.id,
+        this.name,
+        this.countryId,
+        this.countryCode,
+        this.countryName,
+        this.stateCode,
+        this.type,
+        this.latitude,
+        this.longitude,
+        this.status,
+        this.title});
+
+  StateCountry.fromJson(Map<String, dynamic> json) {
+    sId = json['_id'];
+    id = json['id'];
+    name = json['name'];
+    countryId = json['country_id'];
+    countryCode = json['country_code'];
+    countryName = json['country_name'];
+    stateCode = json['state_code'];
+    type = json['type'];
+    latitude = json['latitude'];
+    longitude = json['longitude'];
+    status = json['status'];
+    title = json['title'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['_id'] = this.sId;
+    data['id'] = this.id;
+    data['name'] = this.name;
+    data['country_id'] = this.countryId;
+    data['country_code'] = this.countryCode;
+    data['country_name'] = this.countryName;
+    data['state_code'] = this.stateCode;
+    data['type'] = this.type;
+    data['latitude'] = this.latitude;
+    data['longitude'] = this.longitude;
+    data['status'] = this.status;
+    data['title'] = this.title;
+    return data;
+  }
+}
+
+class Experiences {
+  String? sId;
+  String? userId;
+  String? company;
+  String? location;
+  String? position;
+  int? from;
+  int? to;
+  int? current;
+  String? createdAt;
+  String? updatedAt;
+  int? iV;
+
+  Experiences(
+      {this.sId,
+        this.userId,
+        this.company,
+        this.location,
+        this.position,
+        this.from,
+        this.to,
+        this.current,
+        this.createdAt,
+        this.updatedAt,
+        this.iV});
+
+  Experiences.fromJson(Map<String, dynamic> json) {
+    sId = json['_id'];
+    userId = json['user_id'];
+    company = json['company'];
+    location = json['location'];
+    position = json['position'];
+    from = json['from'];
+    to = json['to'];
+    current = json['current'];
+    createdAt = json['createdAt'];
+    updatedAt = json['updatedAt'];
+    iV = json['__v'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['_id'] = this.sId;
+    data['user_id'] = this.userId;
+    data['company'] = this.company;
+    data['location'] = this.location;
+    data['position'] = this.position;
+    data['from'] = this.from;
+    data['to'] = this.to;
+    data['current'] = this.current;
+    data['createdAt'] = this.createdAt;
+    data['updatedAt'] = this.updatedAt;
+    data['__v'] = this.iV;
+    return data;
+  }
+}
+
+class Educations {
+  String? sId;
+  String? userId;
+  String? institution;
+  String? degree;
+  String? subject;
+  String? description;
+  int? from;
+  int? to;
+  int? current;
+  String? createdAt;
+  String? updatedAt;
+  int? iV;
+
+  Educations(
+      {this.sId,
+        this.userId,
+        this.institution,
+        this.degree,
+        this.subject,
+        this.description,
+        this.from,
+        this.to,
+        this.current,
+        this.createdAt,
+        this.updatedAt,
+        this.iV});
+
+  Educations.fromJson(Map<String, dynamic> json) {
+    sId = json['_id'];
+    userId = json['user_id'];
+    institution = json['institution'];
+    degree = json['degree'];
+    subject = json['subject'];
+    description = json['description'];
+    from = json['from'];
+    to = json['to'];
+    current = json['current'];
+    createdAt = json['createdAt'];
+    updatedAt = json['updatedAt'];
+    iV = json['__v'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['_id'] = this.sId;
+    data['user_id'] = this.userId;
+    data['institution'] = this.institution;
+    data['degree'] = this.degree;
+    data['subject'] = this.subject;
+    data['description'] = this.description;
+    data['from'] = this.from;
+    data['to'] = this.to;
+    data['current'] = this.current;
+    data['createdAt'] = this.createdAt;
+    data['updatedAt'] = this.updatedAt;
+    data['__v'] = this.iV;
+    return data;
+  }
+}
+
+class Visits {
+  String? sId;
+  String? userId;
+  String? country;
+  String? state;
+  String? city;
+  int? from;
+  int? to;
+  int? current;
+  String? createdAt;
+  String? updatedAt;
+  int? iV;
+  String? iso2;
+
+  Visits(
+      {this.sId,
+        this.userId,
+        this.country,
+        this.state,
+        this.city,
+        this.from,
+        this.to,
+        this.current,
+        this.createdAt,
+        this.updatedAt,
+        this.iV,
+        this.iso2});
+
+  Visits.fromJson(Map<String, dynamic> json) {
+    sId = json['_id'];
+    userId = json['user_id'];
+    country = json['country'];
+    state = json['state'];
+    city = json['city'];
+    from = json['from'];
+    to = json['to'];
+    current = json['current'];
+    createdAt = json['createdAt'];
+    updatedAt = json['updatedAt'];
+    iV = json['__v'];
+    iso2 = json['iso2'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['_id'] = this.sId;
+    data['user_id'] = this.userId;
+    data['country'] = this.country;
+    data['state'] = this.state;
+    data['city'] = this.city;
+    data['from'] = this.from;
+    data['to'] = this.to;
+    data['current'] = this.current;
+    data['createdAt'] = this.createdAt;
+    data['updatedAt'] = this.updatedAt;
+    data['__v'] = this.iV;
+    data['iso2'] = this.iso2;
+    return data;
+  }
+}
+
+class Groups {
+  String? ageStart;
+  String? ageEnd;
+  String? sId;
+  String? title;
+  String? userId;
+  String? category;
+  String? country;
+  String? state;
+  String? city;
+  int? privacy;
+  String? about;
+  String? profileImage;
+  String? coverImage;
+  String? status;
+  String? createdAt;
+  String? updatedAt;
+  int? iV;
+  String? id;
+
+  Groups(
+      {this.ageStart,
+        this.ageEnd,
+        this.sId,
+        this.title,
+        this.userId,
+        this.category,
+        this.country,
+        this.state,
+        this.city,
+        this.privacy,
+        this.about,
+        this.profileImage,
+        this.coverImage,
+        this.status,
+        this.createdAt,
+        this.updatedAt,
+        this.iV,
+        this.id});
+
+  Groups.fromJson(Map<String, dynamic> json) {
+    ageStart = json['age_start'];
+    ageEnd = json['age_end'];
+    sId = json['_id'];
+    title = json['title'];
+    userId = json['user_id'];
+    category = json['category'];
+    country = json['country'];
+    state = json['state'];
+    city = json['city'];
+    privacy = json['privacy'];
+    about = json['about'];
+    profileImage = json['profile_image'];
+    coverImage = json['cover_image'];
+    status = json['status'];
+    createdAt = json['createdAt'];
+    updatedAt = json['updatedAt'];
+    iV = json['__v'];
+    id = json['id'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['age_start'] = this.ageStart;
+    data['age_end'] = this.ageEnd;
+    data['_id'] = this.sId;
+    data['title'] = this.title;
+    data['user_id'] = this.userId;
+    data['category'] = this.category;
+    data['country'] = this.country;
+    data['state'] = this.state;
+    data['city'] = this.city;
+    data['privacy'] = this.privacy;
+    data['about'] = this.about;
+    data['profile_image'] = this.profileImage;
+    data['cover_image'] = this.coverImage;
+    data['status'] = this.status;
+    data['createdAt'] = this.createdAt;
+    data['updatedAt'] = this.updatedAt;
+    data['__v'] = this.iV;
+    data['id'] = this.id;
+    return data;
+  }
+}
+
+class Events {
+  String? eventLink;
+  String? sId;
+  String? title;
+  String? userId;
+  String? category;
+  String? country;
+  String? state;
+  String? city;
+  Null? pincode;
+  String? location;
+  int? startDate;
+  int? endDate;
+  int? privacy;
+  String? about;
+  String? profileImage;
+  String? coverImage;
+  String? status;
+  String? createdAt;
+  String? updatedAt;
+  int? iV;
+  int? isLink;
+  String? id;
+  String? website;
+
+  Events(
+      {this.eventLink,
+        this.sId,
+        this.title,
+        this.userId,
+        this.category,
+        this.country,
+        this.state,
+        this.city,
+        this.pincode,
+        this.location,
+        this.startDate,
+        this.endDate,
+        this.privacy,
+        this.about,
+        this.profileImage,
+        this.coverImage,
+        this.status,
+        this.createdAt,
+        this.updatedAt,
+        this.iV,
+        this.isLink,
+        this.id,
+        this.website});
+
+  Events.fromJson(Map<String, dynamic> json) {
+    eventLink = json['event_link'];
+    sId = json['_id'];
+    title = json['title'];
+    userId = json['user_id'];
+    category = json['category'];
+    country = json['country'];
+    state = json['state'];
+    city = json['city'];
+    pincode = json['pincode'];
+    location = json['location'];
+    startDate = json['start_date'];
+    endDate = json['end_date'];
+    privacy = json['privacy'];
+    about = json['about'];
+    profileImage = json['profile_image'];
+    coverImage = json['cover_image'];
+    status = json['status'];
+    createdAt = json['createdAt'];
+    updatedAt = json['updatedAt'];
+    iV = json['__v'];
+    isLink = json['is_link'];
+    id = json['id'];
+    website = json['website'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['event_link'] = this.eventLink;
+    data['_id'] = this.sId;
+    data['title'] = this.title;
+    data['user_id'] = this.userId;
+    data['category'] = this.category;
+    data['country'] = this.country;
+    data['state'] = this.state;
+    data['city'] = this.city;
+    data['pincode'] = this.pincode;
+    data['location'] = this.location;
+    data['start_date'] = this.startDate;
+    data['end_date'] = this.endDate;
+    data['privacy'] = this.privacy;
+    data['about'] = this.about;
+    data['profile_image'] = this.profileImage;
+    data['cover_image'] = this.coverImage;
+    data['status'] = this.status;
+    data['createdAt'] = this.createdAt;
+    data['updatedAt'] = this.updatedAt;
+    data['__v'] = this.iV;
+    data['is_link'] = this.isLink;
+    data['id'] = this.id;
+    data['website'] = this.website;
+    return data;
+  }
+}
+
+class Languages {
+  String? sId;
+  String? userId;
+  String? languageId;
+  String? createdAt;
+  String? updatedAt;
+  int? iV;
+  Language? language;
+
+  Languages(
+      {this.sId,
+        this.userId,
+        this.languageId,
+        this.createdAt,
+        this.updatedAt,
+        this.iV,
+        this.language});
+
+  Languages.fromJson(Map<String, dynamic> json) {
+    sId = json['_id'];
+    userId = json['user_id'];
+    languageId = json['language_id'];
+    createdAt = json['createdAt'];
+    updatedAt = json['updatedAt'];
+    iV = json['__v'];
+    language = json['language'] != null
+        ? new Language.fromJson(json['language'])
+        : null;
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['_id'] = this.sId;
+    data['user_id'] = this.userId;
+    data['language_id'] = this.languageId;
+    data['createdAt'] = this.createdAt;
+    data['updatedAt'] = this.updatedAt;
+    data['__v'] = this.iV;
+    if (this.language != null) {
+      data['language'] = this.language!.toJson();
+    }
+    return data;
+  }
+}
+
+class Language {
+  String? sId;
+  String? title;
+  int? popularity;
+  String? createdAt;
+  int? iV;
+  String? status;
+
+  Language(
+      {this.sId,
+        this.title,
+        this.popularity,
+        this.createdAt,
+        this.iV,
+        this.status});
+
+  Language.fromJson(Map<String, dynamic> json) {
+    sId = json['_id'];
+    title = json['title'];
+    popularity = json['popularity'];
+    createdAt = json['createdAt'];
+    iV = json['__v'];
+    status = json['status'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['_id'] = this.sId;
+    data['title'] = this.title;
+    data['popularity'] = this.popularity;
+    data['createdAt'] = this.createdAt;
+    data['__v'] = this.iV;
+    data['status'] = this.status;
+    return data;
+  }
+}
+
+class Interests {
+  String? sId;
+  String? userId;
+  String? interestId;
+  String? createdAt;
+  String? updatedAt;
+  int? iV;
+  Language? interest;
+
+  Interests(
+      {this.sId,
+        this.userId,
+        this.interestId,
+        this.createdAt,
+        this.updatedAt,
+        this.iV,
+        this.interest});
+
+  Interests.fromJson(Map<String, dynamic> json) {
+    sId = json['_id'];
+    userId = json['user_id'];
+    interestId = json['interest_id'];
+    createdAt = json['createdAt'];
+    updatedAt = json['updatedAt'];
+    iV = json['__v'];
+    interest = json['interest'] != null
+        ? new Language.fromJson(json['interest'])
+        : null;
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['_id'] = this.sId;
+    data['user_id'] = this.userId;
+    data['interest_id'] = this.interestId;
+    data['createdAt'] = this.createdAt;
+    data['updatedAt'] = this.updatedAt;
+    data['__v'] = this.iV;
+    if (this.interest != null) {
+      data['interest'] = this.interest!.toJson();
+    }
+    return data;
+  }
+}

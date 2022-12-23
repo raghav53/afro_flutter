@@ -152,9 +152,9 @@ class _MyProffile extends State<MyProfilePage> {
                                                             .toString(),
                                                     errorWidget:
                                                         (error, context, url) =>
-                                                            Icon(Icons.person),
+                                                            const Icon(Icons.person),
                                                     placeholder: (context, url) =>
-                                                        Icon(Icons.person),
+                                                        const Icon(Icons.person),
                                                     imageBuilder: (context, url) {
                                                       return CircleAvatar(
                                                         backgroundImage: url,
@@ -202,7 +202,7 @@ class _MyProffile extends State<MyProfilePage> {
                                                       );
                                                     },
                                                   ),
-                                                  Container(
+                                                  SizedBox(
                                                     height: 15,
                                                     width: 150,
                                                     child: ListView.builder(
@@ -249,19 +249,126 @@ class _MyProffile extends State<MyProfilePage> {
                                           ),
                                           customHeightBox(2),
                                           customText(
-                                              "Newcorner Buddy", 11, white),
+                                              "Newcorner Buddy", 11, Colors.white54),
                                           customHeightBox(2),
                                           customText("Member since April 2022",
-                                              11, white),
-                                          customHeightBox(13),
+                                              11, Colors.white54),
+                                          Row(
+                                            children: [
+                                              (facebook ==
+                                                  "https://www.facebook.com/")
+                                                  ? const SizedBox()
+                                                  : Container(
+                                                margin: const EdgeInsets.only(right: 5),
+                                                alignment: Alignment.center,
+                                                height: 30,
+                                                width: 30,
+                                                decoration:  BoxDecoration(
+                                                    color: const Color(0xFF191729),
+                                                    borderRadius: BorderRadius.circular(8)
+                                                ),
+                                                child: IconButton(
+                                                    icon: Image.asset(
+                                                      "assets/social/facebook.png",
+
+                                                      color:
+                                                      Colors.white54,
+                                                      height: 15,
+                                                      width: 15,
+                                                    ),
+                                                    onPressed: () {
+                                                      launchUrlLink(
+                                                          facebook
+                                                              .toString());
+                                                    }),
+                                              ),
+
+                                              (instagram ==
+                                                  "https://www.instagram.com/")
+                                                  ? const SizedBox()
+                                                  : Container(
+                                                margin: EdgeInsets.only(right: 5),
+                                                alignment: Alignment.center,
+                                                height: 30,
+                                                width: 30,
+                                                decoration:  BoxDecoration(
+                                                    color: const Color(0xFF191729),
+                                                    borderRadius: BorderRadius.circular(8)
+                                                ),
+                                                child: IconButton(
+                                                    icon: Image.asset(
+                                                      "assets/social/instagram.png",
+                                                      color:
+                                                      Colors.white54,
+                                                      height: 15,
+                                                      width: 15,
+                                                    ),
+                                                    onPressed: () {
+                                                      launchUrlLink(
+                                                          instagram
+                                                              .toString());
+                                                    }),
+                                              ),
+                                              (twitter ==
+                                                  "https://twitter.com/")
+                                                  ? const SizedBox()
+                                                  : Container(
+                                                margin: const EdgeInsets.only(right: 5),
+                                                alignment: Alignment.center,
+                                                height: 30,
+                                                width: 30,
+                                                decoration:  BoxDecoration(
+                                                    color: const Color(0xFF191729),
+                                                    borderRadius: BorderRadius.circular(8)
+                                                ),
+                                                child: IconButton(
+                                                    icon: Image.asset(
+                                                      "assets/social/twitter.png",
+                                                      color:
+                                                      Colors.white54,
+                                                      height: 15,
+                                                      width: 15,
+                                                    ),
+                                                    onPressed: () {
+                                                      launchUrlLink(twitter
+                                                          .toString());
+                                                    }),
+                                              ),
+                                              (linkdin ==
+                                                  "https://www.linkedin.com/")
+                                                  ? const SizedBox()
+                                                  : Container(
+                                                margin: const EdgeInsets.only(right: 5),
+                                                alignment: Alignment.center,
+                                                height: 30,
+                                                width: 30,
+                                                decoration:  BoxDecoration(
+                                                    color: const Color(0xFF191729),
+                                                    borderRadius: BorderRadius.circular(8)
+                                                ),
+                                                child: IconButton(
+                                                    icon: Image.asset(
+                                                      "assets/social/linkedin.png",
+                                                      color:
+                                                      Colors.white54,
+                                                      height: 15,
+                                                      width: 15,
+                                                    ),
+                                                    onPressed: () {
+                                                      launchUrlLink(linkdin
+                                                          .toString());
+                                                    }),
+                                              ),
+                                            ],
+                                          ),
                                           customText('Bio', 15, white),
                                           customHeightBox(3),
-                                          Container(
+                                          SizedBox(
                                             width: phoneWidth(context) / 1.5,
                                             child: Text(
                                               bio.toString(),
-                                              style: TextStyle(
-                                                  fontSize: 11, color: white),
+                                              style: const TextStyle(
+                                                  fontSize: 11, color: Colors.white54),
                                             ),
                                           ),
                                           customHeightBox(15),
@@ -277,7 +384,7 @@ class _MyProffile extends State<MyProfilePage> {
                                                   Navigator.of(context).push(
                                                       MaterialPageRoute(
                                                           builder: (context) =>
-                                                              FollowerFollowingPage()));
+                                                              const FollowerFollowingPage()));
                                                 },
                                                 child: customText(
                                                     "Following: " +
@@ -292,7 +399,7 @@ class _MyProffile extends State<MyProfilePage> {
                                                   Navigator.of(context).push(
                                                       MaterialPageRoute(
                                                           builder: (context) =>
-                                                              FollowerFollowingPage()));
+                                                              const FollowerFollowingPage()));
                                                 },
                                                 child: customText(
                                                     "Follower: " +
@@ -306,7 +413,7 @@ class _MyProffile extends State<MyProfilePage> {
                                                   Navigator.of(context).push(
                                                       MaterialPageRoute(
                                                           builder: (context) =>
-                                                              AllMembers()));
+                                                              const AllMembers()));
                                                 },
                                                 child: Flexible(
                                                   child: customText(
@@ -325,78 +432,76 @@ class _MyProffile extends State<MyProfilePage> {
                                 ),
                               ),
                               customHeightBox(20),
-                              Container(
-                                child: Column(
-                                  crossAxisAlignment: cStart,
-                                  mainAxisAlignment: mStart,
-                                  children: [
-                                    customListItemButton(
-                                        "Basic Information",
-                                        "Update your basic account/profile data",
-                                        "basic",
-                                        context),
-                                    customDivider(10, Colors.white),
-                                    customHeightBox(20),
-                                    Padding(
-                                      padding: const EdgeInsets.only(left: 15),
-                                      child: customText(
-                                          "International Experience",
-                                          14,
-                                          Color(0xFFDFB48C)),
-                                    ),
-                                    customHeightBox(20),
-                                    customListItemButton(
-                                        "Place lived in",
-                                        "Have you moved to a new location",
-                                        "location",
-                                        context),
-                                    customDivider(10, Colors.white),
-                                    customListItemButton(
-                                        "Languages",
-                                        "Add/edit languages you speak",
-                                        "language",
-                                        context),
-                                    customDivider(10, Colors.white),
-                                    customHeightBox(20),
-                                    Padding(
-                                      padding: const EdgeInsets.only(left: 15),
-                                      child: customText("Choose your interests",
-                                          18, Color(0xFFDFB48C)),
-                                    ),
-                                    customHeightBox(20),
-                                    customListItemButton(
-                                        "Interests",
-                                        "Add/edit your interest",
-                                        "interest",
-                                        context),
-                                    customDivider(10, Colors.white),
-                                    customHeightBox(20),
-                                    Padding(
-                                      padding: const EdgeInsets.only(left: 15),
-                                      child: customText(
-                                          "Career", 18, Color(0xFFDFB48C)),
-                                    ),
-                                    customListItemButton(
-                                        "Work",
-                                        "Update your work history",
-                                        "work",
-                                        context),
-                                    customDivider(10, Colors.white),
-                                    customHeightBox(10),
-                                    customListItemButton(
-                                        "Education",
-                                        "Update your education background",
-                                        "education",
-                                        context),
-                                    customDivider(10, Colors.white),
-                                  ],
-                                ),
+                              Column(
+                                crossAxisAlignment: cStart,
+                                mainAxisAlignment: mStart,
+                                children: [
+                                  customListItemButton(
+                                      "Basic Information",
+                                      "Update your basic account/profile data",
+                                      "basic",
+                                      context),
+                                  customDivider(10, Colors.white),
+                                  customHeightBox(20),
+                                  Padding(
+                                    padding: const EdgeInsets.only(left: 15),
+                                    child: customText(
+                                        "International Experience",
+                                        14,
+                                        const Color(0xFFDFB48C)),
+                                  ),
+                                  customHeightBox(20),
+                                  customListItemButton(
+                                      "Place lived in",
+                                      "Have you moved to a new location",
+                                      "location",
+                                      context),
+                                  customDivider(10, Colors.white),
+                                  customListItemButton(
+                                      "Languages",
+                                      "Add/edit languages you speak",
+                                      "language",
+                                      context),
+                                  customDivider(10, Colors.white),
+                                  customHeightBox(20),
+                                  Padding(
+                                    padding: const EdgeInsets.only(left: 15),
+                                    child: customText("Choose your interests",
+                                        18, const Color(0xFFDFB48C)),
+                                  ),
+                                  customHeightBox(20),
+                                  customListItemButton(
+                                      "Interests",
+                                      "Add/edit your interest",
+                                      "interest",
+                                      context),
+                                  customDivider(10, Colors.white),
+                                  customHeightBox(20),
+                                  Padding(
+                                    padding: const EdgeInsets.only(left: 15),
+                                    child: customText(
+                                        "Career", 18, const Color(0xFFDFB48C)),
+                                  ),
+                                  customListItemButton(
+                                      "Work",
+                                      "Update your work history",
+                                      "work",
+                                      context),
+                                  customDivider(10, Colors.white),
+                                  customHeightBox(10),
+                                  customListItemButton(
+                                      "Education",
+                                      "Update your education background",
+                                      "education",
+                                      context),
+                                  customDivider(10, Colors.white),
+                                ],
                               )
                             ],
                           )
                         ]))
-                      : Center(
-                          child: Container(
+                      : const Center(
+                          child: SizedBox(
                             height: 50,
                             width: 50,
                             child: LoadingIndicator(
@@ -429,7 +534,7 @@ class _MyProffile extends State<MyProfilePage> {
         ),
         builder: (context) {
           return StatefulBuilder(builder: (context, state) {
-            return Container(
+            return SizedBox(
               height: 100,
               child: Row(
                 mainAxisAlignment: mCenter,
@@ -444,7 +549,7 @@ class _MyProffile extends State<MyProfilePage> {
                         decoration: BoxDecoration(
                             border: Border.all(color: white, width: 1),
                             borderRadius: BorderRadius.circular(50)),
-                        padding: EdgeInsets.all(5),
+                        padding: const EdgeInsets.all(5),
                         child: Icon(
                           Icons.camera,
                           color: white,
@@ -461,7 +566,7 @@ class _MyProffile extends State<MyProfilePage> {
                         decoration: BoxDecoration(
                             border: Border.all(color: white, width: 1),
                             borderRadius: BorderRadius.circular(50)),
-                        padding: EdgeInsets.all(5),
+                        padding: const EdgeInsets.all(5),
                         child: Icon(
                           Icons.photo_library,
                           color: white,
@@ -538,7 +643,7 @@ class _MyProffile extends State<MyProfilePage> {
           ),
           Container(
             width: 1,
-            color: Color(0x3dFFFFFF),
+            color: const Color(0x3dFFFFFF),
             height: 40,
           ),
           Column(
@@ -550,7 +655,7 @@ class _MyProffile extends State<MyProfilePage> {
           ),
           Container(
             width: 1,
-            color: Color(0x3dFFFFFF),
+            color: const Color(0x3dFFFFFF),
             height: 40,
           ),
           GestureDetector(
@@ -567,87 +672,20 @@ class _MyProffile extends State<MyProfilePage> {
       ),
     );
   }
-
-//Social Icons Links
-  Widget socialIconsLink() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        InkWell(
-          child: Container(
-            height: 20,
-            width: 20,
-            decoration: BoxDecoration(
-                color: Colors.black, borderRadius: BorderRadius.circular(2)),
-            child: Padding(
-              padding: const EdgeInsets.all(4),
-              child: Image.asset(
-                "assets/social/facebook.png",
-              ),
-            ),
-          ),
-        ),
-        customWidthBox(10),
-        InkWell(
-          child: Container(
-            height: 20,
-            width: 20,
-            decoration: BoxDecoration(
-                color: Colors.black, borderRadius: BorderRadius.circular(2)),
-            child: Padding(
-              padding: const EdgeInsets.all(4.0),
-              child: Image.asset("assets/social/instagram.png"),
-            ),
-          ),
-        ),
-        customWidthBox(10),
-        InkWell(
-          child: Container(
-            height: 20,
-            width: 20,
-            decoration: BoxDecoration(
-                color: Colors.black, borderRadius: BorderRadius.circular(2)),
-            child: Padding(
-              padding: const EdgeInsets.all(4.0),
-              child: Image.asset("assets/social/twitter.png"),
-            ),
-          ),
-        ),
-        customWidthBox(10),
-        InkWell(
-          child: Container(
-            height: 20,
-            width: 20,
-            decoration: BoxDecoration(
-                color: Colors.black, borderRadius: BorderRadius.circular(2)),
-            child: Padding(
-              padding: const EdgeInsets.all(4.0),
-              child: Image.asset(
-                "assets/social/linkedin.png",
-              ),
-            ),
-          ),
-        )
-      ],
-    );
-  }
-
-  //Custom ListItem
   Widget customListItemButton(
       String title, String subTitle, String onClick, BuildContext context) {
     return InkWell(
       onTap: () {
         clickListeners(onClick, context);
       },
-      child: Container(
-          child: ListTile(
+      child: ListTile(
         title: customText(title, 14, Colors.white),
         subtitle: customText(subTitle, 12, Color(0x3dFFFFFF)),
-        trailing: Icon(
-          Icons.edit,
-          color: Color(0xFFDFB48C),
+        trailing: const Icon(
+      Icons.edit,
+      color: Color(0xFFDFB48C),
         ),
-      )),
+      ),
     );
   }
 
@@ -655,11 +693,11 @@ class _MyProffile extends State<MyProfilePage> {
   void clickListeners(String title, BuildContext context) {
     if (title == "basic") {
       Navigator.of(context)
-          .push(MaterialPageRoute(builder: (context) => BasicInformation()))
+          .push(MaterialPageRoute(builder: (context) => const BasicInformation()))
           .then((value) => refresh());
     } else if (title == "education") {
       Navigator.of(context)
-          .push(MaterialPageRoute(builder: (context) => EducationPageScreen()))
+          .push(MaterialPageRoute(builder: (context) => const EducationPageScreen()))
           .then((value) => refresh());
     } else if (title == "work") {
       Navigator.of(context)
@@ -667,7 +705,7 @@ class _MyProffile extends State<MyProfilePage> {
           .then((value) => refresh());
     } else if (title == "location") {
       Navigator.of(context)
-          .push(MaterialPageRoute(builder: (context) => LocationPageScreen()))
+          .push(MaterialPageRoute(builder: (context) => const LocationPageScreen()))
           .then((value) => refresh());
     } else if (title == "language") {
       Navigator.of(context)

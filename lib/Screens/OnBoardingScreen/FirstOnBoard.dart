@@ -43,7 +43,7 @@ class _FirstScreen extends State<FirstOnBoardScreen> {
                               TextSpan(
                                   style: TextStyle(color: white, fontSize: 30,fontStyle: FontStyle.normal,fontFamily: "Poppins"),
                                   text:
-                                      "\nLet your\nAfro\nexperience \nbegin")
+                                      "\nLet your Afro\nexperience \nbegin")
                             ])),
                         const Spacer(),
                         GestureDetector(

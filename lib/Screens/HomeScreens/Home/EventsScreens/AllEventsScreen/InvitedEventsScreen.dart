@@ -83,6 +83,8 @@ InvitedEventsScreen(BuildContext context, InvitedEventsModel snapshot) {
                                   .data![index].event!.country!.isNotEmpty&&snapshot.data![index].event!.isLink.toString()!="2")?
                               customText(
                                   snapshot
+                                      .data![index].event!.state.toString()+","+
+                                  snapshot
                                       .data![index].event!.country![0].title.toString(),
 
                                   12,

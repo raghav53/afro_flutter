@@ -64,15 +64,13 @@ class _Work extends State<WorkPageScreen> {
               .then((value) => refreshData());
         },
         child: Container(
+          alignment: Alignment.center,
           height: 50,
           width: 50,
           decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(50),
               gradient: commonButtonLinearGridient),
-          child: Icon(
-            Icons.add,
-            color: Colors.white,
-          ),
+            child:  Image.asset("assets/icons/add.png",height: 25,width: 25,color: Colors.white,)
         ),
       ),
       body: Container(
@@ -111,144 +109,145 @@ class _Work extends State<WorkPageScreen> {
                   future: futureWork,
                   builder: (context, snapshot) {
                     return snapshot.hasData
-                        ? Container(
-                            margin:
-                                EdgeInsets.only(top: 20, left: 20, right: 20),
-                            child: ListView.builder(
-                                padding: EdgeInsets.zero,
-                                shrinkWrap: true,
-                                itemCount: snapshot.data!.data!.length,
-                                itemBuilder: (context, index) {
-                                  return Container(
-                                      margin: EdgeInsets.only(bottom: 10),
-                                      decoration: BoxDecoration(
-                                          color: black,
-                                          borderRadius:
-                                              BorderRadius.circular(10)),
-                                      padding: EdgeInsets.all(10),
-                                      child: Row(
+                        ? ListView.builder(
+                            padding: EdgeInsets.zero,
+                            shrinkWrap: true,
+                            itemCount: snapshot.data!.data!.length,
+                            itemBuilder: (context, index) {
+                              return Card(
+                                margin: const EdgeInsets.all(10),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10.0),
+                                ),
+                                color:Colors.black,
+                                elevation: 2,
+                                child: Padding(
+                                  padding: const EdgeInsets.all(10),
+                                  child: Row(
+                                    children: [
+                                      //Image
+                                      Image(
+                                        image: const AssetImage(
+                                            "assets/icons/briefcase.png"),
+                                        color: circleColor,
+                                        height: 45,
+                                        width: 45,
+                                      ),
+                                      //Information of Work
+                                      customWidthBox(20),
+                                      Column(
+                                        crossAxisAlignment: cStart,
                                         children: [
-                                          //Image
-                                          Image(
-                                            image: const AssetImage(
-                                                "assets/icons/briefcase.png"),
-                                            color: circleColor,
-                                            height: 45,
-                                            width: 45,
-                                          ),
-                                          //Information of Work
-                                          customWidthBox(20),
-                                          Column(
-                                            crossAxisAlignment: cStart,
-                                            children: [
-                                              customText(
-                                                  snapshot.data!.data![index]
-                                                      .position!
-                                                      .toString(),
-                                                  15,
-                                                  white),
-                                              customHeightBox(5),
-                                              customText(
-                                                  snapshot.data!.data![index]
-                                                      .company!
-                                                      .toString(),
-                                                  12,
-                                                  white),
-                                              customHeightBox(5),
-                                              customText(
+                                          customText(
+                                              snapshot.data!.data![index]
+                                                  .position!
+                                                  .toString(),
+                                              15,
+                                              white),
+                                          customHeightBox(5),
+                                          customText(
+                                              snapshot.data!.data![index]
+                                                  .company!
+                                                  .toString(),
+                                              12,
+                                              white),
+                                          customHeightBox(5),
+                                          customText(
+                                              convetDateFormat(snapshot
+                                                      .data!
+                                                      .data![index]
+                                                      .from
+                                                      .toString()) +
+                                                  "  to  " +
                                                   convetDateFormat(snapshot
-                                                          .data!
-                                                          .data![index]
-                                                          .from
-                                                          .toString()) +
-                                                      "  to  " +
-                                                      convetDateFormat(snapshot
-                                                          .data!.data![index].to
-                                                          .toString()),
-                                                  11,
-                                                  white)
-                                            ],
-                                          ),
-                                          Spacer(),
-                                          Row(
-                                            children: [
-                                              InkWell(
-                                                onTap: () {
-                                                  showDeleteDialog(snapshot
-                                                      .data!.data![index].sId
-                                                      .toString());
-                                                },
-                                                child: Container(
-                                                  padding:
-                                                      const EdgeInsets.all(2),
-                                                  decoration: BoxDecoration(
-                                                      color: red,
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              50)),
-                                                  child: const Icon(
-                                                    Icons.delete,
-                                                    size: 20,
-                                                  ),
-                                                ),
+                                                      .data!.data![index].to
+                                                      .toString()),
+                                              11,
+                                              white)
+                                        ],
+                                      ),
+                                      Spacer(),
+                                      Row(
+                                        children: [
+                                          InkWell(
+                                            onTap: () {
+                                              showDeleteDialog(snapshot
+                                                  .data!.data![index].sId
+                                                  .toString());
+                                            },
+                                            child: Container(
+                                              padding:
+                                                  const EdgeInsets.all(2),
+                                              decoration: BoxDecoration(
+                                                  color: red,
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          50)),
+                                              child: const Icon(
+                                                Icons.delete,
+                                                size: 20,
                                               ),
-                                              customWidthBox(10),
-                                              InkWell(
-                                                onTap: () {
-                                                  dataMap = {
-                                                    "id": snapshot
-                                                        .data!.data![index].sId
-                                                        .toString(),
-                                                    "position": snapshot.data!
-                                                        .data![index].position
-                                                        .toString(),
-                                                    "company": snapshot.data!
-                                                        .data![index].company,
-                                                    "fromText": snapshot.data!
-                                                        .data![index].from,
-                                                    "toText": snapshot
-                                                        .data!.data![index].to,
-                                                    "fromDateText":
-                                                        convetDateFormat(
-                                                            snapshot
-                                                                .data!
-                                                                .data![index]
-                                                                .from
-                                                                .toString()),
-                                                    "toDateText":
-                                                        convetDateFormat(
-                                                            snapshot.data!
-                                                                .data![index].to
-                                                                .toString()),
-                                                  };
-                                                  Navigator.push(
-                                                      context,
-                                                      MaterialPageRoute(
-                                                          builder: (context) =>
-                                                              AddWorkPage(
-                                                                  dataMap:
-                                                                      dataMap)));
-                                                },
-                                                child: Container(
-                                                  padding:
-                                                      const EdgeInsets.all(3),
-                                                  decoration: BoxDecoration(
-                                                      gradient:
-                                                          commonButtonLinearGridient,
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              50)),
-                                                  child: const Icon(
-                                                    Icons.edit,
-                                                    size: 20,
-                                                  ),
-                                                ),
-                                              )
-                                            ],
+                                            ),
+                                          ),
+                                          customWidthBox(10),
+                                          InkWell(
+                                            onTap: () {
+                                              dataMap = {
+                                                "id": snapshot
+                                                    .data!.data![index].sId
+                                                    .toString(),
+                                                "position": snapshot.data!
+                                                    .data![index].position
+                                                    .toString(),
+                                                "company": snapshot.data!
+                                                    .data![index].company,
+                                                "fromText": snapshot.data!
+                                                    .data![index].from,
+                                                "toText": snapshot
+                                                    .data!.data![index].to,
+                                                "fromDateText":
+                                                    convetDateFormat(
+                                                        snapshot
+                                                            .data!
+                                                            .data![index]
+                                                            .from
+                                                            .toString()),
+                                                "toDateText":
+                                                    convetDateFormat(
+                                                        snapshot.data!
+                                                            .data![index].to
+                                                            .toString()),
+                                              };
+                                              Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          AddWorkPage(
+                                                              dataMap:
+                                                                  dataMap)));
+                                            },
+                                            child: Container(
+                                              padding:
+                                                  const EdgeInsets.all(3),
+                                              decoration: BoxDecoration(
+                                                  gradient:
+                                                      commonButtonLinearGridient,
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          50)),
+                                              child: const Icon(
+                                                Icons.edit,
+                                                size: 20,
+                                              ),
+                                            ),
                                           )
                                         ],
-                                      ));
-                                }))
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              );
+                            })
                         : Center(
                             child: customText(
                                 "Failed to load the data", 15, white),

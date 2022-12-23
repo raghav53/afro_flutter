@@ -2,7 +2,7 @@ class UserLanguageModel {
   bool? success;
   int? code;
   String? message;
-  List<Data>? data;
+  List<LanguageData>? data;
   Metadata? metadata;
 
   UserLanguageModel(
@@ -13,9 +13,9 @@ class UserLanguageModel {
     code = json['code'];
     message = json['message'];
     if (json['data'] != null) {
-      data = <Data>[];
+      data = <LanguageData>[];
       json['data'].forEach((v) {
-        data!.add(new Data.fromJson(v));
+        data!.add(new LanguageData.fromJson(v));
       });
     }
     metadata = json['metadata'] != null
@@ -38,7 +38,7 @@ class UserLanguageModel {
   }
 }
 
-class Data {
+class LanguageData {
   String? sId;
   String? userId;
   String? languageId;
@@ -47,7 +47,7 @@ class Data {
   int? iV;
   Language? language;
 
-  Data(
+  LanguageData(
       {this.sId,
       this.userId,
       this.languageId,
@@ -56,7 +56,7 @@ class Data {
       this.iV,
       this.language});
 
-  Data.fromJson(Map<String, dynamic> json) {
+  LanguageData.fromJson(Map<String, dynamic> json) {
     sId = json['_id'];
     userId = json['user_id'];
     languageId = json['language_id'];
