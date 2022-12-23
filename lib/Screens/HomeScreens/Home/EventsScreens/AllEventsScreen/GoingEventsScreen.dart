@@ -94,6 +94,8 @@ GoingEventsScreen(
                                   .data![index].event!.country!.isNotEmpty&&_getAllGoingEvents.data![index].event!.isLink.toString()!="2")?
                               customText(
                                   _getAllGoingEvents
+                                      .data![index].event!.state.toString()+","+
+                                  _getAllGoingEvents
                                       .data![index].event!.country![0].title.toString(),
 
                                   12,

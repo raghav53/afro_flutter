@@ -55,7 +55,7 @@ class _HomePagescreenState extends State<HomePagescreen> {
           selectedItemIndex = index;
           switch (index) {
             case 0:
-              selectedScreenPage = DashboardPageScreen();
+              selectedScreenPage = const DashboardPageScreen();
               break;
             case 1:
               selectedScreenPage = AllEventsScreen(
@@ -71,13 +71,13 @@ class _HomePagescreenState extends State<HomePagescreen> {
               );
               break;
             case 4:
-              selectedScreenPage = MessageListScreen();
+              selectedScreenPage = const MessageListScreen();
               break;
             case 5:
               selectedScreenPage = ProfileSettingScreenPage();
               break;
             default:
-              selectedScreenPage = DashboardPageScreen();
+              selectedScreenPage = const DashboardPageScreen();
               break;
           }
         });

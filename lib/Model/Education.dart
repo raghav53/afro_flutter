@@ -14,8 +14,9 @@ final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
 //Add Education history
 
 //Get Education History List
-Future<Education> getEducationList(BuildContext context) async {
-  showProgressDialogBox(context);
+Future<EducationApiResponse> getEducationList(BuildContext? context) async {
+  if(context !=null){
+  showProgressDialogBox(context);}
   SharedPreferences sharedPreferences = await _prefs;
   String token = sharedPreferences.getString(user.token).toString();
   String userId = sharedPreferences.getString(user.id).toString();
@@ -30,14 +31,18 @@ Future<Education> getEducationList(BuildContext context) async {
   jsonResponse = json.decode(response.body);
   var message = jsonResponse["message"];
   if (response.statusCode == 200) {
+    if(context !=null)
     Navigator.pop(context);
     print("success");
-    return Education.fromJson(jsonDecode(response.body));
-  } else if (response.statusCode == 401) {
+    return EducationApiResponse.fromJson(jsonDecode(response.body));
+  }
+  else if (response.statusCode == 401) {
     customToastMsg("Unauthorized User!");
+    if(context !=null)
     clearAllDatabase(context);
     throw Exception("Unauthorized User!");
   } else {
+    if(context !=null)
     Navigator.pop(context);
     customToastMsg(message);
     throw Exception("Failed to load the work experience!");
@@ -68,23 +73,23 @@ Future<void> deleteEducationItem(BuildContext context, String itemId) async {
   }
 }
 
-class Education {
+class EducationApiResponse {
   bool? success;
   int? code;
   String? message;
-  List<Data>? data;
+  List<EducationModel>? data;
   Metadata? metadata;
 
-  Education({this.success, this.code, this.message, this.data, this.metadata});
+  EducationApiResponse({this.success, this.code, this.message, this.data, this.metadata});
 
-  Education.fromJson(Map<String, dynamic> json) {
+  EducationApiResponse.fromJson(Map<String, dynamic> json) {
     success = json['success'];
     code = json['code'];
     message = json['message'];
     if (json['data'] != null) {
-      data = <Data>[];
+      data = <EducationModel>[];
       json['data'].forEach((v) {
-        data!.add(new Data.fromJson(v));
+        data!.add(new EducationModel.fromJson(v));
       });
     }
     metadata = json['metadata'] != null
@@ -107,7 +112,7 @@ class Education {
   }
 }
 
-class Data {
+class EducationModel {
   String? sId;
   String? userId;
   String? institution;
@@ -121,7 +126,7 @@ class Data {
   String? updatedAt;
   int? iV;
 
-  Data(
+  EducationModel(
       {this.sId,
       this.userId,
       this.institution,
@@ -135,7 +140,7 @@ class Data {
       this.updatedAt,
       this.iV});
 
-  Data.fromJson(Map<String, dynamic> json) {
+  EducationModel.fromJson(Map<String, dynamic> json) {
     sId = json['_id'];
     userId = json['user_id'];
     institution = json['institution'];

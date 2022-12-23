@@ -83,6 +83,8 @@ MyEventsScreenState(BuildContext context, UsersEventsModel eventData) {
                                   .data![index].country!= ""&&eventData.data![index].isLink.toString()!="2")?
                               customText(
                                   eventData
+                                      .data![index].state.toString()+","+
+                                  eventData
                                       .data![index].country!.title.toString(),
 
                                   12,

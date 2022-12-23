@@ -90,13 +90,16 @@ InterestedEventsScreen(
                               customWidthBox(5),
                               (_getAllGoingEvents
                                   .data![index].event!.country != null&&_getAllGoingEvents
-                                  .data![index].event!.country!.isNotEmpty&&_getAllGoingEvents.data![index].event!.isLink.toString()!="2")?
-                              customText(
+                                  .data![index].event!.country!.isNotEmpty&&_getAllGoingEvents.data![index].event!.isLink.toString()!="2")
+                                  ? customText(
+                                  _getAllGoingEvents
+                                      .data![index].event!.state.toString() +","+
                                   _getAllGoingEvents
                                       .data![index].event!.country![0].title.toString(),
 
                                   12,
-                                  Colors.white): (  _getAllGoingEvents
+                                  Colors.white)
+                                  : (  _getAllGoingEvents
                                   .data![index].event!.eventLink==""&& _getAllGoingEvents
                                   .data![index].event!.eventLink == null)?const Text(""):customText(
                                   _getAllGoingEvents

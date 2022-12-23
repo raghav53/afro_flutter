@@ -13,7 +13,7 @@ class EducationPageScreen extends StatefulWidget {
   _Education createState() => _Education();
 }
 
-Future<Education>? getEducationLists;
+Future<EducationApiResponse>? getEducationLists;
 Map dataMap = {};
 
 class _Education extends State<EducationPageScreen> {
@@ -50,15 +50,13 @@ class _Education extends State<EducationPageScreen> {
               .then((value) => refreshData());
         },
         child: Container(
+          alignment: Alignment.center,
           height: 50,
           width: 50,
           decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(50),
               gradient: commonButtonLinearGridient),
-          child: const Icon(
-            Icons.add,
-            color: Colors.white,
-          ),
+          child:  Image.asset("assets/icons/add.png",height: 25,width: 25,color: Colors.white,)
         ),
       ),
       body: Container(
@@ -99,155 +97,152 @@ class _Education extends State<EducationPageScreen> {
                 ),
               ),
               //All Education history
-              FutureBuilder<Education>(
+              FutureBuilder<EducationApiResponse>(
                   future: getEducationLists,
                   builder: (context, snapshot) {
                     return snapshot.hasData
-                        ? Container(
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10)),
-                            margin: onlyCustomEdgetsset(
-                                top: 20, left: 20, right: 20),
-                            child: ListView.builder(
-                                padding: EdgeInsets.zero,
-                                itemCount: snapshot.data!.data!.length,
-                                shrinkWrap: true,
-                                itemBuilder: (context, index) {
-                                  return Container(
-                                      margin: EdgeInsets.only(bottom: 10),
-                                      padding: EdgeInsets.all(10),
-                                      decoration: BoxDecoration(
-                                          color: black,
-                                          borderRadius:
-                                              BorderRadius.circular(10)),
-                                      child: Row(
+                        ? ListView.builder(
+                            padding: EdgeInsets.only(left: 10,right: 10,top: 10),
+                            itemCount: snapshot.data!.data!.length,
+                            shrinkWrap: true,
+                            itemBuilder: (context, index) {
+                              return Card(
+                                margin: const EdgeInsets.all(10),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10.0),
+                                ),
+                                color:Colors.black,
+                                elevation: 2,
+                                child: Padding(
+                                  padding: const EdgeInsets.all(10.0),
+                                  child: Row(
+                                    children: [
+                                      commonAssetImage(
+                                          "assets/icons/scholar.png",
+                                          45,
+                                          45),
+                                      customWidthBox(20),
+                                      Column(
+                                        crossAxisAlignment: cStart,
                                         children: [
-                                          commonAssetImage(
-                                              "assets/icons/scholar.png",
-                                              45,
-                                              45),
-                                          customWidthBox(20),
-                                          Column(
-                                            crossAxisAlignment: cStart,
-                                            children: [
-                                              customText(
-                                                  snapshot.data!.data![index]
-                                                      .institution
-                                                      .toString(),
-                                                  14,
-                                                  white),
-                                              customHeightBox(5),
-                                              customText(
-                                                  snapshot
-                                                      .data!.data![index].degree
-                                                      .toString(),
-                                                  11,
-                                                  white24),
-                                              customHeightBox(5),
-                                              customText(
+                                          customText(
+                                              snapshot.data!.data![index]
+                                                  .institution
+                                                  .toString(),
+                                              14,
+                                              white),
+                                          customHeightBox(5),
+                                          customText(
+                                              snapshot
+                                                  .data!.data![index].degree
+                                                  .toString(),
+                                              11,
+                                              white24),
+                                          customHeightBox(5),
+                                          customText(
+                                              convetYearFormat(snapshot
+                                                      .data!
+                                                      .data![index]
+                                                      .from
+                                                      .toString()) +
+                                                  " - " +
                                                   convetYearFormat(snapshot
-                                                          .data!
-                                                          .data![index]
-                                                          .from
-                                                          .toString()) +
-                                                      " - " +
-                                                      convetYearFormat(snapshot
-                                                          .data!.data![index].to
-                                                          .toString()),
-                                                  11,
-                                                  white24),
-                                            ],
-                                          ),
-                                          Spacer(),
-                                          Row(
-                                            children: [
-                                              InkWell(
-                                                onTap: () {
-                                                  setState(() {
-                                                    showDeleteDialog(snapshot
-                                                        .data!.data![index].sId
-                                                        .toString());
-                                                  });
-                                                },
-                                                child: Container(
-                                                  padding:
-                                                      const EdgeInsets.all(2),
-                                                  decoration: BoxDecoration(
-                                                      color: red,
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              50)),
-                                                  child: const Icon(
-                                                    Icons.delete,
-                                                    size: 20,
-                                                  ),
-                                                ),
+                                                      .data!.data![index].to
+                                                      .toString()),
+                                              11,
+                                              white24),
+                                        ],
+                                      ),
+                                      Spacer(),
+                                      Row(
+                                        children: [
+                                          InkWell(
+                                            onTap: () {
+                                              setState(() {
+                                                showDeleteDialog(snapshot
+                                                    .data!.data![index].sId
+                                                    .toString());
+                                              });
+                                            },
+                                            child: Container(
+                                              decoration: BoxDecoration(
+                                                  color: red,
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          50)),
+                                              child: const Icon(
+                                                Icons.delete,
+                                                size: 20,
                                               ),
-                                              customWidthBox(10),
-                                              InkWell(
-                                                onTap: () {
-                                                  dataMap = {
-                                                    "id": snapshot
-                                                        .data!.data![index].sId
-                                                        .toString(),
-                                                    "school": snapshot
-                                                        .data!
-                                                        .data![index]
-                                                        .institution,
-                                                    "degree": snapshot.data!
-                                                        .data![index].degree,
-                                                    "area": snapshot.data!
-                                                        .data![index].subject,
-                                                    "description": snapshot
-                                                        .data!
-                                                        .data![index]
-                                                        .description,
-                                                    "fromText": snapshot.data!
-                                                        .data![index].from,
-                                                    "toText": snapshot
-                                                        .data!.data![index].to,
-                                                    "fromTextStartDate":
-                                                        convetDateFormat(
-                                                            snapshot
-                                                                .data!
-                                                                .data![index]
-                                                                .from
-                                                                .toString()),
-                                                    "toTextEndDate":
-                                                        convetDateFormat(
-                                                            snapshot.data!
-                                                                .data![index].to
-                                                                .toString()),
-                                                    "": "",
-                                                  };
+                                            ),
+                                          ),
+                                          customWidthBox(10),
+                                          InkWell(
+                                            onTap: () {
+                                              dataMap = {
+                                                "id": snapshot
+                                                    .data!.data![index].sId
+                                                    .toString(),
+                                                "school": snapshot
+                                                    .data!
+                                                    .data![index]
+                                                    .institution,
+                                                "degree": snapshot.data!
+                                                    .data![index].degree,
+                                                "area": snapshot.data!
+                                                    .data![index].subject,
+                                                "description": snapshot
+                                                    .data!
+                                                    .data![index]
+                                                    .description,
+                                                "fromText": snapshot.data!
+                                                    .data![index].from,
+                                                "toText": snapshot
+                                                    .data!.data![index].to,
+                                                "fromTextStartDate":
+                                                    convetDateFormat(
+                                                        snapshot
+                                                            .data!
+                                                            .data![index]
+                                                            .from
+                                                            .toString()),
+                                                "toTextEndDate":
+                                                    convetDateFormat(
+                                                        snapshot.data!
+                                                            .data![index].to
+                                                            .toString()),
+                                                "": "",
+                                              };
 
-                                                  Navigator.of(context).push(
-                                                      MaterialPageRoute(
-                                                          builder: (context) =>
-                                                              AddEducationPage(
-                                                                  dataMap:
-                                                                      dataMap)));
-                                                },
-                                                child: Container(
-                                                  padding:
-                                                      const EdgeInsets.all(3),
-                                                  decoration: BoxDecoration(
-                                                      gradient:
-                                                          commonButtonLinearGridient,
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              50)),
-                                                  child: const Icon(
-                                                    Icons.edit,
-                                                    size: 20,
-                                                  ),
-                                                ),
-                                              )
-                                            ],
+                                              Navigator.of(context).push(
+                                                  MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          AddEducationPage(
+                                                              dataMap:
+                                                                  dataMap)));
+                                            },
+                                            child: Container(
+                                              padding:
+                                                  const EdgeInsets.all(3),
+                                              decoration: BoxDecoration(
+                                                  gradient:
+                                                      commonButtonLinearGridient,
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          50)),
+                                              child: const Icon(
+                                                Icons.edit,
+                                                size: 20,
+                                              ),
+                                            ),
                                           )
                                         ],
-                                      ));
-                                }))
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              );
+                            })
                         : Center(
                             child:
                                 customText("Failed to load data!", 15, white),

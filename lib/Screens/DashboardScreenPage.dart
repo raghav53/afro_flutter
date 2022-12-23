@@ -33,6 +33,8 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'HomeScreens/second_profile_screen.dart';
+
 class DashboardPageScreen extends StatefulWidget {
   const DashboardPageScreen({Key? key}) : super(key: key);
   @override
@@ -132,7 +134,7 @@ class _HomeScreen extends State<DashboardPageScreen> {
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
 
-        backgroundColor: Color(0xFF18182C),
+        backgroundColor: const Color(0xFF18182C),
        /* automaticallyImplyLeading: false,*/
         elevation: 0.0,
         title: customText("Dashboard", 20, Colors.white),
@@ -155,7 +157,7 @@ class _HomeScreen extends State<DashboardPageScreen> {
                   ],
                   tileMode: TileMode.mirror,
                 ).createShader(bounds),
-                child: Icon(Icons.search,size: 30,),),),
+                child: const Icon(Icons.search,size: 30,),),),
 
 
               /* const Icon(
@@ -166,7 +168,7 @@ class _HomeScreen extends State<DashboardPageScreen> {
               onPressed: () {
                 Navigator.of(context)
                     .push(MaterialPageRoute(
-                        builder: (context) => NotificationScreenPage()))
+                        builder: (context) => const NotificationScreenPage()))
                     .then((value) => onResumed());
               },
               icon:
@@ -189,7 +191,7 @@ class _HomeScreen extends State<DashboardPageScreen> {
               onTap: () {
                 Navigator.of(context)
                     .push(MaterialPageRoute(
-                        builder: (context) => const MyProfilePage()))
+                        builder: (context) => const SecondProfileScreen()))
                     .then((value) => onResumed());
               },
               child: Container(
@@ -205,7 +207,7 @@ class _HomeScreen extends State<DashboardPageScreen> {
                             backgroundImage: image,
                           ),
                         )
-                      : CircleAvatar(
+                      : const CircleAvatar(
                           backgroundImage: AssetImage("tom_cruise.jpeg"),
                         ))),
           customWidthBox(10),
@@ -367,6 +369,7 @@ class _HomeScreen extends State<DashboardPageScreen> {
                                             Align(
                                               alignment: Alignment.bottomRight,
                                               child: Container(
+                                                alignment: Alignment.center,
                                                 height: 40,
                                                 width: 30,
                                                 decoration: BoxDecoration(
@@ -383,17 +386,19 @@ class _HomeScreen extends State<DashboardPageScreen> {
                                                             bottomRight:
                                                                 Radius.circular(
                                                                     10))),
-                                                child: Center(
-                                                    child: customText(
-                                                        dataTimeTextFormater(
-                                                                snapshot
-                                                                    .data!
-                                                                    .data![index]
-                                                                    .startDate
-                                                                    .toString())[
-                                                            "date"],
-                                                        10,
-                                                        white)),
+                                                child: Padding(
+                                                  padding: const EdgeInsets.only(left:5),
+                                                  child: customText(
+                                                      dataTimeTextFormater(
+                                                              snapshot
+                                                                  .data!
+                                                                  .data![index]
+                                                                  .startDate
+                                                                  .toString())[
+                                                          "date"],
+                                                      10,
+                                                      white),
+                                                ),
                                               ),
                                             ),
                                           ]),

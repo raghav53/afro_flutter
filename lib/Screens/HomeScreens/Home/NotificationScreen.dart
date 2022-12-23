@@ -54,7 +54,7 @@ class _NotificationScreenPageState extends State<NotificationScreenPage> {
         resizeToAvoidBottomInset: false,
         appBar: commonAppbar("Notifications"),
         body: Container(
-          padding: EdgeInsets.only(top: 80, left: 20, right: 20),
+          padding: const EdgeInsets.only(top: 80, left: 20, right: 20),
           height: phoneHeight(context),
           width: phoneWidth(context),
           decoration: commonBoxDecoration(),
@@ -94,7 +94,7 @@ class _NotificationScreenPageState extends State<NotificationScreenPage> {
 
                             //Message
                             Container(
-                              margin: EdgeInsets.only(left: 15),
+                              margin: const EdgeInsets.only(left: 15),
                               width: phoneWidth(context) / 2.5,
                               child: Text(
                                 message,
@@ -102,13 +102,15 @@ class _NotificationScreenPageState extends State<NotificationScreenPage> {
                                 style: TextStyle(fontSize: 11, color: white),
                               ),
                             ),
-                            Spacer(),
-                            customText(
-                                getDateFormat(snapshot
-                                    .data!.data![index].createdAt
-                                    .toString()),
-                                11,
-                                white)
+                            const Spacer(),
+                            Flexible(
+                              child: customText(
+                                  getDateFormat(snapshot
+                                      .data!.data![index].createdAt
+                                      .toString()),
+                                  11,
+                                  white),
+                            )
                           ]),
                         );
                       },
@@ -127,7 +129,7 @@ class _NotificationScreenPageState extends State<NotificationScreenPage> {
     switch (type) {
       case "friend_request":
         Navigator.push(context,
-            MaterialPageRoute(builder: (builder) => AllContactsListScreen()));
+            MaterialPageRoute(builder: (builder) => const AllContactsListScreen()));
         break;
       case "event_invite":
         Navigator.push(
