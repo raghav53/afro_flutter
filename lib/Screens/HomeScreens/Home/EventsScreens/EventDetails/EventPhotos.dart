@@ -34,7 +34,7 @@ class _EventPhotosState extends State<EventPhotos> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(left: 10, right: 10),
+      margin: const EdgeInsets.only(left: 10, right: 10),
       height: 250,
       decoration:
           BoxDecoration(color: black, borderRadius: BorderRadius.circular(10)),

@@ -111,49 +111,50 @@ class _SecondProfileScreenState extends State<SecondProfileScreen> {
         extendBodyBehindAppBar: true,
         resizeToAvoidBottomInset: false,
         appBar: commonAppbar("Profile"),
-        bottomNavigationBar:
-            Material(
-              elevation: 0,
-              child: Container(
-                height: 70,
-                width: phoneWidth(context),
-                alignment: Alignment.center,
-                decoration:  const BoxDecoration(
-                  color: Color(0xFF191732),
-
-                ),
-                child:  Container(
-    margin: const EdgeInsets.symmetric(horizontal: 70,),
-    decoration: BoxDecoration(
-    borderRadius: BorderRadius.circular(25),
-    gradient: commonButtonLinearGridient,),
-                  child: FloatingActionButton.extended(
-                    backgroundColor: Colors.transparent,
-                    elevation: 0,
-                    onPressed: () {
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => MyProfilePage()));
-                    },
-                    label: Padding(
-                      padding: const EdgeInsets.only(right: 10, left: 10),
-                      child: Row(
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.only(right: 5.0),
-                            child: Icon(
-                              Icons.edit,
-                              size: 20,
-                              color: white,
-                            ),
-                          ),
-                          customText("Edit Profile", 16, white)
-                        ],
+        bottomNavigationBar: Material(
+          elevation: 0,
+          child: Container(
+            height: 70,
+            width: phoneWidth(context),
+            alignment: Alignment.center,
+            decoration: const BoxDecoration(
+              color: Color(0xFF191732),
+            ),
+            child: Container(
+              margin: const EdgeInsets.symmetric(
+                horizontal: 70,
+              ),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(25),
+                gradient: commonButtonLinearGridient,
+              ),
+              child: FloatingActionButton.extended(
+                backgroundColor: Colors.transparent,
+                elevation: 0,
+                onPressed: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => MyProfilePage()));
+                },
+                label: Padding(
+                  padding: const EdgeInsets.only(right: 10, left: 10),
+                  child: Row(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(right: 5.0),
+                        child: Icon(
+                          Icons.edit,
+                          size: 20,
+                          color: white,
+                        ),
                       ),
-                    ),
+                      customText("Edit Profile", 16, white)
+                    ],
                   ),
                 ),
               ),
             ),
+          ),
+        ),
         body: Container(
             padding: const EdgeInsets.only(
               top: 70,
@@ -963,9 +964,11 @@ class _SecondProfileScreenState extends State<SecondProfileScreen> {
                                                   .toString(),*/
                                                     12,
                                                     Colors.white54),
-                                                CachedNetworkImage(
+
+                                                 CachedNetworkImage(
                                                   height: 30,
                                                   width: 30,
+                                                  fit: BoxFit.fill,
                                                   imageUrl: country_code_url +
                                                       visitsList![index]
                                                           .iso2
@@ -973,12 +976,14 @@ class _SecondProfileScreenState extends State<SecondProfileScreen> {
                                                           .toLowerCase() +
                                                       ".png",
                                                   imageBuilder:
-                                                      (context, url) {
+                                                      (context, imageUrl) {
                                                     return CircleAvatar(
-                                                      backgroundImage: url,
+                                                      radius: 30,
+                                                      backgroundImage: imageUrl,
                                                     );
                                                   },
                                                 ),
+
                                                 const SizedBox(
                                                   width: 5,
                                                 ),

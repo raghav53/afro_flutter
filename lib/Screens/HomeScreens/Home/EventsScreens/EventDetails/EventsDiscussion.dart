@@ -64,255 +64,254 @@ class _EventDiscussionListState extends State<EventDiscussionList> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Column(
-        crossAxisAlignment: cStart,
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(left: 15.0),
-            child: customText("Sngine News", 14, yellowColor),
-          ),
-          customHeightBox(10),
-          //Comment Section
-          InkWell(
-            onTap: () async {
-              await Navigator.of(context)
-                  .push(MaterialPageRoute(
-                      builder: (context) => ShareThoughts(
-                            evenGroupId: widget.eventId,
-                            type: "event",
-                          )))
-                  .then((value) => () {
-                        setState(() {
-                          refreshData();
-                        });
+    return Column(
+      crossAxisAlignment: cStart,
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(left: 15.0),
+          child: customText("Sngine News", 14, yellowColor),
+        ),
+        customHeightBox(10),
+        //Comment Section
+        InkWell(
+          onTap: () async {
+            await Navigator.of(context)
+                .push(MaterialPageRoute(
+                    builder: (context) => ShareThoughts(
+                          evenGroupId: widget.eventId,
+                          type: "event",
+                        )))
+                .then((value) => () {
+                      setState(() {
+                        refreshData();
                       });
-              debugPrint("From Post");
-              setState(() {
-                refreshData();
-              });
-            },
-            child: Container(
-                margin: EdgeInsets.only(left: 15, right: 15),
-                height: 50,
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10), color: black),
-                child: Center(
-                  child: customText(
-                      "What's in your mind? #Hashtag #Tags", 14, gray1),
-                )),
-          ),
+                    });
+            debugPrint("From Post");
+            setState(() {
+              refreshData();
+            });
+          },
+          child: Container(
+              margin: const EdgeInsets.only(left: 15, right: 15),
+              height: 50,
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10), color: black),
+              child: Center(
+                child: customText(
+                    "What's in your mind? #Hashtag #Tags", 14, gray1),
+              )),
+        ),
 
-          //Comments
-          Container(
-            height: phoneHeight(context) / 2,
-            child: FutureBuilder<EventPostModel>(
-                future: _getEventPosts,
-                builder: (context, snapshot) {
-                  return snapshot.hasData && snapshot.data!.data!.isNotEmpty
-                      ? ListView.builder(
-                          padding: EdgeInsets.zero,
-                          itemCount: snapshot.data!.data!.length,
-                          shrinkWrap: true,
-                          itemBuilder: (context, index) {
-                            String? totalLikes = snapshot
-                                .data!.data![index].totalLikes
-                                .toString();
+        //Comments
+        SizedBox(
+         /* height: phoneHeight(context) / 2,*/
+          child: FutureBuilder<EventPostModel>(
+              future: _getEventPosts,
+              builder: (context, snapshot) {
+                return snapshot.hasData && snapshot.data!.data!.isNotEmpty
+                    ? ListView.builder(
+                  physics: const NeverScrollableScrollPhysics(),
+                        padding: EdgeInsets.zero,
+                        itemCount: snapshot.data!.data!.length,
+                        shrinkWrap: true,
+                        itemBuilder: (context, index) {
+                          String? totalLikes = snapshot
+                              .data!.data![index].totalLikes
+                              .toString();
 
-                            String? totalComments = snapshot
-                                .data!.data![index].totalComments
-                                .toString();
-                            return Container(
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10),
-                                  color: black),
-                              margin:
-                                  EdgeInsets.only(left: 20, right: 20, top: 10),
-                              child: Padding(
-                                padding: const EdgeInsets.only(
-                                    left: 10.0, right: 10, top: 10, bottom: 10),
-                                child: Column(
-                                  children: [
-                                    customWidthBox(10),
-                                    Column(
-                                      crossAxisAlignment: cStart,
-                                      children: [
-                                        Row(
-                                          children: [
-                                            CachedNetworkImage(
-                                              imageUrl: IMAGE_URL +
-                                                  snapshot.data!.data![index]
-                                                      .user!.profileImage
-                                                      .toString(),
-                                              placeholder: (context, url) =>
-                                                  const Icon(
-                                                Icons.person,
-                                                size: 50,
-                                              ),
-                                              imageBuilder: (context, image) {
-                                                return CircleAvatar(
-                                                    backgroundImage: image);
-                                              },
+                          String? totalComments = snapshot
+                              .data!.data![index].totalComments
+                              .toString();
+                          return Container(
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                color: black),
+                            margin:
+                                EdgeInsets.only(left: 20, right: 20, top: 10),
+                            child: Padding(
+                              padding: const EdgeInsets.only(
+                                  left: 10.0, right: 10, top: 10, bottom: 10),
+                              child: Column(
+                                children: [
+                                  customWidthBox(10),
+                                  Column(
+                                    crossAxisAlignment: cStart,
+                                    children: [
+                                      Row(
+                                        children: [
+                                          CachedNetworkImage(
+                                            imageUrl: IMAGE_URL +
+                                                snapshot.data!.data![index]
+                                                    .user!.profileImage
+                                                    .toString(),
+                                            placeholder: (context, url) =>
+                                                const Icon(
+                                              Icons.person,
+                                              size: 50,
                                             ),
-                                            customWidthBox(10),
-                                            InkWell(
-                                              onTap: () {
-                                                if (snapshot.data!.data![index]
-                                                        .userId ==
-                                                    userId) {
-                                                  Navigator.push(
-                                                      context,
-                                                      MaterialPageRoute(
-                                                          builder: (builder) =>
-                                                              MyProfilePage()));
-                                                } else {
-                                                  Navigator.push(
-                                                      context,
-                                                      MaterialPageRoute(
-                                                          builder: (builder) =>
-                                                              OtherUserProfilePageScreen(
-                                                                name: snapshot
-                                                                    .data!
-                                                                    .data![
-                                                                        index]
-                                                                    .user!
-                                                                    .fullName,
-                                                                userID: snapshot
-                                                                    .data!
-                                                                    .data![
-                                                                        index]
-                                                                    .user!
-                                                                    .sId
-                                                                    .toString(),
-                                                              )));
-                                                }
-                                              },
-                                              child: customText(
-                                                  snapshot.data!.data![index]
-                                                      .user!.fullName
-                                                      .toString(),
-                                                  15,
-                                                  white),
-                                            ),
-                                          ],
-                                        ),
-                                        customHeightBox(5),
-                                        Container(
-                                          margin: EdgeInsets.only(left: 50),
-                                          child: snapshot.data!.data![index]
-                                                  .caption!.isNotEmpty
-                                              ? customText(
-                                                  snapshot.data!.data![index]
-                                                      .caption
-                                                      .toString(),
-                                                  12,
-                                                  white)
-                                              : null,
-                                        ),
-
-                                        mediaWidget(
-                                            snapshot.data!.data![index]),
-                                        customHeightBox(20),
-                                        //Likes and Comment
-                                        Row(
-                                          crossAxisAlignment: cCenter,
-                                          mainAxisAlignment: mCenter,
-                                          children: [
-                                            //like
-                                            InkWell(
-                                              onTap: () {
-                                                likeDislike(
+                                            imageBuilder: (context, image) {
+                                              return CircleAvatar(
+                                                  backgroundImage: image);
+                                            },
+                                          ),
+                                          customWidthBox(10),
+                                          InkWell(
+                                            onTap: () {
+                                              if (snapshot.data!.data![index]
+                                                      .userId ==
+                                                  userId) {
+                                                Navigator.push(
                                                     context,
-                                                    snapshot
-                                                        .data!.data![index].sId
-                                                        .toString(),
-                                                    snapshot.data!.data![index]
-                                                        .isLike!);
-                                              },
-                                              child: Row(
-                                                mainAxisAlignment: mCenter,
-                                                crossAxisAlignment: cCenter,
-                                                children: [
-                                                  Image.asset(
-                                                    "assets/icons/like.png",
-                                                    height: 17,
-                                                    width: 17,
-                                                    color: snapshot
-                                                                .data!
-                                                                .data![index]
-                                                                .isLike ==
-                                                            1
-                                                        ? Colors.blue
-                                                        : null,
-                                                  ),
-                                                  customWidthBox(5),
-                                                  customText(
-                                                      totalLikes + " Likes",
-                                                      15,
-                                                      white)
-                                                ],
-                                              ),
-                                            ),
-                                            customWidthBox(80),
-                                            //Comment
-
-                                            InkWell(
-                                              onTap: () {
-                                                print("Post Id:-" +
-                                                    snapshot
-                                                        .data!.data![index].sId
-                                                        .toString());
-                                                Navigator.of(context).push(
                                                     MaterialPageRoute(
-                                                        builder: (context) =>
-                                                            CommentList(
-                                                              parentPostId:
-                                                                  snapshot
-                                                                      .data!
-                                                                      .data![
-                                                                          index]
-                                                                      .sId
-                                                                      .toString(),
-                                                              eventId: snapshot
+                                                        builder: (builder) =>
+                                                            MyProfilePage()));
+                                              } else {
+                                                Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                        builder: (builder) =>
+                                                            OtherUserProfilePageScreen(
+                                                              name: snapshot
                                                                   .data!
-                                                                  .data![index]
-                                                                  .eventId
+                                                                  .data![
+                                                                      index]
+                                                                  .user!
+                                                                  .fullName,
+                                                              userID: snapshot
+                                                                  .data!
+                                                                  .data![
+                                                                      index]
+                                                                  .user!
+                                                                  .sId
                                                                   .toString(),
                                                             )));
-                                              },
-                                              child: Row(
-                                                crossAxisAlignment: cCenter,
-                                                children: [
-                                                  Image.asset(
-                                                    "assets/icons/comment.png",
-                                                    height: 17,
-                                                    width: 17,
-                                                  ),
-                                                  customWidthBox(5),
-                                                  customText(
-                                                      totalComments +
-                                                          " Comments",
-                                                      15,
-                                                      white)
-                                                ],
-                                              ),
+                                              }
+                                            },
+                                            child: customText(
+                                                snapshot.data!.data![index]
+                                                    .user!.fullName
+                                                    .toString(),
+                                                15,
+                                                white),
+                                          ),
+                                        ],
+                                      ),
+                                      customHeightBox(5),
+                                      Container(
+                                        margin: EdgeInsets.only(left: 50),
+                                        child: snapshot.data!.data![index]
+                                                .caption!.isNotEmpty
+                                            ? customText(
+                                                snapshot.data!.data![index]
+                                                    .caption
+                                                    .toString(),
+                                                12,
+                                                white)
+                                            : null,
+                                      ),
+
+                                      mediaWidget(
+                                          snapshot.data!.data![index]),
+                                      customHeightBox(20),
+                                      //Likes and Comment
+                                      Row(
+                                        crossAxisAlignment: cCenter,
+                                        mainAxisAlignment: mCenter,
+                                        children: [
+                                          //like
+                                          InkWell(
+                                            onTap: () {
+                                              likeDislike(
+                                                  context,
+                                                  snapshot
+                                                      .data!.data![index].sId
+                                                      .toString(),
+                                                  snapshot.data!.data![index]
+                                                      .isLike!);
+                                            },
+                                            child: Row(
+                                              mainAxisAlignment: mCenter,
+                                              crossAxisAlignment: cCenter,
+                                              children: [
+                                                Image.asset(
+                                                  "assets/icons/like.png",
+                                                  height: 17,
+                                                  width: 17,
+                                                  color: snapshot
+                                                              .data!
+                                                              .data![index]
+                                                              .isLike ==
+                                                          1
+                                                      ? Colors.blue
+                                                      : null,
+                                                ),
+                                                customWidthBox(5),
+                                                customText(
+                                                    totalLikes + " Likes",
+                                                    15,
+                                                    white)
+                                              ],
                                             ),
-                                          ],
-                                        )
-                                      ],
-                                    )
-                                  ],
-                                ),
+                                          ),
+                                          customWidthBox(80),
+                                          //Comment
+
+                                          InkWell(
+                                            onTap: () {
+                                              print("Post Id:-" +
+                                                  snapshot
+                                                      .data!.data![index].sId
+                                                      .toString());
+                                              Navigator.of(context).push(
+                                                  MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          CommentList(
+                                                            parentPostId:
+                                                                snapshot
+                                                                    .data!
+                                                                    .data![
+                                                                        index]
+                                                                    .sId
+                                                                    .toString(),
+                                                            eventId: snapshot
+                                                                .data!
+                                                                .data![index]
+                                                                .eventId
+                                                                .toString(),
+                                                          )));
+                                            },
+                                            child: Row(
+                                              crossAxisAlignment: cCenter,
+                                              children: [
+                                                Image.asset(
+                                                  "assets/icons/comment.png",
+                                                  height: 17,
+                                                  width: 17,
+                                                ),
+                                                customWidthBox(5),
+                                                customText(
+                                                    totalComments +
+                                                        " Comments",
+                                                    15,
+                                                    white)
+                                              ],
+                                            ),
+                                          ),
+                                        ],
+                                      )
+                                    ],
+                                  )
+                                ],
                               ),
-                            );
-                          })
-                      : Center(
-                          child: customText("No post available..", 15, white),
-                        );
-                }),
-          )
-        ],
-      ),
+                            ),
+                          );
+                        })
+                    : Center(
+                        child: customText("No post available..", 15, white),
+                      );
+              }),
+        )
+      ],
     );
   }
 

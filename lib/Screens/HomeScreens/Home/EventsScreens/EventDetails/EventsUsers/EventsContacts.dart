@@ -42,7 +42,7 @@ class _EventContactsState extends State<EventContacts> {
   @override
   Widget build(BuildContext context) {
     return Container(
-        margin: EdgeInsets.only(left: 10, right: 10),
+        margin: const EdgeInsets.only(left: 10, right: 10),
         child: Column(children: [
           Row(
             children: [
@@ -166,7 +166,7 @@ class _EventContactsState extends State<EventContacts> {
     } else if (index == 2) {
       return InvitedUsersPage(eventId: widget.eventId);
     } else if (index == 3) {
-      return EventInvitesUsers();
+      return const EventInvitesUsers();
     }
   }
 }

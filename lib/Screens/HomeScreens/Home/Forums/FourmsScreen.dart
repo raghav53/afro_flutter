@@ -79,16 +79,14 @@ class _ForumsPage extends State<ForumsScreenPage> {
             setState(() {});
           });
         },
-        child: Container(
-          height: 50,
-          width: 50,
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(50),
-              gradient: commonButtonLinearGridient),
-          child: Icon(
-            Icons.add,
-            color: white,
-          ),
+        child:Container(
+            alignment: Alignment.center,
+            height: 50,
+            width: 50,
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(50),
+                gradient: commonButtonLinearGridient),
+            child:  Image.asset("assets/icons/add.png",height: 25,width: 25,color: Colors.white,)
         ),
       ),
       body: Container(
@@ -171,7 +169,7 @@ class _ForumsPage extends State<ForumsScreenPage> {
               customHeightBox(20),
               Container(
                   height: 50,
-                  margin: EdgeInsets.only(left: 10, right: 10),
+                  margin: const EdgeInsets.only(left: 10, right: 10),
                   child: Row(
                     mainAxisAlignment: mEvenly,
                     crossAxisAlignment: cStart,
@@ -190,7 +188,7 @@ class _ForumsPage extends State<ForumsScreenPage> {
                           },
                           child: Container(
                             width: 110,
-                            padding: EdgeInsets.only(top: 4, bottom: 4),
+                            padding: const EdgeInsets.only(top: 4, bottom: 4),
                             decoration: BoxDecoration(
                                 gradient: (clickPosition == 0)
                                     ? commonButtonLinearGridient

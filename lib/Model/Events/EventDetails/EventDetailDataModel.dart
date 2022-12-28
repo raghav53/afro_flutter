@@ -3,7 +3,7 @@ class EventDetailDataModel {
   String? title;
   UserId? userId;
   Category? category;
-  Category? country;
+  Country? country;
   String? state;
   String? city;
   var pincode;
@@ -19,6 +19,7 @@ class EventDetailDataModel {
   String? createdAt;
   String? updatedAt;
   int? iV;
+  String? website;
   int? isLink;
   String? id;
   int? totalGoing;
@@ -49,7 +50,8 @@ class EventDetailDataModel {
       this.createdAt,
       this.updatedAt,
       this.iV,
-      this.isLink,
+        this.website,
+        this.isLink,
       this.id,
       this.totalGoing,
       this.totalInterested,
@@ -62,12 +64,10 @@ class EventDetailDataModel {
     sId = json['_id'];
     title = json['title'];
     userId =
-        json['user_id'] != null ? new UserId.fromJson(json['user_id']) : null;
-    category = json['category'] != null
-        ? new Category.fromJson(json['category'])
-        : null;
+        json['user_id'] != null ?  UserId.fromJson(json['user_id']) : null;
+    category = json['country'] != null ?  Category.fromJson(json['country']) : null;
     country =
-        json['country'] != null ? new Category.fromJson(json['country']) : null;
+        json['country'] != null ?  Country.fromJson(json['country']) : null;
     state = json['state'];
     city = json['city'];
     pincode = json['pincode'];
@@ -80,6 +80,7 @@ class EventDetailDataModel {
     profileImage = json['profile_image'];
     coverImage = json['cover_image'];
     status = json['status'];
+    website = json['website'];
     createdAt = json['createdAt'];
     updatedAt = json['updatedAt'];
     iV = json['__v'];
@@ -94,7 +95,7 @@ class EventDetailDataModel {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data =  Map<String, dynamic>();
     data['_id'] = this.sId;
     data['title'] = this.title;
     if (this.userId != null) {
@@ -121,6 +122,7 @@ class EventDetailDataModel {
     data['createdAt'] = this.createdAt;
     data['updatedAt'] = this.updatedAt;
     data['__v'] = this.iV;
+    data['website'] = this.website;
     data['is_link'] = this.isLink;
     data['id'] = this.id;
     data['total_going'] = this.totalGoing;
@@ -158,7 +160,26 @@ class UserId {
   }
 }
 
-class Category {
+class Country{
+  String? sId;
+  String? title;
+
+  Country({this.sId, this.title});
+
+  Country.fromJson(Map<String, dynamic> json) {
+    sId = json['_id'];
+    title = json['title'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data =  Map<String, dynamic>();
+    data['_id'] = this.sId;
+    data['title'] = this.title;
+    return data;
+  }
+}
+
+class Category{
   String? sId;
   String? title;
 
@@ -170,7 +191,7 @@ class Category {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data =  Map<String, dynamic>();
     data['_id'] = this.sId;
     data['title'] = this.title;
     return data;
@@ -183,7 +204,7 @@ class EventDetailDataModelMetadata {
   EventDetailDataModelMetadata.fromJson(Map<String, dynamic> json) {}
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data =  Map<String, dynamic>();
     return data;
   }
 }

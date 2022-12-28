@@ -288,7 +288,7 @@ class _ForumsNewThreadPage extends State<ForumsNewThreadPage> {
                                                         borderRadius:
                                                             BorderRadius
                                                                 .circular(30)),
-                                                    padding: EdgeInsets.all(3),
+                                                    padding: const EdgeInsets.all(3),
                                                     child: Icon(
                                                       Icons.delete,
                                                       color: white,

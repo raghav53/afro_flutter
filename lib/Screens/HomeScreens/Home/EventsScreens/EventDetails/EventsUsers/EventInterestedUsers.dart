@@ -65,6 +65,7 @@ class _EventInterestedUsersPageState extends State<EventInterestedUsersPage> {
                     scrollDirection: Axis.vertical,
                     padding: EdgeInsets.only(top: 20),
                     crossAxisCount: 3,
+                    childAspectRatio: 0.5,
                     children:
                         List.generate(snapshot.data!.data!.length, (index) {
                       return InkWell(
@@ -83,7 +84,7 @@ class _EventInterestedUsersPageState extends State<EventInterestedUsersPage> {
                           alignment: Alignment.topCenter,
                           children: [
                             Container(
-                              margin: EdgeInsets.only(top: 20),
+                              margin: const EdgeInsets.only(top: 20),
                               height: 100,
                               width: 100,
                               decoration: BoxDecoration(
@@ -136,35 +137,34 @@ class _EventInterestedUsersPageState extends State<EventInterestedUsersPage> {
                                                   .isFriend ==
                                               0
                                           ? Container(
-                                              padding: const EdgeInsets.only(
-                                                  top: 5,
-                                                  bottom: 5,
-                                                  left: 8,
-                                                  right: 8),
+                                        alignment: Alignment.center,
+                                              margin: const EdgeInsets.only(left: 5,right: 5),
                                               decoration: BoxDecoration(
                                                 borderRadius:
                                                     BorderRadius.circular(20),
                                                 gradient:
                                                     commonButtonLinearGridient,
                                               ),
-                                              child: customText(
-                                                  snapshot
-                                                              .data!
-                                                              .data![index]
-                                                              .user!
-                                                              .isReqSent ==
-                                                          1
-                                                      ? "Cancel Request"
-                                                      : snapshot
-                                                                  .data!
-                                                                  .data![index]
-                                                                  .user!
-                                                                  .isReqReceived ==
-                                                              1
-                                                          ? "Request Received"
-                                                          : "Add Friend",
-                                                  9,
-                                                  white))
+                                              child: Flexible(
+                                                child: customText(
+                                                    snapshot
+                                                                .data!
+                                                                .data![index]
+                                                                .user!
+                                                                .isReqSent ==
+                                                            1
+                                                        ? "Cancel Request"
+                                                        : snapshot
+                                                                    .data!
+                                                                    .data![index]
+                                                                    .user!
+                                                                    .isReqReceived ==
+                                                                1
+                                                            ? "Request Received"
+                                                            : "Add Friend",
+                                                    7.5,
+                                                    white),
+                                              ))
                                           : Container(),
                                     )
                                   ],
@@ -175,12 +175,12 @@ class _EventInterestedUsersPageState extends State<EventInterestedUsersPage> {
                               alignment: Alignment.bottomRight,
                               children: [
                                 DottedBorder(
-                                  radius: Radius.circular(2),
-                                  padding: EdgeInsets.all(5),
+                                  radius: const Radius.circular(2),
+                                  padding: const EdgeInsets.all(5),
                                   borderType: BorderType.Circle,
-                                  color: Color(0xFF3E55AF),
+                                  color: const Color(0xFF3E55AF),
                                   child: Container(
-                                    padding: EdgeInsets.all(1),
+                                    padding: const EdgeInsets.all(1),
                                     child: CachedNetworkImage(
                                         imageUrl: IMAGE_URL +
                                             snapshot.data!.data![index].user!
