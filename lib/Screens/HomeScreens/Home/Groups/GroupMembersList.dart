@@ -43,8 +43,8 @@ class _GroupMemberListScreenState extends State<GroupMemberListScreen> {
                 alignment: Alignment.centerLeft,
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10),
-                    boxShadow: const [
-                      BoxShadow(color: Colors.black, offset: Offset(0, 2))
+                    boxShadow:  [
+                      BoxShadow(color: black, offset: Offset(0, 2))
                     ]),
                 child: TextField(
                   onChanged: (value) {
@@ -96,13 +96,16 @@ class _GroupMemberListScreenState extends State<GroupMemberListScreen> {
                                               loginUserId: widget.userId)));
                                 },
                                 child: Container(
+
                                   margin: const EdgeInsets.only(top: 10),
+
                                   decoration: BoxDecoration(
                                       color: black,
                                       borderRadius: BorderRadius.circular(10)),
                                   padding: const EdgeInsets.only(
-                                      top: 15, bottom: 15, left: 10),
-                                  child: Row(children: [
+                                      right: 10, left: 10,top: 15,bottom: 15),
+                                  child: Row(
+                                      children: [
                                     CachedNetworkImage(
                                         imageUrl: IMAGE_URL +
                                             snapshot.data!.data![index].member!
@@ -160,6 +163,18 @@ class _GroupMemberListScreenState extends State<GroupMemberListScreen> {
                                         ),
                                       ],
                                     ),
+                                    const Spacer(),
+                                    InkWell(
+                                      onTap: (){},
+                                      child: (snapshot.data!.data![index].member!.isFriend ==0&&widget.userId!=snapshot.data!.data![index].member!.sId.toString())?Container(
+                                        alignment: Alignment.center,
+                                        width: 70,
+                                        decoration: BoxDecoration(
+                                            borderRadius: BorderRadius.circular(50),
+                                            gradient: commonButtonLinearGridient),
+                                        child: customText("Add Friend", 11, white),
+                                      ):const SizedBox(),
+                                    )
                                   ]),
                                 ),
                               );

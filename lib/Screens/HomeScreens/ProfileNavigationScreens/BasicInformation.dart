@@ -41,6 +41,7 @@ String dateOfBirth = "",
     bio = "",
     dobStamp = "",
     city = "",
+    iso2 = "",
     country = "";
 String countryId = "", stateId = "", cityId = "";
 final _gender = ["Male", "Female", "Others"];
@@ -73,6 +74,10 @@ class _Basic extends State<BasicInformation> {
   @override
   void initState() {
     super.initState();
+    init();
+  }
+
+  Future<void> init() async {
     getUserData();
 
     Future.delayed(Duration.zero, () {
@@ -183,7 +188,7 @@ class _Basic extends State<BasicInformation> {
                           children: [
                             customText(country.isEmpty ? "Country" : country,
                                 12, country.isEmpty ? white24 : white),
-                            Spacer(),
+                            const Spacer(),
                             Icon(
                               Icons.arrow_drop_down_rounded,
                               color: yellowColor,
@@ -212,7 +217,7 @@ class _Basic extends State<BasicInformation> {
                           children: [
                             customText(stateName.isEmpty ? "State" : stateName,
                                 12, stateName.isEmpty ? white24 : white),
-                            Spacer(),
+                            const Spacer(),
                             Icon(
                               Icons.arrow_drop_down_rounded,
                               color: yellowColor,
@@ -231,7 +236,7 @@ class _Basic extends State<BasicInformation> {
                     customText("I AM", 12, white),
                     customHeightBox(10),
                     Container(
-                      padding: EdgeInsets.only(left: 16, right: 10),
+                      padding: const EdgeInsets.only(left: 16, right: 10),
                       decoration: BoxDecoration(
                         color: black,
                         borderRadius: BorderRadius.circular(10),
@@ -469,10 +474,10 @@ class _Basic extends State<BasicInformation> {
                       mainAxisAlignment: mCenter,
                       crossAxisAlignment: cCenter,
                       children: [
-                        Spacer(),
-                        Spacer(),
+                        const Spacer(),
+                        const Spacer(),
                         customText("Pick Date", 15, white),
-                        Spacer(),
+                        const Spacer(),
                         customWidthBox(25),
                         TextButton(
                             onPressed: () {
@@ -483,7 +488,7 @@ class _Basic extends State<BasicInformation> {
                     ),
                     customDivider(10, white),
                     customHeightBox(10),
-                    Container(
+                    SizedBox(
                       height: 200,
                       child: CupertinoTheme(
                         data: const CupertinoThemeData(
@@ -530,7 +535,7 @@ class _Basic extends State<BasicInformation> {
                 backgroundColor: Colors.transparent,
                 elevation: 0.0,
                 child: Container(
-                  padding: EdgeInsets.all(10),
+                  padding: const EdgeInsets.all(10),
                   height: phoneHeight(context),
                   decoration: BoxDecoration(
                       color: gray1, borderRadius: BorderRadius.circular(10)),
@@ -541,10 +546,10 @@ class _Basic extends State<BasicInformation> {
                         crossAxisAlignment: cCenter,
                         mainAxisAlignment: mCenter,
                         children: [
-                          Spacer(),
-                          Spacer(),
+                          const Spacer(),
+                          const Spacer(),
                           customText("Search Country", 15, white),
-                          Spacer(),
+                          const Spacer(),
                           IconButton(
                               onPressed: () {
                                 Navigator.pop(context);
@@ -585,11 +590,11 @@ class _Basic extends State<BasicInformation> {
                                   itemCount: snapshot.data!.data!.length,
                                   itemBuilder: (context, index) {
                                     String flageCode = snapshot
-                                        .data!.data![index].iso2!
+                                        .data!.data![index].iso2
                                         .toString()
                                         .toLowerCase();
                                     String fullImageUrl =
-                                        flagImageUrl! + flageCode + ".png";
+                                        country_code_url + flageCode + ".png";
                                     return InkWell(
                                       onTap: () {
                                         setState(() {
@@ -606,8 +611,10 @@ class _Basic extends State<BasicInformation> {
                                         });
                                       },
                                       child: Container(
-                                        padding: EdgeInsets.only(left: 10),
-                                        margin: EdgeInsets.only(bottom: 10),
+                                        padding: const EdgeInsets.only(
+                                            left: 10, right: 10),
+                                        margin:
+                                            const EdgeInsets.only(bottom: 10),
                                         decoration: BoxDecoration(
                                             borderRadius:
                                                 BorderRadius.circular(10),
@@ -619,17 +626,19 @@ class _Basic extends State<BasicInformation> {
                                             width: 35,
                                             imageUrl: fullImageUrl,
                                             placeholder: (context, url) =>
-                                                Icon(Icons.flag),
+                                                const Icon(Icons.flag),
                                             errorWidget:
                                                 (context, url, error) =>
                                                     const Icon(Icons.error),
                                           ),
                                           customWidthBox(10),
-                                          customText(
-                                              snapshot.data!.data![index].name
-                                                  .toString(),
-                                              15,
-                                              white),
+                                          Flexible(
+                                            child: customText(
+                                                snapshot.data!.data![index].name
+                                                    .toString(),
+                                                15,
+                                                white),
+                                          ),
                                         ]),
                                       ),
                                     );
@@ -681,7 +690,7 @@ class _Basic extends State<BasicInformation> {
                         decoration: BoxDecoration(
                             color: black,
                             borderRadius: BorderRadius.circular(10)),
-                        margin: EdgeInsets.only(top: 10, left: 5, right: 5),
+                        margin: const EdgeInsets.only(top: 10, left: 5, right: 5),
                         child: TextField(
                           onChanged: ((value) {
                             state(() {
@@ -756,7 +765,7 @@ class _Basic extends State<BasicInformation> {
                 backgroundColor: Colors.transparent,
                 elevation: 0.0,
                 child: Container(
-                    padding: EdgeInsets.all(10),
+                    padding: const EdgeInsets.all(10),
                     height: phoneHeight(context),
                     decoration: BoxDecoration(
                         color: gray1, borderRadius: BorderRadius.circular(10)),
@@ -774,7 +783,7 @@ class _Basic extends State<BasicInformation> {
                               onPressed: () {
                                 Navigator.pop(context);
                               },
-                              icon: Icon(Icons.close))
+                              icon: const Icon(Icons.close))
                         ],
                       ),
 
@@ -783,7 +792,7 @@ class _Basic extends State<BasicInformation> {
                         decoration: BoxDecoration(
                             color: black,
                             borderRadius: BorderRadius.circular(10)),
-                        margin: EdgeInsets.only(top: 10, left: 5, right: 5),
+                        margin: const EdgeInsets.only(top: 10, left: 5, right: 5),
                         child: TextField(
                           onChanged: ((value) {
                             state(() {

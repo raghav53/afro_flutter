@@ -10,7 +10,7 @@ import '../../../../../Util/Colors.dart';
 
 GoingEventsScreen(
     BuildContext context, GoingInterestedEventsModel _getAllGoingEvents) {
-  return Container(
+  return SizedBox(
     width: phoneWidth(context),
     child: Column(
       children: [

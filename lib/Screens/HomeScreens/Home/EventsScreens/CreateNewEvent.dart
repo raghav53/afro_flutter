@@ -524,7 +524,7 @@ class _CreateNewEventState extends State<CreateNewEvent> {
                         decoration: BoxDecoration(
                             border: Border.all(color: white, width: 1),
                             borderRadius: BorderRadius.circular(50)),
-                        padding: EdgeInsets.all(5),
+                        padding: const EdgeInsets.all(5),
                         child: Icon(
                           Icons.photo_library,
                           color: white,
@@ -637,7 +637,7 @@ class _CreateNewEventState extends State<CreateNewEvent> {
 
   //time picker bottomsheet
   void openTimeBottomSheet(String type) {
-    final now = new DateTime.now();
+    final now =  DateTime.now();
     Duration initialtimer = Duration(
         hours: int.parse(DateFormat('H').format(now).toString()),
         minutes: int.parse(DateFormat('m').format(now).toString()));
@@ -657,7 +657,7 @@ class _CreateNewEventState extends State<CreateNewEvent> {
           return StatefulBuilder(builder: (context, state) {
             return Container(
               height: 300,
-              margin: EdgeInsets.only(top: 30),
+              margin: const EdgeInsets.only(top: 30),
               decoration: commonBoxDecoration(),
               child: Column(
                 children: [
@@ -699,7 +699,16 @@ class _CreateNewEventState extends State<CreateNewEvent> {
                   ),
                   customDivider(10, white),
                   customHeightBox(10),
-                  CupertinoTimerPicker(
+              CupertinoTheme(
+                data:  CupertinoThemeData(
+                  textTheme: CupertinoTextThemeData(
+                    dateTimePickerTextStyle: TextStyle(
+                      color:white,
+                      fontSize: 16,
+                    ),
+                  ),
+                ),
+                child:  CupertinoTimerPicker(
                       minuteInterval: 1,
                       secondInterval: 1,
                       initialTimerDuration: initialtimer,
@@ -710,6 +719,7 @@ class _CreateNewEventState extends State<CreateNewEvent> {
                         });
                         print(onTimerDurationChanged.inMilliseconds);
                       }),
+              )
                 ],
               ),
             );

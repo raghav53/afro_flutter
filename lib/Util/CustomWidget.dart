@@ -108,7 +108,7 @@ LinearGradient commonButtonLinearGridient =
     const LinearGradient(
         begin: Alignment.topCenter,
         end: Alignment.bottomCenter,
-        colors: [Color(0xff7822A0), Color(0xff3958B0)]);
+        colors: [Color(0xff694FB1), Color(0xff8134A5)]);
 
 var category = [
   "Health and Wellness",

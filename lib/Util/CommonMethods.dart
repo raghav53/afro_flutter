@@ -81,6 +81,18 @@ Map dataTimeTextFormater(String text) {
   return dateTime;
 }
 
+Map timeTextFormater(String text) {
+  Map dateTime = {};
+  String formatedTimeText = '';
+  String formatedDateText = '';
+  DateTime date = DateTime.fromMillisecondsSinceEpoch(int.parse(text));
+  formatedTimeText = DateFormat("hh:mm ").format(date);
+  formatedDateText = DateFormat("dd-MM-yyyy").format(date);;
+  dateTime.addAll({"date": formatedDateText, "time": formatedTimeText});
+  print(dateTime["date"] + " " + dateTime["time"]);
+  return dateTime;
+}
+
 String formatTimestamp(String timestamp) {
   var format = new DateFormat('MMM, yyyy' );
   var date = new DateTime.fromMillisecondsSinceEpoch(int.parse(timestamp));
@@ -145,7 +157,8 @@ String getDateFormat(String date) {
   return DateFormat("dd/MM/yyyy hh:mm aa").format(dt);
 }
 
-String country_code_url = "https://ipdata.co/flags/";
+String country_code_url ="https://ipdata.co/flags/"
+;
 
 //Internet connection
 

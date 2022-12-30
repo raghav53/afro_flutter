@@ -93,7 +93,7 @@ class _FourmDetailsPageState extends State<FourmDetailsPage> {
           height: phoneHeight(context),
           width: phoneWidth(context),
           decoration: commonBoxDecoration(),
-          padding: EdgeInsets.only(top: 70),
+          padding: const EdgeInsets.only(top: 70),
           child: Stack(
             children: [
               FutureBuilder<FourmDetailsModel>(
@@ -106,7 +106,7 @@ class _FourmDetailsPageState extends State<FourmDetailsPage> {
                           children: [
                             //Main Content
                             Container(
-                                margin: EdgeInsets.only(left: 15, right: 15),
+                                margin: const EdgeInsets.only(left: 15, right: 15),
                                 decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(5),
                                     border:

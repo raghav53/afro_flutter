@@ -79,16 +79,14 @@ class _ForumsPage extends State<ForumsScreenPage> {
             setState(() {});
           });
         },
-        child: Container(
-          height: 50,
-          width: 50,
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(50),
-              gradient: commonButtonLinearGridient),
-          child: Icon(
-            Icons.add,
-            color: white,
-          ),
+        child:Container(
+            alignment: Alignment.center,
+            height: 50,
+            width: 50,
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(50),
+                gradient: commonButtonLinearGridient),
+            child:  Image.asset("assets/icons/add.png",height: 25,width: 25,color: Colors.white,)
         ),
       ),
       body: Container(
@@ -100,7 +98,7 @@ class _ForumsPage extends State<ForumsScreenPage> {
             crossAxisAlignment: cStart,
             children: [
               Container(
-                padding: EdgeInsets.only(top: 80, left: 10, right: 10),
+                padding: const EdgeInsets.only(top: 80, left: 10, right: 10),
                 child: Column(
                   crossAxisAlignment: cStart,
                   children: [
@@ -127,9 +125,9 @@ class _ForumsPage extends State<ForumsScreenPage> {
                         alignment: Alignment.centerLeft,
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(10),
-                            boxShadow: const [
+                            boxShadow:  [
                               BoxShadow(
-                                  color: Colors.black, offset: Offset(0, 2))
+                                  color: black, offset: Offset(0, 2))
                             ]),
                         child: TextField(
                           focusNode: focusNode,
@@ -171,7 +169,7 @@ class _ForumsPage extends State<ForumsScreenPage> {
               customHeightBox(20),
               Container(
                   height: 50,
-                  margin: EdgeInsets.only(left: 10, right: 10),
+                  margin: const EdgeInsets.only(left: 10, right: 10),
                   child: Row(
                     mainAxisAlignment: mEvenly,
                     crossAxisAlignment: cStart,
@@ -190,7 +188,7 @@ class _ForumsPage extends State<ForumsScreenPage> {
                           },
                           child: Container(
                             width: 110,
-                            padding: EdgeInsets.only(top: 4, bottom: 4),
+                            padding: const EdgeInsets.only(top: 4, bottom: 4),
                             decoration: BoxDecoration(
                                 gradient: (clickPosition == 0)
                                     ? commonButtonLinearGridient
@@ -239,7 +237,7 @@ class _ForumsPage extends State<ForumsScreenPage> {
                                     ? null
                                     : Border.all(color: Colors.white, width: 1),
                                 borderRadius:
-                                    BorderRadius.all(Radius.circular(20))),
+                                    const BorderRadius.all(Radius.circular(20))),
                             child: Row(
                               mainAxisAlignment: mCenter,
                               children: [
@@ -269,7 +267,7 @@ class _ForumsPage extends State<ForumsScreenPage> {
                           },
                           child: Container(
                             width: 110,
-                            padding: EdgeInsets.only(top: 4, bottom: 4),
+                            padding: const EdgeInsets.only(top: 4, bottom: 4),
                             decoration: BoxDecoration(
                                 gradient: (clickPosition == 2)
                                     ? commonButtonLinearGridient
@@ -278,7 +276,7 @@ class _ForumsPage extends State<ForumsScreenPage> {
                                     ? null
                                     : Border.all(color: Colors.white, width: 1),
                                 borderRadius:
-                                    BorderRadius.all(Radius.circular(20))),
+                                    const BorderRadius.all(Radius.circular(20))),
                             child: Row(
                               mainAxisAlignment: mCenter,
                               children: [
@@ -297,7 +295,7 @@ class _ForumsPage extends State<ForumsScreenPage> {
                       ),
                     ],
                   )),
-              Container(
+              SizedBox(
                   height: phoneHeight(context) / 1.5,
                   child: selectedViewFillter(clickPosition))
             ],
@@ -335,8 +333,12 @@ class _ForumsPage extends State<ForumsScreenPage> {
           builder: (context, snapshot) {
             return snapshot.hasData && snapshot.data!.data!.isNotEmpty
                 ? AllThreadListPage(snapshot.data!)
+                : snapshot.data == null
+                ? const Center(
+              child: CircularProgressIndicator(),
+            )
                 : Container(
-                    margin: EdgeInsets.only(top: 100),
+                    margin: const EdgeInsets.only(top: 100),
                     alignment: Alignment.center,
                     child: Center(
                       child: customText("No data!", 15, white),
@@ -349,6 +351,10 @@ class _ForumsPage extends State<ForumsScreenPage> {
           builder: (context, snapshot) {
             return snapshot.hasData && snapshot.data!.data!.isNotEmpty
                 ? AllUserThreadList(snapshot.data!)
+                : snapshot.data == null
+                ? const Center(
+              child: CircularProgressIndicator(),
+            )
                 : Container(
                     margin: EdgeInsets.only(top: 100),
                     alignment: Alignment.center,
@@ -363,8 +369,12 @@ class _ForumsPage extends State<ForumsScreenPage> {
           builder: (context, snapshot) {
             return snapshot.hasData && snapshot.data!.data!.isNotEmpty
                 ? MyRepliesListPage(profileImage.toString(), snapshot.data!)
+                : snapshot.data == null
+                ? const Center(
+              child: CircularProgressIndicator(),
+            )
                 : Container(
-                    margin: EdgeInsets.only(top: 100),
+                    margin: const EdgeInsets.only(top: 100),
                     alignment: Alignment.center,
                     child: Center(
                       child: customText("No data!", 15, white),
@@ -378,7 +388,9 @@ class _ForumsPage extends State<ForumsScreenPage> {
   //All User Threads list
   AllUserThreadList(MyAllThreadsModel snapshot) {
     return Container(
-      margin: EdgeInsets.only(left: 15, right: 15),
+      height: phoneHeight(context),
+      width: phoneWidth(context),
+      margin: const EdgeInsets.only(left: 15, right: 15),
       child: ListView.builder(
           shrinkWrap: true,
           padding: EdgeInsets.zero,
@@ -392,6 +404,8 @@ class _ForumsPage extends State<ForumsScreenPage> {
                           )));
                 },
                 child: Container(
+                  /*height: phoneHeight(context),
+                    width: phoneWidth(context),*/
                     margin: EdgeInsets.only(
                         bottom: snapshot.data!.length - 1 == index ? 100 : 0),
                     child: fourmItem(snapshot.data![index])));
@@ -407,13 +421,14 @@ class _ForumsPage extends State<ForumsScreenPage> {
           border: Border.all(color: gray1, width: 1)),
       padding: const EdgeInsets.only(top: 5, bottom: 5),
       margin: const EdgeInsets.only(bottom: 10),
-      child: Column(
-          mainAxisAlignment: mStart,
-          crossAxisAlignment: cStart,
-          children: [
-            Container(
-              padding: const EdgeInsets.only(left: 5, right: 5),
-              child: Row(
+      child: Padding(
+        padding: const EdgeInsets.only(left: 5,right: 5
+        ),
+        child: Column(
+            mainAxisAlignment: mStart,
+            crossAxisAlignment: cStart,
+            children: [
+              Row(
                 crossAxisAlignment: cStart,
                 mainAxisAlignment: mStart,
                 children: [
@@ -448,7 +463,7 @@ class _ForumsPage extends State<ForumsScreenPage> {
                                     TextStyle(color: yellowColor, fontSize: 14))
                           ])),
                       customHeightBox(10),
-                      customText(model.title.toString(), 15, yellowColor),
+                      customText(model.title.toString(), 15, white),
                     ],
                   ),
                   Spacer(),
@@ -467,98 +482,98 @@ class _ForumsPage extends State<ForumsScreenPage> {
                   customWidthBox(5)
                 ],
               ),
-            ),
-            customHeightBox(10),
-            Padding(
-              padding: const EdgeInsets.only(left: 5.0),
-              child: InkWell(
-                  onTap: () {},
-                  child: customText(
-                      model.link == null
-                          ? "Link not available"
-                          : model.link.toString(),
-                      15,
-                      model.link != null ? Colors.blueAccent : white)),
-            ),
-            customHeightBox(10),
-            Padding(
-              padding: const EdgeInsets.only(left: 5.0),
-              child: customText(model.question.toString(), 15, white),
-            ),
-            customHeightBox(15),
-            mediaWidget(model.media),
-            customHeightBox(15),
-            Row(
-              children: [
-                Spacer(),
-                customText("Last Post: ", 13, Colors.grey[600]!),
-                customText(
-                    getTimeFormat(model.createdAt.toString()), 12, white),
-                customWidthBox(10)
-              ],
-            ),
-            customHeightBox(10),
-            customDivider(1, white),
-            customHeightBox(5),
-            Row(
-              mainAxisAlignment: mEvenly,
-              children: [
-                //Upvote
-                InkWell(
-                  onTap: () {
-                    likeUnlike(model.sId.toString(), 1);
-                  },
-                  child: Row(
-                    children: [
-                      Icon(
-                        model.isLike == 1
-                            ? Icons.thumb_up_sharp
-                            : Icons.thumb_up_outlined,
-                        color: model.isLike == 1 ? Colors.blueAccent : white,
-                        size: 19,
-                      ),
-                      customWidthBox(3),
-                      customText("0" + " Upvote", 15, white)
-                    ],
-                  ),
-                ),
-
-                //Downvote
-                InkWell(
-                  onTap: () {
-                    likeUnlike(model.sId.toString(), 2);
-                  },
-                  child: Row(
-                    children: [
-                      Icon(
-                        model.isDislike == 1
-                            ? Icons.thumb_down_sharp
-                            : Icons.thumb_down_outlined,
-                        color: model.isDislike == 1 ? Colors.blueAccent : white,
-                        size: 19,
-                      ),
-                      customWidthBox(3),
-                      customText("0" + " Downvote", 15, white)
-                    ],
-                  ),
-                ),
-
-                //Reply
-                Row(
-                  children: [
-                    Image.asset(
-                      "assets/icons/comment.png",
-                      height: 17,
-                      width: 17,
+              customHeightBox(10),
+              Padding(
+                padding: const EdgeInsets.only(left: 5.0),
+                child: InkWell(
+                    onTap: () {},
+                    child: customText(
+                        model.link == null
+                            ? "Link not available"
+                            : model.link.toString(),
+                        15,
+                        model.link != null ? Colors.blueAccent : white)),
+              ),
+              customHeightBox(10),
+              Padding(
+                padding: const EdgeInsets.only(left: 5.0),
+                child: customText(model.question.toString(), 15, white),
+              ),
+              customHeightBox(15),
+              mediaWidget(model.media),
+              customHeightBox(15),
+              Row(
+                children: [
+                  Spacer(),
+                  customText("Last Post: ", 13, Colors.grey[600]!),
+                  customText(
+                      getTimeFormat(model.createdAt.toString()), 12, white),
+                  customWidthBox(10)
+                ],
+              ),
+              customHeightBox(10),
+              customDivider(1, white),
+              customHeightBox(5),
+              Row(
+                mainAxisAlignment: mEvenly,
+                children: [
+                  //Upvote
+                  InkWell(
+                    onTap: () {
+                      likeUnlike(model.sId.toString(), 1);
+                    },
+                    child: Row(
+                      children: [
+                        Icon(
+                          model.isLike == 1
+                              ? Icons.thumb_up_sharp
+                              : Icons.thumb_up_outlined,
+                          color: model.isLike == 1 ? Colors.blueAccent : white,
+                          size: 19,
+                        ),
+                        customWidthBox(3),
+                        customText("0" + " Upvote", 15, white)
+                      ],
                     ),
-                    customWidthBox(3),
-                    customText(
-                        model.totalReplies.toString() + " Reply", 15, white)
-                  ],
-                )
-              ],
-            )
-          ]),
+                  ),
+
+                  //Downvote
+                  InkWell(
+                    onTap: () {
+                      likeUnlike(model.sId.toString(), 2);
+                    },
+                    child: Row(
+                      children: [
+                        Icon(
+                          model.isDislike == 1
+                              ? Icons.thumb_down_sharp
+                              : Icons.thumb_down_outlined,
+                          color: model.isDislike == 1 ? Colors.blueAccent : white,
+                          size: 19,
+                        ),
+                        customWidthBox(3),
+                        customText("0" + " Downvote", 15, white)
+                      ],
+                    ),
+                  ),
+
+                  //Reply
+                  Row(
+                    children: [
+                      Image.asset(
+                        "assets/icons/comment.png",
+                        height: 17,
+                        width: 17,
+                      ),
+                      customWidthBox(3),
+                      customText(
+                          model.totalReplies.toString() + " Reply", 15, white)
+                    ],
+                  )
+                ],
+              )
+            ]),
+      ),
     );
   }
 

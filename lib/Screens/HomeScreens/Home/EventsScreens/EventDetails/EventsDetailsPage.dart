@@ -22,12 +22,16 @@ import 'package:flutter_share/flutter_share.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
+import 'event_setting_screen.dart';
+
 class EventDetailsScreenPage extends StatefulWidget {
   String? eventId = "";
   String? userId = "";
+
   EventDetailsScreenPage(
       {Key? key, required this.eventId, required this.userId})
       : super(key: key);
+
   @override
   State<EventDetailsScreenPage> createState() => _EventDetailsScreenPageState();
 }
@@ -41,11 +45,18 @@ var loginUserId = "";
 Future<AllEventUsersModel>? _getAllEventUsers;
 
 class _EventDetailsScreenPageState extends State<EventDetailsScreenPage> {
-  List<String> filterList = ["Discussion", "Photo", "Video", "Contacts"];
+  List<String> filterList = [
+    "Discussion",
+    "Photo",
+    "Video",
+    "Contacts",
+    "Setting"
+  ];
   List<String> filterListItemImages = [
     "assets/icons/menu_line.png",
     "assets/icons/camera.png",
     "assets/icons/video.png",
+    "assets/icons/group.png",
     "assets/icons/group.png",
   ];
   List<String> reportTypes = [
@@ -112,11 +123,15 @@ class _EventDetailsScreenPageState extends State<EventDetailsScreenPage> {
               onTap: () {},
               child: Image.asset(
                 "assets/icons/save_icon.png",
-                height: 50,
-                width: 50,
+                height: 30,
+                fit: BoxFit.contain,
+                width: 30,
               ),
             ),
             //Share button
+            SizedBox(
+              width: 10,
+            ),
             GestureDetector(
               onTap: () {
                 setState(() {
@@ -125,9 +140,13 @@ class _EventDetailsScreenPageState extends State<EventDetailsScreenPage> {
               },
               child: Image.asset(
                 "assets/icons/share_icon.png",
-                height: 70,
-                width: 70,
+                height: 30,
+                fit: BoxFit.contain,
+                width: 30,
               ),
+            ),
+            SizedBox(
+              width: 10,
             ),
             //Show popmenu
             GestureDetector(
@@ -138,7 +157,10 @@ class _EventDetailsScreenPageState extends State<EventDetailsScreenPage> {
               },
               child: const Padding(
                 padding: EdgeInsets.only(right: 10),
-                child: Icon(Icons.more_vert_outlined),
+                child: Icon(
+                  Icons.more_vert_outlined,
+                  size: 30,
+                ),
               ),
             )
           ],
@@ -176,7 +198,7 @@ class _EventDetailsScreenPageState extends State<EventDetailsScreenPage> {
                                     ),
                                   ),
                                   placeholder: (context, url) =>
-                                      CircularProgressIndicator(),
+                                      const CircularProgressIndicator(),
                                   errorWidget: (context, url, error) =>
                                       Icon(Icons.error),
                                 ),
@@ -185,110 +207,131 @@ class _EventDetailsScreenPageState extends State<EventDetailsScreenPage> {
                                   child: Padding(
                                     padding: const EdgeInsets.only(
                                         bottom: 10, right: 10),
-                                    child: Row(
-                                      crossAxisAlignment: cEnd,
-                                      mainAxisAlignment: mEnd,
-                                      children: [
-                                        //Going event button
-                                        InkWell(
-                                          onTap: () {
-                                            showDialogBox(
-                                                snapshot.data!.data!.sId
-                                                    .toString(),
-                                                context,
-                                                "going",
-                                                snapshot.data!.data!.isGoing);
-                                            print(snapshot.data!.data!.isGoing
-                                                .toString());
-                                          },
-                                          child: Container(
-                                            height: 30,
-                                            width: 100,
-                                            decoration: BoxDecoration(
-                                                border: snapshot.data!.data!
-                                                            .isGoing ==
-                                                        1
-                                                    ? null
-                                                    : Border.all(
-                                                        color: Colors.white, width: 1),
-                                                borderRadius:
-                                                    BorderRadius.circular(20),
-                                                gradient: snapshot.data!.data!
-                                                            .isGoing ==
-                                                        1
-                                                    ? commonButtonLinearGridient
-                                                    : null),
-                                            child: Padding(
-                                              padding: const EdgeInsets.only(
-                                                  top: 5, bottom: 5),
-                                              child: Row(
-                                                mainAxisAlignment: mCenter,
-                                                children: [
-                                                  Image.asset(
-                                                    "assets/icons/check_right_icon.png",
-                                                    height: 15,
-                                                    width: 15,
-                                                    color: Colors.white,
+                                    child: (widget.userId == loginUserId)
+                                        ? const SizedBox()
+                                        : Row(
+                                            crossAxisAlignment: cEnd,
+                                            mainAxisAlignment: mEnd,
+                                            children: [
+                                              //Going event button
+                                              InkWell(
+                                                onTap: () {
+                                                  showDialogBox(
+                                                      snapshot.data!.data!.sId
+                                                          .toString(),
+                                                      context,
+                                                      "going",
+                                                      snapshot
+                                                          .data!.data!.isGoing);
+                                                  print(snapshot
+                                                      .data!.data!.isGoing
+                                                      .toString());
+                                                },
+                                                child: Container(
+                                                  height: 30,
+                                                  width: 100,
+                                                  decoration: BoxDecoration(
+                                                      border: snapshot
+                                                                  .data!
+                                                                  .data!
+                                                                  .isGoing ==
+                                                              1
+                                                          ? null
+                                                          : Border.all(
+                                                              color:
+                                                                  Colors.white,
+                                                              width: 1),
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              20),
+                                                      gradient: snapshot
+                                                                  .data!
+                                                                  .data!
+                                                                  .isGoing ==
+                                                              1
+                                                          ? commonButtonLinearGridient
+                                                          : null),
+                                                  child: Padding(
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            top: 5, bottom: 5),
+                                                    child: Row(
+                                                      mainAxisAlignment:
+                                                          mCenter,
+                                                      children: [
+                                                        Image.asset(
+                                                          "assets/icons/check_right_icon.png",
+                                                          height: 15,
+                                                          width: 15,
+                                                          color: Colors.white,
+                                                        ),
+                                                        customWidthBox(5),
+                                                        customText("Going", 10,
+                                                            Colors.white)
+                                                      ],
+                                                    ),
                                                   ),
-                                                  customWidthBox(5),
-                                                  customText(
-                                                      "Going", 10, Colors.white)
-                                                ],
+                                                ),
                                               ),
-                                            ),
-                                          ),
-                                        ),
-                                        //Interested Event Button
-                                        customWidthBox(15),
-                                        InkWell(
-                                          onTap: () {
-                                            showDialogBox(
-                                                snapshot.data!.data!.sId
-                                                    .toString(),
-                                                context,
-                                                "interested",
-                                                snapshot
-                                                    .data!.data!.isInterested);
-                                          },
-                                          child: Container(
-                                            height: 30,
-                                            width: 100,
-                                            decoration: BoxDecoration(
-                                                border: snapshot.data!.data!
-                                                            .isInterested ==
-                                                        1
-                                                    ? null
-                                                    : Border.all(
-                                                        color: white, width: 1),
-                                                borderRadius:
-                                                    BorderRadius.circular(20),
-                                                gradient: snapshot.data!.data!
-                                                            .isInterested ==
-                                                        1
-                                                    ? commonButtonLinearGridient
-                                                    : null),
-                                            child: Padding(
-                                              padding: const EdgeInsets.only(
-                                                  top: 5, bottom: 5),
-                                              child: Row(
-                                                mainAxisAlignment: mCenter,
-                                                children: [
-                                                  Image.asset(
-                                                    "assets/icons/star_icon.png",
-                                                    height: 15,
-                                                    width: 15,
-                                                    color: Colors.white,
+                                              //Interested Event Button
+                                              customWidthBox(15),
+                                              InkWell(
+                                                onTap: () {
+                                                  showDialogBox(
+                                                      snapshot.data!.data!.sId
+                                                          .toString(),
+                                                      context,
+                                                      "interested",
+                                                      snapshot.data!.data!
+                                                          .isInterested);
+                                                },
+                                                child: Container(
+                                                  height: 30,
+                                                  width: 100,
+                                                  decoration: BoxDecoration(
+                                                      border: snapshot
+                                                                  .data!
+                                                                  .data!
+                                                                  .isInterested ==
+                                                              1
+                                                          ? null
+                                                          : Border.all(
+                                                              color: white,
+                                                              width: 1),
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              20),
+                                                      gradient: snapshot
+                                                                  .data!
+                                                                  .data!
+                                                                  .isInterested ==
+                                                              1
+                                                          ? commonButtonLinearGridient
+                                                          : null),
+                                                  child: Padding(
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            top: 5, bottom: 5),
+                                                    child: Row(
+                                                      mainAxisAlignment:
+                                                          mCenter,
+                                                      children: [
+                                                        Image.asset(
+                                                          "assets/icons/star_icon.png",
+                                                          height: 15,
+                                                          width: 15,
+                                                          color: Colors.white,
+                                                        ),
+                                                        customWidthBox(5),
+                                                        customText("Interested",
+                                                            10, Colors.white)
+                                                      ],
+                                                    ),
                                                   ),
-                                                  customWidthBox(5),
-                                                  customText("Interested", 10,
-                                                     Colors.white)
-                                                ],
-                                              ),
-                                            ),
+                                                ),
+                                              )
+                                            ],
                                           ),
-                                        )
-                                      ],
-                                    ),
                                   ),
                                 )
                               ],
@@ -379,95 +422,150 @@ class _EventDetailsScreenPageState extends State<EventDetailsScreenPage> {
                             Padding(
                               padding: const EdgeInsets.only(
                                   left: 10.0, right: 10.0),
-                              child: Row(
-                                children: [
-                                  //Country
-                                  Container(
-                                      child: snapshot.data!.data!.location
-                                              .toString()
-                                              .isEmpty
-                                          ? Row(
-                                              children: [
-                                                Image.asset(
-                                                  "assets/icons/person.png",
-                                                  height: 15,
-                                                  width: 15,
-                                                  color: yellowColor,
+                              child: Expanded(
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    //Country
+                                    Container(
+                                        child: snapshot.data!.data!.location
+                                                .toString()
+                                                .isEmpty
+                                            ? null
+                                            : Expanded(
+                                                child: Row(
+                                                  children: [
+                                                    Image.asset(
+                                                      "assets/location.png",
+                                                      height: 15,
+                                                      width: 15,
+                                                      color: yellowColor,
+                                                    ),
+                                                    SizedBox(
+                                                      width: 45,
+                                                      child: customText(
+                                                          snapshot.data!.data!
+                                                                  .state
+                                                                  .toString() +
+                                                              "," +
+                                                              snapshot
+                                                                  .data!
+                                                                  .data!
+                                                                  .country!
+                                                                  .title
+                                                                  .toString(),
+                                                          12,
+                                                          white),
+                                                    ),
+                                                  ],
                                                 ),
-                                                customText(
-                                                    snapshot.data!.data!.city
+                                              )),
+                                    //Hosted by
+                                    const SizedBox(
+                                      width: 8,
+                                    ),
+                                    InkWell(
+                                      onTap: () {
+                                        if (snapshot.data!.data!.userId!.id ==
+                                            loginUserId) {
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (builder) =>
+                                                      const MyProfilePage()));
+                                        } else {
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (builder) =>
+                                                      OtherUserProfilePageScreen(
+                                                        userID: snapshot.data!
+                                                            .data!.userId!.id,
+                                                        name: snapshot
+                                                            .data!
+                                                            .data!
+                                                            .userId!
+                                                            .fullName,
+                                                      )));
+                                        }
+                                      },
+                                      child: Expanded(
+                                        child: Row(
+                                          children: [
+                                            Image.asset(
+                                              "assets/icons/person.png",
+                                              height: 15,
+                                              width: 15,
+                                              color: yellowColor,
+                                            ),
+                                            customText(
+                                                "Hosted By : " +
+                                                    snapshot.data!.data!.userId!
+                                                        .fullName
                                                         .toString(),
-                                                    12,
-                                                    white)
-                                              ],
-                                            )
-                                          : null),
-                                  //Hosted by
-                                  const SizedBox(width: 8,),
-                                  InkWell(
-                                    onTap: () {
-                                      if (snapshot.data!.data!.userId!.id ==
-                                          loginUserId) {
-                                        Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (builder) =>
-                                                    const MyProfilePage()));
-                                      } else {
-                                        Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (builder) =>
-                                                    OtherUserProfilePageScreen(
-                                                      userID: snapshot.data!
-                                                          .data!.userId!.id,
-                                                      name: snapshot.data!.data!
-                                                          .userId!.fullName,
-                                                    )));
-                                      }
-                                    },
-
-                                    child: customText(
-                                        "Hosted By : " +
-                                            snapshot.data!.data!.userId!
-                                                .fullName
-                                                .toString(),
-                                        12,
-                                        white),
-                                  ),
-                                  customWidthBox(15),
-                                  //Event Privacy
-                                  Row(
-                                    children: [
-                                      Image.asset(
-                                        "assets/icons/group-chat.png",
-                                        height: 30,
-                                        width: 20,
-                                        color: yellowColor,
+                                                12,
+                                                white),
+                                          ],
+                                        ),
                                       ),
-                                      customWidthBox(5),
-                                      customText(
-                                          snapshot.data!.data!.privacy == 1
-                                              ? "Public"
-                                              : snapshot.data!.data!.privacy ==
-                                                      2
-                                                  ? "Private"
-                                                  : snapshot.data!.data!
+                                    ),
+                                    customWidthBox(15),
+                                    //Event Privacy
+                                    Expanded(
+                                      child: Row(
+                                        children: [
+                                          (snapshot.data!.data!.privacy == 2)
+                                              ? Image.asset(
+                                                  "assets/icons/group-chat.png",
+                                                  height: 30,
+                                                  width: 20,
+                                                  color: yellowColor,
+                                                )
+                                              : (snapshot.data!.data!.privacy ==
+                                                      1)
+                                                  ? Image.asset(
+                                                      "assets/website_icon.png",
+                                                      height: 30,
+                                                      width: 20,
+                                                      color: yellowColor,
+                                                    )
+                                                  : (snapshot.data!.data!
                                                               .privacy ==
-                                                          3
-                                                      ? "Secret"
-                                                      : "",
-                                          12,
-                                          white)
-                                    ],
-                                  )
-                                ],
+                                                          3)
+                                                      ? const SizedBox()
+                                                      : const SizedBox(),
+                                          customWidthBox(5),
+                                          Flexible(
+                                            child: customText(
+                                                snapshot.data!.data!.privacy ==
+                                                        1
+                                                    ? "Public"
+                                                    : snapshot.data!.data!
+                                                                .privacy ==
+                                                            2
+                                                        ? "Private"
+                                                        : snapshot.data!.data!
+                                                                    .privacy ==
+                                                                3
+                                                            ? "Secret"
+                                                            : "",
+                                                12,
+                                                white),
+                                          )
+                                        ],
+                                      ),
+                                    )
+                                  ],
+                                ),
                               ),
                             ),
                             customHeightBox(20),
 
                             Padding(
-                              padding: const EdgeInsets.only(left: 15, right: 15),
+                              padding:
+                                  const EdgeInsets.only(left: 15, right: 15),
                               child: Row(
                                 children: [
                                   //Total going
@@ -538,6 +636,30 @@ class _EventDetailsScreenPageState extends State<EventDetailsScreenPage> {
                               ),
                             ),
                             customHeightBox(20),
+                            (snapshot.data!.data!.website.toString() == "")
+                                ? const SizedBox()
+                                : Padding(
+                                    padding: const EdgeInsets.only(
+                                        left: 15, right: 15),
+                                    child: Row(
+                                      children: [
+                                        Image.asset(
+                                          "assets/website_icon.png",
+                                          height: 15,
+                                          width: 15,
+                                          color: yellowColor,
+                                        ),
+                                        const SizedBox(
+                                          width: 5,
+                                        ),
+                                        customText(
+                                            snapshot.data!.data!.website
+                                                .toString(),
+                                            12,
+                                            white)
+                                      ],
+                                    ),
+                                  ),
                             //Website link
 
                             customHeightBox(10),
@@ -552,58 +674,50 @@ class _EventDetailsScreenPageState extends State<EventDetailsScreenPage> {
                                   customHeightBox(10),
                                   Row(
                                     children: [
-                                      (snapshot.data!.data!.isLink==2)?
                                       Image.asset(
                                         "assets/icons/http.png",
                                         height: 15,
                                         width: 15,
                                         color: yellowColor,
-                                      ):  Image.asset(
-                                        "assets/location.png",
-                                        height: 15,
-                                        width: 15,
-                                        color: yellowColor,
                                       ),
                                       customWidthBox(10),
-                                      (snapshot.data!.data!.isLink==2)?customText(
-                                          snapshot.data!.data!.eventLink
-                                                  .toString()
-                                                  .isEmpty||snapshot.data!.data!.eventLink ==""
-                                              ? "No Link available"
-                                              : snapshot.data!.data!.eventLink
-                                                  .toString(),
-                                          12,
-                                          white):customText(
-                                          snapshot.data!.data!.location
-                                              .toString()
-                                              .isEmpty||snapshot.data!.data!.location ==""
-                                              ? " "
-                                              : snapshot.data!.data!.location
-                                              .toString(),
-                                          12,
-                                          white),
+                                      (snapshot.data!.data!.isLink == 2)
+                                          ? customText(
+                                              snapshot.data!.data!.eventLink
+                                                          .toString()
+                                                          .isEmpty ||
+                                                      snapshot.data!.data!
+                                                              .eventLink ==
+                                                          ""
+                                                  ? "Link"
+                                                  : snapshot
+                                                      .data!.data!.eventLink
+                                                      .toString(),
+                                              12,
+                                              Colors.blueAccent)
+                                          : customText(
+                                              snapshot.data!.data!.location
+                                                          .toString()
+                                                          .isEmpty ||
+                                                      snapshot.data!.data!
+                                                              .location ==
+                                                          ""
+                                                  ? " "
+                                                  : snapshot
+                                                      .data!.data!.location
+                                                      .toString(),
+                                              12,
+                                              Colors.blueAccent),
                                       const Spacer(),
                                       InkWell(
                                         onTap: () {},
                                         child: Container(
-                                          padding: const EdgeInsets.only(
-                                              top: 5,
-                                              bottom: 5,
-                                              left: 15,
-                                              right: 15),
+                                          height: 30,
+                                          width: 60,
+                                          alignment: Alignment.center,
                                           decoration: BoxDecoration(
-                                              gradient: /*snapshot
-                                                      .data!.data!.location
-                                                      .toString()
-                                                      .isEmpty
-                                                  ? null
-                                                  : */commonButtonLinearGridient,
-                                              color: snapshot
-                                                      .data!.data!.location
-                                                      .toString()
-                                                      .isEmpty
-                                                  ? null
-                                                  : white24,
+                                              gradient:
+                                                  commonButtonLinearGridient,
                                               borderRadius:
                                                   BorderRadius.circular(30)),
                                           child:
@@ -629,19 +743,25 @@ class _EventDetailsScreenPageState extends State<EventDetailsScreenPage> {
                             customDivider(10, white),
                             customHeightBox(10),
                             Container(
+                              alignment: Alignment.center,
                               margin: const EdgeInsets.only(
                                   left: 10, right: 10, top: 10, bottom: 10),
-                              height: 25,
+                              height: 30,
+                              decoration: BoxDecoration(),
                               child: ListView.builder(
                                   shrinkWrap: true,
                                   scrollDirection: Axis.horizontal,
                                   itemCount: filterList.length,
                                   itemBuilder: (context, index) {
-                                    return filterItemView(
-                                        filterList[index],
-                                        index,
-                                        filterListItemImages[index],
-                                        selctionList[index]);
+                                    return (loginUserId != widget.userId &&
+                                            filterList[index].toLowerCase() ==
+                                                'setting')
+                                        ? const SizedBox()
+                                        : filterItemView(
+                                            filterList[index],
+                                            index,
+                                            filterListItemImages[index],
+                                            selctionList[index]);
                                   }),
                             ),
 
@@ -684,7 +804,7 @@ class _EventDetailsScreenPageState extends State<EventDetailsScreenPage> {
             border: (selectedIndex == index)
                 ? null
                 : Border.all(color: Colors.white, width: 1),
-            borderRadius: BorderRadius.all(Radius.circular(20))),
+            borderRadius: const BorderRadius.all(Radius.circular(20))),
         child: Row(
           children: [
             Image.asset(
@@ -722,6 +842,8 @@ class _EventDetailsScreenPageState extends State<EventDetailsScreenPage> {
         eventId: v,
         userId: userId,
       );
+    } else if (index == 4) {
+      return  EventSetting(eventId:  widget.eventId.toString(),);
     }
   }
 
@@ -810,7 +932,7 @@ class _EventDetailsScreenPageState extends State<EventDetailsScreenPage> {
                 showAllInvitingUsers();
               }),
               child: Container(
-                padding: EdgeInsets.only(top: 10, bottom: 10),
+                padding: const EdgeInsets.only(top: 10, bottom: 10),
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10), color: black),
                 child: Row(mainAxisAlignment: mCenter, children: [
@@ -1144,8 +1266,8 @@ class _EventDetailsScreenPageState extends State<EventDetailsScreenPage> {
                 backgroundColor: Colors.transparent,
                 elevation: 0.0,
                 child: Container(
-                  height: 550,
-                  width: phoneWidth(context1),
+                  height: 600,
+                  width: double.infinity,
                   decoration: BoxDecoration(
                       color: gray1, borderRadius: BorderRadius.circular(10)),
                   child: FutureBuilder<AllEventUsersModel>(
@@ -1155,220 +1277,265 @@ class _EventDetailsScreenPageState extends State<EventDetailsScreenPage> {
                                 snapshot.data!.data!.isNotEmpty
                             ? Column(
                                 children: [
-                                  customHeightBox(10),
-                                  customText("Select", 15, white),
+                                  Padding(
+                                    padding: const EdgeInsets.only(left: 80),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceEvenly,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: [
+                                        customText("Select", 15, white),
+                                        IconButton(
+                                            onPressed: () {
+                                              Navigator.pop(context);
+                                            },
+                                            icon: Icon(
+                                              Icons.close,
+                                              size: 20,
+                                              color: white,
+                                            ))
+                                      ],
+                                    ),
+                                  ),
                                   customHeightBox(10),
                                   Container(
-                                    margin: EdgeInsets.only(left: 5, right: 5),
+                                    margin: const EdgeInsets.only(),
                                     height: 500,
+                                    width: double.infinity,
                                     child: ListView.builder(
                                       shrinkWrap: true,
                                       itemCount: snapshot.data!.data!.length,
                                       itemBuilder:
                                           (BuildContext context, int index) {
                                         return Container(
+                                          width: double.infinity,
                                           padding: const EdgeInsets.only(
                                               top: 5, bottom: 5),
-                                          child: Row(
-                                            children: [
-                                              //Profile Image of user
-                                              Stack(
-                                                alignment:
-                                                    Alignment.bottomRight,
-                                                children: [
-                                                  DottedBorder(
-                                                    radius:
-                                                        const Radius.circular(
-                                                            2),
-                                                    padding:
-                                                        const EdgeInsets.all(5),
-                                                    borderType:
-                                                        BorderType.Circle,
-                                                    color:
-                                                        const Color(0xFF3E55AF),
-                                                    child: Container(
+                                          child: Expanded(
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.spaceEvenly,
+                                              children: [
+                                                //Profile Image of user
+                                                Stack(
+                                                  alignment:
+                                                      Alignment.bottomRight,
+                                                  children: [
+                                                    DottedBorder(
+                                                      radius:
+                                                          const Radius.circular(
+                                                              2),
                                                       padding:
                                                           const EdgeInsets.all(
-                                                              1),
-                                                      child: CachedNetworkImage(
-                                                          imageUrl: IMAGE_URL +
-                                                              snapshot
-                                                                  .data!
-                                                                  .data![index]
-                                                                  .profileImage
-                                                                  .toString(),
-                                                          errorWidget: (error,
-                                                                  context,
-                                                                  url) =>
-                                                              const Icon(
-                                                                  Icons.person),
-                                                          placeholder: (context,
-                                                                  url) =>
-                                                              const Icon(
-                                                                  Icons.person),
-                                                          imageBuilder:
-                                                              (context, url) {
-                                                            return CircleAvatar(
-                                                              backgroundImage:
-                                                                  url,
-                                                            );
-                                                          }),
-                                                    ),
-                                                  ),
-                                                  Container(
-                                                    height: 9,
-                                                    width: 9,
-                                                    margin:
-                                                        const EdgeInsets.only(
-                                                            right: 3,
-                                                            bottom: 3),
-                                                    decoration: BoxDecoration(
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(10),
-                                                        gradient:
-                                                            commonButtonLinearGridient),
-                                                  )
-                                                ],
-                                              ),
-                                              customWidthBox(10),
-                                              //Name , Location
-                                              Column(
-                                                mainAxisAlignment: mStart,
-                                                crossAxisAlignment: cStart,
-                                                children: [
-                                                  customText(
-                                                      snapshot.data!
-                                                          .data![index].fullName
-                                                          .toString(),
-                                                      12,
-                                                      Colors.white),
-                                                  customHeightBox(7),
-                                                  Row(
-                                                    children: [
-                                                      const Icon(
-                                                        Icons.location_pin,
-                                                        color:
-                                                            Color(0xFFDFB48C),
-                                                        size: 15,
+                                                              5),
+                                                      borderType:
+                                                          BorderType.Circle,
+                                                      color: const Color(
+                                                          0xFF3E55AF),
+                                                      child: Container(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .all(1),
+                                                        child:
+                                                            CachedNetworkImage(
+                                                                imageUrl: IMAGE_URL +
+                                                                    snapshot
+                                                                        .data!
+                                                                        .data![
+                                                                            index]
+                                                                        .profileImage
+                                                                        .toString(),
+                                                                errorWidget: (error,
+                                                                        context,
+                                                                        url) =>
+                                                                    const Icon(Icons
+                                                                        .person),
+                                                                placeholder: (context,
+                                                                        url) =>
+                                                                    const Icon(Icons
+                                                                        .person),
+                                                                imageBuilder:
+                                                                    (context,
+                                                                        url) {
+                                                                  return CircleAvatar(
+                                                                    backgroundImage:
+                                                                        url,
+                                                                  );
+                                                                }),
                                                       ),
-                                                      customWidthBox(2),
-                                                      customText(
-                                                          snapshot
-                                                              .data!
-                                                              .data![index]
-                                                              .city![0]
-                                                              .title
-                                                              .toString(),
-                                                          12,
-                                                          Color(0xFFDFB48C))
-                                                    ],
-                                                  )
-                                                ],
-                                              ),
-                                              customWidthBox(10),
-                                              Spacer(),
-                                              //Invite button
-                                              InkWell(
-                                                onTap: () {
-                                                  if (snapshot
-                                                              .data!
-                                                              .data![index]
-                                                              .isEventInviteSent ==
-                                                          0 &&
-                                                      snapshot
-                                                              .data!
-                                                              .data![index]
-                                                              .isGoing ==
-                                                          0) {
-                                                    sendInvitation(
-                                                        widget.eventId
+                                                    ),
+                                                    Container(
+                                                      height: 9,
+                                                      width: 9,
+                                                      margin:
+                                                          const EdgeInsets.only(
+                                                              right: 3,
+                                                              bottom: 3),
+                                                      decoration: BoxDecoration(
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(10),
+                                                          gradient:
+                                                              commonButtonLinearGridient),
+                                                    )
+                                                  ],
+                                                ),
+                                                customWidthBox(10),
+                                                //Name , Location
+                                                Column(
+                                                  mainAxisAlignment: mStart,
+                                                  crossAxisAlignment: cStart,
+                                                  children: [
+                                                    customText(
+                                                        snapshot
+                                                            .data!
+                                                            .data![index]
+                                                            .fullName
                                                             .toString(),
-                                                        snapshot.data!
-                                                            .data![index].sId
-                                                            .toString(),
-                                                        state);
-                                                  } else {
-                                                    showGoingInvitedDialog(snapshot
+                                                        12,
+                                                        Colors.white),
+                                                    customHeightBox(7),
+                                                    (snapshot.data!.data![index]
+                                                                .city!.length !=
+                                                            0)
+                                                        ? Row(
+                                                            children: [
+                                                              Image.asset(
+                                                                "assets/location.png",
+                                                                height: 10,
+                                                                width: 10,
+                                                              ),
+                                                              customWidthBox(2),
+                                                              SizedBox(
+                                                                width: 120,
+                                                                child: customText(
+                                                                    snapshot
+                                                                            .data!
+                                                                            .data![
+                                                                                index]
+                                                                            .city![
+                                                                                0]
+                                                                            .title
+                                                                            .toString() +
+                                                                        "," +
+                                                                        snapshot
+                                                                            .data!
+                                                                            .data![
+                                                                                index]
+                                                                            .country![
+                                                                                0]
+                                                                            .title
+                                                                            .toString(),
+                                                                    12,
+                                                                    const Color(
+                                                                        0xFFDFB48C)),
+                                                              )
+                                                            ],
+                                                          )
+                                                        : const SizedBox()
+                                                  ],
+                                                ),
+                                                customWidthBox(10),
+                                                const Spacer(),
+                                                //Invite button
+                                                InkWell(
+                                                  onTap: () {
+                                                    if (snapshot
                                                                 .data!
                                                                 .data![index]
                                                                 .isEventInviteSent ==
-                                                            1
-                                                        ? "invited"
-                                                        : snapshot
-                                                                    .data!
-                                                                    .data![
-                                                                        index]
-                                                                    .isGoing ==
-                                                                1
-                                                            ? "going"
-                                                            : "");
-                                                  }
-
-                                                  state(() {});
-                                                },
-                                                child: Container(
-                                                  alignment: Alignment.center,
-                                                  width: 80,
-                                                  padding:
-                                                      const EdgeInsets.only(
-                                                          top: 8,
-                                                          bottom: 8,
-                                                          left: 10,
-                                                          right: 10),
-                                                  decoration: BoxDecoration(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              10),
-                                                      color: snapshot
-                                                                      .data!
-                                                                      .data![
-                                                                          index]
-                                                                      .isEventInviteSent ==
-                                                                  1 ||
-                                                              snapshot
-                                                                      .data!
-                                                                      .data![
-                                                                          index]
-                                                                      .isGoing ==
-                                                                  1
-                                                          ? white24
-                                                          : null,
-                                                      gradient: snapshot
-                                                                      .data!
-                                                                      .data![
-                                                                          index]
-                                                                      .isEventInviteSent ==
-                                                                  1 ||
-                                                              snapshot
-                                                                      .data!
-                                                                      .data![
-                                                                          index]
-                                                                      .isGoing ==
-                                                                  1
-                                                          ? null
-                                                          : commonButtonLinearGridient),
-                                                  child: customText(
-                                                      snapshot
+                                                            0 &&
+                                                        snapshot
+                                                                .data!
+                                                                .data![index]
+                                                                .isGoing ==
+                                                            0) {
+                                                      sendInvitation(
+                                                          widget.eventId
+                                                              .toString(),
+                                                          snapshot.data!
+                                                              .data![index].sId
+                                                              .toString(),
+                                                          state);
+                                                    } else {
+                                                      showGoingInvitedDialog(snapshot
                                                                   .data!
                                                                   .data![index]
                                                                   .isEventInviteSent ==
                                                               1
-                                                          ? "Invited"
+                                                          ? "invited"
                                                           : snapshot
                                                                       .data!
                                                                       .data![
                                                                           index]
                                                                       .isGoing ==
                                                                   1
-                                                              ? "Going"
-                                                              : "Invite",
-                                                      15,
-                                                      white),
+                                                              ? "going"
+                                                              : "");
+                                                    }
+
+                                                    state(() {});
+                                                  },
+                                                  child: Container(
+                                                    alignment: Alignment.center,
+                                                    height: 25,
+                                                    width: 60,
+                                                    decoration: BoxDecoration(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(20),
+                                                        color: snapshot
+                                                                        .data!
+                                                                        .data![
+                                                                            index]
+                                                                        .isEventInviteSent ==
+                                                                    1 ||
+                                                                snapshot
+                                                                        .data!
+                                                                        .data![
+                                                                            index]
+                                                                        .isGoing ==
+                                                                    1
+                                                            ? white24
+                                                            : null,
+                                                        gradient: snapshot
+                                                                        .data!
+                                                                        .data![
+                                                                            index]
+                                                                        .isEventInviteSent ==
+                                                                    1 ||
+                                                                snapshot
+                                                                        .data!
+                                                                        .data![
+                                                                            index]
+                                                                        .isGoing ==
+                                                                    1
+                                                            ? null
+                                                            : commonButtonLinearGridient),
+                                                    child: customText(
+                                                        snapshot
+                                                                    .data!
+                                                                    .data![
+                                                                        index]
+                                                                    .isEventInviteSent ==
+                                                                1
+                                                            ? "Invited"
+                                                            : snapshot
+                                                                        .data!
+                                                                        .data![
+                                                                            index]
+                                                                        .isGoing ==
+                                                                    1
+                                                                ? "Going"
+                                                                : "Invite",
+                                                        10,
+                                                        white),
+                                                  ),
                                                 ),
-                                              ),
-                                              customWidthBox(10),
-                                            ],
+                                                customWidthBox(10),
+                                              ],
+                                            ),
                                           ),
                                         );
                                       },

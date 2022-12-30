@@ -19,6 +19,7 @@ Future<AllFourmModel> getAllFourmsList(BuildContext context,
     var category_id = "",
     bool isShow = true,
     var country = ""}) async {
+ /* showProgressDialogBox(context);*/
   SharedPreferences sharedPreferences = await _prefs;
   String token = sharedPreferences.getString(user.token).toString();
   String userId = sharedPreferences.getString(user.id).toString();
@@ -37,13 +38,16 @@ Future<AllFourmModel> getAllFourmsList(BuildContext context,
   jsonResponse = json.decode(response.body);
   var message = jsonResponse["message"];
   if (response.statusCode == 200) {
+    /*Navigator.pop(context);*/
     print("Get all fourms api success");
     return AllFourmModel.fromJson(jsonDecode(response.body));
   } else if (response.statusCode == 401) {
+    Navigator.pop(context);
     customToastMsg("Unauthorized User!");
     clearAllDatabase(context);
     throw Exception("Unauthorized User!");
   } else {
+   /* Navigator.pop(context);*/
     customToastMsg(message);
     throw Exception("Failed to load the work experience!");
   }

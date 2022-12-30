@@ -57,58 +57,60 @@ class _RecommendedGroupsState extends State<RecommendedGroups> {
         height: phoneHeight(context),
         padding: EdgeInsets.only(top: 70),
         width: phoneWidth(context),
-        child: Column(
-          children: [
-            Row(
-              mainAxisAlignment: mCenter,
-              children: [
-                Flexible(
-                    flex: 5,
-                    child: Container(
-                      alignment: Alignment.centerLeft,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          boxShadow: const [
-                            BoxShadow(color: Colors.black, offset: Offset(0, 2))
-                          ]),
-                      child: TextField(
-                        onChanged: (value) {
-                          setState(() {
-                            searchGroups = value.toString();
-                          });
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              Row(
+                mainAxisAlignment: mCenter,
+                children: [
+                  Flexible(
+                      flex: 5,
+                      child: Container(
+                        alignment: Alignment.centerLeft,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            boxShadow:  [
+                              BoxShadow(color: black, offset: Offset(0, 2))
+                            ]),
+                        child: TextField(
+                          onChanged: (value) {
+                            setState(() {
+                              searchGroups = value.toString();
+                            });
+                          },
+                          keyboardType: TextInputType.text,
+                          style:
+                              const TextStyle(fontSize: 14, color: Colors.white),
+                          decoration: InputDecoration(
+                              border: InputBorder.none,
+                              prefixIcon: Icon(
+                                Icons.search,
+                                color: yellowColor,
+                              ),
+                              hintText: "Search",
+                              contentPadding: EdgeInsets.only(left: 15, top: 15),
+                              hintStyle: TextStyle(color: white24)),
+                        ),
+                      )),
+                  customWidthBox(20),
+                  Flexible(
+                      flex: 1,
+                      child: InkWell(
+                        onTap: () {
+                          openFillterbottomSheet();
                         },
-                        keyboardType: TextInputType.text,
-                        style:
-                            const TextStyle(fontSize: 14, color: Colors.white),
-                        decoration: InputDecoration(
-                            border: InputBorder.none,
-                            prefixIcon: Icon(
-                              Icons.search,
-                              color: yellowColor,
-                            ),
-                            hintText: "Search",
-                            contentPadding: EdgeInsets.only(left: 15, top: 15),
-                            hintStyle: TextStyle(color: white24)),
-                      ),
-                    )),
-                customWidthBox(20),
-                Flexible(
-                    flex: 1,
-                    child: InkWell(
-                      onTap: () {
-                        openFillterbottomSheet();
-                      },
-                      child: Image.asset(
-                        "assets/icons/fillter.png",
-                        height: 20,
-                        width: 20,
-                      ),
-                    )),
-              ],
-            ),
-            customHeightBox(20),
-            getRecommendedGroups()
-          ],
+                        child: Image.asset(
+                          "assets/icons/fillter.png",
+                          height: 20,
+                          width: 20,
+                        ),
+                      )),
+                ],
+              ),
+              customHeightBox(20),
+              getRecommendedGroups()
+            ],
+          ),
         ),
       ),
     ));
@@ -139,401 +141,403 @@ class _RecommendedGroupsState extends State<RecommendedGroups> {
         ),
         builder: (context) {
           return StatefulBuilder(builder: (context, state) {
-            return Container(
-                decoration: commonBoxDecoration(),
-                child: Column(children: [
-                  customHeightBox(15),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 10, right: 10),
-                    child: Row(
-                      mainAxisAlignment: mBetween,
-                      children: [
-                        customText(
-                            "Filter & Sort", 12, const Color(0xFFDFB48C)),
-                        customText(indexTitle, 12, const Color(0xFFDFB48C)),
-                        IconButton(
-                          icon: const Icon(
-                            Icons.close,
-                            color: Colors.white,
-                          ),
-                          onPressed: () {
-                            Navigator.pop(context);
-                          },
-                        )
-                      ],
+            return SingleChildScrollView(
+              child: Container(
+                  decoration: commonBoxDecoration(),
+                  child: Column(children: [
+                    customHeightBox(15),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 10, right: 10),
+                      child: Row(
+                        mainAxisAlignment: mBetween,
+                        children: [
+                          customText(
+                              "Filter & Sort", 12, const Color(0xFFDFB48C)),
+                          customText(indexTitle, 12, const Color(0xFFDFB48C)),
+                          IconButton(
+                            icon: const Icon(
+                              Icons.close,
+                              color: Colors.white,
+                            ),
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                          )
+                        ],
+                      ),
                     ),
-                  ),
-                  customDivider(5, Colors.white),
-                  Row(crossAxisAlignment: cStart, children: [
-                    Container(
-                        padding: const EdgeInsets.only(top: 15, left: 10),
-                        child: Column(
-                            mainAxisAlignment: mStart,
-                            crossAxisAlignment: cStart,
+                    customDivider(5, Colors.white),
+                    Row(crossAxisAlignment: cStart, children: [
+                      Container(
+                          padding: const EdgeInsets.only(top: 15, left: 10),
+                          child: Column(
+                              mainAxisAlignment: mStart,
+                              crossAxisAlignment: cStart,
+                              children: [
+                                // InkWell(
+                                //   onTap: () {
+                                //     state(() {
+                                //       selectedBottomIndex = 0;
+                                //       indexTitle = "Country";
+                                //     });
+                                //   },
+                                //   child: Container(
+                                //     width: 80,
+                                //     decoration: BoxDecoration(
+                                //         gradient: (selectedBottomIndex == 0)
+                                //             ? commonButtonLinearGridient
+                                //             : null,
+                                //         border: selectedBottomIndex != 0
+                                //             ? Border.all(
+                                //                 color: Colors.white,
+                                //                 width: 1,
+                                //                 style: BorderStyle.solid)
+                                //             : null,
+                                //         borderRadius: BorderRadius.circular(20)),
+                                //     child: Center(
+                                //         child: Padding(
+                                //       padding: const EdgeInsets.only(
+                                //           top: 8, bottom: 8),
+                                //       child:
+                                //           customText("Country", 12, Colors.white),
+                                //     )),
+                                //   ),
+                                // ),
+                                // customHeightBox(15),
+                                InkWell(
+                                  onTap: () {
+                                    state(() {
+                                      selectedBottomIndex = 1;
+                                      indexTitle = "Members";
+                                    });
+                                  },
+                                  child: Container(
+                                    width: 80,
+                                    decoration: BoxDecoration(
+                                        gradient: (selectedBottomIndex == 1)
+                                            ? commonButtonLinearGridient
+                                            : null,
+                                        border: selectedBottomIndex != 1
+                                            ? Border.all(
+                                                color: Colors.white,
+                                                width: 1,
+                                                style: BorderStyle.solid)
+                                            : null,
+                                        borderRadius: BorderRadius.circular(20)),
+                                    child: Center(
+                                        child: Padding(
+                                      padding: const EdgeInsets.only(
+                                          top: 8, bottom: 8),
+                                      child:
+                                          customText("Members", 12, Colors.white),
+                                    )),
+                                  ),
+                                ),
+                                customHeightBox(15),
+                                InkWell(
+                                  onTap: () {
+                                    state(() {
+                                      selectedBottomIndex = 2;
+                                      indexTitle = "Interests";
+                                    });
+                                  },
+                                  child: Container(
+                                    width: 80,
+                                    decoration: BoxDecoration(
+                                        gradient: (selectedBottomIndex == 2)
+                                            ? commonButtonLinearGridient
+                                            : null,
+                                        border: selectedBottomIndex != 2
+                                            ? Border.all(
+                                                color: Colors.white,
+                                                width: 1,
+                                                style: BorderStyle.solid)
+                                            : null,
+                                        borderRadius: BorderRadius.circular(20)),
+                                    child: Center(
+                                        child: Padding(
+                                      padding: const EdgeInsets.only(
+                                          top: 8, bottom: 8),
+                                      child: customText(
+                                          "Interests", 12, Colors.white),
+                                    )),
+                                  ),
+                                ),
+                                customHeightBox(15),
+                                InkWell(
+                                  onTap: () {
+                                    state(() {});
+                                    defaultValues();
+                                    Navigator.pop(context);
+                                  },
+                                  child: Container(
+                                    width: 80,
+                                    decoration: BoxDecoration(
+                                        gradient: (selectedBottomIndex == 3)
+                                            ? commonButtonLinearGridient
+                                            : null,
+                                        border: selectedBottomIndex != 3
+                                            ? Border.all(
+                                                color: Colors.white,
+                                                width: 1,
+                                                style: BorderStyle.solid)
+                                            : null,
+                                        borderRadius: BorderRadius.circular(20)),
+                                    child: Center(
+                                        child: Padding(
+                                      padding: const EdgeInsets.only(
+                                          top: 8, bottom: 8),
+                                      child: customText(
+                                          "Clear All", 12, Colors.white),
+                                    )),
+                                  ),
+                                ),
+                              ])),
+                      Container(
+                          margin: const EdgeInsets.only(left: 15),
+                          height: phoneHeight(context) / 2.07,
+                          decoration: const BoxDecoration(
+                              border: Border(
+                                  left: BorderSide(
+                                      color: Colors.grey, width: 0.8))),
+                          child: Stack(
+                            alignment: Alignment.bottomCenter,
                             children: [
-                              // InkWell(
-                              //   onTap: () {
-                              //     state(() {
-                              //       selectedBottomIndex = 0;
-                              //       indexTitle = "Country";
-                              //     });
-                              //   },
-                              //   child: Container(
-                              //     width: 80,
-                              //     decoration: BoxDecoration(
-                              //         gradient: (selectedBottomIndex == 0)
-                              //             ? commonButtonLinearGridient
-                              //             : null,
-                              //         border: selectedBottomIndex != 0
-                              //             ? Border.all(
-                              //                 color: Colors.white,
-                              //                 width: 1,
-                              //                 style: BorderStyle.solid)
-                              //             : null,
-                              //         borderRadius: BorderRadius.circular(20)),
-                              //     child: Center(
-                              //         child: Padding(
-                              //       padding: const EdgeInsets.only(
-                              //           top: 8, bottom: 8),
-                              //       child:
-                              //           customText("Country", 12, Colors.white),
-                              //     )),
-                              //   ),
-                              // ),
-                              // customHeightBox(15),
-                              InkWell(
-                                onTap: () {
-                                  state(() {
-                                    selectedBottomIndex = 1;
-                                    indexTitle = "Members";
-                                  });
-                                },
-                                child: Container(
-                                  width: 80,
-                                  decoration: BoxDecoration(
-                                      gradient: (selectedBottomIndex == 1)
-                                          ? commonButtonLinearGridient
-                                          : null,
-                                      border: selectedBottomIndex != 1
-                                          ? Border.all(
-                                              color: Colors.white,
-                                              width: 1,
-                                              style: BorderStyle.solid)
-                                          : null,
-                                      borderRadius: BorderRadius.circular(20)),
-                                  child: Center(
-                                      child: Padding(
-                                    padding: const EdgeInsets.only(
-                                        top: 8, bottom: 8),
-                                    child:
-                                        customText("Members", 12, Colors.white),
-                                  )),
-                                ),
-                              ),
-                              customHeightBox(15),
-                              InkWell(
-                                onTap: () {
-                                  state(() {
-                                    selectedBottomIndex = 2;
-                                    indexTitle = "Interests";
-                                  });
-                                },
-                                child: Container(
-                                  width: 80,
-                                  decoration: BoxDecoration(
-                                      gradient: (selectedBottomIndex == 2)
-                                          ? commonButtonLinearGridient
-                                          : null,
-                                      border: selectedBottomIndex != 2
-                                          ? Border.all(
-                                              color: Colors.white,
-                                              width: 1,
-                                              style: BorderStyle.solid)
-                                          : null,
-                                      borderRadius: BorderRadius.circular(20)),
-                                  child: Center(
-                                      child: Padding(
-                                    padding: const EdgeInsets.only(
-                                        top: 8, bottom: 8),
-                                    child: customText(
-                                        "Interests", 12, Colors.white),
-                                  )),
-                                ),
-                              ),
-                              customHeightBox(15),
-                              InkWell(
-                                onTap: () {
-                                  state(() {});
-                                  defaultValues();
-                                  Navigator.pop(context);
-                                },
-                                child: Container(
-                                  width: 80,
-                                  decoration: BoxDecoration(
-                                      gradient: (selectedBottomIndex == 3)
-                                          ? commonButtonLinearGridient
-                                          : null,
-                                      border: selectedBottomIndex != 3
-                                          ? Border.all(
-                                              color: Colors.white,
-                                              width: 1,
-                                              style: BorderStyle.solid)
-                                          : null,
-                                      borderRadius: BorderRadius.circular(20)),
-                                  child: Center(
-                                      child: Padding(
-                                    padding: const EdgeInsets.only(
-                                        top: 8, bottom: 8),
-                                    child: customText(
-                                        "Clear All", 12, Colors.white),
-                                  )),
-                                ),
-                              ),
-                            ])),
-                    Container(
-                        margin: EdgeInsets.only(left: 15),
-                        height: phoneHeight(context) / 2.07,
-                        decoration: BoxDecoration(
-                            border: Border(
-                                left: BorderSide(
-                                    color: Colors.grey, width: 0.8))),
-                        child: Stack(
-                          alignment: Alignment.bottomCenter,
-                          children: [
-                            Container(
-                                width: phoneWidth(context) / 1.5,
-                                child: selectedBottomIndex == 0
-                                    ? Column(
-                                        children: [
-                                          Container(
-                                            height: 40,
-                                            decoration: BoxDecoration(
-                                                borderRadius:
-                                                    BorderRadius.circular(10),
-                                                color: Colors.black),
-                                            margin: const EdgeInsets.only(
-                                                top: 15, left: 10, right: 10),
-                                            child: const TextField(
-                                                keyboardType:
-                                                    TextInputType.text,
-                                                style: TextStyle(
-                                                    fontSize: 14,
-                                                    color: Colors.white),
-                                                decoration: InputDecoration(
-                                                  border: InputBorder.none,
-                                                  contentPadding:
-                                                      EdgeInsets.only(
-                                                          top: 8, left: 15),
-                                                  prefixIcon: Icon(
-                                                    Icons.search,
-                                                    color: Color(0xFFDFB48C),
-                                                  ),
-                                                )),
-                                          ),
-                                          customHeightBox(10),
-                                          Container(
-                                              height:
-                                                  phoneHeight(context) / 2.7,
-                                              child:
-                                                  FutureBuilder<CountryModel>(
-                                                // future: _getCountries,
-                                                builder: (context, snapshot) {
-                                                  return snapshot.hasData &&
-                                                          snapshot.data != null
-                                                      ? ListView.builder(
-                                                          itemCount: snapshot
-                                                              .data!
-                                                              .data!
-                                                              .length,
-                                                          itemBuilder:
-                                                              (context, index) {
-                                                            return ListTile(
-                                                              leading:
-                                                                  CachedNetworkImage(
-                                                                height: 35,
-                                                                width: 35,
-                                                                imageUrl: flagImageUrl
-                                                                        .toString() +
+                              SizedBox(
+                                  width: phoneWidth(context) / 1.5,
+                                  child: selectedBottomIndex == 0
+                                      ? Column(
+                                          children: [
+                                            Container(
+                                              height: 40,
+                                              decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.circular(10),
+                                                  color: Colors.black),
+                                              margin: const EdgeInsets.only(
+                                                  top: 15, left: 10, right: 10),
+                                              child: const TextField(
+                                                  keyboardType:
+                                                      TextInputType.text,
+                                                  style: TextStyle(
+                                                      fontSize: 14,
+                                                      color: Colors.white),
+                                                  decoration: InputDecoration(
+                                                    border: InputBorder.none,
+                                                    contentPadding:
+                                                        EdgeInsets.only(
+                                                            top: 8, left: 15),
+                                                    prefixIcon: Icon(
+                                                      Icons.search,
+                                                      color: Color(0xFFDFB48C),
+                                                    ),
+                                                  )),
+                                            ),
+                                            customHeightBox(10),
+                                            Container(
+                                                height:
+                                                    phoneHeight(context) / 2.7,
+                                                child:
+                                                    FutureBuilder<CountryModel>(
+                                                  // future: _getCountries,
+                                                  builder: (context, snapshot) {
+                                                    return snapshot.hasData &&
+                                                            snapshot.data != null
+                                                        ? ListView.builder(
+                                                            itemCount: snapshot
+                                                                .data!
+                                                                .data!
+                                                                .length,
+                                                            itemBuilder:
+                                                                (context, index) {
+                                                              return ListTile(
+                                                                leading:
+                                                                    CachedNetworkImage(
+                                                                  height: 35,
+                                                                  width: 35,
+                                                                  imageUrl: flagImageUrl
+                                                                          .toString() +
+                                                                      snapshot
+                                                                          .data!
+                                                                          .data![
+                                                                              index]
+                                                                          .iso2
+                                                                          .toString()
+                                                                          .toLowerCase() +
+                                                                      ".png",
+                                                                  placeholder: (context,
+                                                                          url) =>
+                                                                      const Icon(
+                                                                          Icons
+                                                                              .flag),
+                                                                  errorWidget: (context,
+                                                                          url,
+                                                                          error) =>
+                                                                      const Icon(Icons
+                                                                          .error),
+                                                                ),
+                                                                title: customText(
                                                                     snapshot
                                                                         .data!
                                                                         .data![
                                                                             index]
-                                                                        .iso2
-                                                                        .toString()
-                                                                        .toLowerCase() +
-                                                                    ".png",
-                                                                placeholder: (context,
-                                                                        url) =>
-                                                                    const Icon(
-                                                                        Icons
-                                                                            .flag),
-                                                                errorWidget: (context,
-                                                                        url,
-                                                                        error) =>
-                                                                    const Icon(Icons
-                                                                        .error),
-                                                              ),
-                                                              title: customText(
-                                                                  snapshot
-                                                                      .data!
-                                                                      .data![
-                                                                          index]
-                                                                      .title
+                                                                        .title
+                                                                        .toString(),
+                                                                    15,
+                                                                    white),
+                                                                trailing:
+                                                                    Checkbox(
+                                                                        value: snapshot
+                                                                            .data!
+                                                                            .data![
+                                                                                index]
+                                                                            .isSelected,
+                                                                        onChanged:
+                                                                            (val) {
+                                                                          state(
+                                                                              () {
+                                                                            snapshot
+                                                                                .data!
+                                                                                .data![index]
+                                                                                .isSelected = !snapshot.data!.data![index].isSelected;
+                                                                            // addRemoveCountriesIds(
+                                                                            //     snapshot.data!.data![index].sId.toString(),
+                                                                            //     snapshot.data!.data![index].isSelected);
+                                                                          });
+                                                                        }),
+                                                              );
+                                                            })
+                                                        : Center(
+                                                            child: customText(
+                                                                "No countries found!",
+                                                                15,
+                                                                white),
+                                                          );
+                                                  },
+                                                ))
+                                          ],
+                                        )
+                                      : selectedBottomIndex == 1
+                                          ? Container(
+                                              margin: const EdgeInsets.only(
+                                                  top: 15, left: 10, right: 10),
+                                              width: 270,
+                                              child: Column(
+                                                  crossAxisAlignment: cCenter,
+                                                  children: [
+                                                    RangeSlider(
+                                                      activeColor: yellowColor,
+                                                      inactiveColor: white,
+                                                      min: 0,
+                                                      max: 500,
+                                                      values: selectedRange,
+                                                      onChanged:
+                                                          (RangeValues newValue) {
+                                                        state(() {
+                                                          selectedRange =
+                                                              newValue;
+                                                          _startRange = newValue
+                                                              .start
+                                                              .toInt();
+                                                          _endRange = newValue.end
+                                                              .toInt();
+                                                        });
+                                                      },
+                                                    ),
+                                                    Container(
+                                                      padding:
+                                                          const EdgeInsets.only(
+                                                              left: 20,
+                                                              right: 11),
+                                                      child: Row(
+                                                        children: [
+                                                          customText(
+                                                              "min " +
+                                                                  _startRange
                                                                       .toString(),
-                                                                  15,
-                                                                  white),
-                                                              trailing:
-                                                                  Checkbox(
-                                                                      value: snapshot
-                                                                          .data!
-                                                                          .data![
-                                                                              index]
-                                                                          .isSelected,
-                                                                      onChanged:
-                                                                          (val) {
-                                                                        state(
-                                                                            () {
-                                                                          snapshot
-                                                                              .data!
-                                                                              .data![index]
-                                                                              .isSelected = !snapshot.data!.data![index].isSelected;
-                                                                          // addRemoveCountriesIds(
-                                                                          //     snapshot.data!.data![index].sId.toString(),
-                                                                          //     snapshot.data!.data![index].isSelected);
-                                                                        });
-                                                                      }),
-                                                            );
-                                                          })
-                                                      : Center(
-                                                          child: customText(
-                                                              "No countries found!",
                                                               15,
                                                               white),
-                                                        );
-                                                },
-                                              ))
-                                        ],
-                                      )
-                                    : selectedBottomIndex == 1
-                                        ? Container(
-                                            margin: const EdgeInsets.only(
-                                                top: 15, left: 10, right: 10),
-                                            width: 270,
-                                            child: Column(
-                                                crossAxisAlignment: cCenter,
-                                                children: [
-                                                  RangeSlider(
-                                                    activeColor: yellowColor,
-                                                    inactiveColor: white,
-                                                    min: 0,
-                                                    max: 500,
-                                                    values: selectedRange,
-                                                    onChanged:
-                                                        (RangeValues newValue) {
-                                                      state(() {
-                                                        selectedRange =
-                                                            newValue;
-                                                        _startRange = newValue
-                                                            .start
-                                                            .toInt();
-                                                        _endRange = newValue.end
-                                                            .toInt();
-                                                      });
-                                                    },
-                                                  ),
-                                                  Container(
-                                                    padding:
-                                                        const EdgeInsets.only(
-                                                            left: 20,
-                                                            right: 11),
-                                                    child: Row(
-                                                      children: [
-                                                        customText(
-                                                            "min " +
-                                                                _startRange
-                                                                    .toString(),
-                                                            15,
-                                                            white),
-                                                        Spacer(),
-                                                        customText(
-                                                            "max " +
-                                                                _endRange
-                                                                    .toString(),
-                                                            15,
-                                                            white)
-                                                      ],
-                                                    ),
-                                                  )
-                                                ]))
-                                        : selectedBottomIndex == 2
-                                            ? Container(
-                                                child:
-                                                    FutureBuilder<
-                                                            AllInterestModel>(
-                                                        future:
-                                                            _getAllInterests,
-                                                        builder: (context,
-                                                            snapshot) {
-                                                          return snapshot
-                                                                      .hasData &&
-                                                                  snapshot.data !=
-                                                                      null
-                                                              ? ListView
-                                                                  .builder(
-                                                                      itemCount: snapshot
-                                                                          .data!
-                                                                          .data!
-                                                                          .length,
-                                                                      itemBuilder:
-                                                                          (context,
-                                                                              index) {
-                                                                        return ListTile(
-                                                                          title: customText(
-                                                                              snapshot.data!.data![index].title.toString(),
-                                                                              15,
-                                                                              white),
-                                                                          trailing: Checkbox(
-                                                                              value: snapshot.data!.data![index].isSelected,
-                                                                              onChanged: (val) {
-                                                                                state(() {
-                                                                                  snapshot.data!.data![index].isSelected = !snapshot.data!.data![index].isSelected;
-                                                                                  addInSelectedArray(snapshot.data!.data![index].sId.toString(), snapshot.data!.data![index].isSelected);
-                                                                                });
-                                                                              }),
-                                                                        );
-                                                                      })
-                                                              : Center(
-                                                                  child: customText(
-                                                                      "No categories found!",
-                                                                      15,
-                                                                      white),
-                                                                );
-                                                        }))
-                                            : Container()),
-                            Align(
-                              alignment: Alignment.bottomCenter,
-                              child: InkWell(
-                                onTap: () {
-                                  setState(() {});
+                                                          Spacer(),
+                                                          customText(
+                                                              "max " +
+                                                                  _endRange
+                                                                      .toString(),
+                                                              15,
+                                                              white)
+                                                        ],
+                                                      ),
+                                                    )
+                                                  ]))
+                                          : selectedBottomIndex == 2
+                                              ? Container(
+                                                  child:
+                                                      FutureBuilder<
+                                                              AllInterestModel>(
+                                                          future:
+                                                              _getAllInterests,
+                                                          builder: (context,
+                                                              snapshot) {
+                                                            return snapshot
+                                                                        .hasData &&
+                                                                    snapshot.data !=
+                                                                        null
+                                                                ? ListView
+                                                                    .builder(
+                                                                        itemCount: snapshot
+                                                                            .data!
+                                                                            .data!
+                                                                            .length,
+                                                                        itemBuilder:
+                                                                            (context,
+                                                                                index) {
+                                                                          return ListTile(
+                                                                            title: customText(
+                                                                                snapshot.data!.data![index].title.toString(),
+                                                                                15,
+                                                                                white),
+                                                                            trailing: Checkbox(
+                                                                                value: snapshot.data!.data![index].isSelected,
+                                                                                onChanged: (val) {
+                                                                                  state(() {
+                                                                                    snapshot.data!.data![index].isSelected = !snapshot.data!.data![index].isSelected;
+                                                                                    addInSelectedArray(snapshot.data!.data![index].sId.toString(), snapshot.data!.data![index].isSelected);
+                                                                                  });
+                                                                                }),
+                                                                          );
+                                                                        })
+                                                                : Center(
+                                                                    child: customText(
+                                                                        "No categories found!",
+                                                                        15,
+                                                                        white),
+                                                                  );
+                                                          }))
+                                              : Container()),
+                              Align(
+                                alignment: Alignment.bottomCenter,
+                                child: InkWell(
+                                  onTap: () {
+                                    setState(() {});
 
-                                  Navigator.pop(context);
-                                },
-                                child: Container(
-                                    margin: EdgeInsets.only(bottom: 15),
-                                    padding: const EdgeInsets.only(
-                                        top: 7, bottom: 7, left: 20, right: 20),
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(50),
-                                      gradient: commonButtonLinearGridient,
-                                    ),
-                                    child:
-                                        customText("Apply", 16, Colors.white)),
-                              ),
-                            )
-                          ],
-                        ))
-                  ])
-                ]));
+                                    Navigator.pop(context);
+                                  },
+                                  child: Container(
+                                      margin: const EdgeInsets.only(bottom: 20),
+                                      padding: const EdgeInsets.only(
+                                          top: 7, bottom: 7, left: 20, right: 20),
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(50),
+                                        gradient: commonButtonLinearGridient,
+                                      ),
+                                      child:
+                                          customText("Apply", 16, Colors.white)),
+                                ),
+                              )
+                            ],
+                          ))
+                    ])
+                  ])),
+            );
           });
         });
   }
@@ -673,111 +677,141 @@ class _RecommendedGroupsState extends State<RecommendedGroups> {
         builder: (context, snapshot) {
           return snapshot.hasData && snapshot.data != null
               ? groupsListView(snapshot.data!)
+              : snapshot.data == null
+              ? const Center(
+            child: CircularProgressIndicator(),
+          )
               : Center(
-                  child: customText("No ggroups found!", 15, white),
+                  child: customText("No groups found!", 15, white),
                 );
         });
   }
 
   //List of groups
   Widget groupsListView(AllGroupsModel snapshot) {
-    return Container(
-      child: ListView.builder(
-          padding: EdgeInsets.zero,
-          shrinkWrap: true,
-          itemCount: snapshot.data!.length,
-          itemBuilder: (context, index) {
-            return InkWell(
-              onTap: () {
-                Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => GroupDetailsPage(
-                          groupId: snapshot.data![index].sId.toString(),
-                          groupAdmin: snapshot.data![index].userId.toString(),
-                        )));
-              },
-              child: Container(
-                margin: const EdgeInsets.only(top: 10, left: 20, right: 5),
-                decoration:
-                    BoxDecoration(borderRadius: BorderRadius.circular(10)),
-                padding: const EdgeInsets.only(top: 15, bottom: 15, left: 10),
-                child: Row(children: [
-                  CachedNetworkImage(
-                      imageUrl: IMAGE_URL +
-                          snapshot.data![index].coverImage!.toString(),
-                      errorWidget: (error, context, url) =>
-                          const Icon(Icons.person),
-                      placeholder: (context, url) => const Icon(Icons.person),
-                      imageBuilder: (context, url) {
-                        return CircleAvatar(
-                          backgroundImage: url,
-                        );
-                      }),
-                  customWidthBox(10),
-                  Column(
-                    crossAxisAlignment: cStart,
-                    children: [
-                      SizedBox(
-                          width: 120,
-                          child: Text(
-                            snapshot.data![index].title.toString(),
-                            overflow: TextOverflow.fade,
-                            maxLines: null,
-                            softWrap: false,
-                            style: TextStyle(color: white, fontSize: 11),
-                          )),
-                      customHeightBox(5),
-                      Row(
-                        children: [
-                          customText(
-                              snapshot.data![index].totalMembers.toString() +
-                                  " Members",
-                              11,
-                              yellowColor)
-                        ],
-                      ),
-                    ],
-                  ),
-                  const Spacer(),
-                  InkWell(
-                    onTap: () {
-                      if (snapshot.data![index].isMember == 1) {
-                        showLeaveDialogBox(
-                            snapshot.data![index].sId.toString());
-                      }
-                      if (snapshot.data![index].isMember == 0 &&
-                          snapshot.data![index].isMember == 0) {
-                        leaveJoinTheGroup(
-                            snapshot.data![index].sId.toString(), 2);
-                      }
-                    },
-                    child: Container(
-                      width: 110,
-                      margin: const EdgeInsets.only(right: 20),
-                      padding: const EdgeInsets.only(
-                          top: 10, bottom: 10, left: 10, right: 10),
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(50),
-                          gradient: commonButtonLinearGridient),
-                      child: Center(
-                          child: customText(
-                              snapshot.data![index].isMember == 1
-                                  ? "Leave"
-                                  : snapshot.data![index].isJoinSent == 1
-                                      ? "Cancel Request"
-                                      : snapshot.data![index]
-                                                  .isInviteRecieved ==
-                                              1
-                                          ? "Accept Request"
-                                          : "Join Group",
-                              11,
-                              white)),
+    return ListView.builder(
+        padding: EdgeInsets.zero,
+        shrinkWrap: true,
+        itemCount: snapshot.data!.length,
+        itemBuilder: (context, index) {
+          return InkWell(
+            onTap: () {
+              Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => GroupDetailsPage(
+                        groupId: snapshot.data![index].sId.toString(),
+                        groupAdmin: snapshot.data![index].userId.toString(),
+                      )));
+            },
+            child: Container(
+              margin: const EdgeInsets.only(top: 10, left: 20, right: 5),
+              decoration:
+                  BoxDecoration(borderRadius: BorderRadius.circular(10)),
+              padding: const EdgeInsets.only(top: 15, bottom: 15, left: 10),
+              child: Row(children: [
+                CachedNetworkImage(
+                    imageUrl: IMAGE_URL +
+                        snapshot.data![index].coverImage!.toString(),
+                    errorWidget: (error, context, url) =>
+                        const Icon(Icons.person),
+                    placeholder: (context, url) => const Icon(Icons.person),
+                    imageBuilder: (context, url) {
+                      return CircleAvatar(
+                        backgroundImage: url,
+                      );
+                    }),
+                customWidthBox(10),
+                Column(
+                  crossAxisAlignment: cStart,
+                  children: [
+                    Row(
+                      children: [
+                        Text(
+                          snapshot.data![index].title.toString(),
+                          overflow: TextOverflow.fade,
+                          maxLines: null,
+                          softWrap: false,
+                          style: TextStyle(color: white, fontSize: 14),
+                        ),
+                        SizedBox(width: 4,),
+                        (snapshot.data![index].privacy==1) ?Image.asset("assets/website_icon.png",height: 15,width: 15,color: white,)
+                            :(snapshot.data![index].privacy==2)?Container(
+                          height: 15,
+                          width: 15,
+                          decoration:BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: white
+                          ) ,
+                          alignment: Alignment.center,
+                          child:  ShaderMask(
+
+                            shaderCallback: (Rect bounds) => const RadialGradient(
+                              center: Alignment.topCenter,
+                              stops: [0.5,1],
+
+                              colors: [
+                                Color(0xff694FB1),
+                                Color(0xff8134A5),
+                              ],
+                              tileMode: TileMode.mirror,
+                            ).createShader(bounds),
+                            child: const Icon(Icons.lock_outline,size: 10,),),
+                        )
+                            :(snapshot.data![index].privacy==3)?const SizedBox():const SizedBox(),
+
+                      ],
                     ),
-                  )
-                ]),
-              ),
-            );
-          }),
-    );
+                    customHeightBox(5),
+                    Row(
+                      children: [
+                        customText(
+                            snapshot.data![index].totalMembers.toString() +
+                                " Members",
+                            11,
+                            yellowColor)
+                      ],
+                    ),
+                  ],
+                ),
+                const Spacer(),
+                InkWell(
+                  onTap: () {
+                    if (snapshot.data![index].isMember == 1) {
+                      showLeaveDialogBox(
+                          snapshot.data![index].sId.toString());
+                    }
+                    if (snapshot.data![index].isMember == 0 &&
+                        snapshot.data![index].isMember == 0) {
+                      leaveJoinTheGroup(
+                          snapshot.data![index].sId.toString(), 2);
+                    }
+                  },
+                  child: Container(
+                    width: 110,
+                    margin: const EdgeInsets.only(right: 20),
+                    padding: const EdgeInsets.only(
+                        top: 10, bottom: 10, left: 10, right: 10),
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(50),
+                        gradient: commonButtonLinearGridient),
+                    child: Center(
+                        child: customText(
+                            snapshot.data![index].isMember == 1
+                                ? "Leave"
+                                : snapshot.data![index].isJoinSent == 1
+                                    ? "Cancel Request"
+                                    : snapshot.data![index]
+                                                .isInviteRecieved ==
+                                            1
+                                        ? "Accept Request"
+                                        : "Join Group",
+                            11,
+                            white)),
+                  ),
+                )
+              ]),
+            ),
+          );
+        });
   }
 
   //Clear the all fillters
