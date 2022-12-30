@@ -61,7 +61,7 @@ class _EventPhotosState extends State<EventPhotos> {
                                       )));
                         },
                         child: Container(
-                          margin: EdgeInsets.all(10),
+                          margin: const EdgeInsets.all(10),
                           height: 200,
                           decoration: BoxDecoration(
                               color: white,

@@ -50,7 +50,11 @@ Future<AllFourmModel>? _exploreForums;
 
 class _HomeScreen extends State<DashboardPageScreen> {
   final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
-  String? userID, profileImage, fullName, countryName, countryId;
+  String? userID,
+      profileImage,
+      firstName,
+      countryName,
+      countryId;
 
   @override
   void initState() {
@@ -120,7 +124,8 @@ class _HomeScreen extends State<DashboardPageScreen> {
     SharedPreferences sharedPreferences = await _prefs;
     userID = sharedPreferences.getString(user.id).toString();
     profileImage = sharedPreferences.getString(user.profileImage).toString();
-    fullName = sharedPreferences.getString(user.fullName).toString();
+    /*fullName = sharedPreferences.getString(user.fullName).toString();*/
+    firstName= sharedPreferences.getString(user.firstName).toString();
     countryName = sharedPreferences.getString(user.country);
     countryId = sharedPreferences.getString(user.countryId);
   }
@@ -152,8 +157,8 @@ class _HomeScreen extends State<DashboardPageScreen> {
                   center: Alignment.center,
                   radius: 0.5,
                   colors: [
-                    Color(0xff7822A0),
-                Color(0xff3958B0),
+                    Color(0xff694FB1),
+                Color(0xff8134A5),
                   ],
                   tileMode: TileMode.mirror,
                 ).createShader(bounds),
@@ -179,8 +184,8 @@ class _HomeScreen extends State<DashboardPageScreen> {
                   stops: [0.5,1],
 
                   colors: [
-                    Color(0xff7822A0),
-                    Color(0xff3958B0),
+                    Color(0xff694FB1),
+                    Color(0xff8134A5),
                   ],
                   tileMode: TileMode.mirror,
                 ).createShader(bounds),
@@ -225,9 +230,9 @@ class _HomeScreen extends State<DashboardPageScreen> {
             children: [
               customHeightBox(30),
               Container(
-                child: fullName != null
+                child:  firstName!= null
                     ? Text(
-                        '"Hello $fullName"',
+                        '"Hello $firstName"',
                         style:  TextStyle(
                             color: yellowColor,
                             fontSize: 30,
@@ -253,10 +258,6 @@ class _HomeScreen extends State<DashboardPageScreen> {
                     customText("Let's explore what's happening nearby", 12,
                         Colors.white),
                     const Spacer(),
-                    // const Icon(
-                    //   Icons.location_pin,
-                    //   size: 20,
-                    // ),
                     customWidthBox(10),
                     // countryName != null
                     //     ? customText(countryName.toString(), 12, Colors.white)
@@ -300,7 +301,7 @@ class _HomeScreen extends State<DashboardPageScreen> {
                 builder: (context, snapshot) {
                   return snapshot.hasData && snapshot.data!.data!.isNotEmpty
                       ? SizedBox(
-                          height: 150,
+                          height: 200,
                           child: ListView.builder(
                               scrollDirection: Axis.horizontal,
                               itemCount: snapshot.data!.data!.length <= 5
@@ -334,8 +335,8 @@ class _HomeScreen extends State<DashboardPageScreen> {
                                       mainAxisAlignment: mStart,
                                       children: [
                                         Container(
-                                          width: 100,
-                                          height: 80,
+                                          width: 130,
+                                          height: 130,
                                           decoration: BoxDecoration(
                                               borderRadius:
                                                   BorderRadius.circular(10)),
@@ -370,8 +371,8 @@ class _HomeScreen extends State<DashboardPageScreen> {
                                               alignment: Alignment.bottomRight,
                                               child: Container(
                                                 alignment: Alignment.center,
-                                                height: 40,
-                                                width: 30,
+                                                height: 45,
+                                                width: 35,
                                                 decoration: BoxDecoration(
                                                     gradient:
                                                         commonButtonLinearGridient,
@@ -496,7 +497,7 @@ class _HomeScreen extends State<DashboardPageScreen> {
                   builder: (context, snapshot) {
                     return snapshot.hasData && snapshot.data!.data!.isNotEmpty
                         ? SizedBox(
-                            height: 320,
+                            height: 420,
                             child: ListView.builder(
                                 physics: const NeverScrollableScrollPhysics(),
                                 padding: EdgeInsets.zero,
@@ -506,7 +507,7 @@ class _HomeScreen extends State<DashboardPageScreen> {
                                     : 2,
                                 itemBuilder: (context, index) {
                                   return Container(
-                                      margin: EdgeInsets.only(bottom: 10),
+                                      margin: const EdgeInsets.only(bottom: 10),
                                       child: InkWell(
                                         onTap: () async {
                                           await Navigator.of(context)
@@ -690,33 +691,26 @@ class _HomeScreen extends State<DashboardPageScreen> {
                                               .toString(),
                                           12,
                                           white),
-                                      subtitle: Row(
+                                      subtitle:(snapshot.data!.data![index].city!.isNotEmpty && snapshot.data!.data![index].country!.isNotEmpty)
+                                          ? Row(
                                         children: [
                                           Image.asset("assets/location.png",height: 15,width: 15,),
                                           customWidthBox(2),
-                                          Container(
-                                            child: snapshot.data!.data![index]
-                                                        .city!.isNotEmpty &&
-                                                    snapshot.data!.data![index]
-                                                        .country!.isNotEmpty
-                                                ? customText(
-                                                    snapshot.data!.data![index]
-                                                            .city![0].title
-                                                            .toString() +
-                                                        " , " +
-                                                        snapshot
-                                                            .data!
-                                                            .data![index]
-                                                            .country![0]
-                                                            .title
-                                                            .toString(),
-                                                    12,
-                                                    yellowColor)
-                                                : customText("No available..",
-                                                    12, white),
-                                          )
+                                          customText(
+                                                  snapshot.data!.data![index]
+                                                          .city![0].title
+                                                          .toString() +
+                                                      " , " +
+                                                      snapshot
+                                                          .data!
+                                                          .data![index]
+                                                          .country![0]
+                                                          .title
+                                                          .toString(),
+                                                  12,
+                                                  yellowColor)
                                         ],
-                                      ),
+                                      ):const SizedBox(),
                                     ));
                               }),
                         )
@@ -749,7 +743,7 @@ class _HomeScreen extends State<DashboardPageScreen> {
         child: Column(
           crossAxisAlignment: cStart,
           children: [
-            Container(
+            SizedBox(
               height: 150,
               child: CachedNetworkImage(
                 imageUrl: IMAGE_URL + model.coverImage.toString(),
@@ -763,7 +757,7 @@ class _HomeScreen extends State<DashboardPageScreen> {
                   ),
                 ),
                 placeholder: (context, url) =>
-                    Center(child: CircularProgressIndicator()),
+                    const Center(child: CircularProgressIndicator()),
                 errorWidget: (context, url, error) => Icon(Icons.error),
               ),
             ),
@@ -787,16 +781,16 @@ class _HomeScreen extends State<DashboardPageScreen> {
           crossAxisAlignment: cStart,
           children: [
             Container(
-              padding: EdgeInsets.only(left: 5, right: 5),
+              padding: const EdgeInsets.only(left: 5, right: 5),
               child: Row(
                 crossAxisAlignment: cStart,
                 mainAxisAlignment: mStart,
                 children: [
                   CachedNetworkImage(
                       imageUrl:
-                          IMAGE_URL + model.userId!.profileImage.toString(),
-                      errorWidget: (error, context, url) => Icon(Icons.person),
-                      placeholder: (context, url) => Icon(Icons.person),
+                  (model.type ==0)?IMAGE_URL + model.userId!.profileImage.toString():"https://cutewallpaper.org/22/profile-picture-aesthetic-wallpapers/2596225445.jpg",
+                      errorWidget: (error, context, url) => const Icon(Icons.person),
+                      placeholder: (context, url) => const Icon(Icons.person),
                       imageBuilder: (context, url) {
                         return CircleAvatar(
                           backgroundImage: url,
@@ -808,7 +802,7 @@ class _HomeScreen extends State<DashboardPageScreen> {
                     mainAxisAlignment: mStart,
                     children: [
                       customText(
-                          model.userId!.fullName.toString(), 15, yellowColor),
+    (model.type ==0)?model.userId!.fullName.toString():"Anonymous", 15, yellowColor),
                       customHeightBox(10),
                       customText(
                           "Last Post: " +

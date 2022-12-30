@@ -98,7 +98,7 @@ class GoupDetailsPageState extends State<GroupDetailsPage> {
                         children: [
                           Stack(
                             children: [
-                              Container(
+                              SizedBox(
                                 width: phoneHeight(context),
                                 height: 250,
                                 child: CachedNetworkImage(
@@ -117,16 +117,16 @@ class GoupDetailsPageState extends State<GroupDetailsPage> {
                                     ),
                                   ),
                                   placeholder: (context, url) =>
-                                      CircularProgressIndicator(),
+                                      const CircularProgressIndicator(),
                                   errorWidget: (context, url, error) =>
-                                      Icon(Icons.error),
+                                      const Icon(Icons.error),
                                 ),
                               ),
                               Align(
                                 alignment: Alignment.topRight,
                                 child: //Show popmenu
                                     Container(
-                                        margin: EdgeInsets.only(top: 20),
+                                        margin: const EdgeInsets.only(top: 20),
                                         child: snapshot.data!.data!.isMember ==
                                                 1
                                             ? GestureDetector(

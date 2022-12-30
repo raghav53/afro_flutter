@@ -68,6 +68,7 @@ dependencies:
   socket_io_client: ^2.0.0
   flutter_dash: ^1.0.0
   google_sign_in: ^5.4.2
+  firebase_crashlytics: ^2.8.9
   flutter_login_facebook: ^1.7.0
 dev_dependencies:
   flutter_test:

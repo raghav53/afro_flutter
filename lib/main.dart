@@ -14,12 +14,19 @@ import 'package:afro/Util/local_notification_service.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sizer/sizer.dart';
 
+import 'firebase_options.dart';
+
+get getContext => navigatorKey!.currentState?.overlay?.context;
+
 Future<void> main() async {
   HttpOverrides.global = MyHttpOverrides();
+  WidgetsFlutterBinding.ensureInitialized();
+  await LocalNotificationService.initMainFCM();
   runApp(const MyApp());
 }
 class MyHttpOverrides extends HttpOverrides {
@@ -36,7 +43,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return Sizer(builder: ((context, orientation, deviceType) {
       return MaterialApp(
-        title: 'Flutter Demo',
+        title: 'Afro-unitd',
         debugShowCheckedModeBanner: false,
         navigatorKey: navigatorKey,
         theme: ThemeData(
@@ -61,7 +68,7 @@ class _SplashScreen extends State<SplashScreenPage> {
   @override
   void initState() {
     super.initState();
-    _local = LocalNotificationService(context: context);
+    LocalNotificationService.initNotification();
     init();
     checkUserExist(context);
   }
@@ -79,9 +86,20 @@ class _SplashScreen extends State<SplashScreenPage> {
 
   init() async {
     WidgetsFlutterBinding.ensureInitialized();
-    await Firebase.initializeApp();
-    _local.initialize();
-    _local.initNotification();
+    await Firebase.initializeApp(
+      options: const FirebaseOptions(
+          apiKey: "AFRO_2022-HJAKD-56464-V1-34512-SADFA_02",
+          appId: "1:4357235401:android:94f0453178d8a615462318",
+          messagingSenderId: "4357235401",
+          projectId: "afro-united-23c8e"),
+    );
+
+    SystemChrome.setPreferredOrientations(
+        [DeviceOrientation.portraitUp,
+          DeviceOrientation.portraitDown,
+          DeviceOrientation.landscapeRight,
+          DeviceOrientation.landscapeLeft]);
+
   }
 
   Future<void> checkUserExist(BuildContext context) async {
@@ -90,6 +108,7 @@ class _SplashScreen extends State<SplashScreenPage> {
     String? onBorading = sharedPreferences.getString("onBoarding");
     String? process = sharedPreferences.getString("newuser");
     String? token = sharedPreferences.getString("token");
+
 
     if (process.toString().isNotEmpty && process != null) {
       print(process.toString());

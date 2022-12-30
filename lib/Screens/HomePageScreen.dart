@@ -9,6 +9,8 @@ import 'package:afro/Util/CustomWidgetAttributes.dart';
 
 import 'package:flutter/material.dart';
 
+import '../Util/Colors.dart';
+
 class HomePagescreen extends StatefulWidget {
   const HomePagescreen({Key? key}) : super(key: key);
 
@@ -26,7 +28,7 @@ class _HomePagescreenState extends State<HomePagescreen> {
             resizeToAvoidBottomInset: false,
             bottomNavigationBar: Container(
               height: 70,
-              color: Colors.black,
+              color: grey24,
               padding: const EdgeInsets.only(top: 7, bottom: 7),
               child: Row(
                 mainAxisAlignment: mAround,
@@ -75,9 +77,6 @@ class _HomePagescreenState extends State<HomePagescreen> {
               break;
             case 5:
               selectedScreenPage = ProfileSettingScreenPage();
-              break;
-            default:
-              selectedScreenPage = const DashboardPageScreen();
               break;
           }
         });

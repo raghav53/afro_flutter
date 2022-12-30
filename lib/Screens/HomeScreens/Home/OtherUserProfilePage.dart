@@ -170,13 +170,7 @@ class _OtherUserProfilePageScreenState extends State<OtherUserProfilePageScreen>
                                                               width: 15,
                                                               imageUrl: country_code_url +
                                                                   snapshot
-                                                                      .data!
-                                                                      .data!
-                                                                      .country!
-                                                                      .iso2
-                                                                      .toString()
-                                                                      .toLowerCase() +
-                                                                  ".png",
+                                                                      .data!.data!.country!.iso2.toString().toLowerCase() +".png",
                                                               imageBuilder:
                                                                   (context,
                                                                       url) {
@@ -186,7 +180,7 @@ class _OtherUserProfilePageScreenState extends State<OtherUserProfilePageScreen>
                                                                 );
                                                               },
                                                             ),
-                                                            Container(
+                                                            SizedBox(
                                                               height: 15,
                                                               width: 150,
                                                               child: ListView

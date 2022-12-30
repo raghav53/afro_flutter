@@ -94,7 +94,7 @@ class _Location extends State<LocationPageScreen> {
                     Container(
                       alignment: Alignment.centerLeft,
                       decoration: BoxDecoration(
-                        color: Colors.black,
+                        color: black,
                         borderRadius: BorderRadius.circular(10),
                       ),
                       height: 50,

@@ -43,6 +43,7 @@ Future<MyAllThreadsModel> getUserAllFourmsList(
     clearAllDatabase(context);
     throw Exception("Unauthorized User!");
   } else {
+    Navigator.pop(context);
     customToastMsg(message);
     throw Exception("Failed to load the work experience!");
   }
@@ -65,16 +66,16 @@ class MyAllThreadsModel {
     if (json['data'] != null) {
       data = <MyAllThreadsDataModel>[];
       json['data'].forEach((v) {
-        data!.add(new MyAllThreadsDataModel.fromJson(v));
+        data!.add( MyAllThreadsDataModel.fromJson(v));
       });
     }
     metadata = json['metadata'] != null
-        ? new Metadata.fromJson(json['metadata'])
+        ?  Metadata.fromJson(json['metadata'])
         : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data =  Map<String, dynamic>();
     data['success'] = this.success;
     data['code'] = this.code;
     data['message'] = this.message;

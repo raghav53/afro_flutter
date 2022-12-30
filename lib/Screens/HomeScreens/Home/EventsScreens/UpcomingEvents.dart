@@ -35,6 +35,7 @@ class _UpcomingEvent extends State<UpcomingEventsScreen> {
   @override
   void initState() {
     super.initState();
+   /* getUpcomingEvents();*/
     getCountries();
   }
 
@@ -74,8 +75,8 @@ class _UpcomingEvent extends State<UpcomingEventsScreen> {
                       alignment: Alignment.centerLeft,
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(10),
-                          boxShadow: const [
-                            BoxShadow(color: Colors.black, offset: Offset(0, 2))
+                          boxShadow:  [
+                            BoxShadow(color: black, offset: Offset(0, 2))
                           ]),
                       child: TextField(
                         onChanged: (value) {
@@ -113,7 +114,7 @@ class _UpcomingEvent extends State<UpcomingEventsScreen> {
               ],
             ),
             customHeightBox(25),
-            getUpcomingEvents()
+            getUpcomingEvents(),
           ],
         ),
       ),
@@ -134,6 +135,10 @@ class _UpcomingEvent extends State<UpcomingEventsScreen> {
         builder: (context, snapshot) {
           return snapshot.hasData && snapshot.data != null
               ? upcominEventsList(snapshot.data!)
+              : snapshot.data == null
+              ? const Center(
+            child: CircularProgressIndicator(),
+          )
               : Center(
                   child: customText("No events!", 15, white),
                 );
@@ -175,7 +180,7 @@ class _UpcomingEvent extends State<UpcomingEventsScreen> {
                         ),
                       ),
                       placeholder: (context, url) =>
-                          CircularProgressIndicator(),
+                          const CircularProgressIndicator(),
                       errorWidget: (context, url, error) => Icon(Icons.error),
                     ),
                     customHeightBox(10),
@@ -191,11 +196,7 @@ class _UpcomingEvent extends State<UpcomingEventsScreen> {
                     customHeightBox(5),
                     Row(
                       children: [
-                        const Icon(
-                          Icons.location_pin,
-                          color: Color(0xFFDFB48C),
-                          size: 15,
-                        ),
+                        Image.asset("assets/location.png",height: 15,width: 15,),
                         customWidthBox(5),
                         customText(snapshot.data![index].city.toString(), 12,
                             Colors.white)
@@ -420,7 +421,7 @@ class _UpcomingEvent extends State<UpcomingEventsScreen> {
                           child: Stack(
                               alignment: Alignment.bottomCenter,
                               children: [
-                                Container(
+                                SizedBox(
                                   width: phoneWidth(context) / 1.4,
                                   child: selectedBottomIndex == 0
                                       ? Column(

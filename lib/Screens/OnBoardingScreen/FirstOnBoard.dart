@@ -20,6 +20,8 @@ class _FirstScreen extends State<FirstOnBoardScreen> {
               width: phoneWidth(context),
               decoration: commonBoxDecoration(),
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   Padding(
                     padding:
@@ -38,12 +40,13 @@ class _FirstScreen extends State<FirstOnBoardScreen> {
                                 style: const TextStyle(
                                     fontSize: 20,
                                     fontStyle: FontStyle.normal,fontFamily: "Poppins",
+                                    fontWeight: FontWeight.bold,
                                     color: Color.fromARGB(255, 105, 240, 217)),
                                 children: [
                               TextSpan(
-                                  style: TextStyle(color: white, fontSize: 30,fontStyle: FontStyle.normal,fontFamily: "Poppins"),
+                                  style: TextStyle(color: white, fontSize: 30,fontStyle:FontStyle.normal,fontFamily: "Poppins",fontWeight: FontWeight.bold),
                                   text:
-                                      "\nLet your Afro\nexperience \nbegin")
+                                      "\nLet your Afro\nexperience \nbegin !")
                             ])),
                         const Spacer(),
                         GestureDetector(

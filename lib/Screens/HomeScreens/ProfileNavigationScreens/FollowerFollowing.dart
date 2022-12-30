@@ -45,7 +45,7 @@ class _FollowerFollowing extends State<FollowerFollowingPage>
   Widget build(BuildContext context) {
     return SafeArea(
         child: Scaffold(
-      appBar: commonAppbar(fullName!),
+      appBar: commonAppbar(fullName.toString()),
       resizeToAvoidBottomInset: false,
       extendBodyBehindAppBar: true,
       body: SingleChildScrollView(

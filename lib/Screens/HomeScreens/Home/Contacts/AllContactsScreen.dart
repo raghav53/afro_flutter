@@ -113,9 +113,9 @@ class _AllContactsListScreenState extends State<AllContactsListScreen> {
                           alignment: Alignment.centerLeft,
                           decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(10),
-                              boxShadow: const [
+                              boxShadow:  [
                                 BoxShadow(
-                                    color: Colors.black, offset: Offset(0, 2))
+                                    color: black, offset: Offset(0, 2))
                               ]),
                           child: TextField(
                             onChanged: (value) => {
@@ -147,8 +147,8 @@ class _AllContactsListScreenState extends State<AllContactsListScreen> {
                           },
                           child: Image.asset(
                             "assets/icons/fillter.png",
-                            height: 20,
-                            width: 20,
+                            height: 30,
+                            width: 30,
                           ),
                         )),
                   ],
@@ -200,8 +200,8 @@ class _AllContactsListScreenState extends State<AllContactsListScreen> {
         });
       },
       child: Container(
-        margin: EdgeInsets.only(right: 10),
-        padding: EdgeInsets.only(left: 5, right: 5),
+        margin: const EdgeInsets.only(right: 10),
+        padding: const EdgeInsets.only(left: 5, right: 5),
         decoration: BoxDecoration(
             gradient:
                 (selectedIndex == index) ? commonButtonLinearGridient : null,
@@ -248,6 +248,14 @@ class _AllContactsListScreenState extends State<AllContactsListScreen> {
           builder: (context, snapshot) {
             return snapshot.hasData && snapshot.data != null
                 ? AllReceivedFriendRequestsList(snapshot.data!)
+                : snapshot.data == null
+                ? const Center(
+              child: CircularProgressIndicator(),
+            )
+                : snapshot.data == null
+                ? const Center(
+              child: CircularProgressIndicator(),
+            )
                 : Container(
                     margin: const EdgeInsets.only(top: 100),
                     alignment: Alignment.center,
@@ -267,6 +275,10 @@ class _AllContactsListScreenState extends State<AllContactsListScreen> {
           builder: (context, snapshot) {
             return snapshot.hasData && snapshot.data != null
                 ? ListAllFriendsOfUser(snapshot.data!)
+                : snapshot.data == null
+                ? const Center(
+              child: CircularProgressIndicator(),
+            )
                 : Container(
                     margin: EdgeInsets.only(top: 100),
                     alignment: Alignment.center,
@@ -288,6 +300,10 @@ class _AllContactsListScreenState extends State<AllContactsListScreen> {
           builder: (context, snapshot) {
             return snapshot.hasData && snapshot.data != null
                 ? AllSentFriendRequestList(snapshot.data!)
+                : snapshot.data == null
+                ? const Center(
+              child: CircularProgressIndicator(),
+            )
                 : Container(
                     margin: EdgeInsets.only(top: 100),
                     alignment: Alignment.center,
@@ -357,20 +373,16 @@ class _AllContactsListScreenState extends State<AllContactsListScreen> {
                             15,
                             white),
                         customHeightBox(5),
-                        Row(
+                        (snapshot.data![index].friend!.city!.isNotEmpty&&snapshot.data![index].friend!.city!=null)?Row(
                           children: [
-                            Icon(
-                              Icons.location_pin,
-                              color: yellowColor,
-                              size: 15,
-                            ),
+                            Image.asset("assets/location.png",height: 15,width: 15,),
+                            SizedBox(width: 4,),
                             customText(
-                                snapshot.data![index].friend!.city![0].name
-                                    .toString(),
+                                 snapshot.data![index].friend!.city![0].title.toString()+","+snapshot.data![index].friend!.country![0].title.toString(),
                                 9.5,
-                                white)
+                                yellowColor)
                           ],
-                        )
+                        ):const SizedBox()
                       ],
                     ),
                     const Spacer(),
@@ -486,20 +498,16 @@ class _AllContactsListScreenState extends State<AllContactsListScreen> {
                                 15,
                                 white),
                             customHeightBox(5),
-                            Row(
+                            (snapshot.data![index].friend!.city!.isNotEmpty&&snapshot.data![index].friend!.city!=null)?Row(
                               children: [
-                                Icon(
-                                  Icons.location_pin,
-                                  color: yellowColor,
-                                  size: 15,
-                                ),
+                                Image.asset("assets/location.png",height: 15,width: 15,),
+                                SizedBox(width: 4,),
                                 customText(
-                                    snapshot.data![index].friend!.city![0].name
-                                        .toString(),
+                                    snapshot.data![index].friend!.city![0].title.toString()+","+snapshot.data![index].friend!.country![0].title.toString(),
                                     9.5,
-                                    white)
+                                    yellowColor)
                               ],
-                            )
+                            ):const SizedBox()
                           ],
                         ),
                         const Spacer(),
@@ -605,23 +613,16 @@ class _AllContactsListScreenState extends State<AllContactsListScreen> {
                                 15,
                                 white),
                             customHeightBox(5),
-                            Row(
+                            (snapshot.data![index].friend!.city!.isNotEmpty&&snapshot.data![index].friend!.city!=null)?Row(
                               children: [
-                                Icon(
-                                  Icons.location_pin,
-                                  color: yellowColor,
-                                  size: 15,
-                                ),
+                                Image.asset("assets/location.png",height: 15,width: 15,),
+                                SizedBox(width: 4,),
                                 customText(
-                                    snapshot.data![index].friend!.city!.isEmpty
-                                        ? "Not available"
-                                        : snapshot
-                                            .data![index].friend!.city![0].title
-                                            .toString(),
+                                    snapshot.data![index].friend!.city![0].title.toString()+","+snapshot.data![index].friend!.country![0].title.toString(),
                                     9.5,
-                                    white)
+                                    yellowColor)
                               ],
-                            )
+                            ):const SizedBox()
                           ],
                         ),
                         const Spacer(),
@@ -707,21 +708,18 @@ class _AllContactsListScreenState extends State<AllContactsListScreen> {
                   ),
                   title: customText(
                       snapshot.data![index].fullName.toString(), 15, white),
-                  subtitle: Row(
+                  subtitle: (snapshot.data![index].city!=null && snapshot.data![index].city!.isNotEmpty)?Row(
                     children: [
-                      Icon(
-                        Icons.location_pin,
-                        color: yellowColor,
-                        size: 15,
-                      ),
+                      Image.asset("assets/location.png",height: 15,width: 15,),
+                      SizedBox(width: 4,),
                       customText(
-                          snapshot.data![index].city!.isEmpty
-                              ? "Not available!"
-                              : snapshot.data![index].city![0].title.toString(),
+                   /*       snapshot.data![index].city!.isEmpty
+                              ? "Not available!"*/
+                               snapshot.data![index].city![0].title.toString()+","+ snapshot.data![index].country![0].title.toString(),
                           9.5,
-                          white)
+                          yellowColor)
                     ],
-                  ),
+                  ):SizedBox(),
                   trailing: checkStatus(context, snapshot.data![index])!,
                 ));
           }),
