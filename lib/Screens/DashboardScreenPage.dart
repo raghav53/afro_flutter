@@ -339,7 +339,13 @@ class _HomeScreen extends State<DashboardPageScreen> {
                                           height: 130,
                                           decoration: BoxDecoration(
                                               borderRadius:
-                                                  BorderRadius.circular(10)),
+                                                  BorderRadius.circular(10),
+                                          boxShadow: [
+                                            BoxShadow(
+                                              color: gray1,
+                                              spreadRadius: 0.3
+                                            )
+                                          ]),
                                           child: Stack(children: [
                                             CachedNetworkImage(
                                               imageUrl: IMAGE_URL +
@@ -586,7 +592,7 @@ class _HomeScreen extends State<DashboardPageScreen> {
                 onTap: () {
                   Navigator.of(context)
                       .push(MaterialPageRoute(
-                          builder: (context) => const AllContactsListScreen()))
+                          builder: (context) =>  AllContactsListScreen()))
                       .then((value) => onResumed());
                 },
                 child: Row(

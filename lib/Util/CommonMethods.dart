@@ -156,6 +156,10 @@ String getDateFormat(String date) {
   DateTime dt = DateTime.parse(date);
   return DateFormat("dd/MM/yyyy hh:mm aa").format(dt);
 }
+String notificationDateFormat(String date) {
+  DateTime dt = DateTime.parse(date);
+  return DateFormat("dd/MMM/yyyy hh:mm aa").format(dt);
+}
 
 String country_code_url ="https://ipdata.co/flags/"
 ;
@@ -249,6 +253,17 @@ launchUrlLink(String url) {
   } catch (e) {
     customToastMsg("Invalid Url");
   }
+}
+
+class CustomDivider{
+  static Container divider =  Container(
+      margin: const EdgeInsets.only(top: 3, left: 7),
+      child: const Divider(
+        thickness: 1,
+        color: Colors.grey,
+        height: 40,
+      ));
+
 }
 
 

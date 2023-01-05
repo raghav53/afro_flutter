@@ -79,15 +79,15 @@ class _ForumsPage extends State<ForumsScreenPage> {
             setState(() {});
           });
         },
-        child:Container(
+        child:(clickPosition!=2)?Container(
             alignment: Alignment.center,
             height: 50,
             width: 50,
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(50),
                 gradient: commonButtonLinearGridient),
-            child:  Image.asset("assets/icons/add.png",height: 25,width: 25,color: Colors.white,)
-        ),
+            child:  Image.asset("assets/icons/add.png",height: 30,width: 30,color: Colors.white,)
+        ):const SizedBox(),
       ),
       body: Container(
         height: phoneHeight(context),
@@ -112,7 +112,7 @@ class _ForumsPage extends State<ForumsScreenPage> {
                 ),
               ),
               customHeightBox(15),
-              customDivider(6, Color(0x3dFFFFFF)),
+              customDivider(6, const Color(0x3dFFFFFF)),
               customHeightBox(10),
               // Search bar and fillter button
               Row(
@@ -160,8 +160,8 @@ class _ForumsPage extends State<ForumsScreenPage> {
                         },
                         child: Image.asset(
                           "assets/icons/fillter.png",
-                          height: 20,
-                          width: 20,
+                          height: 28,
+                          width: 28,
                         ),
                       )),
                 ],
@@ -197,7 +197,7 @@ class _ForumsPage extends State<ForumsScreenPage> {
                                     ? null
                                     : Border.all(color: Colors.white, width: 1),
                                 borderRadius:
-                                    BorderRadius.all(Radius.circular(20))),
+                                    const BorderRadius.all(Radius.circular(20))),
                             child: Row(
                               mainAxisAlignment: mCenter,
                               children: [
@@ -207,7 +207,7 @@ class _ForumsPage extends State<ForumsScreenPage> {
                                   height: 15,
                                   width: 15,
                                 ),
-                                customWidthBox(5),
+                                customWidthBox(7),
                                 customText("All Thread", 12, Colors.white),
                               ],
                             ),
@@ -247,6 +247,7 @@ class _ForumsPage extends State<ForumsScreenPage> {
                                   height: 15,
                                   width: 15,
                                 ),
+                                customWidthBox(7),
                                 customText("My Threads", 12, Colors.white),
                               ],
                             ),
@@ -286,7 +287,7 @@ class _ForumsPage extends State<ForumsScreenPage> {
                                   height: 15,
                                   width: 15,
                                 ),
-                                customWidthBox(5),
+                                customWidthBox(7),
                                 customText("My Replies", 12, Colors.white),
                               ],
                             ),
@@ -1065,12 +1066,16 @@ class _ForumsPage extends State<ForumsScreenPage> {
                       Spacer(),
                       Container(
                         alignment: Alignment.center,
-                        height: phoneHeight(context) / 2.13,
+                        height: phoneHeight(context) /2.2,
+                        decoration: const BoxDecoration(
+                            border: Border(
+                                left: BorderSide(
+                                    color: Colors.grey, width: 1))),
                         child: Stack(
                           alignment: Alignment.bottomCenter,
                           children: [
-                            Container(
-                                width: phoneWidth(context) / 1.5,
+                            SizedBox(
+                                width: phoneWidth(context) / 1.4,
                                 child: bottomSheetIndex == 0
                                     ? Column(
                                         children: [
@@ -1100,9 +1105,9 @@ class _ForumsPage extends State<ForumsScreenPage> {
                                                 )),
                                           ),
                                           customHeightBox(10),
-                                          Container(
+                                          SizedBox(
                                               height:
-                                                  phoneHeight(context) / 2.7,
+                                                  phoneHeight(context) / 2.9,
                                               child:
                                                   FutureBuilder<CountryModel>(
                                                 future: _getCountries,
@@ -1153,6 +1158,11 @@ class _ForumsPage extends State<ForumsScreenPage> {
                                                                   white),
                                                               trailing:
                                                                   Checkbox(
+                                                                      side: BorderSide(
+                                                                          color:Colors.purple
+                                                                      ),
+                                                                      activeColor: Colors.purple,
+                                                                      checkColor: Colors.black,
                                                                       value: snapshot
                                                                           .data!
                                                                           .data![
@@ -1209,6 +1219,12 @@ class _ForumsPage extends State<ForumsScreenPage> {
                                                                   white),
                                                               trailing:
                                                                   Checkbox(
+                                                                      side: BorderSide(
+                                                                          color:Colors.purple
+                                                                      ),
+                                                                      activeColor: Colors.purple,
+                                                                      checkColor: Colors.black,
+
                                                                       value: snapshot
                                                                           .data!
                                                                           .data![
@@ -1248,24 +1264,24 @@ class _ForumsPage extends State<ForumsScreenPage> {
                                                         );
                                                 }),
                                       )),
-                            Align(
-                              alignment: Alignment.bottomCenter,
-                              child: InkWell(
-                                onTap: () {
-                                  setState(() {});
-                                  print(countriesIds.toString());
-                                  Navigator.pop(context);
-                                },
-                                child: Container(
-                                    padding: const EdgeInsets.only(
-                                        top: 7, bottom: 7, left: 20, right: 20),
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(50),
-                                      gradient: commonButtonLinearGridient,
-                                    ),
-                                    child:
-                                        customText("Apply", 16, Colors.white)),
-                              ),
+                            InkWell(
+                              onTap: () {
+                                setState(() {});
+                                Navigator.pop(context);
+                              },
+                              child: Container(
+                                  height: 30,
+                                  width: 140,
+                                  alignment: Alignment.center,
+                                  margin: const EdgeInsets.only(bottom: 10),
+                                  /*  padding: const EdgeInsets.only(
+                                      top: 7, bottom: 5, left: 20, right: 20),*/
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(50),
+                                    gradient: commonButtonLinearGridient,
+                                  ),
+                                  child:
+                                  customText("Apply", 16, Colors.white)),
                             )
                           ],
                         ),

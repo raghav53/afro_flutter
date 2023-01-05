@@ -24,25 +24,29 @@ import 'package:omni_datetime_picker/omni_datetime_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class CreateNewEvent extends StatefulWidget {
-  const CreateNewEvent({Key? key}) : super(key: key);
+
+  const CreateNewEvent({Key? key,}) : super(key: key);
 
   @override
   _CreateNewEventState createState() => _CreateNewEventState();
 }
 
 Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
-Future<AllInterestModel>? _getAllInterests;
+
 
 class _CreateNewEventState extends State<CreateNewEvent> {
   String? privacyType = "Public";
   String? categoryTypeID = "";
   String? categoryTypeName = "";
+  bool showList = false;
   var tempTime = 0;
   var items = [
     'Public',
     'Private',
     'Secret',
   ];
+  List<String> privacyList = ["Private","Public","Secret"];
+  String? selectedValue = 'Private';
 
   String fromText = "000000000";
   String toText = "000000000";
@@ -58,6 +62,8 @@ class _CreateNewEventState extends State<CreateNewEvent> {
   var type = ["In-Person", "Online"];
   var defaultValue = 1;
   var _selectedPrivacy = "1";
+
+  Future<AllInterestModel>? _getAllInterests;
   @override
   void initState() {
     super.initState();
@@ -75,7 +81,7 @@ class _CreateNewEventState extends State<CreateNewEvent> {
       appBar: commonAppbar("Create New Event"),
       extendBodyBehindAppBar: true,
       body: Container(
-        padding: EdgeInsets.only(top: 80),
+        padding: const EdgeInsets.only(top: 80),
         decoration: commonBoxDecoration(),
         height: phoneHeight(context),
         width: phoneWidth(context),
@@ -255,14 +261,209 @@ class _CreateNewEventState extends State<CreateNewEvent> {
                     customHeightBox(10),
                     selectPrivacy(),
                     customHeightBox(20),
-                    customText("CATEGORY", 14, Colors.white),
+                    customText("SELECT CATEGORY", 14, Colors.white),
+                    customHeightBox(10),
+                    Container(
+                      padding: const EdgeInsets.only(top: 15, bottom: 15),
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          color: black),
+                      child: Column(
+                        children: [
+                          InkWell(
+                            onTap: () {
+                              setState(() {
+                                showList = !showList;
+                              });
+                            },
+                            child: Row(
+                              children: [
+                                customWidthBox(10),
+                                customText(
+                                    categoryTypeName.toString().isEmpty
+                                        ? "Select Category"
+                                        : categoryTypeName.toString(),
+                                    14,
+                                    categoryTypeName.toString().isEmpty?Colors.white24:white),
+                                const Spacer(),
+                                 Icon(
+                                  Icons.arrow_drop_down,
+                                  color: yellowColor,
+                                )
+                              ],
+                            ),
+                          ),
+                          showList?Container(
+                            height: 250,
+                            child: /*showList
+                                ?*/ FutureBuilder<AllInterestModel>(
+                              future: _getAllInterests,
+                              builder: (context, snapshot) {
+                                return snapshot.hasData &&
+                                    snapshot.data!.data!.isNotEmpty
+                                    ? ListView.builder(
+                                  physics: const AlwaysScrollableScrollPhysics(),
+                                  shrinkWrap: true,
+                                  // scrollDirection: Axis.vertical,
+                                  itemCount:
+                                  snapshot.data!.data!.length,
+                                  // shrinkWrap: false,
+                                  itemBuilder: (context, index) {
+                                    return InkWell(
+                                        onTap: () {
+                                          setState(() {
+                                            showList = false;
+
+                                            categoryTypeID =
+                                                snapshot
+                                                    .data!
+                                                    .data![index]
+                                                    .sId
+                                                    .toString();
+                                            categoryTypeName =
+                                                snapshot
+                                                    .data!
+                                                    .data![index]
+                                                    .title
+                                                    .toString();
+                                          });
+                                        },
+                                        child: ListTile(
+                                          title: Padding(
+                                            padding:
+                                            const EdgeInsets
+                                                .only(
+                                                left: 8.0,
+                                                top: 5,
+                                                bottom: 5),
+                                            child: customText(
+                                                snapshot
+                                                    .data!
+                                                    .data![index]
+                                                    .title
+                                                    .toString(),
+                                                15,
+                                                white),
+                                          ),
+                                        ));
+                                  },
+                                )
+                                    : Center(
+                                  child: customText(
+                                      "No data found!",
+                                      15,
+                                      white),
+                                );
+                              },
+                            )
+                                /*: null,*/
+                          ):const SizedBox(),
+                        ],
+                      ),
+                    ),
+
+                 /*   customText("CATEGORY", 14, Colors.white),
                     customHeightBox(10),
                     InkWell(
                       onTap: () {
+                        Container(
+                          padding: const EdgeInsets.only(top: 15, bottom: 15),
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              color: black),
+                          child: Column(
+                            children: [
+                              InkWell(
+                                onTap: () {
+                                  setState(() {
+                                    showList = !showList;
+                                  });
+                                },
+                                child: Row(
+                                  children: [
+                                    customWidthBox(10),
+                                    customText(
+                                        categoryTypeName.toString().isEmpty
+                                            ? "Select Category"
+                                            : categoryTypeName.toString(),
+                                        14,
+                                        Colors.white),
+                                    const Spacer(),
+                                    const Icon(
+                                      Icons.arrow_drop_down,
+                                      color: Colors.white,
+                                    )
+                                  ],
+                                ),
+                              ),
+                              Container(
+                                child: showList
+                                    ? FutureBuilder<AllInterestModel>(
+                                  future: _getAllInterests,
+                                  builder: (context, snapshot) {
+                                    return snapshot.hasData &&
+                                        snapshot.data!.data!.isNotEmpty
+                                        ? ListView.builder(
+                                      itemCount:
+                                      snapshot.data!.data!.length,
+                                      shrinkWrap: true,
+                                      itemBuilder: (context, index) {
+                                        return InkWell(
+                                            onTap: () {
+                                              setState(() {
+                                                showList = false;
+
+                                                categoryTypeID =
+                                                    snapshot
+                                                        .data!
+                                                        .data![index]
+                                                        .sId
+                                                        .toString();
+                                                categoryTypeName =
+                                                    snapshot
+                                                        .data!
+                                                        .data![index]
+                                                        .title
+                                                        .toString();
+                                              });
+                                            },
+                                            child: ListTile(
+                                              title: Padding(
+                                                padding:
+                                                const EdgeInsets
+                                                    .only(
+                                                    left: 8.0,
+                                                    top: 5,
+                                                    bottom: 5),
+                                                child: customText(
+                                                    snapshot
+                                                        .data!
+                                                        .data![index]
+                                                        .title
+                                                        .toString(),
+                                                    15,
+                                                    white),
+                                              ),
+                                            ));
+                                      },
+                                    )
+                                        : Center(
+                                      child: customText(
+                                          "No data found!",
+                                          15,
+                                          white),
+                                    );
+                                  },
+                                )
+                                    : null,
+                              )
+                            ],
+                          ),
+                        );
                         showInterests();
                       },
                       child: Container(
-                        padding: EdgeInsets.only(top: 15, bottom: 15, left: 15),
+                        padding: const EdgeInsets.only(top: 15, bottom: 15, left: 15),
                         decoration: BoxDecoration(
                             color: black,
                             borderRadius: BorderRadius.circular(10)),
@@ -273,7 +474,7 @@ class _CreateNewEventState extends State<CreateNewEvent> {
                                   : categoryTypeName.toString(),
                               15,
                               categoryTypeName!.isEmpty ? white24 : white),
-                          Spacer(),
+                          const Spacer(),
                           Icon(
                             Icons.arrow_drop_down,
                             color: white,
@@ -281,7 +482,7 @@ class _CreateNewEventState extends State<CreateNewEvent> {
                           customWidthBox(15)
                         ]),
                       ),
-                    ),
+                    ),*/
                     customHeightBox(20),
                     customText("WEBSITE(OPTIONAL)", 14, Colors.white),
                     customHeightBox(10),
@@ -306,7 +507,7 @@ class _CreateNewEventState extends State<CreateNewEvent> {
                       height: 130,
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(10),
-                          color: Colors.black),
+                          color: black),
                       child: TextFormField(
                         controller: eventAbout,
                         maxLines: null,
@@ -356,12 +557,64 @@ class _CreateNewEventState extends State<CreateNewEvent> {
   //Custom Privacy
   Widget selectPrivacy() {
     final FocusNode _focusNode = FocusNode();
-    return Container(
+    return  Container(
+      padding: const EdgeInsets.only(left: 16, right: 10),
       decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10), color: Colors.black),
+        color: black,
+        borderRadius: BorderRadius.circular(10),
+      ),
+      child: FormField(builder: (FormFieldState<String> state) {
+        return InputDecorator(
+          decoration: const InputDecoration(
+            hintStyle: TextStyle(color: Colors.white),
+          ),
+          /* isEmpty: selectedGender == '',*/
+          child: DropdownButtonHideUnderline(
+            child: DropdownButton<String>(
+              icon: Icon(
+                Icons.arrow_drop_down_outlined,
+                color: yellowColor,
+              ),
+              dropdownColor: Colors.black,
+              value: selectedValue,
+              isDense: true,
+              onChanged: (val) {
+
+
+        setState(() {
+        FocusScope.of(context).requestFocus(_focusNode);
+        selectedValue = val;
+        if (selectedValue!.contains("public")) {
+        _selectedPrivacy = "1";
+        } else if (selectedValue!.contains("private")) {
+        _selectedPrivacy = "2";
+        } else if (selectedValue!.contains("secret")) {
+        _selectedPrivacy = "3";
+        }
+        });
+        },
+              items: privacyList.map((String item,) {
+                return DropdownMenuItem<String>(
+                  value: item,
+                  child: Text(
+                    item.toString(),
+                    style: const TextStyle(color: Colors.white),
+                  ),
+                );
+              }).toList(),
+            ),
+          ),
+        );
+      }),
+    );
+
+
+    /*return Container(
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10), color: black),
       width: 500,
       child: DropdownButton(
-        dropdownColor: Colors.black,
+        dropdownColor: black,
         style: const TextStyle(color: Colors.white, fontSize: 16),
         underline: Container(),
         value: privacyType,
@@ -374,7 +627,7 @@ class _CreateNewEventState extends State<CreateNewEvent> {
                 padding: const EdgeInsets.only(left: 8),
                 child: Text(
                   items,
-                  style: const TextStyle(color: Colors.white),
+                  style:  TextStyle(color: white),
                 ),
               ));
         }).toList(),
@@ -392,14 +645,14 @@ class _CreateNewEventState extends State<CreateNewEvent> {
           });
         },
       ),
-    );
+    );*/
   }
 
   //Custom Editext
   Widget eventEditext(String hint, TextEditingController controller) {
     return Container(
       decoration: BoxDecoration(
-          color: Colors.black, borderRadius: BorderRadius.circular(5)),
+          color: black, borderRadius: BorderRadius.circular(5)),
       child: TextFormField(
         controller: controller,
         style: TextStyle(color: Colors.white),
@@ -433,7 +686,7 @@ class _CreateNewEventState extends State<CreateNewEvent> {
                                 image: AssetImage("tom_cruise.jpeg"))),
                       )
                     : Center(
-                        child: Container(
+                        child: SizedBox(
                           width: 130,
                           child: Image.file(
                             imageFile,
@@ -446,7 +699,7 @@ class _CreateNewEventState extends State<CreateNewEvent> {
               child: GestureDetector(
                 onTap: () {},
                 child: Container(
-                    padding: EdgeInsets.all(4),
+                    padding: const EdgeInsets.all(4),
                     height: 20,
                     width: 20,
                     decoration: BoxDecoration(
@@ -492,7 +745,7 @@ class _CreateNewEventState extends State<CreateNewEvent> {
         ),
         builder: (context) {
           return StatefulBuilder(builder: (context, state) {
-            return Container(
+            return SizedBox(
               height: 100,
               child: Row(
                 mainAxisAlignment: mCenter,
@@ -563,7 +816,7 @@ class _CreateNewEventState extends State<CreateNewEvent> {
           return StatefulBuilder(builder: (context, state) {
             return Container(
                 height: 300,
-                margin: EdgeInsets.only(top: 30),
+                margin: const EdgeInsets.only(top: 30),
                 decoration: commonBoxDecoration(),
                 child: Column(
                   crossAxisAlignment: cCenter,
@@ -572,10 +825,10 @@ class _CreateNewEventState extends State<CreateNewEvent> {
                       mainAxisAlignment: mCenter,
                       crossAxisAlignment: cCenter,
                       children: [
-                        Spacer(),
-                        Spacer(),
+                        const Spacer(),
+                        const Spacer(),
                         customText("Pick Date", 15, white),
-                        Spacer(),
+                        const Spacer(),
                         customWidthBox(25),
                         TextButton(
                             onPressed: () {
@@ -587,7 +840,7 @@ class _CreateNewEventState extends State<CreateNewEvent> {
                     ),
                     customDivider(10, white),
                     customHeightBox(10),
-                    Container(
+                    SizedBox(
                       height: 200,
                       child: CupertinoTheme(
                         data: const CupertinoThemeData(
@@ -602,7 +855,8 @@ class _CreateNewEventState extends State<CreateNewEvent> {
                           dateOrder: DatePickerDateOrder.dmy,
                           mode: CupertinoDatePickerMode.date,
                           initialDateTime: DateTime(DateTime.now().year,
-                              DateTime.now().month, DateTime.now().day),
+                              DateTime.now().month, DateTime.now().day,
+                             /* DateTime.now().hour,DateTime.now().minute)*/),
                           onDateTimeChanged: (DateTime newDateTime) {
                             setState(() {
                               //hh:mm:ss
@@ -610,7 +864,7 @@ class _CreateNewEventState extends State<CreateNewEvent> {
                                   newDateTime.millisecondsSinceEpoch;
                               print(timestamp1);
                               String formattedDate =
-                                  DateFormat('dd-MM-yyyy').format(newDateTime);
+                                  DateFormat('dd-MM-yyyy ').format(newDateTime);
                               if (type == "from") {
                                 setState(() {
                                   fromText = timestamp1.toString();
@@ -665,10 +919,10 @@ class _CreateNewEventState extends State<CreateNewEvent> {
                     mainAxisAlignment: mCenter,
                     crossAxisAlignment: cCenter,
                     children: [
-                      Spacer(),
-                      Spacer(),
+                      const Spacer(),
+                      const Spacer(),
                       customText("Pick Time", 15, white),
-                      Spacer(),
+                      const Spacer(),
                       customWidthBox(25),
                       TextButton(
                           onPressed: () {
@@ -699,26 +953,27 @@ class _CreateNewEventState extends State<CreateNewEvent> {
                   ),
                   customDivider(10, white),
                   customHeightBox(10),
-              CupertinoTheme(
-                data:  CupertinoThemeData(
-                  textTheme: CupertinoTextThemeData(
-                    dateTimePickerTextStyle: TextStyle(
-                      color:white,
-                      fontSize: 16,
-                    ),
-                  ),
+                  Container(
+                    height: 200,
+                    padding: const EdgeInsets.only(top: 6.0),
+                    /*color: CupertinoColors.white,*/
+                    child: DefaultTextStyle(
+                      style: const TextStyle(
+                        color: CupertinoColors.white,
+                        fontSize: 22.0,
+                      ),
+                  child:  CupertinoTimerPicker(
+                        minuteInterval: 1,
+                        secondInterval: 1,
+                        initialTimerDuration: initialtimer,
+                        mode: CupertinoTimerPickerMode.hm,
+                        onTimerDurationChanged: (onTimerDurationChanged) {
+                          state(() {
+                            tempTime = onTimerDurationChanged.inMilliseconds;
+                          });
+                          print(onTimerDurationChanged.inMilliseconds);
+                        }),
                 ),
-                child:  CupertinoTimerPicker(
-                      minuteInterval: 1,
-                      secondInterval: 1,
-                      initialTimerDuration: initialtimer,
-                      mode: CupertinoTimerPickerMode.hm,
-                      onTimerDurationChanged: (onTimerDurationChanged) {
-                        state(() {
-                          tempTime = onTimerDurationChanged.inMilliseconds;
-                        });
-                        print(onTimerDurationChanged.inMilliseconds);
-                      }),
               )
                 ],
               ),
@@ -737,7 +992,7 @@ class _CreateNewEventState extends State<CreateNewEvent> {
       return;
     }
     if (eventName.text.toString().isEmpty) {
-      customToastMsg("Please ente the title of event");
+      customToastMsg("Please enter the title of event");
       return;
     }
     if (fromText == "000000000") {

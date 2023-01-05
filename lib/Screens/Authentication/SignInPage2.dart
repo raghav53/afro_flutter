@@ -281,6 +281,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           child: Container(
                             padding: const EdgeInsets.only(left: 20, right: 20),
                             height: 40,
+                            width: 140,
                             decoration: BoxDecoration(
                               gradient: commonButtonLinearGridient,
                               borderRadius: BorderRadius.circular(50),
@@ -307,14 +308,17 @@ class _LoginScreenState extends State<LoginScreen> {
                             googleSignInProcess( context);
                           },
                           child: Container(
+                            alignment: Alignment.center,
                             padding: const EdgeInsets.only(left: 20, right: 20),
                             height: 40,
+                            width: 140,
                             decoration: BoxDecoration(
                               gradient: commonButtonLinearGridient,
                               borderRadius: BorderRadius.circular(50),
                             ),
                             child: Row(
                               crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Image.asset('assets/social/google.png',height: 15,width: 15,),
                                 const SizedBox(

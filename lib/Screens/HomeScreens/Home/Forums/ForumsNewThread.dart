@@ -78,10 +78,10 @@ class _ForumsNewThreadPage extends State<ForumsNewThreadPage> {
                       customText("SELECT CATEGORY", 14, Colors.white),
                       customHeightBox(10),
                       Container(
-                        padding: EdgeInsets.only(top: 15, bottom: 15),
+                        padding: const EdgeInsets.only(top: 15, bottom: 15),
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(10),
-                            color: Colors.black),
+                            color: black),
                         child: Column(
                           children: [
                             InkWell(
@@ -188,14 +188,14 @@ class _ForumsNewThreadPage extends State<ForumsNewThreadPage> {
                       customHeightBox(10),
                       Container(
                         height: 150,
-                        decoration: const BoxDecoration(
+                        decoration:  BoxDecoration(
                             borderRadius: BorderRadius.only(
                                 topLeft: Radius.circular(10),
                                 topRight: Radius.circular(10)),
-                            color: Colors.black,
+                            color:black,
                             boxShadow: [
                               BoxShadow(
-                                  color: Colors.black, offset: Offset(0, 2))
+                                  color: black, offset: Offset(0, 2))
                             ]),
                         child: TextFormField(
                           onChanged: (value) => {caption = value.toString()},
@@ -210,11 +210,11 @@ class _ForumsNewThreadPage extends State<ForumsNewThreadPage> {
                         ),
                       ),
                       Container(
-                        decoration: const BoxDecoration(
-                            borderRadius: BorderRadius.only(
+                        decoration:  BoxDecoration(
+                            borderRadius: const BorderRadius.only(
                                 bottomLeft: Radius.circular(10),
                                 bottomRight: Radius.circular(10)),
-                            color: Colors.black),
+                            color: black),
                         child: Column(
                           children: [
                             Align(
@@ -259,7 +259,7 @@ class _ForumsNewThreadPage extends State<ForumsNewThreadPage> {
                                       itemCount: imagesList.length,
                                       itemBuilder: (context, index) {
                                         return Container(
-                                          margin: EdgeInsets.all(5),
+                                          margin: const EdgeInsets.all(5),
                                           height: 80,
                                           width: 70,
                                           child: Stack(children: [
@@ -405,9 +405,9 @@ class _ForumsNewThreadPage extends State<ForumsNewThreadPage> {
     return Container(
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
-          color: Colors.black,
-          boxShadow: const [
-            BoxShadow(color: Colors.black, offset: Offset(0, 2))
+          color: black,
+          boxShadow:  [
+            BoxShadow(color: black, offset: Offset(0, 2))
           ]),
       child: TextFormField(
         controller: _controller,

@@ -8,7 +8,8 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class FollowerFollowingPage extends StatefulWidget {
-  const FollowerFollowingPage({Key? key}) : super(key: key);
+  final int selectedIndex;
+  const FollowerFollowingPage({Key? key,  this.selectedIndex=0,}) : super(key: key);
   @override
   _FollowerFollowing createState() => _FollowerFollowing();
 }
@@ -24,7 +25,7 @@ class _FollowerFollowing extends State<FollowerFollowingPage>
   void initState() {
     super.initState();
     //Set up the tab controller
-    tabController = TabController(length: 2, vsync: this);
+    tabController = TabController(initialIndex: widget.selectedIndex,length: 2, vsync: this);
 
     //Get the user information
     getUserInfo();
@@ -50,19 +51,20 @@ class _FollowerFollowing extends State<FollowerFollowingPage>
       extendBodyBehindAppBar: true,
       body: SingleChildScrollView(
         child: Container(
-          padding: EdgeInsets.only(top: 80),
+          padding: const EdgeInsets.only(top: 70),
           decoration: commonBoxDecoration(),
           height: phoneHeight(context),
           width: phoneWidth(context),
           child: Column(
             children: [
               Container(
-                margin: EdgeInsets.only(left: 25, right: 25),
+                padding: const EdgeInsets.only(top: 3,bottom: 3),
+                margin: const EdgeInsets.only(left: 25, right: 25),
                 width: phoneWidth(context),
                 decoration: BoxDecoration(
                     border: Border.all(
-                      color: Color(0xFF707070),
-                      width: 1.0,
+                      color: const Color(0xFF707070),
+                      width: 2.0,
                     ),
                     color: Colors.transparent,
                     borderRadius: BorderRadius.circular(45)),
@@ -78,6 +80,7 @@ class _FollowerFollowing extends State<FollowerFollowingPage>
                         borderRadius: BorderRadius.circular(45),
                       ),
                       controller: tabController,
+
                       tabs: const [
                         Tab(
                           height: 30,
@@ -96,7 +99,7 @@ class _FollowerFollowing extends State<FollowerFollowingPage>
               Expanded(
                 child: TabBarView(
                   controller: tabController,
-                  children: [
+                  children: const [
                     FollowingTab(),
                     FollowerTab(),
                   ],

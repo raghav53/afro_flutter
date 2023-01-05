@@ -483,7 +483,7 @@ class _SecondProfileScreenState extends State<SecondProfileScreen> {
                                                       Navigator.of(context).push(
                                                           MaterialPageRoute(
                                                               builder: (context) =>
-                                                                  const FollowerFollowingPage()));
+                                                                   FollowerFollowingPage()));
                                                     },
                                                     child: customText(
                                                         "Following: " +
@@ -498,7 +498,7 @@ class _SecondProfileScreenState extends State<SecondProfileScreen> {
                                                       Navigator.of(context).push(
                                                           MaterialPageRoute(
                                                               builder: (context) =>
-                                                                  const FollowerFollowingPage()));
+                                                                   FollowerFollowingPage()));
                                                     },
                                                     child: customText(
                                                         "Follower: " +
@@ -607,12 +607,14 @@ class _SecondProfileScreenState extends State<SecondProfileScreen> {
                                                   shaderCallback:
                                                       (Rect bounds) =>
                                                           const LinearGradient(
+                                                            begin: Alignment.topCenter,
+                                                            end: Alignment.bottomCenter,
                                                     colors: [
                                                       Color(0xff7822A0),
                                                       Color(0xff3958B0),
                                                     ],
                                                   ).createShader(bounds),
-                                                  blendMode: BlendMode.srcATop,
+                                                  blendMode: BlendMode.srcIn,
                                                   child: Image.asset(
                                                     "assets/employees_bag.png",
                                                     height: 60,
@@ -746,13 +748,15 @@ class _SecondProfileScreenState extends State<SecondProfileScreen> {
                                             width: 60,
                                             child: ShaderMask(
                                               shaderCallback: (Rect bounds) =>
-                                                  const LinearGradient(
+                                                   const LinearGradient(
+                                                     begin: Alignment.topCenter,
+                                                end: Alignment.bottomCenter,
                                                 colors: [
                                                   Color(0xff7822A0),
                                                   Color(0xff3958B0),
                                                 ],
                                               ).createShader(bounds),
-                                              blendMode: BlendMode.srcATop,
+                                              blendMode: BlendMode.srcIn,
                                               child: Image.asset(
                                                 "assets/graduation_cap.png",
                                                 height: 60,

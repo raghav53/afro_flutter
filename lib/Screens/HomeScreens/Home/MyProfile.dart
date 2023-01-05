@@ -384,7 +384,7 @@ class _MyProffile extends State<MyProfilePage> {
                                                   Navigator.of(context).push(
                                                       MaterialPageRoute(
                                                           builder: (context) =>
-                                                              const FollowerFollowingPage()));
+                                                               const FollowerFollowingPage()));
                                                 },
                                                 child: customText(
                                                     "Following: " +
@@ -399,7 +399,7 @@ class _MyProffile extends State<MyProfilePage> {
                                                   Navigator.of(context).push(
                                                       MaterialPageRoute(
                                                           builder: (context) =>
-                                                              const FollowerFollowingPage()));
+                                                               FollowerFollowingPage()));
                                                 },
                                                 child: customText(
                                                     "Follower: " +

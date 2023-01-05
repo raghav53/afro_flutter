@@ -111,7 +111,197 @@ class _OtherUserProfilePageScreenState extends State<OtherUserProfilePageScreen>
                             mainAxisSize: MainAxisSize.min,
                             crossAxisAlignment: cStart,
                             children: [
-                              Container(
+                              Card(
+                                color: blue,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10.0),
+                                ),
+                                /*decoration: BoxDecoration(
+                                    color: blue,
+                                    borderRadius: BorderRadius.circular(10)),*/
+                                /*padding: const EdgeInsets.all(10),*/
+                                child: Padding(
+                                  padding: const EdgeInsets.only(top: 8,bottom: 8),
+                                  child: Row(
+                                    crossAxisAlignment: cStart,
+                                    children: [
+                                      const Padding(padding: EdgeInsets.all(5)),
+                                      //Profile Image
+                                      InkWell(
+                                        onTap: () {
+                                        /*  openBottomSheet();*/
+                                        },
+                                        child: Container(
+                                          height: 60,
+                                          width: 60,
+                                          decoration: BoxDecoration(
+                                              border: Border.all(
+                                                  width: 1,
+                                                  color: yellowColor),
+                                              borderRadius:
+                                              BorderRadius.circular(50)),
+                                          child: Padding(
+                                            padding:
+                                            const EdgeInsets.all(3.0),
+                                            child: CachedNetworkImage(
+                                                imageUrl: IMAGE_URL +
+                                                    snapshot
+                                                        .data!.data!.profileImage
+                                                        .toString(),
+                                                errorWidget:
+                                                    (error, context, url) =>
+                                                    const Icon(Icons.person),
+                                                placeholder: (context, url) =>
+                                                    const Icon(Icons.person),
+                                                imageBuilder: (context, url) {
+                                                  return CircleAvatar(
+                                                    backgroundImage: url,
+                                                  );
+                                                }),
+                                          ),
+                                        ),
+                                      ),
+                                      customWidthBox(5),
+                                      //Basic Info,
+                                      Column(
+                                        crossAxisAlignment: cStart,
+                                        children: [
+                                          Row(
+                                            children: [
+                                              customText(widget.name.toString(),
+                                                  15, white),
+                                              customWidthBox(5),
+                                              FutureBuilder<UserProfile>(
+                                                  future: _getUserProfileData,
+                                                  builder: (context, snapshot) {
+                                                    return snapshot.hasData
+                                                        ? Row(
+                                                      children: [
+                                                        (snapshot
+                                                            .data!.data!.country!=null)?CachedNetworkImage(
+                                                          height: 15,
+                                                          width: 15,
+                                                          imageUrl: country_code_url +
+                                                              snapshot
+                                                                  .data!.data!.country!.iso2.toString().toLowerCase() +".png",
+                                                          imageBuilder:
+                                                              (context,
+                                                              url) {
+                                                            return CircleAvatar(
+                                                              backgroundImage:
+                                                              url,
+                                                            );
+                                                          },
+                                                        ):const SizedBox(),
+                                                        SizedBox(
+                                                          height: 15,
+                                                          width: 100,
+                                                          child: ListView
+                                                              .builder(
+                                                              shrinkWrap:
+                                                              true,
+                                                              itemCount: snapshot
+                                                                  .data!
+                                                                  .data!
+                                                                  .visits!
+                                                                  .length,
+                                                              scrollDirection:
+                                                              Axis
+                                                                  .horizontal,
+                                                              itemBuilder:
+                                                                  (context,
+                                                                  index) {
+                                                                return Padding(
+                                                                  padding:
+                                                                  const EdgeInsets.only(left: 3),
+                                                                  child:
+                                                                  CachedNetworkImage(
+                                                                    height:
+                                                                    15,
+                                                                    width:
+                                                                    15,
+                                                                    imageUrl: country_code_url +
+                                                                        snapshot.data!.data!.visits![index].iso2.toString().toLowerCase() +
+                                                                        ".png",
+                                                                    imageBuilder:
+                                                                        (context, url) {
+                                                                      return CircleAvatar(
+                                                                        backgroundImage: url,
+                                                                      );
+                                                                    },
+                                                                  ),
+                                                                );
+                                                              }),
+                                                        )
+                                                      ],
+                                                    )
+                                                        : Container();
+                                                  })
+                                            ],
+                                          ),
+                                          customHeightBox(2),
+                                          customText(
+                                              "Newcorner Buddy", 11, Colors.white54),
+                                          customHeightBox(2),
+                                          customText("Member since April 2022",
+                                              11, Colors.white54),
+                                          customText('Bio', 15, white),
+                                          customHeightBox(3),
+                                          SizedBox(
+                                            width: phoneWidth(context) /1.6,
+                                            child: Text(
+                                              snapshot.data!.data!.bio.toString(),
+                                              style: TextStyle(
+                                                  fontSize: 11, color: Colors.white54),
+                                            ),
+                                          ),
+                                          customHeightBox(15),
+                                          customHeightBox(15),
+                                          //Following , Follower , Friends/Contacts
+                                          Row(
+                                            mainAxisSize: MainAxisSize.max,
+                                            mainAxisAlignment:
+                                            MainAxisAlignment.spaceAround,
+                                            children: [
+                                              InkWell(
+                                                child: customText(
+                                                    "Following: " +
+                                                        snapshot.data!.data!
+                                                            .totalFollowings
+                                                            .toString(),
+                                                    12,
+                                                    white),
+                                              ),
+                                              customWidthBox(10),
+                                              InkWell(
+                                                child: customText(
+                                                    "Follower: " +
+                                                        snapshot.data!.data!
+                                                            .totalFollowers
+                                                            .toString(),
+                                                    12,
+                                                    white),
+                                              ),
+                                              customWidthBox(10),
+                                              InkWell(
+                                                child: customText(
+                                                    "Contacts: " +
+                                                        snapshot.data!.data!
+                                                            .totalFirends
+                                                            .toString(),
+                                                    12,
+                                                    white),
+                                              )
+                                            ],
+                                          )
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            /*  Container(
+                                width: 350,
                                 padding: const EdgeInsets.only(
                                     left: 5, right: 5, top: 10, bottom: 10),
                                 decoration: BoxDecoration(
@@ -235,7 +425,7 @@ class _OtherUserProfilePageScreenState extends State<OtherUserProfilePageScreen>
                                         customHeightBox(13),
                                         customText('Bio', 15, white),
                                         customHeightBox(3),
-                                        Container(
+                                        SizedBox(
                                           width: phoneWidth(context) / 1.5,
                                           child: Text(
                                             snapshot.data!.data!.bio.toString(),
@@ -283,7 +473,7 @@ class _OtherUserProfilePageScreenState extends State<OtherUserProfilePageScreen>
                                     ),
                                   ],
                                 ),
-                              ),
+                              ),*/
 
                               //Message , Follow ,  Add button
                               customHeightBox(10),
@@ -315,7 +505,7 @@ class _OtherUserProfilePageScreenState extends State<OtherUserProfilePageScreen>
                                                             )));
                                               },
                                               child: Container(
-                                                padding: EdgeInsets.all(5),
+                                                padding: const EdgeInsets.all(5),
                                                 height: 30,
                                                 width: 30,
                                                 decoration: BoxDecoration(
@@ -325,12 +515,31 @@ class _OtherUserProfilePageScreenState extends State<OtherUserProfilePageScreen>
                                                     borderRadius:
                                                         BorderRadius.circular(
                                                             30)),
-                                                child: Image.asset(
+                                                child: ShaderMask(
+                                                  shaderCallback:
+                                                      (Rect bounds) =>
+                                                      const LinearGradient(
+                                                        begin:Alignment.topCenter ,
+                                                        end: Alignment.bottomCenter,
+                                                        colors: [
+                                                          Color(0xff7822A0),
+                                                          Color(0xff3958B0),
+                                                        ],
+                                                      ).createShader(bounds),
+                                                  blendMode: BlendMode.srcIn,
+                                                  child: Image.asset(
+                                                    "assets/icons/message.png",
+                                                    color: circleColor,
+                                                    height: 10,
+                                                    width: 10,
+                                                  ),
+                                                ),
+                                                /*Image.asset(
                                                   "assets/icons/message.png",
                                                   color: circleColor,
                                                   height: 10,
                                                   width: 10,
-                                                ),
+                                                ),*/
                                               )),
                                           customWidthBox(15),
                                           InkWell(
@@ -462,7 +671,7 @@ class _OtherUserProfilePageScreenState extends State<OtherUserProfilePageScreen>
                               Container(
                                 child: snapshot
                                         .data!.data!.interests!.isNotEmpty
-                                    ? Container(
+                                    ? SizedBox(
                                         height: 25,
                                         child: ListView.builder(
                                             shrinkWrap: true,
@@ -648,30 +857,45 @@ class _OtherUserProfilePageScreenState extends State<OtherUserProfilePageScreen>
                                 padding: EdgeInsets.only(left: 20),
                                 child: customText("Place lived in", 12, white),
                               ),
-                              customHeightBox(25),
+                              customHeightBox(15),
                               Center(
                                 child: Container(
+                                  alignment: Alignment.center,
                                   width: 200,
-                                  padding: EdgeInsets.all(10),
+                                 height: 40,
+                                 /* padding: EdgeInsets.all(10),*/
                                   decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(10),
-                                      color: gray1),
-                                  child: Center(
+                                    color: blue,),
+                                  child: (snapshot.data!.data!.country!= null)
+                                      ? Padding(
+                                    padding: const EdgeInsets.only(
+                                        left: 10, right: 10),
                                     child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      mainAxisSize: MainAxisSize.min,
+                                      mainAxisAlignment: MainAxisAlignment.center,
                                       children: [
-                                        Image.asset(
-                                          "assets/language/spain.png",
-                                          height: 20,
+                                        CachedNetworkImage(
+                                          height: 25,
                                           width: 20,
+                                          imageUrl: country_code_url +
+                                              snapshot.data!.data!.country!.iso2
+                                                  .toString()
+                                                  .toLowerCase() +
+                                              ".png",
                                         ),
-                                        customWidthBox(10),
-                                        customText("Spain", 15, white)
+                                        const SizedBox(
+                                          width: 5,
+                                        ),
+                                        Flexible(
+                                            child: customText(
+                                                snapshot.data!.data!.country!.name
+                                                    .toString(),
+                                                14,
+                                                white))
                                       ],
                                     ),
-                                  ),
+                                  )
+                                      : const SizedBox(),
                                 ),
                               )
                             ],
@@ -747,17 +971,34 @@ class _OtherUserProfilePageScreenState extends State<OtherUserProfilePageScreen>
   //Work Experiance data(done)
   Widget historyItemView(Experiences.Experiences expData) {
     return Container(
-      margin: EdgeInsets.only(top: 10),
+      margin: const EdgeInsets.only(top: 10),
       padding: EdgeInsets.all(10),
       decoration:
-          BoxDecoration(borderRadius: BorderRadius.circular(10), color: gray1),
+          BoxDecoration(borderRadius: BorderRadius.circular(10), color: blue,),
       child: Row(
         children: [
-          Image.asset(
-            "assets/icons/briefcase.png",
-            color: circleColor,
-            height: 50,
-            width: 50,
+          Container(
+            alignment: Alignment.center,
+            height: 80,
+            width: 60,
+            child: ShaderMask(
+              shaderCallback:
+                  (Rect bounds) =>
+                  const LinearGradient(
+                    begin:Alignment.topCenter ,
+                    end: Alignment.bottomCenter,
+                    colors: [
+                      Color(0xff7822A0),
+                      Color(0xff3958B0),
+                    ],
+                  ).createShader(bounds),
+              blendMode: BlendMode.srcIn,
+              child: Image.asset(
+                "assets/employees_bag.png",
+                height: 60,
+                width: 50,
+              ),
+            ),
           ),
           customWidthBox(10),
           Column(
@@ -788,17 +1029,33 @@ class _OtherUserProfilePageScreenState extends State<OtherUserProfilePageScreen>
   //Education History data(done)
   Widget eHistoryItemView(Educations.Educations education) {
     return Container(
-      margin: EdgeInsets.only(top: 10),
-      padding: EdgeInsets.all(10),
+      margin: const EdgeInsets.only(top: 10),
+      padding: const EdgeInsets.all(10),
       decoration:
-          BoxDecoration(borderRadius: BorderRadius.circular(10), color: gray1),
+          BoxDecoration(borderRadius: BorderRadius.circular(10), color: blue,),
       child: Row(
         children: [
-          Image.asset(
-            "assets/icons/scholar.png",
-            color: circleColor,
-            height: 50,
-            width: 50,
+          Container(
+            alignment: Alignment.center,
+            height: 80,
+            width: 60,
+            child: ShaderMask(
+              shaderCallback: (Rect bounds) =>
+                   const LinearGradient(
+                    begin:Alignment.topCenter ,
+                    end: Alignment.bottomCenter,
+                    colors: [
+                      Color(0xff7822A0),
+                      Color(0xff3958B0),
+                    ],
+                  ).createShader(bounds),
+              blendMode: BlendMode.srcIn,
+              child: Image.asset(
+                "assets/graduation_cap.png",
+                height: 60,
+                width: 50,
+              ),
+            ),
           ),
           customWidthBox(10),
           Column(

@@ -596,7 +596,7 @@ class _RecommendedGroupsState extends State<RecommendedGroups> {
                                 leaveJoinTheGroup(groupId, 1);
                               },
                               child: Container(
-                                padding: EdgeInsets.only(top: 8, bottom: 8),
+                                padding: const EdgeInsets.only(top: 8, bottom: 8),
                                 width: 80,
                                 decoration: BoxDecoration(
                                     gradient: commonButtonLinearGridient,
@@ -611,7 +611,7 @@ class _RecommendedGroupsState extends State<RecommendedGroups> {
                                 Navigator.pop(context);
                               },
                               child: Container(
-                                padding: EdgeInsets.only(top: 8, bottom: 8),
+                                padding: const EdgeInsets.only(top: 8, bottom: 8),
                                 width: 80,
                                 decoration: BoxDecoration(
                                     border: Border.all(color: white, width: 1),
@@ -732,7 +732,7 @@ class _RecommendedGroupsState extends State<RecommendedGroups> {
                           softWrap: false,
                           style: TextStyle(color: white, fontSize: 14),
                         ),
-                        SizedBox(width: 4,),
+                        const SizedBox(width: 4,),
                         (snapshot.data![index].privacy==1) ?Image.asset("assets/website_icon.png",height: 15,width: 15,color: white,)
                             :(snapshot.data![index].privacy==2)?Container(
                           height: 15,
@@ -796,8 +796,8 @@ class _RecommendedGroupsState extends State<RecommendedGroups> {
                     child: Center(
                         child: customText(
                             snapshot.data![index].isMember == 1
-                                ? "Leave"
-                                : snapshot.data![index].isJoinSent == 1
+                                ?"Leave"
+                                :snapshot.data![index].isJoinSent == 1
                                     ? "Cancel Request"
                                     : snapshot.data![index]
                                                 .isInviteRecieved ==

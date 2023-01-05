@@ -20,7 +20,8 @@ import 'package:flutter/material.dart';
 
 class AllEventsScreen extends StatefulWidget {
   String? type = "";
-  AllEventsScreen({Key? key, this.type}) : super(key: key);
+ late int  selectedIndex ;
+  AllEventsScreen({Key? key, this.type,  this.selectedIndex=0}) : super(key: key);
 
   @override
   State<AllEventsScreen> createState() => _AllEventsScreenState();
@@ -37,7 +38,7 @@ List<String> filterItem = [
 ];
 
 var search = "";
-var selectedIndex = 0;
+/*var selectedIndex = 0;*/
 
 Future<CommonEventsModel>? _getSelectedIndexEvents; //Discover Events
 Future<GoingInterestedEventsModel>? _getGoingEvents; //Going Events
@@ -63,7 +64,7 @@ class _AllEventsScreenState extends State<AllEventsScreen> {
   @override
   void initState() {
     super.initState();
-    selectedIndex = 0;
+   widget.selectedIndex = 0;
     getCountries();
     defaultValue();
   }
@@ -99,7 +100,7 @@ class _AllEventsScreenState extends State<AllEventsScreen> {
         floatingActionButton: GestureDetector(
           onTap: () {
             Navigator.of(context)
-                .push(MaterialPageRoute(builder: (context) => const CreateNewEvent()))
+                .push(MaterialPageRoute(builder: (context) =>  const CreateNewEvent()))
                 .then((value) => setState(() {}));
           },
           child: Container(
@@ -109,7 +110,7 @@ class _AllEventsScreenState extends State<AllEventsScreen> {
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(50),
                 gradient: commonButtonLinearGridient),
-            child:  Image.asset("assets/icons/add.png",height: 25,width: 25,color: Colors.white,)
+            child:  Image.asset("assets/icons/add.png",height: 30,width: 30,color: Colors.white,)
           ),
         ),
         body: Container(
@@ -188,7 +189,7 @@ class _AllEventsScreenState extends State<AllEventsScreen> {
                 ),
                 customHeightBox(20),
                 //Selected events list(By default Discover Events listview appeared)
-                selectedListView(selectedIndex)
+                selectedListView(widget.selectedIndex)
               ],
             ),
           ),
@@ -202,17 +203,17 @@ class _AllEventsScreenState extends State<AllEventsScreen> {
       onTap: () {
         defaultValue();
         setState(() {
-          selectedIndex = index;
+          widget.selectedIndex = index;
         });
       },
       child: Container(
         margin: const EdgeInsets.only(right: 10),
         decoration: BoxDecoration(
-            border: selectedIndex == index
+            border: widget.selectedIndex == index
                 ? null
                 : Border.all(color: grey, width: 2),
             gradient:
-                selectedIndex == index ? commonButtonLinearGridient : null,
+            widget.selectedIndex == index ? commonButtonLinearGridient : null,
             borderRadius: BorderRadius.circular(20)),
         height: 15,
         width: 80,
@@ -225,7 +226,7 @@ class _AllEventsScreenState extends State<AllEventsScreen> {
   void openBottomSheet() {
     var selectedBottomIndex = 0;
 
-    selectedIndex == 0 ? selectedBottomIndex = 0 : selectedBottomIndex = 3;
+    widget.selectedIndex == 0 ? selectedBottomIndex = 0 : selectedBottomIndex = 3;
     var indexTitle = "Country";
 
     showModalBottomSheet(
@@ -277,7 +278,7 @@ class _AllEventsScreenState extends State<AllEventsScreen> {
                           crossAxisAlignment: cStart,
                           children: [
                             Visibility(
-                              visible: selectedIndex == 0 ? true : false,
+                              visible: widget.selectedIndex == 0 ? true : false,
                               child: InkWell(
                                 onTap: () {
                                   state(() {
@@ -310,7 +311,7 @@ class _AllEventsScreenState extends State<AllEventsScreen> {
                             ),
                             customHeightBox(15),
                             Visibility(
-                              visible: selectedIndex == 0 ? true : false,
+                              visible: widget.selectedIndex == 0 ? true : false,
                               child: InkWell(
                                 onTap: () {
                                   state(() {
@@ -343,7 +344,7 @@ class _AllEventsScreenState extends State<AllEventsScreen> {
                             ),
                             customHeightBox(15),
                             Visibility(
-                              visible: selectedIndex == 0 ? true : false,
+                              visible: widget.selectedIndex == 0 ? true : false,
                               child: InkWell(
                                 onTap: () {
                                   state(() {
@@ -434,7 +435,7 @@ class _AllEventsScreenState extends State<AllEventsScreen> {
                       ),
                       const Spacer(),
                       Container(
-                          height: phoneHeight(context) / 2.07,
+                          height: phoneHeight(context) / 2.2,
                           decoration: const BoxDecoration(
                               border: Border(
                                   left: BorderSide(
@@ -443,7 +444,7 @@ class _AllEventsScreenState extends State<AllEventsScreen> {
                               alignment: Alignment.bottomCenter,
                               children: [
                                 SizedBox(
-                                  width: phoneWidth(context) / 1.4,
+                                  width: phoneWidth(context) / 1.5,
                                   child: selectedBottomIndex == 0
                                       ? Column(
                                           children: [
@@ -474,86 +475,87 @@ class _AllEventsScreenState extends State<AllEventsScreen> {
                                             ),
                                             customHeightBox(10),
                                             SizedBox(
-                                                height:
-                                                    phoneHeight(context) / 2.7,
-                                                child:
-                                                    FutureBuilder<CountryModel>(
-                                                  future: _getCountries,
-                                                  builder: (context, snapshot) {
-                                                    return snapshot.hasData &&
-                                                            snapshot.data !=
-                                                                null
-                                                        ? ListView.builder(
-                                                            itemCount: snapshot
-                                                                .data!
-                                                                .data!
-                                                                .length,
-                                                            itemBuilder:
-                                                                (context,
-                                                                    index) {
-                                                              return ListTile(
-                                                                leading:
-                                                                    CachedNetworkImage(
-                                                                  height: 35,
-                                                                  width: 35,
-                                                                  imageUrl: flagImageUrl
-                                                                          .toString() +
-                                                                      snapshot
-                                                                          .data!
-                                                                          .data![
-                                                                              index]
-                                                                          .iso2
-                                                                          .toString()
-                                                                          .toLowerCase() +
-                                                                      ".png",
-                                                                  placeholder: (context,
-                                                                          url) =>
-                                                                      const Icon(
-                                                                          Icons
-                                                                              .flag),
-                                                                  errorWidget: (context,
-                                                                          url,
-                                                                          error) =>
-                                                                      const Icon(
-                                                                          Icons
-                                                                              .error),
-                                                                ),
-                                                                title: customText(
-                                                                    snapshot
-                                                                        .data!
-                                                                        .data![
-                                                                            index]
-                                                                        .title
-                                                                        .toString(),
-                                                                    15,
-                                                                    white),
-                                                                trailing:
-                                                                    Checkbox(
-                                                                        value: snapshot
-                                                                            .data!
-                                                                            .data![
-                                                                                index]
-                                                                            .isSelected,
-                                                                        onChanged:
-                                                                            (val) {
-                                                                          state(
-                                                                              () {
-                                                                            snapshot.data!.data![index].isSelected =
-                                                                                !snapshot.data!.data![index].isSelected;
-                                                                            addRemoveCountriesIds(snapshot.data!.data![index].sId.toString(),
-                                                                                snapshot.data!.data![index].isSelected);
-                                                                          });
-                                                                        }),
-                                                              );
-                                                            })
-                                                        : Center(
-                                                            child: customText(
-                                                                "No countries found!",
-                                                                15,
-                                                                white),
-                                                          );
-                                                  },
-                                                ))
+                                              height: phoneHeight(context)*2.7,
+                                              child: FutureBuilder<CountryModel>(
+                                                    future: _getCountries,
+                                                    builder: (context, snapshot) {
+                                              return snapshot.hasData &&
+                                                      snapshot.data !=
+                                                          null
+                                                  ? ListView.builder(
+                                                      itemCount: snapshot.data!.data!.length,
+                                                      itemBuilder:
+                                                          (context,
+                                                              index) {
+                                                        return ListTile(
+                                                          leading:
+                                                              CachedNetworkImage(
+                                                            height: 35,
+                                                            width: 35,
+                                                            imageUrl: flagImageUrl
+                                                                    .toString() +
+                                                                snapshot
+                                                                    .data!
+                                                                    .data![
+                                                                        index]
+                                                                    .iso2
+                                                                    .toString()
+                                                                    .toLowerCase() +
+                                                                ".png",
+                                                            placeholder: (context,
+                                                                    url) =>
+                                                                const Icon(
+                                                                    Icons
+                                                                        .flag),
+                                                            errorWidget: (context,
+                                                                    url,
+                                                                    error) =>
+                                                                const Icon(
+                                                                    Icons
+                                                                        .error),
+                                                          ),
+                                                          title: customText(
+                                                              snapshot
+                                                                  .data!
+                                                                  .data![
+                                                                      index]
+                                                                  .title
+                                                                  .toString(),
+                                                              15,
+                                                              white),
+                                                          trailing:
+                                                              Checkbox(
+                                                                  side: BorderSide(
+                                                                      color:Colors.purple
+                                                                  ),
+                                                                  activeColor: Colors.purple,
+                                                                  checkColor: Colors.black,
+                                                                  value: snapshot
+                                                                      .data!
+                                                                      .data![
+                                                                          index]
+                                                                      .isSelected,
+                                                                  onChanged:
+                                                                      (val) {
+                                                                    state(
+                                                                        () {
+                                                                      snapshot.data!.data![index].isSelected =
+                                                                          !snapshot.data!.data![index].isSelected;
+                                                                      addRemoveCountriesIds(snapshot.data!.data![index].sId.toString(),
+                                                                          snapshot.data!.data![index].isSelected);
+                                                                    });
+                                                                  }),
+                                                        );
+                                                      })
+                                                  : Center(
+                                                      child: customText(
+                                                          "No countries found!",
+                                                          15,
+                                                          white),
+                                                    );
+                                                    },
+                                                  ),
+                                            )
                                           ],
                                         )
                                       : selectedBottomIndex == 1
@@ -750,7 +752,27 @@ class _AllEventsScreenState extends State<AllEventsScreen> {
                                                     )
                                                   : Container(),
                                 ),
-                                Align(
+
+                                InkWell(
+                                  onTap: () {
+                                    setState(() {});
+                                    Navigator.pop(context);
+                                  },
+                                  child: Container(
+                                      height: 30,
+                                      width: 70,
+                                      alignment: Alignment.center,
+                                      margin: const EdgeInsets.only(bottom: 10),
+                                      /*  padding: const EdgeInsets.only(
+                                      top: 7, bottom: 5, left: 20, right: 20),*/
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(50),
+                                        gradient: commonButtonLinearGridient,
+                                      ),
+                                      child:
+                                      customText("Apply", 16, Colors.white)),
+                                )
+                              /*  Align(
                                   alignment: Alignment.bottomCenter,
                                   child: InkWell(
                                     onTap: () {
@@ -772,7 +794,7 @@ class _AllEventsScreenState extends State<AllEventsScreen> {
                                         child: customText(
                                             "Apply", 16, Colors.white)),
                                   ),
-                                )
+                                )*/
                               ]))
                     ],
                   ),
@@ -826,6 +848,11 @@ class _AllEventsScreenState extends State<AllEventsScreen> {
           builder: (context, snapshot) {
             return snapshot.hasData && snapshot.data!.data!.isNotEmpty
                 ? GoingEventsScreen(context, snapshot.data!)
+                : snapshot.data == null
+                ? const Center(
+              child: CircularProgressIndicator(),
+            )
+
                 : Container(
                     margin: const EdgeInsets.only(top: 100),
                     alignment: Alignment.center,
@@ -845,8 +872,12 @@ class _AllEventsScreenState extends State<AllEventsScreen> {
           builder: (context, snapshot) {
             return snapshot.hasData && snapshot.data!.data!.isNotEmpty
                 ? InterestedEventsScreen(context, snapshot.data!)
+                : snapshot.data == null
+                ? const Center(
+              child: CircularProgressIndicator(),
+            )
                 : Container(
-                    margin: EdgeInsets.only(top: 100),
+                    margin: const EdgeInsets.only(top: 100),
                     alignment: Alignment.center,
                     child: Center(
                       child: customText("No data!", 15, white),
@@ -860,7 +891,7 @@ class _AllEventsScreenState extends State<AllEventsScreen> {
           builder: (context, snapshot) {
             return snapshot.hasData && snapshot.data!.data!.isNotEmpty
                 ? InvitedEventsScreen(context, snapshot.data!)
-                : Container(
+               :Container(
                     margin: EdgeInsets.only(top: 100),
                     alignment: Alignment.center,
                     child: Center(
@@ -878,8 +909,12 @@ class _AllEventsScreenState extends State<AllEventsScreen> {
           builder: (context, snapshot) {
             return snapshot.hasData && snapshot.data!.data!.isNotEmpty
                 ? MyEventsScreenState(context, snapshot.data!)
+                : snapshot.data == null
+                ? const Center(
+              child: CircularProgressIndicator(),
+            )
                 : Container(
-                    margin: EdgeInsets.only(top: 100),
+                    margin: const EdgeInsets.only(top: 100),
                     alignment: Alignment.center,
                     child: Center(
                       child: customText("No data!", 15, white),
@@ -925,6 +960,12 @@ class _AllEventsScreenState extends State<AllEventsScreen> {
                               height: 150.0,
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(10),
+                                  boxShadow: [
+                                    BoxShadow(
+                                        color: gray1,
+                                        spreadRadius: 0.3
+                                    )
+                                  ],
                                 image: DecorationImage(
                                     image: imageProvider, fit: BoxFit.cover),
                               ),

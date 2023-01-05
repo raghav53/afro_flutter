@@ -24,13 +24,14 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AllContactsListScreen extends StatefulWidget {
-  const AllContactsListScreen({Key? key}) : super(key: key);
+   late int selectedIndex;
+   AllContactsListScreen({Key? key,  this.selectedIndex=0}) : super(key: key);
 
   @override
   State<AllContactsListScreen> createState() => _AllContactsListScreenState();
 }
 
-var selectedIndex = 0;
+/*var selectedIndex = 0;*/
 var selectedText = "People You may Know";
 var user = UserDataConstants();
 Future<CountryModel>? _getCountries;
@@ -138,19 +139,17 @@ class _AllContactsListScreenState extends State<AllContactsListScreen> {
                                 hintStyle: TextStyle(color: Colors.white24, fontStyle: FontStyle.normal,fontFamily: "Poppins")),
                           ),
                         )),
-                    customWidthBox(20),
-                    Flexible(
-                        flex: 1,
-                        child: InkWell(
-                          onTap: () {
-                            openFillterbottomSheet();
-                          },
-                          child: Image.asset(
-                            "assets/icons/fillter.png",
-                            height: 30,
-                            width: 30,
-                          ),
-                        )),
+                    const Spacer(),
+                    InkWell(
+                      onTap: () {
+                        openFillterbottomSheet();
+                      },
+                      child: Image.asset(
+                        "assets/icons/fillter.png",
+                        height: 25,
+                        width: 25,
+                      ),
+                    ),
                   ],
                 ),
               ),
@@ -180,7 +179,7 @@ class _AllContactsListScreenState extends State<AllContactsListScreen> {
               ),
 
               //Selected Listview(Discover by default)
-              setTheListview(selectedIndex)
+              setTheListview(widget.selectedIndex)
             ],
           ),
         ),
@@ -194,7 +193,7 @@ class _AllContactsListScreenState extends State<AllContactsListScreen> {
       onTap: () {
         defaultValues();
         setState(() {
-          selectedIndex = index;
+          widget.selectedIndex = index;
           selectedText = title;
           setTheListview(index);
         });
@@ -204,8 +203,8 @@ class _AllContactsListScreenState extends State<AllContactsListScreen> {
         padding: const EdgeInsets.only(left: 5, right: 5),
         decoration: BoxDecoration(
             gradient:
-                (selectedIndex == index) ? commonButtonLinearGridient : null,
-            border: (selectedIndex == index)
+                (widget.selectedIndex == index) ? commonButtonLinearGridient : null,
+            border: (widget.selectedIndex == index)
                 ? null
                 : Border.all(color: Colors.white, width: 1),
             borderRadius: const BorderRadius.all(Radius.circular(20))),
@@ -305,7 +304,7 @@ class _AllContactsListScreenState extends State<AllContactsListScreen> {
               child: CircularProgressIndicator(),
             )
                 : Container(
-                    margin: EdgeInsets.only(top: 100),
+                    margin: const EdgeInsets.only(top: 100),
                     alignment: Alignment.center,
                     child: Center(
                       child: customText("No data!", 15, white),
@@ -821,7 +820,7 @@ class _AllContactsListScreenState extends State<AllContactsListScreen> {
               elevation: 0.0,
               child: Container(
                 padding: const EdgeInsets.all(20),
-                height: 170,
+                height: 200,
                 decoration: BoxDecoration(
                     color: gray1, borderRadius: BorderRadius.circular(10)),
                 child: Column(
@@ -1309,7 +1308,7 @@ class _AllContactsListScreenState extends State<AllContactsListScreen> {
                             ])),
                     Container(
                         margin: const EdgeInsets.only(left: 15),
-                        height: phoneHeight(context) / 2.07,
+                        height: phoneHeight(context) / 2.2,
                         decoration: const BoxDecoration(
                             border: Border(
                                 left: BorderSide(
@@ -1317,13 +1316,12 @@ class _AllContactsListScreenState extends State<AllContactsListScreen> {
                         child: Stack(
                           alignment: Alignment.bottomCenter,
                           children: [
-                            Container(
+                            SizedBox(
                                 width: phoneWidth(context) / 1.5,
                                 child: selectedBottomIndex == 0
                                     ? Column(
                                         children: [
                                           Container(
-                                            height: 40,
                                             decoration: BoxDecoration(
                                                 borderRadius:
                                                     BorderRadius.circular(10),
@@ -1540,24 +1538,24 @@ class _AllContactsListScreenState extends State<AllContactsListScreen> {
                                                                 );
                                                         }))
                                             : Container()),
-                            Align(
-                              alignment: Alignment.bottomCenter,
-                              child: InkWell(
-                                onTap: () {
-                                  setState(() {});
-                                  Navigator.pop(context);
-                                },
-                                child: Container(
-                                    margin: EdgeInsets.only(bottom: 15),
-                                    padding: const EdgeInsets.only(
-                                        top: 7, bottom: 7, left: 20, right: 20),
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(50),
-                                      gradient: commonButtonLinearGridient,
-                                    ),
-                                    child:
-                                        customText("Apply", 16, Colors.white)),
-                              ),
+                            InkWell(
+                              onTap: () {
+                                setState(() {});
+                                Navigator.pop(context);
+                              },
+                              child: Container(
+                                height: 30,
+                                width: 70,
+                                alignment: Alignment.center,
+                                  margin: const EdgeInsets.only(bottom: 10),
+                                /*  padding: const EdgeInsets.only(
+                                      top: 7, bottom: 5, left: 20, right: 20),*/
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(50),
+                                    gradient: commonButtonLinearGridient,
+                                  ),
+                                  child:
+                                      customText("Apply", 16, Colors.white)),
                             )
                           ],
                         ))
