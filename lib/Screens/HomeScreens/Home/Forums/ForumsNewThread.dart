@@ -193,10 +193,10 @@ class _ForumsNewThreadPage extends State<ForumsNewThreadPage> {
                                 topLeft: Radius.circular(10),
                                 topRight: Radius.circular(10)),
                             color:black,
-                            boxShadow: [
+                           /* boxShadow: [
                               BoxShadow(
                                   color: black, offset: Offset(0, 2))
-                            ]),
+                            ]*/),
                         child: TextFormField(
                           onChanged: (value) => {caption = value.toString()},
                           maxLength: null,
@@ -406,9 +406,9 @@ class _ForumsNewThreadPage extends State<ForumsNewThreadPage> {
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
           color: black,
-          boxShadow:  [
+          /*boxShadow:  [
             BoxShadow(color: black, offset: Offset(0, 2))
-          ]),
+          ]*/),
       child: TextFormField(
         controller: _controller,
         style: TextStyle(color: Colors.white),

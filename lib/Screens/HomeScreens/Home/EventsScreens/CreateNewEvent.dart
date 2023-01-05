@@ -67,6 +67,16 @@ class _CreateNewEventState extends State<CreateNewEvent> {
   @override
   void initState() {
     super.initState();
+    final timestamp1 =
+        DateTime(DateTime.now().year,
+            DateTime.now().month, DateTime.now().day,
+            DateTime.now().hour,DateTime.now().minute).millisecondsSinceEpoch;
+    fromText = timestamp1.toString();
+    String formattedDate =
+    DateFormat('dd-MM-yyyy HH:mm').format(DateTime(DateTime.now().year,
+        DateTime.now().month, DateTime.now().day,
+        DateTime.now().hour,DateTime.now().minute));
+    debugPrint("INIT__"+formattedDate);
     Future.delayed(Duration.zero, () {
       _getAllInterests = getInterestssList(context);
       setState(() {});
@@ -361,128 +371,6 @@ class _CreateNewEventState extends State<CreateNewEvent> {
                         ],
                       ),
                     ),
-
-                 /*   customText("CATEGORY", 14, Colors.white),
-                    customHeightBox(10),
-                    InkWell(
-                      onTap: () {
-                        Container(
-                          padding: const EdgeInsets.only(top: 15, bottom: 15),
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              color: black),
-                          child: Column(
-                            children: [
-                              InkWell(
-                                onTap: () {
-                                  setState(() {
-                                    showList = !showList;
-                                  });
-                                },
-                                child: Row(
-                                  children: [
-                                    customWidthBox(10),
-                                    customText(
-                                        categoryTypeName.toString().isEmpty
-                                            ? "Select Category"
-                                            : categoryTypeName.toString(),
-                                        14,
-                                        Colors.white),
-                                    const Spacer(),
-                                    const Icon(
-                                      Icons.arrow_drop_down,
-                                      color: Colors.white,
-                                    )
-                                  ],
-                                ),
-                              ),
-                              Container(
-                                child: showList
-                                    ? FutureBuilder<AllInterestModel>(
-                                  future: _getAllInterests,
-                                  builder: (context, snapshot) {
-                                    return snapshot.hasData &&
-                                        snapshot.data!.data!.isNotEmpty
-                                        ? ListView.builder(
-                                      itemCount:
-                                      snapshot.data!.data!.length,
-                                      shrinkWrap: true,
-                                      itemBuilder: (context, index) {
-                                        return InkWell(
-                                            onTap: () {
-                                              setState(() {
-                                                showList = false;
-
-                                                categoryTypeID =
-                                                    snapshot
-                                                        .data!
-                                                        .data![index]
-                                                        .sId
-                                                        .toString();
-                                                categoryTypeName =
-                                                    snapshot
-                                                        .data!
-                                                        .data![index]
-                                                        .title
-                                                        .toString();
-                                              });
-                                            },
-                                            child: ListTile(
-                                              title: Padding(
-                                                padding:
-                                                const EdgeInsets
-                                                    .only(
-                                                    left: 8.0,
-                                                    top: 5,
-                                                    bottom: 5),
-                                                child: customText(
-                                                    snapshot
-                                                        .data!
-                                                        .data![index]
-                                                        .title
-                                                        .toString(),
-                                                    15,
-                                                    white),
-                                              ),
-                                            ));
-                                      },
-                                    )
-                                        : Center(
-                                      child: customText(
-                                          "No data found!",
-                                          15,
-                                          white),
-                                    );
-                                  },
-                                )
-                                    : null,
-                              )
-                            ],
-                          ),
-                        );
-                        showInterests();
-                      },
-                      child: Container(
-                        padding: const EdgeInsets.only(top: 15, bottom: 15, left: 15),
-                        decoration: BoxDecoration(
-                            color: black,
-                            borderRadius: BorderRadius.circular(10)),
-                        child: Row(children: [
-                          customText(
-                              categoryTypeName!.isEmpty
-                                  ? "Select category"
-                                  : categoryTypeName.toString(),
-                              15,
-                              categoryTypeName!.isEmpty ? white24 : white),
-                          const Spacer(),
-                          Icon(
-                            Icons.arrow_drop_down,
-                            color: white,
-                          ),
-                          customWidthBox(15)
-                        ]),
-                      ),
-                    ),*/
                     customHeightBox(20),
                     customText("WEBSITE(OPTIONAL)", 14, Colors.white),
                     customHeightBox(10),
@@ -655,7 +543,7 @@ class _CreateNewEventState extends State<CreateNewEvent> {
           color: black, borderRadius: BorderRadius.circular(5)),
       child: TextFormField(
         controller: controller,
-        style: TextStyle(color: Colors.white),
+        style: const TextStyle(color: Colors.white),
         decoration: InputDecoration(
             border: InputBorder.none,
             hintText: hint,
@@ -760,7 +648,7 @@ class _CreateNewEventState extends State<CreateNewEvent> {
                         decoration: BoxDecoration(
                             border: Border.all(color: white, width: 1),
                             borderRadius: BorderRadius.circular(50)),
-                        padding: EdgeInsets.all(5),
+                        padding: const EdgeInsets.all(5),
                         child: Icon(
                           Icons.camera,
                           color: white,
@@ -852,11 +740,11 @@ class _CreateNewEventState extends State<CreateNewEvent> {
                           ),
                         ),
                         child: CupertinoDatePicker(
-                          dateOrder: DatePickerDateOrder.dmy,
+
                           mode: CupertinoDatePickerMode.date,
                           initialDateTime: DateTime(DateTime.now().year,
                               DateTime.now().month, DateTime.now().day,
-                             /* DateTime.now().hour,DateTime.now().minute)*/),
+                              DateTime.now().hour,DateTime.now().minute),
                           onDateTimeChanged: (DateTime newDateTime) {
                             setState(() {
                               //hh:mm:ss
@@ -864,20 +752,21 @@ class _CreateNewEventState extends State<CreateNewEvent> {
                                   newDateTime.millisecondsSinceEpoch;
                               print(timestamp1);
                               String formattedDate =
-                                  DateFormat('dd-MM-yyyy ').format(newDateTime);
+                                  DateFormat('dd-MM-yyyy HH:mm ').format(newDateTime);
+                              // var formattedDate = new DateTime.fromMillisecondsSinceEpoch(int.parse(fromText));
                               if (type == "from") {
                                 setState(() {
                                   fromText = timestamp1.toString();
-                                  fromTextStartDate = formattedDate;
+                                  fromTextStartDate = formattedDate.toString();
                                 });
                               } else if (type == "to") {
                                 setState(() {
                                   toText = timestamp1.toString();
-                                  toTextEndDate = formattedDate;
+                                  toTextEndDate = formattedDate.toString();
                                 });
                               }
-
-                              print(formattedDate);
+                              var date = new DateTime.fromMillisecondsSinceEpoch(int.parse(fromText));
+                              print("DATE__"+formattedDate.toString()+fromText+date.toString());
                             });
                           },
                         ),
@@ -934,8 +823,10 @@ class _CreateNewEventState extends State<CreateNewEvent> {
                               setState(() {
                                 fromText =
                                     (int.parse(fromText) + tempTime).toString();
-                                print("fromDate------------------------" +
-                                    fromText);
+                                // print("fromDate------------------------" +
+                                //     fromText);
+                                var date = new DateTime.fromMillisecondsSinceEpoch(int.parse(fromText));
+                                print("FROM_DATE____"+date.toString());
                               });
                             }
                             if (type.contains("to")) {
@@ -953,14 +844,14 @@ class _CreateNewEventState extends State<CreateNewEvent> {
                   ),
                   customDivider(10, white),
                   customHeightBox(10),
-                  Container(
+                  SizedBox(
                     height: 200,
-                    padding: const EdgeInsets.only(top: 6.0),
-                    /*color: CupertinoColors.white,*/
-                    child: DefaultTextStyle(
-                      style: const TextStyle(
-                        color: CupertinoColors.white,
-                        fontSize: 22.0,
+                    child: CupertinoTheme(
+                      data: const CupertinoThemeData(
+                          textTheme: CupertinoTextThemeData(
+                            dateTimePickerTextStyle: TextStyle(color: Colors.white, fontSize: 12),
+                            pickerTextStyle: TextStyle(color: Colors.white, fontSize: 16),
+                          )
                       ),
                   child:  CupertinoTimerPicker(
                         minuteInterval: 1,

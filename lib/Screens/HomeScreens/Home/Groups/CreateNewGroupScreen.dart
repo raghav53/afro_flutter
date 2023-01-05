@@ -25,7 +25,7 @@ class CreateNewGroup extends StatefulWidget {
   State<CreateNewGroup> createState() => _CreateNewGroupState();
 }
 
-String? public = "Anyone can see the group , it's members and their\nposts.";
+String? public = "Anyone can see the group , it's members and\n their posts.";
 String closed = "Only members can see post";
 String secret = "Only members can find the group and see posts";
 String? categoryType = "Sports";
@@ -81,7 +81,7 @@ class _CreateNewGroupState extends State<CreateNewGroup> {
                         customHeightBox(10),
                         Container(
                           decoration: BoxDecoration(
-                              color: Colors.black,
+                              color: black,
                               borderRadius: BorderRadius.circular(5)),
                           child: TextFormField(
                             onChanged: (value) {
@@ -93,7 +93,7 @@ class _CreateNewGroupState extends State<CreateNewGroup> {
                                 hintText: "Please enter group name",
                                 contentPadding: const EdgeInsets.only(left: 15),
                                 hintStyle:
-                                    const TextStyle(color: Colors.white24)),
+                                    const TextStyle(color: Colors.white24,fontSize: 12)),
                           ),
                         ),
                         customHeightBox(20),
@@ -118,7 +118,7 @@ class _CreateNewGroupState extends State<CreateNewGroup> {
                                   categoryTypeName!.isEmpty
                                       ? "Select category"
                                       : categoryTypeName.toString(),
-                                  15,
+                                  12,
                                   categoryTypeName!.isEmpty ? white24 : white),
                               Spacer(),
                               Icon(
@@ -136,7 +136,7 @@ class _CreateNewGroupState extends State<CreateNewGroup> {
                           height: 130,
                           decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(10),
-                              color: Colors.black),
+                              color: black),
                           child: TextFormField(
                             onChanged: (value) {
                               groupBio = value.toString();
@@ -149,7 +149,7 @@ class _CreateNewGroupState extends State<CreateNewGroup> {
                                 border: InputBorder.none,
                                 contentPadding:
                                     EdgeInsets.only(left: 10, top: 10),
-                                hintStyle: TextStyle(color: Colors.white24)),
+                                hintStyle: TextStyle(color: Colors.white24,fontSize: 12)),
                           ),
                         ),
                         customHeightBox(50),
@@ -172,11 +172,11 @@ class _CreateNewGroupState extends State<CreateNewGroup> {
     final FocusNode _focusNode = FocusNode();
     return Container(
       decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10), color: Colors.black),
+          borderRadius: BorderRadius.circular(10), color: black),
       width: 500,
       child: DropdownButton(
         menuMaxHeight: 250,
-        dropdownColor: Colors.black,
+        dropdownColor: black,
         style: TextStyle(color: Colors.white, fontSize: 16),
         underline: Container(),
         value: categoryType,
@@ -220,35 +220,37 @@ class _CreateNewGroupState extends State<CreateNewGroup> {
                       ? Border.all(color: white, width: 1)
                       : null,
                   borderRadius: BorderRadius.circular(10),
-                  color: Colors.black),
+                  color: black),
               child: Padding(
                 padding: const EdgeInsets.only(
                     left: 10, top: 10, bottom: 10, right: 5),
-                child: Row(
-                  children: [
-                    Image.asset(
-                      "assets/icons/world_grid.png",
-                      height: 20,
-                      width: 20,
-                      color: selectPrivacy == 1 ? white : white24,
-                    ),
-                    customWidthBox(10),
-                    Column(
-                      crossAxisAlignment: cStart,
-                      children: [
-                        customText("Public Group", 10,
-                            selectPrivacy == 1 ? white : white24),
-                        customHeightBox(7),
-                        customText(
-                            public!, 12, selectPrivacy == 1 ? white : white24)
-                      ],
-                    ),
-                    Spacer(),
-                    Icon(
-                      Icons.arrow_drop_down,
-                      color: selectPrivacy == 1 ? white : black,
-                    )
-                  ],
+                child: Expanded(
+                  child: Row(
+                    children: [
+                      Image.asset(
+                        "assets/icons/world_grid.png",
+                        height: 20,
+                        width: 20,
+                        color: selectPrivacy == 1 ? white : white24,
+                      ),
+                      customWidthBox(10),
+                      Column(
+                        crossAxisAlignment: cStart,
+                        children: [
+                          customText("Public Group", 10,
+                              selectPrivacy == 1 ? white : white24),
+                          customHeightBox(7),
+                          customText(
+                              public!, 10, selectPrivacy == 1 ? white : white24)
+                        ],
+                      ),
+                      const Spacer(),
+                      Icon(
+                        Icons.arrow_drop_down,
+                        color: selectPrivacy == 1 ? white : Colors.black,
+                      )
+                    ],
+                  ),
                 ),
               )),
         ),
@@ -267,7 +269,7 @@ class _CreateNewGroupState extends State<CreateNewGroup> {
                       ? Border.all(color: white, width: 1)
                       : null,
                   borderRadius: BorderRadius.circular(10),
-                  color: Colors.black),
+                  color: black),
               child: Padding(
                 padding: const EdgeInsets.only(
                     left: 10, top: 10, bottom: 10, right: 5),
@@ -287,13 +289,13 @@ class _CreateNewGroupState extends State<CreateNewGroup> {
                             selectPrivacy == 2 ? white : white24),
                         customHeightBox(7),
                         customText(
-                            closed, 12, selectPrivacy == 2 ? white : white24)
+                            closed, 10, selectPrivacy == 2 ? white : white24)
                       ],
                     ),
                     Spacer(),
                     Icon(
                       Icons.arrow_drop_down,
-                      color: selectPrivacy == 2 ? white : black,
+                      color: selectPrivacy == 2 ? white : Colors.black,
                     )
                   ],
                 ),
@@ -314,7 +316,7 @@ class _CreateNewGroupState extends State<CreateNewGroup> {
                       ? Border.all(color: white, width: 1)
                       : null,
                   borderRadius: BorderRadius.circular(10),
-                  color: Colors.black),
+                  color: black),
               child: Padding(
                 padding: const EdgeInsets.only(
                     left: 10, top: 10, bottom: 10, right: 5),
@@ -334,13 +336,13 @@ class _CreateNewGroupState extends State<CreateNewGroup> {
                             selectPrivacy == 3 ? white : white24),
                         customHeightBox(7),
                         customText(
-                            secret, 12, selectPrivacy == 3 ? white : white24)
+                            secret, 10, selectPrivacy == 3 ? white : white24)
                       ],
                     ),
                     Spacer(),
                     Icon(
                       Icons.arrow_drop_down,
-                      color: selectPrivacy == 3 ? white : black,
+                      color: selectPrivacy == 3 ? white : Colors.black,
                     )
                   ],
                 ),
