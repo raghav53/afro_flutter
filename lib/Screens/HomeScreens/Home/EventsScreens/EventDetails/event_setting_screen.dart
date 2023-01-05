@@ -69,36 +69,65 @@ class _EventSettingState extends State<EventSetting> {
           children: [
            customText("NAME YOUR EVENT", 15, white),
             const SizedBox(height: 10,),
-            Container(
-              alignment: Alignment.centerLeft,
+                Container(
+                  decoration: BoxDecoration(
+                      color: black, borderRadius: BorderRadius.circular(5)),
+                  child: TextFormField(
+                    controller: eventController,
+                    style: const TextStyle(fontSize: 14,color: Colors.white),
+                    decoration: InputDecoration(
+                        border: InputBorder.none,
+                        hintText: (widget.eventId=="")?"Enter your event name":snapshot.data!.data!.title.toString(),
+                        hintStyle: (widget.eventId=="")?const TextStyle(color: Colors.white24):TextStyle(color: white,fontSize: 14),
+                        contentPadding: const EdgeInsets.only(left: 15),
+                       ),
+                  ),
+                ),
+            /*Container(
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10),
-                  boxShadow: const [
-                    BoxShadow(color: Colors.black, offset: Offset(0, 2))
+                  boxShadow:  [
+                    BoxShadow(color: black, offset: Offset(0, 2))
                   ]),
               height: 50,
-              child: TextFormField(
+              child: TextField(
                 onChanged: (value) {
                   setState(() {
                     eventController.text = value;
-                   /* changeValue = value;*/
+                   *//* changeValue = value;*//*
                   });
                 },
-                /*textInputAction: TextInputAction.next,*/
+                textInputAction: TextInputAction.next,
                 controller: eventController,
                 keyboardType: TextInputType.text,
                 style: const TextStyle(fontSize: 14, color: Colors.white),
                 decoration:  InputDecoration(
                     border: InputBorder.none,
                     contentPadding: const EdgeInsets.only(left: 15),
-                    hintText: (widget.eventId=="")?"event":snapshot.data!.data!.title.toString(),
+                    hintText: (widget.eventId=="")?"Enter your event name":snapshot.data!.data!.title.toString(),
                     hintStyle: (widget.eventId=="")?TextStyle(color: Colors.white24):TextStyle(color: white,fontSize: 14)),
               ),
-            ),
+            ),*/
             const SizedBox(height: 20,),
-            customText("LINK", 15, white),
+            customText((snapshot.data!.data!.eventLink!=null||snapshot.data!.data!.eventLink!.isNotEmpty)?"LINK":"LOCATION", 15, white),
             const SizedBox(height: 10,),
             Container(
+              decoration: BoxDecoration(
+                  color: black, borderRadius: BorderRadius.circular(5)),
+              child: TextFormField(
+                controller: linkController,
+                style: const TextStyle(fontSize: 14,color: Colors.white),
+                decoration: InputDecoration(
+                  border: InputBorder.none,
+                  hintText: (widget.eventId=="")
+                      ?"Enter Link"
+                      :snapshot.data!.data!.eventLink.toString(),
+                  hintStyle:(widget.eventId=="")?const TextStyle(color: Colors.white24):TextStyle(color: white,fontSize: 14),
+                  contentPadding: const EdgeInsets.only(left: 15),
+                ),
+              ),
+            ),
+           /* Container(
               alignment: Alignment.centerLeft,
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10),
@@ -109,7 +138,7 @@ class _EventSettingState extends State<EventSetting> {
               child: TextField(
                 onChanged: (value) {
                   setState(() {
-                    /* changeValue = value;*/
+                    *//* changeValue = value;*//*
                   });
                 },
                 textInputAction: TextInputAction.next,
@@ -119,10 +148,10 @@ class _EventSettingState extends State<EventSetting> {
                 decoration:  InputDecoration(
                     border: InputBorder.none,
                     contentPadding: EdgeInsets.only(left: 15),
-                    hintText: (widget.eventId=="")?"link":snapshot.data!.data!.eventLink.toString(),
+                    hintText: (widget.eventId=="")?"Enter Link":snapshot.data!.data!.eventLink.toString(),
                     hintStyle: (widget.eventId=="")?TextStyle(color: Colors.white24):TextStyle(color: white,fontSize: 14)),
               ),
-            ),
+            ),*/
             const SizedBox(height: 20,),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,

@@ -54,7 +54,7 @@ class _FollowingTabState extends State<FollowingTab> {
       backgroundColor: Colors.transparent,
       body: Column(
         children: [
-          Container(
+         /* Container(
             margin: const EdgeInsets.only(left: 30, right: 40),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -89,7 +89,7 @@ class _FollowingTabState extends State<FollowingTab> {
                 ),
               ],
             ),
-          ),
+          ),*/
           customHeightBox(20),
           FutureBuilder<FollowingModel>(
               future:

@@ -107,8 +107,8 @@ class _UpcomingEvent extends State<UpcomingEventsScreen> {
                       },
                       child: Image.asset(
                         "assets/icons/fillter.png",
-                        height: 20,
-                        width: 20,
+                        height: 28,
+                        width: 28,
                       ),
                     )),
               ],
@@ -411,9 +411,9 @@ class _UpcomingEvent extends State<UpcomingEventsScreen> {
                           ],
                         ),
                       ),
-                      Spacer(),
+                      const Spacer(),
                       Container(
-                          height: phoneHeight(context) / 2.07,
+                          height: phoneHeight(context) / 2.2,
                           decoration: const BoxDecoration(
                               border: Border(
                                   left: BorderSide(
@@ -422,7 +422,7 @@ class _UpcomingEvent extends State<UpcomingEventsScreen> {
                               alignment: Alignment.bottomCenter,
                               children: [
                                 SizedBox(
-                                  width: phoneWidth(context) / 1.4,
+                                  width: phoneWidth(context) / 1.5,
                                   child: selectedBottomIndex == 0
                                       ? Column(
                                           children: [
@@ -452,9 +452,9 @@ class _UpcomingEvent extends State<UpcomingEventsScreen> {
                                                   )),
                                             ),
                                             customHeightBox(10),
-                                            Container(
+                                            SizedBox(
                                                 height:
-                                                    phoneHeight(context) / 2.7,
+                                                    phoneHeight(context) / 2.85,
                                                 child:
                                                     FutureBuilder<CountryModel>(
                                                   future: _getCountries,
@@ -508,6 +508,11 @@ class _UpcomingEvent extends State<UpcomingEventsScreen> {
                                                                     white),
                                                                 trailing:
                                                                     Checkbox(
+                                                                      side: BorderSide(
+                                                                        color:Colors.purple
+                                                                      ),
+                                                                        activeColor: Colors.purple,
+                                                                      checkColor: Colors.black,
                                                                         value: snapshot
                                                                             .data!
                                                                             .data![
@@ -729,28 +734,24 @@ class _UpcomingEvent extends State<UpcomingEventsScreen> {
                                                     )
                                                   : Container(),
                                 ),
-                                Align(
-                                  alignment: Alignment.bottomCenter,
-                                  child: InkWell(
-                                    onTap: () {
-                                      setState(() {});
-                                      Navigator.pop(context);
-                                    },
-                                    child: Container(
-                                        margin: EdgeInsets.only(bottom: 15),
-                                        padding: const EdgeInsets.only(
-                                            top: 7,
-                                            bottom: 7,
-                                            left: 20,
-                                            right: 20),
-                                        decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(50),
-                                          gradient: commonButtonLinearGridient,
-                                        ),
-                                        child: customText(
-                                            "Apply", 16, Colors.white)),
-                                  ),
+                                InkWell(
+                                  onTap: () {
+                                    setState(() {});
+                                    Navigator.pop(context);
+                                  },
+                                  child: Container(
+                                      height: 30,
+                                      width: 70,
+                                      alignment: Alignment.center,
+                                      margin: const EdgeInsets.only(bottom: 10),
+                                      /*  padding: const EdgeInsets.only(
+                                      top: 7, bottom: 5, left: 20, right: 20),*/
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(50),
+                                        gradient: commonButtonLinearGridient,
+                                      ),
+                                      child:
+                                      customText("Apply", 16, Colors.white)),
                                 )
                               ]))
                     ],

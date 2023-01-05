@@ -192,6 +192,12 @@ class _EventDetailsScreenPageState extends State<EventDetailsScreenPage> {
                                     height: 200.0,
                                     decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(10),
+                  boxShadow: [
+                  BoxShadow(
+                  color: gray1,
+                  spreadRadius: 0.3
+                  )
+                  ],
                                       image: DecorationImage(
                                           image: imageProvider,
                                           fit: BoxFit.cover),
@@ -747,7 +753,7 @@ class _EventDetailsScreenPageState extends State<EventDetailsScreenPage> {
                               margin: const EdgeInsets.only(
                                   left: 10, right: 10, top: 10, bottom: 10),
                               height: 30,
-                              decoration: BoxDecoration(),
+                              decoration: const BoxDecoration(),
                               child: ListView.builder(
                                   shrinkWrap: true,
                                   scrollDirection: Axis.horizontal,

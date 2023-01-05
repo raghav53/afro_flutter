@@ -50,169 +50,167 @@ class _FollowerTabState extends State<FollowerTab> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Column(
-        children: [
-          Container(
-            margin: EdgeInsets.only(left: 20, right: 20),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                customHeightBox(10),
-                Container(
-                  alignment: Alignment.centerLeft,
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      boxShadow: const [
-                        BoxShadow(color: Colors.black, offset: Offset(0, 2))
-                      ]),
-                  height: 50,
-                  child: TextField(
-                    onChanged: (value) {
-                      setState(() {
-                        //search = value.toString();
-                      });
-                    },
-                    keyboardType: TextInputType.text,
-                    style: const TextStyle(fontSize: 14, color: Colors.white),
-                    decoration: const InputDecoration(
-                        prefixIcon: Icon(
-                          Icons.search,
-                          color: Color(0xFFDFB48C),
-                        ),
-                        border: InputBorder.none,
-                        hintText: "Search",
-                        contentPadding: EdgeInsets.only(left: 15, top: 15),
-                        hintStyle: TextStyle(color: Colors.white24)),
-                  ),
+    return Column(
+      children: [
+        /*Container(
+          margin: const EdgeInsets.only(left: 20, right: 20),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              customHeightBox(10),
+              Container(
+                alignment: Alignment.centerLeft,
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    boxShadow: const [
+                      BoxShadow(color: Colors.black, offset: Offset(0, 2))
+                    ]),
+                height: 50,
+                child: TextField(
+                  onChanged: (value) {
+                    setState(() {
+                      //search = value.toString();
+                    });
+                  },
+                  keyboardType: TextInputType.text,
+                  style: const TextStyle(fontSize: 14, color: Colors.white),
+                  decoration: const InputDecoration(
+                      prefixIcon: Icon(
+                        Icons.search,
+                        color: Color(0xFFDFB48C),
+                      ),
+                      border: InputBorder.none,
+                      hintText: "Search",
+                      contentPadding: EdgeInsets.only(left: 15, top: 15),
+                      hintStyle: TextStyle(color: Colors.white24)),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
-          FutureBuilder<FollowerModel>(
-              future: _getFollowerUsers,
-              builder: (context, snaapshot) {
-                return snaapshot.hasData
-                    ? Container(
-                        margin: const EdgeInsets.only(left: 25, right: 25),
-                        decoration: const BoxDecoration(
-                          borderRadius: BorderRadius.all(Radius.circular(20)),
-                        ),
-                        child: ListView.builder(
-                          shrinkWrap: true,
-                          padding: EdgeInsets.zero,
-                          itemCount: snaapshot.data!.data!.length,
-                          itemBuilder: (context, index) {
-                            String? userFullName = snaapshot
-                                .data!.data![index].follower?.fullName
-                                .toString();
+        ),*/
+        FutureBuilder<FollowerModel>(
+            future: _getFollowerUsers,
+            builder: (context, snaapshot) {
+              return snaapshot.hasData
+                  ? Container(
+                      margin: const EdgeInsets.only(left: 25, right: 25),
+                      decoration: const BoxDecoration(
+                        borderRadius: BorderRadius.all(Radius.circular(20)),
+                      ),
+                      child: ListView.builder(
+                        shrinkWrap: true,
+                        padding: EdgeInsets.zero,
+                        itemCount: snaapshot.data!.data!.length,
+                        itemBuilder: (context, index) {
+                          String? userFullName = snaapshot
+                              .data!.data![index].follower?.fullName
+                              .toString();
 
-                            String? userImage = snaapshot
-                                .data!.data![index].follower?.profileImage
-                                .toString();
+                          String? userImage = snaapshot
+                              .data!.data![index].follower?.profileImage
+                              .toString();
 
-                            String? cName = snaapshot
-                                .data!.data![index].follower!.country?[0].title
-                                .toString();
-                            bool _isVisible =
-                                snaapshot.data!.data![index].isFollowing == 1
-                                    ? false
-                                    : true;
+                          String? cName = snaapshot
+                              .data!.data![index].follower!.country?[0].title
+                              .toString();
+                          bool _isVisible =
+                              snaapshot.data!.data![index].isFollowing == 1
+                                  ? false
+                                  : true;
 
-                            return InkWell(
-                              onTap: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            OtherUserProfilePageScreen(
-                                              name: userFullName,
-                                              userID: snaapshot.data!
-                                                  .data![index].follower!.sId
-                                                  .toString(),
-                                            )));
-                              },
+                          return InkWell(
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          OtherUserProfilePageScreen(
+                                            name: userFullName,
+                                            userID: snaapshot.data!
+                                                .data![index].follower!.sId
+                                                .toString(),
+                                          )));
+                            },
+                            child: Container(
+                              margin: const EdgeInsets.all(7),
+                              decoration: const BoxDecoration(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(5)),
+                                color: Color(0xFF191831),
+                              ),
                               child: Container(
-                                margin: EdgeInsets.all(7),
-                                decoration: const BoxDecoration(
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(5)),
-                                  color: Color(0xFF191831),
-                                ),
-                                child: Container(
-                                  width: phoneWidth(context),
-                                  margin: EdgeInsets.all(10),
-                                  child: Row(
-                                    children: [
-                                      CachedNetworkImage(
-                                        placeholder: (context, image) =>
-                                            Icon(Icons.person),
-                                        imageBuilder: (context, image) =>
-                                            CircleAvatar(
-                                          backgroundImage: image,
+                                width: phoneWidth(context),
+                                margin: const EdgeInsets.all(10),
+                                child: Row(
+                                  children: [
+                                    CachedNetworkImage(
+                                      placeholder: (context, image) =>
+                                          Icon(Icons.person),
+                                      imageBuilder: (context, image) =>
+                                          CircleAvatar(
+                                        backgroundImage: image,
+                                      ),
+                                      imageUrl:
+                                          IMAGE_URL + userImage.toString(),
+                                    ),
+                                    customWidthBox(10),
+                                    Column(
+                                      crossAxisAlignment: cStart,
+                                      children: [
+                                        customText(
+                                            userFullName!, 13, Colors.white),
+                                        customHeightBox(5),
+                                        Row(
+                                          children: [
+                                            Icon(
+                                              Icons.location_pin,
+                                              color: yellowColor,
+                                              size: 12,
+                                            ),
+                                            customWidthBox(5),
+                                            customText(cName!, 12, white)
+                                          ],
                                         ),
-                                        imageUrl:
-                                            IMAGE_URL + userImage.toString(),
-                                      ),
-                                      customWidthBox(10),
-                                      Column(
-                                        crossAxisAlignment: cStart,
-                                        children: [
-                                          customText(
-                                              userFullName!, 13, Colors.white),
-                                          customHeightBox(5),
-                                          Row(
-                                            children: [
-                                              Icon(
-                                                Icons.location_pin,
-                                                color: yellowColor,
-                                                size: 12,
-                                              ),
-                                              customWidthBox(5),
-                                              customText(cName!, 12, white)
-                                            ],
-                                          ),
-                                          customHeightBox(5),
-                                          customText("Share 2 Mutual friend",
-                                              12, Color(0x3dFFFFFF)),
-                                        ],
-                                      ),
-                                      Spacer(),
-                                      Visibility(
-                                        visible: _isVisible,
-                                        child: InkWell(
-                                          onTap: () {
-                                            unfollow(snaapshot
-                                                .data!.data![index].followerId!
-                                                .toString());
-                                          },
+                                        customHeightBox(5),
+                                        customText("Share 2 Mutual friend",
+                                            12, Color(0x3dFFFFFF)),
+                                      ],
+                                    ),
+                                    Spacer(),
+                                    Visibility(
+                                      visible: _isVisible,
+                                      child: InkWell(
+                                        onTap: () {
+                                          unfollow(snaapshot
+                                              .data!.data![index].followerId!
+                                              .toString());
+                                        },
+                                        child: Container(
+                                          decoration: fixedButtonDesign(),
                                           child: Container(
-                                            decoration: fixedButtonDesign(),
-                                            child: Container(
-                                                padding: const EdgeInsets.only(
-                                                    top: 10,
-                                                    left: 20,
-                                                    right: 20,
-                                                    bottom: 10),
-                                                child: customText("Follow  ",
-                                                    12, Colors.white)),
-                                          ),
+                                              padding: const EdgeInsets.only(
+                                                  top: 10,
+                                                  left: 20,
+                                                  right: 20,
+                                                  bottom: 10),
+                                              child: customText("Follow  ",
+                                                  12, Colors.white)),
                                         ),
-                                      )
-                                    ],
-                                  ),
+                                      ),
+                                    )
+                                  ],
                                 ),
                               ),
-                            );
-                          },
-                        ),
-                      )
-                    : Center(
-                        child: customText("Not data found", 15, white),
-                      );
-              }),
-        ],
-      ),
+                            ),
+                          );
+                        },
+                      ),
+                    )
+                  : Center(
+                      child: customText("Not data found", 15, white),
+                    );
+            }),
+      ],
     );
   }
 

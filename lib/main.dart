@@ -27,7 +27,7 @@ Future<void> main() async {
   HttpOverrides.global = MyHttpOverrides();
   WidgetsFlutterBinding.ensureInitialized();
   await LocalNotificationService.initMainFCM();
-  runApp(const MyApp());
+  runApp( const MyApp());
 }
 class MyHttpOverrides extends HttpOverrides {
   @override
@@ -38,7 +38,7 @@ class MyHttpOverrides extends HttpOverrides {
   }
 }
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+   const MyApp({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Sizer(builder: ((context, orientation, deviceType) {
@@ -54,6 +54,7 @@ class MyApp extends StatelessWidget {
     }));
   }
 }
+
 final GlobalKey<NavigatorState>? navigatorKey = GlobalKey<NavigatorState>();
 class SplashScreenPage extends StatefulWidget {
   const SplashScreenPage({Key? key}) : super(key: key);

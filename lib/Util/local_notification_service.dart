@@ -23,6 +23,8 @@ import 'package:afro/Screens/HomeScreens/Home/NotificationScreen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../Model/NotificationModel.dart';
+import '../Screens/Tabs/FollowerTab.dart';
+import '../Screens/Tabs/FollowingTab.dart';
 class LocalNotificationService {
 ///////////////////////////////// init firebase ////////////////////////////////
 
@@ -174,18 +176,20 @@ class LocalNotificationService {
           getContext,
           MaterialPageRoute(
               builder: (context) => const MessageListScreen()));
-    } else if(type=="follow"||type=="unfollow"){
-      Navigator.pushReplacement(getContext, MaterialPageRoute(builder: (context)=>const FollowerFollowingPage()));
+    } else if(type=="follow"){
+      navigatorKey!.currentState!.push(MaterialPageRoute(builder: (context) => const FollowerFollowingPage(selectedIndex: 1,)));
+
+
     } else if (type == "friend_request"){
-      Navigator.pushReplacement(getContext, MaterialPageRoute(builder: (context)=>const AllContactsListScreen()));
+      Navigator.pushReplacement(getContext, MaterialPageRoute(builder: (context)=> AllContactsListScreen(selectedIndex: 1 ,)));
     }else if (type == "join_group"){
       Navigator.pushReplacement(getContext, MaterialPageRoute(builder: (context)=>
           GroupDetailsPage(groupId: notificationModel.data!.tableId.toString(), groupAdmin: '',)));
 
     }else if (type == "event_invite"){
-      Navigator.pushReplacement(getContext, MaterialPageRoute(builder: (context)=> AllEventsScreen()));
+      Navigator.pushReplacement(getContext, MaterialPageRoute(builder: (context)=> AllEventsScreen(selectedIndex:  3,)));
     }else if (type == "event_interested"){
-      Navigator.pushReplacement(getContext, MaterialPageRoute(builder: (context)=> EventDetailsScreenPage(eventId: notificationModel.data!.tableId.toString(), userId: notificationModel.data!.receiverId.toString(),)));
+      Navigator.pushReplacement(getContext, MaterialPageRoute(builder: (context)=> AllEventsScreen(selectedIndex:  2,)));
     }else if (type == "form_reply"){
       Navigator.pushReplacement(getContext, MaterialPageRoute(builder: (context)=> FourmDetailsPage(fourmId: notificationModel.data!.tableId.toString(),)));
     }else{
