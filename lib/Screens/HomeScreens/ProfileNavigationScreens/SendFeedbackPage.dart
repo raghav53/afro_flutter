@@ -10,6 +10,8 @@ import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../../Util/Colors.dart';
+
 class SendFeedbackPage extends StatefulWidget {
   const SendFeedbackPage({Key? key}) : super(key: key);
 
@@ -33,7 +35,7 @@ class _SendFeedbackPageState extends State<SendFeedbackPage> {
             elevation: 0.0,
             backgroundColor: Colors.transparent,
             leading: BackButton(),
-            title: customText("Profile", 20, Colors.white)),
+            title: customText("Send Feedback", 20, Colors.white)),
         body: Container(
           padding: EdgeInsets.only(top: 50, left: 15, right: 15),
           decoration: commonBoxDecoration(),
@@ -47,7 +49,7 @@ class _SendFeedbackPageState extends State<SendFeedbackPage> {
                 height: 50,
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10),
-                    color: Colors.black),
+                    color: black),
                 child: TextField(
                   controller: subject,
                   keyboardType: TextInputType.text,
@@ -65,7 +67,7 @@ class _SendFeedbackPageState extends State<SendFeedbackPage> {
               Container(
                 height: 120,
                 decoration: BoxDecoration(
-                    color: Colors.black,
+                    color: black,
                     borderRadius: BorderRadius.circular(10)),
                 child: TextField(
                   controller: description,

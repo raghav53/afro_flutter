@@ -310,6 +310,7 @@ class _UserMessagePageState extends State<UserMessagePage> {
                         ),
                         Expanded(
                           child: TextField(
+                            style: const TextStyle(color: Colors.white),
                             focusNode: focusNode,
                             controller: msgController,
                             onChanged: (v) {
@@ -319,7 +320,7 @@ class _UserMessagePageState extends State<UserMessagePage> {
                             },
                             decoration: const InputDecoration(
                                 hintText: "Write message...",
-                                hintStyle: TextStyle(color: Colors.black54),
+                                hintStyle: TextStyle(color: Colors.white54),
                                 border: InputBorder.none),
                           ),
                         ),
@@ -449,7 +450,7 @@ class _UserMessagePageState extends State<UserMessagePage> {
                     ),
                     customHeightBox(5),
                     customText(getTimeFormat(model.createdAt.toString()), 13,
-                        Color.fromARGB(255, 49, 49, 49)),
+                        Colors.white54),
                     customHeightBox(5)
                   ],
                 )

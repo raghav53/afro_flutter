@@ -48,14 +48,14 @@ class _ShareThoughtsState extends State<ShareThoughts> {
             children: [
               Container(
                 height: 150,
-                decoration: const BoxDecoration(
+                decoration:  BoxDecoration(
                     borderRadius: BorderRadius.only(
                         topLeft: Radius.circular(10),
                         topRight: Radius.circular(10)),
-                    color: Colors.black,
-                    boxShadow: [
-                      BoxShadow(color: Colors.black, offset: Offset(0, 2))
-                    ]),
+                    color: black,
+                   /* boxShadow: [
+                      BoxShadow(color: black, offset: Offset(0, 2))
+                    ]*/),
                 child: TextFormField(
                   onChanged: (value) => {caption = value.toString()},
                   maxLength: null,
@@ -70,11 +70,11 @@ class _ShareThoughtsState extends State<ShareThoughts> {
                 ),
               ),
               Container(
-                decoration: const BoxDecoration(
+                decoration:  BoxDecoration(
                     borderRadius: BorderRadius.only(
                         bottomLeft: Radius.circular(10),
                         bottomRight: Radius.circular(10)),
-                    color: Colors.black),
+                    color: black),
                 child: Column(
                   children: [
                     Align(

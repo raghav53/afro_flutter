@@ -228,7 +228,7 @@ class _MessageListScreenState extends State<MessageListScreen> {
       margin: const EdgeInsets.only(left: 20, right: 20),
       height: 43,
       decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10), color: Colors.black),
+          borderRadius: BorderRadius.circular(10), color: black),
       child: const TextField(
         keyboardType: TextInputType.text,
         style: TextStyle(fontSize: 14, color: Colors.white),

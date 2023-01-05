@@ -12,6 +12,7 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../Network/Apis.dart';
+import '../../../Util/Colors.dart';
 
 class ChangePasswordPage extends StatefulWidget {
   const ChangePasswordPage({Key? key}) : super(key: key);
@@ -59,9 +60,9 @@ class _ChangePasswordPage extends State<ChangePasswordPage> {
                         alignment: Alignment.centerLeft,
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(10),
-                            boxShadow: const [
+                            boxShadow:  [
                               BoxShadow(
-                                  color: Colors.black, offset: Offset(0, 2))
+                                  color:black, offset: Offset(0, 2))
                             ]),
                         height: 50,
                         child: TextField(
@@ -84,9 +85,9 @@ class _ChangePasswordPage extends State<ChangePasswordPage> {
                         alignment: Alignment.centerLeft,
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(10),
-                            boxShadow: const [
+                            boxShadow:  [
                               BoxShadow(
-                                  color: Colors.black, offset: Offset(0, 2))
+                                  color: black, offset: Offset(0, 2))
                             ]),
                         height: 50,
                         child: TextField(

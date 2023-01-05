@@ -95,6 +95,22 @@ class _GroupsAllListScreenState extends State<GroupsAllListScreen> {
         floatingActionButton: GestureDetector(
           onTap: () {
             Navigator.of(context).push(
+                MaterialPageRoute(builder: (context) => CreateNewGroup()))
+                .then((value) => setState(() {}));
+          },
+          child: Container(
+              alignment: Alignment.center,
+              height: 50,
+              width: 50,
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(50),
+                  gradient: commonButtonLinearGridient),
+              child:  Image.asset("assets/icons/add.png",height: 30,width: 30,color: Colors.white,)
+          ),
+        ),
+        /*floatingActionButton: GestureDetector(
+          onTap: () {
+            Navigator.of(context).push(
                 MaterialPageRoute(builder: (context) => CreateNewGroup()));
           },
           child: Container(
@@ -108,7 +124,7 @@ class _GroupsAllListScreenState extends State<GroupsAllListScreen> {
               color: white,
             ),
           ),
-        ),
+        ),*/
         body: Container(
           height: phoneHeight(context),
           width: phoneWidth(context),
@@ -184,8 +200,8 @@ class _GroupsAllListScreenState extends State<GroupsAllListScreen> {
                       borderRadius: BorderRadius.all(Radius.circular(20))),
                   child: Padding(
                     padding: const EdgeInsets.only(
-                        left: 10, right: 10, top: 5, bottom: 5),
-                    child: customText("Joined Group", 12, Colors.white),
+                        left: 10, right: 10, top: 6, bottom: 6),
+                    child: customText("Joined Group", 10, Colors.white),
                   ),
                 ),
               ),
@@ -232,8 +248,8 @@ class _GroupsAllListScreenState extends State<GroupsAllListScreen> {
               alignment: Alignment.centerLeft,
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10),
-                  boxShadow: const [
-                    BoxShadow(color: Colors.black, offset: Offset(0, 2))
+                  boxShadow:  [
+                    BoxShadow(color: black, offset: Offset(0, 2))
                   ]),
               child: TextField(
                 onChanged: (value) {
@@ -263,8 +279,8 @@ class _GroupsAllListScreenState extends State<GroupsAllListScreen> {
               },
               child: Image.asset(
                 "assets/icons/fillter.png",
-                height: 20,
-                width: 20,
+                height: 28,
+                width: 28,
               ),
             )),
       ],
