@@ -98,7 +98,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       child: Align(
                         alignment: Alignment.centerLeft,
                         child: Text(
-                          " Your email",
+                          "Email",
                           style: TextStyle(
                               letterSpacing: 0.5,
                               color: Colors.white,
@@ -143,7 +143,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       child: Align(
                         alignment: Alignment.centerLeft,
                         child: Text(
-                          " Your password",
+                          "Password",
                           style: TextStyle(
                               letterSpacing: 0.5,
                               color: Colors.white,

@@ -76,7 +76,7 @@ class _GroupDisscussionContactsPageState
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(top: 10, left: 15, right: 15),
+      margin: const EdgeInsets.only(top: 10, left: 15, right: 15),
       child: Column(
         crossAxisAlignment: cStart,
         children: [
@@ -165,7 +165,7 @@ class _GroupDisscussionContactsPageState
               ? GridView.count(
                   shrinkWrap: true,
                   scrollDirection: Axis.vertical,
-                  padding: EdgeInsets.only(top: 20, bottom: 20),
+                  padding: const EdgeInsets.only(top: 20, bottom: 20),
                   crossAxisCount: 3,
                   children: List.generate(snapshot.data!.data!.length, (index) {
                     var id = snapshot.data!.data![index].member!.sId.toString();
@@ -194,12 +194,12 @@ class _GroupDisscussionContactsPageState
                                 color: gray1,
                                 borderRadius: BorderRadius.circular(10)),
                             child: Container(
-                              margin: EdgeInsets.all(10),
+                              margin: const EdgeInsets.all(10),
                               decoration: BoxDecoration(
-                                  color: Color(0xFF191831),
+                                  color: const Color(0xFF191831),
                                   borderRadius: BorderRadius.circular(10)),
                               child: Container(
-                                margin: EdgeInsets.only(top: 30),
+                                margin: const EdgeInsets.only(top: 30),
                                 child: Column(
                                   children: [
                                     customText(
@@ -251,12 +251,12 @@ class _GroupDisscussionContactsPageState
                             alignment: Alignment.bottomRight,
                             children: [
                               DottedBorder(
-                                radius: Radius.circular(2),
-                                padding: EdgeInsets.all(5),
+                                radius: const Radius.circular(2),
+                                padding: const EdgeInsets.all(5),
                                 borderType: BorderType.Circle,
-                                color: Color(0xFF3E55AF),
+                                color: const Color(0xFF3E55AF),
                                 child: Container(
-                                  padding: EdgeInsets.all(1),
+                                  padding: const EdgeInsets.all(1),
                                   child: CachedNetworkImage(
                                       imageUrl: IMAGE_URL +
                                           snapshot.data!.data![index].member!
@@ -276,7 +276,7 @@ class _GroupDisscussionContactsPageState
                               Container(
                                 height: 9,
                                 width: 9,
-                                margin: EdgeInsets.only(right: 3, bottom: 3),
+                                margin: const EdgeInsets.only(right: 3, bottom: 3),
                                 decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(10),
                                     gradient: commonButtonLinearGridient),

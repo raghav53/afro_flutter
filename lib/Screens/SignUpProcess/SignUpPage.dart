@@ -67,7 +67,10 @@ class _SignUpPage extends State<SignUpPageScreen> {
                     ),
 
                     customHeightBox(20),
-                    customText("Date Of Birth", 16, white),
+                    Text("Date Of Birth", style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold), ),
                     customHeightBox(10),
                     //Date Picker
                     InkWell(
@@ -257,7 +260,7 @@ class _SignUpPage extends State<SignUpPageScreen> {
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            customText("Create Password", 16, white, bold: "yes"),
+            customText("Create Password", 14, white, bold: "yes"),
             const SizedBox(
               height: 10,
             ),
@@ -294,7 +297,7 @@ class _SignUpPage extends State<SignUpPageScreen> {
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            customText("Confirm Password", 16, white, bold: "yes"),
+            customText("Confirm Password", 14, white, bold: "yes"),
             const SizedBox(
               height: 10,
             ),

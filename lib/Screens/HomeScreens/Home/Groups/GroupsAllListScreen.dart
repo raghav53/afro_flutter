@@ -108,23 +108,7 @@ class _GroupsAllListScreenState extends State<GroupsAllListScreen> {
               child:  Image.asset("assets/icons/add.png",height: 30,width: 30,color: Colors.white,)
           ),
         ),
-        /*floatingActionButton: GestureDetector(
-          onTap: () {
-            Navigator.of(context).push(
-                MaterialPageRoute(builder: (context) => CreateNewGroup()));
-          },
-          child: Container(
-            height: 50,
-            width: 50,
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(50),
-                gradient: commonButtonLinearGridient),
-            child: Icon(
-              Icons.add,
-              color: white,
-            ),
-          ),
-        ),*/
+
         body: Container(
           height: phoneHeight(context),
           width: phoneWidth(context),
@@ -169,7 +153,7 @@ class _GroupsAllListScreenState extends State<GroupsAllListScreen> {
                       border: (clickPosition == 0)
                           ? null
                           : Border.all(color: Colors.white, width: 1),
-                      borderRadius: BorderRadius.all(Radius.circular(20))),
+                      borderRadius: const BorderRadius.all(Radius.circular(20))),
                   child: Padding(
                     padding: const EdgeInsets.only(
                         left: 20, right: 20, top: 5, bottom: 5),
@@ -216,7 +200,7 @@ class _GroupsAllListScreenState extends State<GroupsAllListScreen> {
                   });
                 },
                 child: Container(
-                  padding: EdgeInsets.only(left: 10, right: 10),
+                  padding: const EdgeInsets.only(left: 10, right: 10),
                   decoration: BoxDecoration(
                       gradient: (clickPosition == 2)
                           ? commonButtonLinearGridient
@@ -316,10 +300,10 @@ class _GroupsAllListScreenState extends State<GroupsAllListScreen> {
             return snapshot.hasData && snapshot.data!.data!.isNotEmpty
                 ? JoinedGroupsList(snapshot.data!)
                 : Container(
-                    margin: EdgeInsets.only(top: 100),
+                    margin: const EdgeInsets.only(top: 100),
                     alignment: Alignment.center,
-                    child: Center(
-                      child: customText("No data!", 15, white),
+                    child: const Center(
+                      child: CircularProgressIndicator(),
                     ),
                   );
           });
@@ -493,7 +477,7 @@ class _GroupsAllListScreenState extends State<GroupsAllListScreen> {
                                 leaveJoinTheGroup(context, groupId, 1);
                               },
                               child: Container(
-                                padding: EdgeInsets.only(top: 8, bottom: 8),
+                                padding: const EdgeInsets.only(top: 8, bottom: 8),
                                 width: 80,
                                 decoration: BoxDecoration(
                                     gradient: commonButtonLinearGridient,
@@ -508,7 +492,7 @@ class _GroupsAllListScreenState extends State<GroupsAllListScreen> {
                                 Navigator.pop(context);
                               },
                               child: Container(
-                                padding: EdgeInsets.only(top: 8, bottom: 8),
+                                padding: const EdgeInsets.only(top: 8, bottom: 8),
                                 width: 80,
                                 decoration: BoxDecoration(
                                     border: Border.all(color: white, width: 1),
