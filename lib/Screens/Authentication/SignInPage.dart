@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:afro/Screens/Authentication/ChooseLanguage.dart';
 import 'package:afro/Screens/Authentication/ForgetPasswordPage.dart';
 import 'package:afro/Screens/DashboardScreenPage.dart';
@@ -95,6 +97,16 @@ Widget BuildPasswordTextField() {
 
 class _SignInPageScreen extends State<SignPage> {
   bool isChecked = false;
+  String deviceType = '';
+  @override
+  void initState() {
+    super.initState();
+    if(Platform.isAndroid){
+      deviceType = 'Android';
+    }else{
+      deviceType = 'Ios';
+    }
+  }
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
@@ -243,7 +255,7 @@ class _SignInPageScreen extends State<SignPage> {
                           padding: const EdgeInsets.all(8.0),
                           child: InkWell(
                             onTap: () => {
-                              googleSignInProcess( context)
+                              googleSignInProcess( context,deviceType)
                             },
                             child: Image.asset(
                               "assets/social/google.png",

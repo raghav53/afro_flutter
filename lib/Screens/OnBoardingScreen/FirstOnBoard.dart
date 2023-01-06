@@ -36,7 +36,7 @@ class _FirstScreen extends State<FirstOnBoardScreen> {
                         customWidthBox(10),
                         RichText(
                             text: TextSpan(
-                                text: "Afro unitd",
+                                text: "Afro-Unitd",
                                 style: const TextStyle(
                                     fontSize: 20,
                                     fontStyle: FontStyle.normal,fontFamily: "Poppins",

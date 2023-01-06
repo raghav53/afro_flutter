@@ -23,11 +23,42 @@ class ProfileSettingScreenPage extends StatefulWidget {
   _ProfilePage createState() => _ProfilePage();
 }
 
-String? fullName, imageURl;
-UserDataConstants user = UserDataConstants();
+
 
 class _ProfilePage extends State<ProfileSettingScreenPage> {
   final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+  String fullName= '',
+      profileImage= '';
+  UserDataConstants user = UserDataConstants();
+
+  /*_loadCounter() async {
+    SharedPreferences _prefs = await SharedPreferences.getInstance();
+    setState(() {
+      imageURl = (_prefs.getString(user.profileImage) ?? '');
+      fullName = (_prefs.getString(user.fullName)?? '');
+
+    });
+  }*/
+
+
+  getUserData() async {
+    SharedPreferences sharedPreferences = await _prefs;
+    profileImage = sharedPreferences.getString(user.profileImage).toString();
+    fullName= sharedPreferences.getString(user.fullName).toString();
+    setState(() {
+
+    });
+  }
+
+
+  @override
+  void initState() {
+    super.initState();
+    getUserData();
+  }
+
+
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -39,11 +70,7 @@ class _ProfilePage extends State<ProfileSettingScreenPage> {
                 height: phoneHeight(context),
                 width: phoneWidth(context),
                 decoration: commonBoxDecoration(),
-                child: FutureBuilder<UserProfile>(
-                  future: getUserProfileinfo(context, userID.toString()),
-                  builder: (context, snapshot) {
-                    return snapshot.hasData
-                        ? SingleChildScrollView(
+                child:  SingleChildScrollView(
                             child: Column(
                             children: [
                               customHeightBox(50),
@@ -52,30 +79,33 @@ class _ProfilePage extends State<ProfileSettingScreenPage> {
                                   Navigator.of(context)
                                       .push(MaterialPageRoute(
                                           builder: (context) =>
-                                              MyProfilePage()))
+                                              const MyProfilePage()))
                                       .then((value) => {setState(() {})});
                                 },
-                                leading: Container(
+                                leading: SizedBox(
                                   width: 60,
                                   height: 60,
-                                  child: CachedNetworkImage(
-                                    imageUrl: IMAGE_URL +
-                                        snapshot.data!.data!.profileImage
-                                            .toString(),
-                                    placeholder: (context, url) =>
-                                        const CircleAvatar(
-                                            backgroundImage:
-                                                AssetImage("tom_cruise.jpeg")),
-                                    imageBuilder: (context, image) =>
-                                        CircleAvatar(
+                                  child: profileImage != null
+                                      ? CachedNetworkImage(
+                                    imageUrl: IMAGE_URL + profileImage!,
+                                    placeholder: (context, url) => const CircleAvatar(
+                                        backgroundImage: AssetImage("tom_cruise.jpeg")),
+                                    errorWidget: (context, url, jgf) {
+                                      return Image.asset("tom_cruise.jpeg");
+                                    },
+                                    imageBuilder: (context, image) => CircleAvatar(
                                       backgroundImage: image,
                                     ),
-                                  ),
-                                ),
-                                title: customText(
-                                    snapshot.data!.data!.fullName.toString(),
+                                  )
+
+                                      : const CircleAvatar(
+                                    backgroundImage: AssetImage("tom_cruise.jpeg"),
+                                  )),
+
+                                title: fullName!= null ?customText(
+                                    fullName!,
                                     19,
-                                    Colors.white),
+                                    Colors.white):SizedBox(),
                                 subtitle: customText(
                                     "Edit Profile", 16, Colors.white,),
                                 trailing: IconButton(
@@ -106,7 +136,7 @@ class _ProfilePage extends State<ProfileSettingScreenPage> {
                               customDivider(10, Colors.white),
                             ],
                           ))
-                        : Center(
+                      /*  : Center(
                             child: Container(
                               height: 50,
                               width: 50,
@@ -119,10 +149,10 @@ class _ProfilePage extends State<ProfileSettingScreenPage> {
                                   ],
                                   strokeWidth: 1,
                                   pathBackgroundColor: Colors.black),
-                            ),
-                          );
-                  },
-                ))));
+                            ),*/
+                          )
+
+                ));
   }
 
   //Show Logout dialog box

@@ -150,14 +150,14 @@ class _SignUpPage extends State<SignUpPageScreen> {
             Container(
               alignment: Alignment.centerLeft,
               decoration: BoxDecoration(
-                  color: Colors.black,
+                  color: black,
                   borderRadius: BorderRadius.circular(10),
-                  boxShadow: const [
+                 /* boxShadow: const [
                     BoxShadow(
                         color: Colors.black26,
                         blurRadius: 6,
                         offset: Offset(0, 2))
-                  ]),
+                  ]*/),
               height: 50,
               child: TextField(
                 controller: firstNamecontroller,
@@ -188,14 +188,14 @@ class _SignUpPage extends State<SignUpPageScreen> {
             Container(
               alignment: Alignment.centerLeft,
               decoration: BoxDecoration(
-                  color: Colors.black,
+                  color: black,
                   borderRadius: BorderRadius.circular(10),
-                  boxShadow: const [
+                 /* boxShadow: const [
                     BoxShadow(
                         color: Colors.black26,
                         blurRadius: 6,
                         offset: Offset(0, 2))
-                  ]),
+                  ]*/),
               height: 50,
               child: TextField(
                 controller: lastNamecontroller,
@@ -228,14 +228,14 @@ class _SignUpPage extends State<SignUpPageScreen> {
             Container(
               alignment: Alignment.centerLeft,
               decoration: BoxDecoration(
-                  color: Colors.black,
+                  color:black,
                   borderRadius: BorderRadius.circular(10),
-                  boxShadow: const [
+                /*  boxShadow: const [
                     BoxShadow(
                         color: Colors.black26,
                         blurRadius: 6,
                         offset: Offset(0, 2))
-                  ]),
+                  ]*/),
               height: 50,
               child: TextField(
                 controller: Emailcontroller,
@@ -264,14 +264,14 @@ class _SignUpPage extends State<SignUpPageScreen> {
             Container(
               alignment: Alignment.centerLeft,
               decoration: BoxDecoration(
-                  color: Colors.black,
+                  color: black,
                   borderRadius: BorderRadius.circular(10),
-                  boxShadow: const [
+                 /* boxShadow: const [
                     BoxShadow(
                         color: Colors.black26,
                         blurRadius: 6,
                         offset: Offset(0, 2))
-                  ]),
+                  ]*/),
               height: 50,
               child: TextField(
                 controller: createPasswordController,
@@ -301,14 +301,14 @@ class _SignUpPage extends State<SignUpPageScreen> {
             Container(
               alignment: Alignment.centerLeft,
               decoration: BoxDecoration(
-                  color: Colors.black,
+                  color:black,
                   borderRadius: BorderRadius.circular(10),
-                  boxShadow: const [
+                  /*boxShadow: const [
                     BoxShadow(
                         color: Colors.black26,
                         blurRadius: 6,
                         offset: Offset(0, 2))
-                  ]),
+                  ]*/),
               height: 50,
               child: TextField(
                 controller: confirmPasswordController,
