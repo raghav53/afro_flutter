@@ -72,5 +72,11 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<true/>
+	<key>FacebookAppID</key>
+	<string>868916890903694</string>
+	<key>FacebookDisplayName</key>
+	<string>Afro-unitd</string>
+	<key>FacebookClientToken</key>
+	<string>841cc2ea92c6204ecd061b3d98859bde</string>
 </dict>
 </plist>
