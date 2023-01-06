@@ -453,7 +453,7 @@ class _AllEventsScreenState extends State<AllEventsScreen> {
                                               decoration: BoxDecoration(
                                                   borderRadius:
                                                       BorderRadius.circular(10),
-                                                  color: Colors.black),
+                                                  color: black),
                                               margin: const EdgeInsets.only(
                                                   top: 15, left: 10, right: 10),
                                               child: const TextField(
@@ -475,7 +475,7 @@ class _AllEventsScreenState extends State<AllEventsScreen> {
                                             ),
                                             customHeightBox(10),
                                             SizedBox(
-                                              height: phoneHeight(context)*2.7,
+                                              height: phoneHeight(context)/2.9,
                                               child: FutureBuilder<CountryModel>(
                                                     future: _getCountries,
                                                     builder: (context, snapshot) {
@@ -547,7 +547,8 @@ class _AllEventsScreenState extends State<AllEventsScreen> {
                                                                   }),
                                                         );
                                                       })
-                                                  : Center(
+                                                  :
+                                              Center(
                                                       child: customText(
                                                           "No countries found!",
                                                           15,
@@ -760,7 +761,7 @@ class _AllEventsScreenState extends State<AllEventsScreen> {
                                   },
                                   child: Container(
                                       height: 30,
-                                      width: 70,
+                                      width: 140,
                                       alignment: Alignment.center,
                                       margin: const EdgeInsets.only(bottom: 10),
                                       /*  padding: const EdgeInsets.only(
