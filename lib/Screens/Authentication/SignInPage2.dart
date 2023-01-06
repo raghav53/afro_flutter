@@ -1,4 +1,6 @@
 import 'dart:convert';
+import 'dart:io';
+
 
 import 'dart:math';
 
@@ -41,11 +43,18 @@ class _LoginScreenState extends State<LoginScreen> {
   LoginModel? loginModel;
 
   bool _checkbox = false;
+  String deviceType = '';
+
   var fcmToken = "";
   UserDataConstants userDataConstants = UserDataConstants();
   @override
   void initState() {
     super.initState();
+    if(Platform.isAndroid){
+      deviceType = 'Android';
+    }else{
+      deviceType = 'Ios';
+    }
     init();
   }
 
@@ -276,7 +285,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       children: [
                         InkWell(
                           onTap: () {
-                            faceBookLogin(context);
+                            faceBookLogin(context,deviceType);
                           },
                           child: Container(
                             padding: const EdgeInsets.only(left: 20, right: 20),
@@ -305,7 +314,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         customWidthBox(30),
                         InkWell(
                           onTap: (){
-                            googleSignInProcess( context);
+                            googleSignInProcess( context,deviceType);
                           },
                           child: Container(
                             alignment: Alignment.center,
@@ -377,7 +386,7 @@ class _LoginScreenState extends State<LoginScreen> {
       'password': password,
       'timezone': "Asia/Kolkata",
       'device_token': fcmToken,
-      'device_type': "Android",
+      'device_type': deviceType,
       'social_type': "APP"
     };
     var jsonResponse = null;

@@ -21,7 +21,7 @@ final plugin = FacebookLogin(debug: true);
 var fcmToken = "";
 LoginModel? loginModel;
 
-void googleSignInProcess(BuildContext context) async {
+void googleSignInProcess(BuildContext context,String deviceType ) async {
   if (await _googleSignIn.isSignedIn()) {
     handleSignOut();
   }
@@ -54,7 +54,7 @@ void googleSignInProcess(BuildContext context) async {
     });
     debugPrint('FIRST_NAME__' + firstName! + '___LASTNAME___' + lastName!);
     apiLoginGoogle(context, googleUser!.id, firstName, lastName,
-        googleUser.email, deviceToken, 'Android', 'GOOGLE');
+        googleUser.email, deviceToken, deviceType, 'GOOGLE');
   }
 }
 
@@ -95,6 +95,7 @@ Future<LoginModel?> apiLoginGoogle(
   if (response.statusCode == 200) {
     Navigator.pop(context);
     customToastMsg(message);
+    await SaveStringToSF("social login", "yes");
     saveTheUserInfo(loginModel);
     // saveUserData(loginModel);
     Navigator.of(context)
@@ -153,7 +154,7 @@ saveTheUserInfo(LoginModel loginModel) async {
   await SaveStringToSF(user.id, loginModel.data!.id.toString());
 }
 
-Future<dynamic> faceBookLogin(BuildContext context) async {
+Future<dynamic> faceBookLogin(BuildContext context , String deviceType) async {
   _logOut();
   await plugin.logIn(permissions: [
     FacebookPermission.email,FacebookPermission.publicProfile,
@@ -175,7 +176,7 @@ Future<dynamic> faceBookLogin(BuildContext context) async {
        email = await plugin.getUserEmail();
     }
     imageUrl = await plugin.getProfileImageUrl(width: 100);
-      apiLoginGoogle(context,profile!.userId,profile.firstName.toString(),profile.lastName.toString(),email.toString(),deviceToken,"Android","FACEBOOK");
+      apiLoginGoogle(context,profile!.userId,profile.firstName.toString(),profile.lastName.toString(),email.toString(),deviceToken,deviceType,"FACEBOOK");
   }
 }
 

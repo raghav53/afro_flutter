@@ -50,9 +50,15 @@ class _CreateNewEventState extends State<CreateNewEvent> {
 
   String fromText = "000000000";
   String toText = "000000000";
-
   String fromTextStartDate = "";
   String toTextEndDate = "";
+
+
+
+  String fromDate="";
+  String toDate="";
+  String fromTime="";
+  String toTime="";
   var imageFile = null;
   TextEditingController eventName = TextEditingController();
   TextEditingController eventLocationLink = TextEditingController();
@@ -73,16 +79,30 @@ class _CreateNewEventState extends State<CreateNewEvent> {
             DateTime.now().hour,DateTime.now().minute).millisecondsSinceEpoch;
     fromText = timestamp1.toString();
     String formattedDate =
-    DateFormat('dd-MM-yyyy HH:mm').format(DateTime(DateTime.now().year,
+    DateFormat('dd-MM-yyyy').format(DateTime(DateTime.now().year,
         DateTime.now().month, DateTime.now().day,
         DateTime.now().hour,DateTime.now().minute));
+
+    String formattedTime =
+    DateFormat('hh:mm aa').format(DateTime(
+        DateTime.now().hour,DateTime.now().minute));
     debugPrint("INIT__"+formattedDate);
+    debugPrint("INIT__TIME"+formattedTime);
+    fromDate = formattedDate;
+    toDate = formattedDate;
+    fromTime = formattedTime;
+    toTime = formattedTime;
     Future.delayed(Duration.zero, () {
       _getAllInterests = getInterestssList(context);
       setState(() {});
       _getAllInterests!.whenComplete(() => () {});
     });
   }
+
+  /*var  formattedDates =
+  DateFormat('dd-MM-yyyy HH:mm').format(DateTime(DateTime.now().year,
+      DateTime.now().month, DateTime.now().day,
+      DateTime.now().hour,DateTime.now().minute));*/
 
   @override
   Widget build(BuildContext context) {
@@ -303,7 +323,7 @@ class _CreateNewEventState extends State<CreateNewEvent> {
                               ],
                             ),
                           ),
-                          showList?Container(
+                          showList?SizedBox(
                             height: 250,
                             child: /*showList
                                 ?*/ FutureBuilder<AllInterestModel>(
@@ -742,17 +762,21 @@ class _CreateNewEventState extends State<CreateNewEvent> {
                         child: CupertinoDatePicker(
 
                           mode: CupertinoDatePickerMode.date,
-                          initialDateTime: DateTime(DateTime.now().year,
+                          initialDateTime:DateTime(DateTime.now().year,
                               DateTime.now().month, DateTime.now().day,
                               DateTime.now().hour,DateTime.now().minute),
                           onDateTimeChanged: (DateTime newDateTime) {
                             setState(() {
                               //hh:mm:ss
                               final timestamp1 =
-                                  newDateTime.millisecondsSinceEpoch;
-                              print(timestamp1);
+                                  DateTime(DateTime.now().year,
+                                      DateTime.now().month, DateTime.now().day,
+                                      DateTime.now().hour,DateTime.now().minute).millisecondsSinceEpoch;
+                              fromText = timestamp1.toString();
                               String formattedDate =
-                                  DateFormat('dd-MM-yyyy HH:mm ').format(newDateTime);
+                              DateFormat('dd-MM-yyyy HH:mm').format(DateTime(DateTime.now().year,
+                                  DateTime.now().month, DateTime.now().day,
+                                  DateTime.now().hour,DateTime.now().minute));
                               // var formattedDate = new DateTime.fromMillisecondsSinceEpoch(int.parse(fromText));
                               if (type == "from") {
                                 setState(() {
@@ -828,8 +852,7 @@ class _CreateNewEventState extends State<CreateNewEvent> {
                                 var date = new DateTime.fromMillisecondsSinceEpoch(int.parse(fromText));
                                 print("FROM_DATE____"+date.toString());
                               });
-                            }
-                            if (type.contains("to")) {
+                            }else if (type.contains("to")) {
                               setState(() {
                                 toText =
                                     (int.parse(toText) + tempTime).toString();

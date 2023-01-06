@@ -48,7 +48,8 @@ class _SecondScreen extends State<SecondOnBoardScreen> {
                               TextSpan(
                                   style: TextStyle(color: white, fontSize: 13, fontStyle: FontStyle.normal,fontFamily: "Poppins",fontWeight: FontWeight.bold),
                                   text:
-                                      "\nAfro-United is a platform created to empower the block community worldwide. Join us today to meet new people and learn more about the Block Community. We offer online and offline events,forums. Fundraising projects and discussion groups that you can join and projects from the comfort of your own home and be a part of the changes in your community.")
+                                      "\nAfro-unitd is a platform created to empower the Black/Afro community worldwide. Join us today and start networking with new people. We offer events, forums, and community groups that you can join and participate from the comfort of your own home and become the change within your community."
+                                      )
                             ])),
                         customHeightBox(25),
                         GestureDetector(

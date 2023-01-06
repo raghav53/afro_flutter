@@ -105,6 +105,7 @@ class _SplashScreen extends State<SplashScreenPage> {
 
   Future<void> checkUserExist(BuildContext context) async {
     SharedPreferences sharedPreferences = await _prefs;
+    String?checkSocialLogin = sharedPreferences.getString("social login");
     String? checkLogin = sharedPreferences.getString("login");
     String? onBorading = sharedPreferences.getString("onBoarding");
     String? process = sharedPreferences.getString("newuser");
@@ -158,7 +159,13 @@ class _SplashScreen extends State<SplashScreenPage> {
           const Duration(seconds: 3),
           () => Navigator.pushReplacement(context,
               MaterialPageRoute(builder: (context) => const HomePagescreen())));
-    } else {
+    }else if (checkSocialLogin=="yes"){
+      Timer(
+          const Duration(seconds: 3),
+              () => Navigator.pushReplacement(context,
+              MaterialPageRoute(builder: (context) => const HomePagescreen())));
+    }
+    else {
       if (onBorading == "yes") {
         Timer(
             const Duration(seconds: 3),
