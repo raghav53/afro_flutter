@@ -54,6 +54,8 @@ class _ForumsPage extends State<ForumsScreenPage> {
   void initState() {
     super.initState();
     getUsersData();
+    getCountries();
+    getForumsCategories();
   }
 
   getUsersData() async {
@@ -944,12 +946,12 @@ class _ForumsPage extends State<ForumsScreenPage> {
   //Get the data according fillters
   void openBottomSheet() {
     var selectedTitle = "Country";
-    setState(() {
+   /* setState(() {
       countriesIds = "";
       searchCategory = "";
-    });
-    getCountries();
-    getForumsCategories();
+    });*/
+  /*  getCountries();
+    getForumsCategories();*/
     showModalBottomSheet(
         isDismissible: false,
         backgroundColor: Colors.transparent,
@@ -1063,7 +1065,7 @@ class _ForumsPage extends State<ForumsScreenPage> {
                           ],
                         ),
                       ),
-                      Spacer(),
+                      const Spacer(),
                       Container(
                         alignment: Alignment.center,
                         height: phoneHeight(context) /2.2,
@@ -1077,14 +1079,15 @@ class _ForumsPage extends State<ForumsScreenPage> {
                             SizedBox(
                                 width: phoneWidth(context) / 1.4,
                                 child: bottomSheetIndex == 0
-                                    ? Column(
+
+                                ?Column(
                                         children: [
                                           Container(
                                             height: 40,
                                             decoration: BoxDecoration(
                                                 borderRadius:
                                                     BorderRadius.circular(10),
-                                                color: Colors.black),
+                                                color: black),
                                             margin: const EdgeInsets.only(
                                                 top: 15, left: 10, right: 10),
                                             child: const TextField(
@@ -1183,7 +1186,8 @@ class _ForumsPage extends State<ForumsScreenPage> {
                                                                       }),
                                                             );
                                                           })
-                                                      : Center(
+                                                      :
+                                                  Center(
                                                           child: customText(
                                                               "No countries found!",
                                                               15,
@@ -1193,7 +1197,7 @@ class _ForumsPage extends State<ForumsScreenPage> {
                                               ))
                                         ],
                                       )
-                                    : Container(
+                                    : bottomSheetIndex == 1?Container(
                                         child:
                                             FutureBuilder<ForumCategoryModel>(
                                                 future: _getCategries,
@@ -1263,7 +1267,7 @@ class _ForumsPage extends State<ForumsScreenPage> {
                                                               white),
                                                         );
                                                 }),
-                                      )),
+                                      ):Container(),),
                             InkWell(
                               onTap: () {
                                 setState(() {});
