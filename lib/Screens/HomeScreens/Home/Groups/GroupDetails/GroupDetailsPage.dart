@@ -293,6 +293,7 @@ class GoupDetailsPageState extends State<GroupDetailsPage> {
                           customHeightBox(15),
                           customDivider(20, white),
                           Container(
+                            alignment: Alignment.center,
                             margin: const EdgeInsets.only(
                                 left: 10, right: 10, top: 10, bottom: 10),
                             height: 25,
@@ -330,21 +331,23 @@ class GoupDetailsPageState extends State<GroupDetailsPage> {
         });
       },
       child: Container(
+        alignment: Alignment.center,
         margin: EdgeInsets.only(right: 10),
-        padding: EdgeInsets.only(left: 20, right: 20, top: 5, bottom: 5),
+        padding: const EdgeInsets.only(left: 20, right: 20,),
         decoration: BoxDecoration(
             gradient:
                 (selectedIndex == index) ? commonButtonLinearGridient : null,
             border: (selectedIndex == index)
                 ? null
-                : Border.all(color: Colors.white, width: 1),
-            borderRadius: BorderRadius.all(Radius.circular(20))),
+                : Border.all(color: grey, width: 1.5),
+            borderRadius: const BorderRadius.all(Radius.circular(20))),
         child: Row(
           children: [
             Image.asset(
               image,
               height: 12,
               width: 12,
+              color: white,
             ),
             customWidthBox(5),
             customText(title, 12, white),
@@ -897,7 +900,7 @@ class GoupDetailsPageState extends State<GroupDetailsPage> {
             return snapshot.hasData && snapshot.data != null
                 ? DisscussionPage(snapshot.data!)
                 : Container(
-                    margin: EdgeInsets.only(top: 100),
+                    margin: const EdgeInsets.only(top: 100),
                     alignment: Alignment.center,
                     child: Center(
                       child: customText("No data!", 15, white),
@@ -970,7 +973,7 @@ class GoupDetailsPageState extends State<GroupDetailsPage> {
                     borderRadius: BorderRadius.circular(10), color: black),
                 child: Center(
                   child: customText(
-                      "What's in your mind? #Hashtag #Tags", 14, gray1),
+                      "What's in your mind? #Hashtag #Tags", 14, Colors.white54),
                 )),
           ),
           customHeightBox(20),
@@ -1004,8 +1007,11 @@ class GoupDetailsPageState extends State<GroupDetailsPage> {
                             customWidthBox(10),
                             Column(
                               crossAxisAlignment: cStart,
+                              mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Row(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  mainAxisAlignment: MainAxisAlignment.start,
                                   children: [
                                     CachedNetworkImage(
                                       imageUrl: IMAGE_URL +
@@ -1022,25 +1028,30 @@ class GoupDetailsPageState extends State<GroupDetailsPage> {
                                       },
                                     ),
                                     customWidthBox(10),
-                                    customText(
-                                        snapshot.data![index].user!.fullName
-                                            .toString(),
-                                        15,
-                                        white),
-                                  ],
-                                ),
-                                customHeightBox(5),
-                                Container(
-                                  margin: EdgeInsets.only(left: 50),
-                                  child:
-                                      snapshot.data![index].caption!.isNotEmpty
-                                          ? customText(
+                                    Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        customText(
+                                            snapshot.data![index].user!.fullName
+                                                .toString(),
+                                            15,
+                                            white),
+                                        Container(
+                                          child:
+                                          snapshot.data![index].caption!.isNotEmpty
+                                              ? customText(
                                               snapshot.data![index].caption
                                                   .toString(),
                                               12,
                                               white)
-                                          : null,
+                                              : null,
+                                        ),
+                                      ],
+                                    ),
+                                  ],
                                 ),
+                                customHeightBox(5),
+
 
                                 mediaWidget(snapshot.data![index]),
                                 customHeightBox(20),
